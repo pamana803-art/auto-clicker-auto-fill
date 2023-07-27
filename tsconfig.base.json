@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@dhruv-techapps/core-common": ["libs/core/common/src/index.ts"],
+      "@dhruv-techapps/core-extension": ["libs/core/extension/src/index.ts"],
+      "@dhruv-techapps/core-service": ["libs/core/service/src/index.ts"],
+      "@dhruv-techapps/utils": ["libs/utils/puppeteer/src/index.js"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

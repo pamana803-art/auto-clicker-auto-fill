@@ -1,0 +1,1 @@
+export type RuntimeActions = 'notifications'|  'manifest'|  'storage'|  'action'|  'discord_messaging'
