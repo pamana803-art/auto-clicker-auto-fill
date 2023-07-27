@@ -1,4 +1,4 @@
-import { ActionMessenger, ManifestMessenger, NotificationsMessenger, StorageMessenger } from './messenger';
+import { ActionMessenger, ActionRequest, ManifestMessenger, ManifestRequest, NotificationsMessenger, NotificationsRequest, StorageMessenger, StorageRequest } from './messenger';
 
 export interface MessengerConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -7,6 +7,11 @@ export interface MessengerConfig {
 
 export type MessengerConfigObject = {
   [key: string]: MessengerConfig;
+};
+
+export type RuntimeMessageRequest = (ActionRequest | ManifestRequest | NotificationsRequest | StorageRequest) & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [index: string]: any;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

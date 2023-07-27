@@ -1,0 +1,30 @@
+{
+  "name": "acf-common",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/acf/common/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/acf/common",
+        "main": "libs/acf/common/src/index.ts",
+        "tsConfig": "libs/acf/common/tsconfig.lib.json",
+        "assets": ["libs/acf/common/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs acf-common {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/acf/common/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["type:lib", "scope:acf"]
+}

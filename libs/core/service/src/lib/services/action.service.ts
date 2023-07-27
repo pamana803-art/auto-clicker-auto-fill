@@ -1,36 +1,19 @@
-import { Actions, RuntimeMessage } from '@dhruv-techapps/core-common';
 import { Service } from './service';
 
 export class ActionService extends Service {
-  static async setBadgeBackgroundColor(extensionId: string, details) {
-    return await this.message(extensionId, {
-      action: RuntimeMessage.ACTION,
-      actionAction: Actions.SET_BADGE_BACKGROUND_COLOR,
-      details,
-    });
+  static async setBadgeBackgroundColor(extensionId: string, details: chrome.action.BadgeColorDetails) {
+    return await this.message(extensionId, { class: 'action', methodName: 'setBadgeBackgroundColor', details });
   }
 
-  static async setBadgeText(extensionId: string, details) {
-    return await this.message(extensionId, {
-      action: RuntimeMessage.ACTION,
-      actionAction: Actions.SET_BADGE_TEXT,
-      details,
-    });
+  static async setBadgeText(extensionId: string, details: chrome.action.BadgeTextDetails) {
+    return await this.message(extensionId, { class: 'action', methodName: 'setBadgeText', details });
   }
 
-  static async setIcon(extensionId: string, details) {
-    return await this.message(extensionId, {
-      action: RuntimeMessage.ACTION,
-      actionAction: Actions.SET_ICON,
-      details,
-    });
+  static async setIcon(extensionId: string, details: chrome.action.TabIconDetails) {
+    return await this.message(extensionId, { class: 'action', methodName: 'setIcon', details });
   }
 
-  static async setTitle(extensionId: string, details) {
-    return await this.message(extensionId, {
-      action: RuntimeMessage.ACTION,
-      actionAction: Actions.SET_TITLE,
-      details,
-    });
+  static async setTitle(extensionId: string, details: chrome.action.TitleDetails) {
+    return await this.message(extensionId, { class: 'action', methodName: 'setTitle', details });
   }
 }

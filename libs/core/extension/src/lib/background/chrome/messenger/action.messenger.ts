@@ -1,3 +1,9 @@
+export type ActionRequest = {
+  class: 'action';
+  methodName:  'setIcon' | 'setBadgeBackgroundColor' | 'setBadgeText' | 'setTitle';
+
+};
+
 export class ActionMessenger {
   setIcon(details: chrome.action.TabIconDetails, callback: () => void): void {
     chrome.action.setIcon(details, callback);

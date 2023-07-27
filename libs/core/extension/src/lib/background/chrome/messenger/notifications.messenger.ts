@@ -9,6 +9,12 @@ type NotificationsMessengerUpdateProps = NotificationsMessengerProps & {
   options: chrome.notifications.NotificationOptions<false>;
 };
 
+export type NotificationsRequest = {
+  class: 'notifications';
+  methodName: 'create' | 'update' | 'clear';
+};
+
+
 export class NotificationsMessenger {
   create({ notificationId, options }: NotificationsMessengerCreateProps, callback: ((notificationId: string) => void) | undefined) {
     chrome.notifications.create(notificationId, options, callback);

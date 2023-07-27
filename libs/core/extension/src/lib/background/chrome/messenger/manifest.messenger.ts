@@ -2,6 +2,11 @@ type ManifestResult = {
   [key: string]: string | ManifestResult;
 };
 
+export type ManifestRequest = {
+  class: 'manifest';
+  methodName: 'values' | 'value';
+};
+
 export class ManifestMessenger {
   async values({ keys }: { keys: string[] }): Promise<ManifestResult> {
     if (!keys || !Array.isArray(keys)) {
