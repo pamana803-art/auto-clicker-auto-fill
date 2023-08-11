@@ -15,7 +15,7 @@ export enum RECHECK_OPTIONS {
   SKIP = 'skip',
   RELOAD = 'reload',
 }
-export type IAddon = {
+export type Addon = {
   elementFinder: string;
   value: string;
   condition: ADDON_CONDITIONS;
@@ -25,7 +25,7 @@ export type IAddon = {
   recheckOption: RECHECK_OPTIONS;
 };
 
-export const defaultAddon: IAddon = {
+export const defaultAddon: Addon = {
   elementFinder: '',
   value: '',
   condition: ADDON_CONDITIONS['~~ Select Condition ~~'],

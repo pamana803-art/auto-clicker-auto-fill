@@ -1,5 +1,5 @@
-import { IBatch, defaultBatch } from './batch-model'
-import { IAction, defaultAction } from './action-model'
+import { Batch, defaultBatch } from './batch-model'
+import { Action, defaultAction } from './action-model'
 
 export enum LOAD_TYPES {
   WINDOW= 'window',
@@ -13,7 +13,7 @@ export enum START_TYPES  {
 
 const defaultHotkey = 'Ctrl + Shift + A'
 
-export type IConfig = {
+export type Configuration = {
   name: '',
   url: '',
   initWait: 0,
@@ -23,11 +23,11 @@ export type IConfig = {
   startType: START_TYPES.AUTO,
   loadType: LOAD_TYPES.WINDOW,
   hotkey: string,
-  batch: IBatch,
-  actions: Array<IAction>
+  batch: Batch,
+  actions: Array<Action>
 }
 
-export const defaultConfig:IConfig = {
+export const defaultConfig:Configuration = {
   name: '',
   url: '',
   initWait: 0,

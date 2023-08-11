@@ -1,0 +1,33 @@
+@import 'configs';
+@import 'input';
+@import 'carbon-ads';
+@import 'sponsors';
+
+.btn{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sticky-top {
+  z-index: 999;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input::-webkit-calendar-picker-indicator {
+  -webkit-appearance: none;
+  opacity: 0;
+  display: none;
+}
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+button.btn[data-toggle="dropdown"]{
+  color: var(--bs-body-color);
+}

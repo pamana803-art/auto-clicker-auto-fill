@@ -11,7 +11,7 @@ export enum AUTO_BACKUP {
   OFF = 'off',
 }
 
-export type ISettings = {
+export type Settings = {
   retry: number;
   retryInterval: number;
   retryOption: RETRY_OPTIONS;
@@ -29,7 +29,7 @@ export type ISettings = {
   };
 };
 
-export const defaultSettings: ISettings = {
+export const defaultSettings: Settings = {
   retry: 5,
   retryInterval: 1,
   retryOption: RETRY_OPTIONS.STOP,

@@ -1,4 +1,4 @@
-import { IAddon, defaultAddon } from './addon-model';
+import { Addon, defaultAddon } from './addon-model';
 import { RETRY_OPTIONS } from './setting-model';
 
 export enum ACTION_RUNNING {
@@ -25,7 +25,7 @@ export enum ACTION_CONDITION_OPR {
   AND = 'and',
   OR = 'or',
 }
-export type IAction = {
+export type Action = {
   name: string;
   initWait: number;
   elementFinder: string;
@@ -34,9 +34,9 @@ export type IAction = {
   repeat: number;
   repeatInterval: number;
   elementType: string;
-  addon: IAddon;
+  addon: Addon;
 };
-export const defaultAction: IAction = {
+export const defaultAction: Action = {
   name: '',
   initWait: 0,
   elementFinder: '',
@@ -47,13 +47,13 @@ export const defaultAction: IAction = {
   elementType: '',
   addon: { ...defaultAddon },
 };
-export type IActionSetting = {
+export type ActionSetting = {
   retry: number;
   retryInterval: number;
   retryOption: RETRY_OPTIONS;
 };
 
-export const defaultActionSetting: IActionSetting = {
+export const defaultActionSetting: ActionSetting = {
   retry: 5,
   retryInterval: 1,
   retryOption: RETRY_OPTIONS.STOP,
