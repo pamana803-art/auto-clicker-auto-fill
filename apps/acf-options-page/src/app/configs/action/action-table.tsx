@@ -1,24 +1,40 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
-import { useTable } from 'react-table'
-import { Dropdown, Form, Table } from 'react-bootstrap'
-import { defaultAction } from '@dhruv-techapps/acf-common'
-import { useTranslation } from 'react-i18next'
-import { EditableCell } from './editable-cell'
-import { CaretDown, CaretUp, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util'
-import { ConfirmModal } from '../../../modal'
-import { ElementFinderPopover, ValuePopover } from '../../../popover'
-import { DropdownToggle } from '../../../components'
+import React, { Dispatch, SetStateAction, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useTable } from 'react-table';
+import { Dropdown, Form, Table } from 'react-bootstrap';
+import { Action, Configuration } from '@dhruv-techapps/acf-common';
+import { useTranslation } from 'react-i18next';
+import { EditableCell } from './editable-cell';
+import { CaretDown, CaretUp, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util';
+import { ConfirmModal, ConfirmModalRef } from '../../../modal';
+import { ElementFinderPopover, ValuePopover } from '../../../popover';
+import { DropdownToggle } from '../../../components';
 
-const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, actionSettingsRef, actionConditionRef, setMessage, setError }, ref) => {
-  const { t } = useTranslation()
-  const [data, setData] = useState(actions)
+type ActionTableProps = {
+  actions: Array<Action>;
+  configIndex: number;
+  setConfigs: Dispatch<SetStateAction<Array<Configuration>>>;
+  hiddenColumns: Array<string | null | undefined>;
+  setMessage: (message?: string) => void;
+  setError: (error?: string) => void;
+  addonRef: any;
+  actionSettingsRef: any;
+  actionConditionRef: any;
+};
 
-  const confirmRef = useRef()
-  const didMountRef = useRef(true)
-  const didUpdateRef = useRef(false)
-  const defaultColumn = { Cell: EditableCell }
-  const initialState = { hiddenColumns }
+export type ActionTableRef = {
+  addAction: () => void;
+};
+
+const ActionTable = forwardRef<ActionTableRef, ActionTableProps>(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, actionSettingsRef, actionConditionRef, setMessage, setError }, ref) => {
+  const { t } = useTranslation();
+  const [data, setData] = useState(actions);
+
+  const confirmRef = useRef<ConfirmModalRef>(null);
+  const didMountRef = useRef(true);
+  const didUpdateRef = useRef(false);
+  const defaultColumn = { Cell: EditableCell };
+  const initialState = { hiddenColumns };
   const columns = React.useMemo(
     () => [
       {
@@ -28,27 +44,27 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         ariaLabel: 'initWait',
         dataType: 'number',
         list: 'interval',
-        pattern: REGEX_INTERVAL
+        pattern: REGEX_INTERVAL,
       },
       {
         Header: t('action.name'),
         style: { width: '10%' },
         accessor: 'name',
         ariaLabel: 'name',
-        autoComplete: 'off'
+        autoComplete: 'off',
       },
       {
         Header: t('action.elementFinder'),
         accessor: 'elementFinder',
         ariaLabel: 'elementFinder',
         list: 'elementFinder',
-        required: true
+        required: true,
       },
       {
         Header: t('action.value'),
         list: 'value',
         accessor: 'value',
-        ariaLabel: 'value'
+        ariaLabel: 'value',
       },
       {
         Header: t('action.repeat'),
@@ -57,7 +73,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         ariaLabel: 'repeat',
         dataType: 'number',
         list: 'repeat',
-        pattern: REGEX_NUM
+        pattern: REGEX_NUM,
       },
       {
         Header: t('action.repeatInterval'),
@@ -66,143 +82,143 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         ariaLabel: 'repeatInterval',
         dataType: 'number',
         list: 'interval',
-        pattern: REGEX_INTERVAL
-      }
+        pattern: REGEX_INTERVAL,
+      },
     ],
     [t]
-  )
+  );
 
   const validateActions = () => {
-    let isValid = true
+    let isValid = true;
     data.forEach((action, index) => {
-      document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`).classList.remove('is-invalid')
+      document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`)?.classList.remove('is-invalid');
       if (!action.elementFinder) {
-        document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`).classList.add('is-invalid')
-        isValid = false
+        document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`)?.classList.add('is-invalid');
+        isValid = false;
       }
-    })
-    return isValid
-  }
+    });
+    return isValid;
+  };
 
   const saveActions = () => {
-    setError()
+    setError();
     if (validateActions()) {
-      setConfigs(configs =>
+      setConfigs((configs) =>
         configs.map((config, index) => {
           if (index === configIndex) {
-            config.actions = [...data]
-            return config
+            config.actions = [...data];
+            return config;
           }
-          return config
+          return config;
         })
-      )
-      didUpdateRef.current = false
-      setMessage(t('action.saveMessage'))
-      setTimeout(setMessage, 1500)
+      );
+      didUpdateRef.current = false;
+      setMessage(t('action.saveMessage'));
+      setTimeout(setMessage, 1500);
     } else {
-      setError(t('error.elementFinder'))
+      setError(t('error.elementFinder'));
     }
-  }
+  };
 
   useImperativeHandle(ref, () => ({
     addAction() {
-      setData([...data, { ...defaultAction, focus: true }])
-      didUpdateRef.current = true
-    }
-  }))
+      //TODO setData([...data, { ...defaultAction, focus: true }]);
+      didUpdateRef.current = true;
+    },
+  }));
 
   useEffect(() => {
     if (didMountRef.current) {
-      didMountRef.current = false
-      return
+      didMountRef.current = false;
+      return;
     }
-    setData(actions)
-  }, [actions])
+    setData(actions);
+  }, [actions]);
 
   useEffect(() => {
     if (didUpdateRef.current) {
-      saveActions()
+      saveActions();
     }
-  }, [data])
+  }, [data]);
 
   const updateAction = (rowIndex, columnId, value) => {
-    setData(prevActions =>
+    setData((prevActions) =>
       prevActions.map((action, index) => {
         if (index === rowIndex) {
-          return { ...action, [columnId]: value }
+          return { ...action, [columnId]: value };
         }
-        return action
+        return action;
       })
-    )
-    didUpdateRef.current = true
-  }
+    );
+    didUpdateRef.current = true;
+  };
 
-  const removeAction = rowIndex => {
-    setData(prevActions => prevActions.filter((_, index) => index !== rowIndex))
-    didUpdateRef.current = true
-  }
+  const removeAction = (rowIndex) => {
+    setData((prevActions) => prevActions.filter((_, index) => index !== rowIndex));
+    didUpdateRef.current = true;
+  };
 
-  const removeActionConfirm = rowIndex => {
-    const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].elementFinder || 'row'}`
-    confirmRef.current.confirm({
+  const removeActionConfirm = (rowIndex) => {
+    const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].elementFinder || 'row'}`;
+    confirmRef.current?.confirm({
       title: t('confirm.action.remove.title'),
       message: t('confirm.action.remove.message', name),
       headerClass: 'text-danger',
-      confirmFunc: removeAction.bind(null, Number(rowIndex))
-    })
-  }
+      confirmFunc: removeAction.bind(null, Number(rowIndex)),
+    });
+  };
 
-  const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction })
+  const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction });
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, setHiddenColumns } = tableInstance
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, setHiddenColumns } = tableInstance;
 
   useEffect(() => {
     if (didMountRef.current) {
-      didMountRef.current = false
-      return
+      didMountRef.current = false;
+      return;
     }
-    setHiddenColumns(hiddenColumns)
-  }, [hiddenColumns, setHiddenColumns])
+    setHiddenColumns(hiddenColumns);
+  }, [hiddenColumns, setHiddenColumns]);
 
-  const showAddon = row => {
-    addonRef.current.showAddon(row.id, row.original.addon)
-  }
+  const showAddon = (row) => {
+    addonRef.current.showAddon(row.id, row.original.addon);
+  };
 
-  const showCondition = row => {
-    actionConditionRef.current.showCondition(row.id, actions, row.original.statement)
-  }
+  const showCondition = (row) => {
+    actionConditionRef.current.showCondition(row.id, actions, row.original.statement);
+  };
 
-  const showSettings = row => {
-    actionSettingsRef.current.showSettings(row.id, row.original.settings)
-  }
+  const showSettings = (row) => {
+    actionSettingsRef.current.showSettings(row.id, row.original.settings);
+  };
 
   const arrayMove = (arr, oldIndex, newIndex) => {
     if (newIndex >= arr.length) {
-      let k = newIndex - arr.length + 1
-      k -= 1
+      let k = newIndex - arr.length + 1;
+      k -= 1;
       while (k) {
-        arr.push(undefined)
+        arr.push(undefined);
       }
     }
-    arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0])
-    return arr // for testing
-  }
+    arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
+    return arr; // for testing
+  };
 
   const moveUp = (e, rowId) => {
     if (e.currentTarget.getAttribute('disabled') === null) {
-      setData(prevActions => [...arrayMove(prevActions, +rowId, rowId - 1)])
-      window.dataLayer.push({ event: 'move-up', section: 'action' })
-      didUpdateRef.current = true
+      setData((prevActions) => [...arrayMove(prevActions, +rowId, rowId - 1)]);
+      window.dataLayer.push({ event: 'move-up', section: 'action' });
+      didUpdateRef.current = true;
     }
-  }
+  };
 
   const moveDown = (e, rowId) => {
     if (e.currentTarget.getAttribute('disabled') === null) {
-      setData(prevActions => [...arrayMove(prevActions, +rowId, +rowId + 1)])
-      window.dataLayer.push({ event: 'move-down', section: 'action' })
-      didUpdateRef.current = true
+      setData((prevActions) => [...arrayMove(prevActions, +rowId, +rowId + 1)]);
+      window.dataLayer.push({ event: 'move-down', section: 'action' });
+      didUpdateRef.current = true;
     }
-  }
+  };
 
   return (
     <Form>
@@ -224,13 +240,21 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.map((row, index) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr {...row.getRowProps()} key={index} className={actions[index] ? '' : 'edited'}>
                 <td align='center'>
                   <div className='d-flex flex-column align-items-center text-secondary'>
-                    <CaretUp width='20' height='20' onClick={e => moveUp(e, row.id)} disabled={index === 0} />
-                    <CaretDown width='20' height='20' onClick={e => moveDown(e, row.id)} disabled={index === rows.length - 1} />
+                    <CaretUp
+                      width='20'
+                      height='20'
+                      onClick={(e) => moveUp(e, row.id)} //disabled={index === 0}
+                    />
+                    <CaretDown
+                      width='20'
+                      height='20'
+                      onClick={(e) => moveDown(e, row.id)} //disabled={index === rows.length - 1}
+                    />
                   </div>
                 </td>
                 {row.cells.map((cell, cellIndex) => (
@@ -241,7 +265,7 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                 <td align='center'>
                   {actions[row.id] && (
                     <Dropdown id='acton-dropdown-wrapper'>
-                      <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' ariaLabel='Action more option'>
+                      <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' aria-label='Action more option'>
                         <ThreeDots width='24' height='24' />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
@@ -251,10 +275,11 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                         <Dropdown.Divider />
                         <Dropdown.Item
                           onClick={() => {
-                            removeActionConfirm(row.id)
+                            removeActionConfirm(row.id);
                           }}
                           className={data.length === 1 ? '' : 'text-danger'}
-                          disabled={data.length === 1}>
+                          disabled={data.length === 1}
+                        >
                           {t('action.remove')}
                         </Dropdown.Item>
                       </Dropdown.Menu>
@@ -262,24 +287,24 @@ const ActionTable = forwardRef(({ actions, configIndex, setConfigs, hiddenColumn
                   )}
                 </td>
               </tr>
-            )
+            );
           })}
         </tbody>
       </Table>
       <ConfirmModal ref={confirmRef} />
     </Form>
-  )
-})
+  );
+});
 
 ActionTable.propTypes = {
-  actions: PropTypes.arrayOf(
+  /* actions: PropTypes.arrayOf(
     PropTypes.shape({
       elementFinder: PropTypes.string.isRequired,
       initWait: PropTypes.number,
       name: PropTypes.string,
       value: PropTypes.string,
       repeat: PropTypes.number,
-      repeatInterval: numberWithExponential
+      // repeatInterval: numberWithExponential,
     }).isRequired
   ).isRequired,
   toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
@@ -290,7 +315,7 @@ ActionTable.propTypes = {
   setConfigs: PropTypes.func.isRequired,
   setMessage: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
-  hiddenColumns: PropTypes.arrayOf(PropTypes.string).isRequired
-}
-ActionTable.displayName = 'ActionTable'
-export default ActionTable
+  hiddenColumns: PropTypes.arrayOf(PropTypes.string).isRequired,*/
+};
+ActionTable.displayName = 'ActionTable';
+export default ActionTable;

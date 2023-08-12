@@ -11,23 +11,29 @@ export enum AUTO_BACKUP {
   OFF = 'off',
 }
 
+export type Notifications = {
+  onAction: boolean;
+  onBatch: boolean;
+  onConfig: boolean;
+  onError: boolean;
+  sound: boolean;
+  discord: boolean;
+};
+
+export type SettingsBackup = {
+  autoBackup: AUTO_BACKUP;
+  lastBackup?: string;
+};
+
 export type Settings = {
   retry: number;
   retryInterval: number;
   retryOption: RETRY_OPTIONS;
   checkiFrames: boolean;
-  backup: {
-    autoBackup: AUTO_BACKUP;
-  };
-  notifications: {
-    onAction: boolean;
-    onBatch: boolean;
-    onConfig: boolean;
-    onError: boolean;
-    sound: boolean;
-    discord: boolean;
-  };
+  backup: SettingsBackup;
+  notifications: Notifications;
 };
+
 
 export const defaultSettings: Settings = {
   retry: 5,
@@ -45,4 +51,30 @@ export const defaultSettings: Settings = {
     sound: false,
     discord: false,
   },
+};
+
+export type Discord = {
+  accent_color: number;
+  avatar: string;
+  banner_color: string;
+  discriminator: string;
+  displayName?: string;
+  email: string;
+  flags: number;
+  id: string;
+  locale: string;
+  mfa_enabled: boolean;
+  premium_type: number;
+  public_flags: number;
+  username: string;
+  verified: boolean;
+};
+
+export type Google = {
+  family_name: string;
+  given_name: string;
+  locale: string;
+  name: string;
+  picture: string;
+  sub: string;
 };

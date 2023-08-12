@@ -3,7 +3,7 @@ import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { LocalStorage } from '../../../_helpers'
-import ActionTable from './action-table'
+import ActionTable, { ActionTableRef } from './action-table'
 import { DropdownToggle } from '../../../components'
 import { Filter, numberWithExponential } from '../../../util'
 
@@ -13,7 +13,7 @@ const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
 function Action(props) {
   const { t } = useTranslation()
   const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns))
-  const actionTableRef = useRef()
+  const actionTableRef = useRef<ActionTableRef>(null)
   const didMountRef = useRef(true)
   const [message, setMessage] = useState()
   const [error, setError] = useState()
@@ -25,7 +25,7 @@ function Action(props) {
   }
 
   const addAction = () => {
-    actionTableRef.current.addAction()
+    actionTableRef.current?.addAction()
   }
 
   useEffect(() => {
@@ -50,7 +50,7 @@ function Action(props) {
               {t('action.add')}
             </Button>
             <Dropdown className='ml-2' id='acton-column-filter'>
-              <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' className='pe-0' ariaLabel='Filter Action Column'>
+              <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' className='pe-0' aria-label='Filter Action Column'>
                 <Filter width='28' height='28' />
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -85,7 +85,7 @@ Action.propTypes = {
       name: PropTypes.string,
       value: PropTypes.string,
       repeat: PropTypes.number,
-      repeatInterval: numberWithExponential
+      // repeatInterval: numberWithExponential
     }).isRequired
   ).isRequired,
   configIndex: PropTypes.number.isRequired,

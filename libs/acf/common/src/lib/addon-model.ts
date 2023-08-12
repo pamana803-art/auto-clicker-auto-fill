@@ -15,22 +15,16 @@ export enum RECHECK_OPTIONS {
   SKIP = 'skip',
   RELOAD = 'reload',
 }
+
+export type ValueExtractorFlags = 'g' | 'm' | 'i' | 'x' | 's';
+
 export type Addon = {
   elementFinder: string;
   value: string;
   condition: ADDON_CONDITIONS;
-  valueExtractor: string;
-  recheck: number;
-  recheckInterval: number;
-  recheckOption: RECHECK_OPTIONS;
-};
-
-export const defaultAddon: Addon = {
-  elementFinder: '',
-  value: '',
-  condition: ADDON_CONDITIONS['~~ Select Condition ~~'],
-  valueExtractor: '',
-  recheck: 0,
-  recheckInterval: 0,
-  recheckOption: RECHECK_OPTIONS.STOP,
+  valueExtractor?: string;
+  valueExtractorFlags?: ValueExtractorFlags;
+  recheck?: number;
+  recheckInterval?: number;
+  recheckOption?: RECHECK_OPTIONS;
 };

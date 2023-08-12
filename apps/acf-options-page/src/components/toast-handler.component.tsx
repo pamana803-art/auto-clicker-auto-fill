@@ -1,25 +1,35 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { Toast } from 'react-bootstrap'
+import  { forwardRef, useImperativeHandle, useState } from 'react';
+import { Toast, ToastProps } from 'react-bootstrap';
 
-export const ToastHandler = forwardRef((props, ref) => {
-  const [list, setList] = useState([])
+export type ToastHandlerProps = ToastProps & {
+  body: any;
+  toastClass?: string;
+  bodyClass?: string;
+};
 
-  const close = selected => {
-    setList(prevList =>
+export type ToastHandlerRef = {
+  push: (toast: ToastHandlerProps) => void;
+};
+
+export const ToastHandler = forwardRef<ToastHandlerRef>((props, ref) => {
+  const [list, setList] = useState<Array<ToastHandlerProps>>([]);
+
+  const close = (selected) => {
+    setList((prevList) =>
       prevList.map((toast, index) => {
         if (index === selected) {
-          return { ...toast[selected], show: false }
+          return { ...toast[selected], show: false };
         }
-        return toast
+        return toast;
       })
-    )
-  }
+    );
+  };
 
   useImperativeHandle(ref, () => ({
     push(toast) {
-      setList([toast, ...list])
-    }
-  }))
+      setList([toast, ...list]);
+    },
+  }));
 
   return (
     <div className='toast-container position-fixed bottom-0 start-0 p-3'>
@@ -27,17 +37,18 @@ export const ToastHandler = forwardRef((props, ref) => {
         <Toast
           key={index}
           onClose={() => {
-            close(index)
-            if (onClose) onClose(index)
+            close(index);
+            if (onClose) onClose();
           }}
           show={show}
           delay={delay}
           className={toastClass}
-          autohide={autohide}>
+          autohide={autohide}
+        >
           <Toast.Header className={bodyClass}>{body}</Toast.Header>
         </Toast>
       ))}
     </div>
-  )
-})
-ToastHandler.displayName = 'ToastHandler'
+  );
+});
+ToastHandler.displayName = 'ToastHandler';

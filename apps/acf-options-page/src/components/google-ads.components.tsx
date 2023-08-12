@@ -27,8 +27,8 @@ export function GoogleAds({ client, slot, className, configIndex }) {
 GoogleAds.defaultProps = {
   configIndex: -1,
   className: 'mb-3',
-  client: process.env.REACT_APP_GOOGLE_ADS_CLIENT,
-  slot: process.env.REACT_APP_GOOGLE_ADS_SLOT
+  client: process.env.NX_GOOGLE_ADS_CLIENT,
+  slot: process.env.NX_GOOGLE_ADS_SLOT
 }
 GoogleAds.propTypes = {
   configIndex: PropTypes.number,

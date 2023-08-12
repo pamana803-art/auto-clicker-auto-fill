@@ -1,87 +1,75 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, SyntheticEvent, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import PropTypes from 'prop-types'
-import { Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap'
-import { ADDON_CONDITIONS, defaultAddon } from '@dhruv-techapps/acf-common'
-import { useTranslation } from 'react-i18next'
+import PropTypes from 'prop-types';
+import { Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap';
+import { ADDON_CONDITIONS, Addon, Configuration, ValueExtractorFlags } from '@dhruv-techapps/acf-common';
+import { useTranslation } from 'react-i18next';
 
-import { ValueExtractorPopover } from '../popover'
-import { AddonRecheck } from './addon/recheck'
-import { getElementProps, updateForm } from '../util/element'
-import { AddonValueExtractorFlags } from './addon/value-extractor-flags'
-import { dataLayerInput, dataLayerModel } from '../util/data-layer'
+import { ValueExtractorPopover } from '../popover';
+import { AddonRecheck } from './addon/recheck';
+import { getElementProps, updateForm } from '../util/element';
+import { AddonValueExtractorFlags } from './addon/value-extractor-flags';
+import { dataLayerInput, dataLayerModel } from '../util/data-layer';
+import {  useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { hideAddon, setMessage, updateAddon } from '../store/addon.slice';
 
-const FORM_ID = 'addon'
+const FORM_ID = 'addon';
 
-const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
-  const { t } = useTranslation()
-  const [show, setShow] = useState(false)
-  const [addon, setAddon] = useState(defaultAddon)
 
-  const [message, setMessage] = useState()
-  const actionIndex = useRef(-1)
-  const updateRef = useRef(false)
+const AddonModal = ( ) => {
+  const { t } = useTranslation();
 
-  const onUpdate = e => {
-    const update = getElementProps(e)
+  const {visible,addon,message} = useAppSelector(state => state.addon)
+  const dispatch = useAppDispatch()
+
+  const onUpdate = (e: SyntheticEvent) => {
+    const update = getElementProps(e);
     if (update) {
-      updateRef.current = true
-      dataLayerInput(update, 'addon')
-      setAddon(_addon => ({ ..._addon, ...update }))
+      dataLayerInput(update, 'addon');
+      dispatch(updateAddon(update))
     }
-  }
+  };
 
   const handleClose = () => {
-    dataLayerModel('addon-modal', 'close')
-    setShow(false)
-  }
+    dataLayerModel('addon-modal', 'close');
+    dispatch(hideAddon);
+  };
 
   useEffect(() => {
-    if (updateRef.current) {
-      updateRef.current = false
-      setConfigs(configs =>
-        configs.map((config, index) => {
-          if (index === configIndex) {
-            if (!config.actions[actionIndex.current]) {
-              config.actions[actionIndex.current] = {}
-            }
-            config.actions[actionIndex.current].addon = { ...addon }
-            return { ...config }
+    /*
+    TODO
+    setConfigs((configs) =>
+      configs.map((config, index) => {
+        if (index === configIndex) {
+          if (!config.actions[actionIndex.current]) {
+            config.actions[actionIndex.current] = defaultAction;
           }
-          return config
-        })
-      )
-      setMessage(t('modal.addon.saveMessage'))
-      setTimeout(setMessage, 1500)
-    }
-  }, [addon])
-
-  useEffect(() => {
-    if (actionIndex.current !== -1) {
-      updateForm(FORM_ID, addon)
-    }
-  }, [actionIndex.current])
+          config.actions[actionIndex.current].addon = { ...addon };
+          return { ...config };
+        }
+        return config;
+      })
+    );*/
+    dispatch(setMessage(t('modal.addon.saveMessage')));
+    //setTimeout(setMessage, 1500);
+  }, [addon]);
 
   const onReset = () => {
-    updateRef.current = true
-    setAddon({})
-    handleClose()
-  }
+    handleClose();
+  };
 
-  useImperativeHandle(ref, () => ({
-    showAddon(index, _addon) {
-      setAddon({ ..._addon })
-      actionIndex.current = index
-      setShow(true)
-    }
-  }))
+  const onFlagsUpdate = (valueExtractorFlags: ValueExtractorFlags) => {
+    dispatch(updateAddon({field:'valueExtractorFlags',value:valueExtractorFlags}))
+  };
 
-  const onFlagsUpdate = valueExtractorFlags => {
-    setAddon(_addon => ({ ..._addon, valueExtractorFlags }))
+  if (!addon) {
+    return null;
   }
 
   return (
-    <Modal show={show} size='lg' onHide={handleClose} onShow={() => dataLayerModel('addon-modal', 'open')}>
+    <Modal show={visible} size='lg' onHide={handleClose} onShow={() => dataLayerModel('addon-modal', 'open')}>
       <Form id={FORM_ID}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.addon.title')}</Modal.Title>
@@ -153,13 +141,13 @@ const AddonModal = forwardRef(({ configIndex, setConfigs }, ref) => {
         </Modal.Footer>
       </Form>
     </Modal>
-  )
-})
+  );
+};
 
 AddonModal.propTypes = {
   configIndex: PropTypes.number.isRequired,
-  setConfigs: PropTypes.func.isRequired
-}
-AddonModal.displayName = 'AddonModal'
-const memo = React.memo(AddonModal)
-export { memo as AddonModal }
+  setConfigs: PropTypes.func.isRequired,
+};
+AddonModal.displayName = 'AddonModal';
+
+export { AddonModal };

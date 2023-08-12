@@ -9,7 +9,7 @@ export type MessengerConfigObject = {
   [key: string]: MessengerConfig;
 };
 
-export type RuntimeMessageRequest = (ActionRequest | ManifestRequest | NotificationsRequest | StorageRequest) & {
+export type RuntimeMessageRequest = (ActionRequest | ManifestRequest | NotificationsRequest | StorageRequest) | {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [index: string]: any;
 };

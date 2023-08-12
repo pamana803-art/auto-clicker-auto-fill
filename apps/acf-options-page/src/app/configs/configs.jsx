@@ -3,13 +3,11 @@ import PropTypes from 'prop-types'
 import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap'
 import { LOCAL_STORAGE_KEY, defaultAction, defaultConfig } from '@dhruv-techapps/acf-common'
 import { ElementUtil, Logger } from '@dhruv-techapps/core-common'
-import { StorageService } from '@dhruv-techapps/core-services'
+import { StorageService } from '@dhruv-techapps/core-service'
 import { useTranslation } from 'react-i18next'
 import Config from './config'
-import Batch from './batch'
-import Action from './action'
-import { Format, ThreeDots, getConfigName } from '../../util'
-import { Ads, DropdownToggle, ErrorAlert, Loading, Sponsors } from '../../components'
+import {  ThreeDots, getConfigName } from '../../util'
+import { DropdownToggle, ErrorAlert, Loading, Sponsors } from '../../components'
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal, ActionConditionModal } from '../../modal'
 import { ModeContext } from '../../_providers'
 import { download } from '../../_helpers'
@@ -221,7 +219,7 @@ function Configs({ toastRef, blogRef, confirmRef }) {
       <main>
         <Container>
           <Config configs={configs} configIndex={selected} confirmRef={confirmRef} setSelected={setSelected} toastRef={toastRef} setConfigs={setConfigs} configSettingsRef={configSettingsRef} />
-          {mode === 'pro' && <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />}
+          {/*{mode === 'pro' && <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />}
           <Ads configIndex={selected} />
           <Action
             actions={config.actions}
@@ -232,7 +230,7 @@ function Configs({ toastRef, blogRef, confirmRef }) {
             addonRef={addonRef}
             actionSettingsRef={actionSettingsRef}
             actionConditionRef={actionConditionRef}
-          />
+                  />*/}
         </Container>
         <AddonModal ref={addonRef} configIndex={selected} setConfigs={setConfigs} />
         <ActionSettingsModal ref={actionSettingsRef} configIndex={selected} setConfigs={setConfigs} />

@@ -12,8 +12,7 @@ type NotificationsMessengerUpdateProps = NotificationsMessengerProps & {
 export type NotificationsRequest = {
   class: 'notifications';
   methodName: 'create' | 'update' | 'clear';
-};
-
+} & (NotificationsMessengerProps | NotificationsMessengerCreateProps | NotificationsMessengerUpdateProps);
 
 export class NotificationsMessenger {
   create({ notificationId, options }: NotificationsMessengerCreateProps, callback: ((notificationId: string) => void) | undefined) {

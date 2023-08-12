@@ -2,8 +2,8 @@ import { Service } from './service';
 import { StorageMessengerGetProps, StorageMessengerRemoveProps, StorageMessengerSetProps } from '@dhruv-techapps/core-extension';
 
 export class StorageService extends Service {
-  static async get(extensionId: string, keys: StorageMessengerGetProps) {
-    return await this.message(extensionId, { class: 'storage', methodName: 'get', keys });
+  static async get<T = any>(extensionId: string, keys: StorageMessengerGetProps): Promise<T> {
+    return await this.message<T>(extensionId, { class: 'storage', methodName: 'get', keys });
   }
 
   static async set(extensionId: string, items: StorageMessengerSetProps) {

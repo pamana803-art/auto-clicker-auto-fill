@@ -1,9 +1,3 @@
-declare global {
-  interface Window {
-    dataLayer: any;
-  }
-}
-
 type Event = {
   event: string;
   section: string;
@@ -11,7 +5,7 @@ type Event = {
   conversionValue: string;
 };
 
-export function dataLayerInput(input:Array<string>, section:string) {
+export function dataLayerInput(input:any, section:string) {
   const key = Object.keys(input)[0];
   const event: Event = { event: 'input', section, conversionName: key, conversionValue: input[key] };
   window.dataLayer.push(event);

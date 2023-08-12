@@ -1,1 +1,1 @@
-export * from './lib/CoreService';
+export * from './lib/services';

@@ -1,96 +1,101 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { Badge, Button, Form, ListGroup, Modal } from 'react-bootstrap'
-import { StorageService } from '@dhruv-techapps/core-services'
-import { useTranslation } from 'react-i18next'
-import { ElementUtil } from '@dhruv-techapps/core-common'
-import { LOCAL_STORAGE_KEY, defaultConfig } from '@dhruv-techapps/acf-common'
-import { ErrorAlert } from '../components'
-import { dataLayerModel } from '../util/data-layer'
+import React, { ChangeEvent, FormEvent, forwardRef, useImperativeHandle, useState } from 'react';
+import { Badge, Button, Form, ListGroup, Modal } from 'react-bootstrap';
+import { StorageService } from '@dhruv-techapps/core-service';
+import { useTranslation } from 'react-i18next';
+import { Configuration, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
+import { ErrorAlert } from '../components';
+import { dataLayerModel } from '../util/data-layer';
 
-const RemoveConfigsModal = forwardRef((_, ref) => {
-  const [configs, setConfigs] = useState([])
-  const [error, setError] = useState()
-  const [show, setShow] = useState(false)
-  const { t } = useTranslation()
-  const onSubmit = e => {
-    e.preventDefault()
+type RemoveConfigsModalRef = {
+  showRemove: () => void;
+};
+
+type RemoveConfigsModalProps = Configuration & { checked?: boolean };
+
+const RemoveConfigsModal = forwardRef<RemoveConfigsModalRef>((_, ref) => {
+  const [configs, setConfigs] = useState<Array<RemoveConfigsModalProps>>([]);
+  const [error, setError] = useState();
+  const [show, setShow] = useState(false);
+  const { t } = useTranslation();
+  const onSubmit = (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const filteredConfigs = configs
-      .filter(config => !config.checked)
-      .map(config => {
-        delete config.checked
-        return config
-      })
+      .filter((config) => !config.checked)
+      .map((config) => {
+        delete config.checked;
+        return config;
+      });
     StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: filteredConfigs })
       .then(() => {
-        setShow(false)
-        window.location.reload()
+        setShow(false);
+        window.location.reload();
       })
-      .catch(setError)
-  }
+      .catch(setError);
+  };
 
   useImperativeHandle(ref, () => ({
     showRemove() {
-      StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.CONFIGS)
-        .then(result => {
+      StorageService.get<Array<RemoveConfigsModalProps>>(window.EXTENSION_ID, LOCAL_STORAGE_KEY.CONFIGS)
+        .then((configs) => {
           setConfigs(
-            (result.configs || [{ ...defaultConfig, name: '' }]).map((prevConfig, prevConfigIndex) => {
+            configs.map((prevConfig, prevConfigIndex) => {
               if (!prevConfig.name) {
-                const url = prevConfig.url.split('/')
-                prevConfig.name = url[2] || `config-${prevConfigIndex}`
+                const url = prevConfig.url.split('/');
+                prevConfig.name = url[2] || `config-${prevConfigIndex}`;
               }
-              return prevConfig
+              return prevConfig;
             })
-          )
+          );
         })
-        .catch(setError)
-      setShow(true)
-    }
-  }))
+        .catch(setError);
+      setShow(true);
+    },
+  }));
 
   const handleClose = () => {
-    dataLayerModel('remove-configs', 'close')
-    setShow(false)
-  }
+    dataLayerModel('remove-configs', 'close');
+    setShow(false);
+  };
 
-  const remove = e => {
-    const { name, value } = ElementUtil.getNameValue(e.currentTarget)
+  const remove = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.currentTarget;
     setConfigs(
       configs.map((config, index) => {
         if (index === Number(name)) {
-          config.checked = value
+          config.checked = checked;
         }
-        return config
+        return config;
       })
-    )
-  }
+    );
+  };
 
-  const checkedConfigLength = () => configs.filter(config => config.checked).length + 1
+  const checkedConfigLength = () => configs.filter((config) => config.checked).length + 1;
 
   return (
-    <Modal show={show} size='lg' onHide={handleClose} scrollable onShow={() => dataLayerModel('remove-configs', 'open')}>
-      <Form onSubmit={onSubmit} id='remove-configs'>
+    <Modal show={show} size="lg" onHide={handleClose} scrollable onShow={() => dataLayerModel('remove-configs', 'open')}>
+      <Form onSubmit={onSubmit} id="remove-configs">
         <Modal.Header>
-          <Modal.Title as='h6'>{t('configuration.removeConfigs')}</Modal.Title>
+          <Modal.Title as="h6">{t('configuration.removeConfigs')}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }}>
           <ErrorAlert error={error} />
-          <p className='text-muted'>This action cant be reverted.</p>
+          <p className="text-muted">This action cant be reverted.</p>
           <ListGroup>
             {configs.map((config, index) => (
               <ListGroup.Item key={index}>
                 <Form.Check
-                  type='checkbox'
+                  type="checkbox"
                   checked={config.checked || false}
                   onChange={remove}
-                  className={config.checked && 'text-danger'}
-                  name={index}
+                  className={config.checked ? 'text-danger' : ''}
+                  name={`remove-configs-${index}`}
                   disabled={!config.checked && configs.length === checkedConfigLength()}
                   id={`configuration-checkbox-${index}`}
                   label={
                     <>
                       {config.name}
                       {!config.enable && (
-                        <Badge pill bg='secondary' className='ms-2'>
+                        <Badge pill bg="secondary" className="ms-2">
                           {t('common.disabled')}
                         </Badge>
                       )}
@@ -101,18 +106,18 @@ const RemoveConfigsModal = forwardRef((_, ref) => {
             ))}
           </ListGroup>
         </Modal.Body>
-        <Modal.Footer className='justify-content-between'>
-          <Button type='button' variant='outline-primary px-5' onClick={handleClose}>
+        <Modal.Footer className="justify-content-between">
+          <Button type="button" variant="outline-primary px-5" onClick={handleClose}>
             {t('common.close')}
           </Button>
-          <Button type='submit' variant='danger px-5' className='ml-3' id='remove-configs-button'>
+          <Button type="submit" variant="danger px-5" className="ml-3" id="remove-configs-button">
             {t('configuration.removeConfigs')}
           </Button>
         </Modal.Footer>
       </Form>
     </Modal>
-  )
-})
-RemoveConfigsModal.displayName = 'RemoveConfigsModal'
-const memo = React.memo(RemoveConfigsModal)
-export { memo as RemoveConfigsModal }
+  );
+});
+RemoveConfigsModal.displayName = 'RemoveConfigsModal';
+const memo = React.memo(RemoveConfigsModal);
+export { memo as RemoveConfigsModal };

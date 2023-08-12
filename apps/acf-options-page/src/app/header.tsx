@@ -1,15 +1,18 @@
-import React, { useContext, useRef } from 'react'
+import React, {  useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { GearFill, Moon, Sun } from '../util'
-import { SettingsModal } from '../modal'
-import { ThemeContext } from '../_providers/ThemeProvider'
+import { SettingsModal, SettingsModalRef } from '../modal'
 import { APP_LANGUAGES, APP_NAME } from '../constants'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { switchTheme, themeSelector } from '../store/theme.slice'
 
 function Header({ confirmRef, error }) {
-  const { theme, setTheme } = useContext(ThemeContext)
-  const settingsRef = useRef()
+
+  const theme = useAppSelector(themeSelector)
+  const dispatch = useAppDispatch()
+  const settingsRef = useRef<SettingsModalRef>(null)
   const { t, i18n } = useTranslation()
 
   const changeLanguage = lng => {
@@ -18,15 +21,14 @@ function Header({ confirmRef, error }) {
   }
 
   const toggleTheme = () => {
-    window.dataLayer.push({ event: 'theme', conversionValue: theme === 'light' ? 'dark' : 'light' })
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'))
+    dispatch(switchTheme)
   }
 
   let imageURL = 'https://getautoclicker.com/favicons/favicon32.png'
   let appName = APP_NAME
-  if (/(DEV|BETA)/.test(process.env.REACT_APP_VARIANT)) {
-    imageURL = `https://getautoclicker.com/favicons/${process.env.REACT_APP_VARIANT}/icon32.png`
-    appName += ` [${process.env.REACT_APP_VARIANT}]`
+  if (/(DEV|BETA)/.test(process.env.NX_VARIANT || "")) {
+    imageURL = `https://getautoclicker.com/favicons/${process.env.NX_VARIANT}/icon32.png`
+    appName += ` [${process.env.NX_VARIANT}]`
   }
 
   return (
@@ -46,7 +48,7 @@ function Header({ confirmRef, error }) {
 
               {!error.message && (
                 <>
-                  <Nav.Link onClick={() => settingsRef.current.showSettings()} className='px-4 py-3'>
+                  <Nav.Link onClick={() => settingsRef.current?.showSettings()} className='px-4 py-3'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
                   <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder'>

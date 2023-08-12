@@ -2,15 +2,20 @@ import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Form } from 'react-bootstrap'
 
+type Props = {
+  value: string | number;
+  data: any;
+}
+
 // Create an editable cell renderer
 export function EditableCell({ value: initialValue, data, row: { index }, column: { id, required, pattern, validate, dataType, ariaLabel, list }, updateAction }) {
   // We need to keep and update the state of the cell normally
   // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue)
   const [invalid, setInvalid] = React.useState(data[index].error === id)
-  const input = useRef()
+  const input = useRef<HTMLInputElement>(null)
   const onChange = ({ currentTarget: { value: changeValue } }) => {
-    input.current.classList.remove('is-valid')
+    input.current?.classList.remove('is-valid')
     setInvalid(false)
     if (changeValue) {
       if (pattern && !pattern.test(changeValue)) {
@@ -40,7 +45,7 @@ export function EditableCell({ value: initialValue, data, row: { index }, column
 
 EditableCell.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
-  value: PropTypes.PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   row: PropTypes.shape({
     index: PropTypes.number.isRequired
   }).isRequired,

@@ -1,7 +1,7 @@
 import React, { createRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Logger } from '@dhruv-techapps/core-common'
-import { StorageService } from '@dhruv-techapps/core-services'
+import { StorageService } from '@dhruv-techapps/core-service'
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { useTranslation } from 'react-i18next'
 import { Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap'

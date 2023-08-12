@@ -1,6 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Dropdown, DropdownButton } from 'react-bootstrap'
+import React, { SyntheticEvent } from 'react';
+import PropTypes from 'prop-types';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { ValueExtractorFlags } from '@dhruv-techapps/acf-common';
 
 const FLAGS = [
   {
@@ -10,7 +11,7 @@ const FLAGS = [
         <b className='text-danger'>g</b>lobal
       </>
     ),
-    sub: "Don't return after first match"
+    sub: "Don't return after first match",
   },
   {
     value: 'm',
@@ -19,7 +20,7 @@ const FLAGS = [
         <b className='text-danger'>m</b>ulti line
       </>
     ),
-    sub: '^ and $ match start/end of line'
+    sub: '^ and $ match start/end of line',
   },
   {
     value: 'i',
@@ -28,7 +29,7 @@ const FLAGS = [
         <b className='text-danger'>i</b>nsensitive
       </>
     ),
-    sub: 'Case insensitive match'
+    sub: 'Case insensitive match',
   },
   {
     value: 'x',
@@ -37,7 +38,7 @@ const FLAGS = [
         e<b className='text-danger'>x</b>tended
       </>
     ),
-    sub: 'Ignore whitespace'
+    sub: 'Ignore whitespace',
   },
   {
     value: 's',
@@ -46,33 +47,45 @@ const FLAGS = [
         <b className='text-danger'>s</b>ingle line
       </>
     ),
-    sub: 'Dot matches newline'
-  }
-]
+    sub: 'Dot matches newline',
+  },
+];
 
-function AddonValueExtractorFlags({ valueExtractor, valueExtractorFlags, onUpdate }) {
-  const flags = valueExtractorFlags.split('').reduce((a, flag) => ({ ...a, [flag]: true }), {})
+type Props = {
+  valueExtractor: string;
+  valueExtractorFlags: ValueExtractorFlags;
+  onUpdate: (valueExtractorFlags: ValueExtractorFlags) => void;
+};
 
-  const title = label => {
+type Flags = {
+  [index: string]: boolean;
+};
+
+function AddonValueExtractorFlags({ valueExtractor, valueExtractorFlags, onUpdate }: Props) {
+  const flags: Flags = valueExtractorFlags.split('').reduce((a, flag) => ({ ...a, [flag]: true }), {});
+
+  const title = (label?: string) => {
     const flagTitle = Object.entries(flags)
-      .filter(flag => flag[1])
-      .reduce((a, [flag]) => a + flag, '')
-    return flagTitle || label
-  }
+      .filter((flag) => flag[1])
+      .reduce((a, [flag]) => a + flag, '');
+    return flagTitle || label;
+  };
 
-  const onFlagsClick = e => {
-    const flagElement = e.currentTarget
+  const onFlagsClick = (e: React.MouseEvent<HTMLElement>) => {
+    const flagElement = e.currentTarget;
     const {
       dataset: { flag },
-      classList
-    } = flagElement
+      classList,
+    } = flagElement;
 
-    flags[flag] = !classList.contains('active')
-    onUpdate(title())
-  }
+    if (flag) {
+      flags[flag] = !classList.contains('active');
+      //TODO onUpdate(title());
+    }
+  };
 
   if (!valueExtractor || /^@\w+(-\w+)?$/.test(valueExtractor)) {
-    return null
+    return null;
   }
 
   return (
@@ -84,15 +97,15 @@ function AddonValueExtractorFlags({ valueExtractor, valueExtractorFlags, onUpdat
         </Dropdown.Item>
       ))}
     </DropdownButton>
-  )
+  );
 }
 AddonValueExtractorFlags.defaultProps = {
   valueExtractorFlags: '',
-  valueExtractor: null
-}
+  valueExtractor: null,
+};
 AddonValueExtractorFlags.propTypes = {
   valueExtractorFlags: PropTypes.string,
   valueExtractor: PropTypes.string,
-  onUpdate: PropTypes.func.isRequired
-}
-export { AddonValueExtractorFlags }
+  onUpdate: PropTypes.func.isRequired,
+};
+export { AddonValueExtractorFlags };

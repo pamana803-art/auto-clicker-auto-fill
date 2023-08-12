@@ -1,11 +1,34 @@
-import { Addon, defaultAddon } from './addon-model';
+import { Addon } from './addon-model';
 import { RETRY_OPTIONS } from './setting-model';
+
+export enum ACTION_STATUS {
+  '~~ Select STATUS ~~' = '',
+  SKIPPED = 'skipped',
+  DONE = 'done',
+}
 
 export enum ACTION_RUNNING {
   SKIP = 'skip',
   GOTO = 'goto',
   PROCEED = 'proceed',
 }
+
+export type ActionCondition = {
+  actionIndex: number;
+  status: ACTION_STATUS;
+  operator?: ACTION_CONDITION_OPR;
+};
+
+export enum ACTION_CONDITION_OPR {
+  AND = 'and',
+  OR = 'or',
+}
+
+export type ActionStatement = {
+  conditions: Array<ActionCondition>;
+  then: ACTION_RUNNING;
+  goto?: number;
+};
 
 export enum ELEMENT_TYPE {
   INPUT = 'input',
@@ -15,51 +38,22 @@ export enum ELEMENT_TYPE {
   RADIO = 'radio',
 }
 
-export enum ACTION_STATUS {
-  '~~ Select STATUS ~~' = '',
-  SKIPPED = 'skipped',
-  DONE = 'done',
-}
-
-export enum ACTION_CONDITION_OPR {
-  AND = 'and',
-  OR = 'or',
-}
 export type Action = {
-  name: string;
-  initWait: number;
+  actionId: number;
   elementFinder: string;
-  enable: true;
-  value: string;
-  repeat: number;
-  repeatInterval: number;
-  elementType: string;
-  addon: Addon;
+  elementType: ELEMENT_TYPE;
+  enable: boolean;
+  name?: string;
+  initWait?: number;
+  value?: string;
+  repeat?: number;
+  repeatInterval?: number;
+  addon?: Addon;
+  statement?: ActionStatement;
 };
-export const defaultAction: Action = {
-  name: '',
-  initWait: 0,
-  elementFinder: '',
-  enable: true,
-  value: '',
-  repeat: 0,
-  repeatInterval: 0,
-  elementType: '',
-  addon: { ...defaultAddon },
-};
+
 export type ActionSetting = {
   retry: number;
   retryInterval: number;
   retryOption: RETRY_OPTIONS;
-};
-
-export const defaultActionSetting: ActionSetting = {
-  retry: 5,
-  retryInterval: 1,
-  retryOption: RETRY_OPTIONS.STOP,
-};
-
-export const defaultActionCondition = {
-  actionIndex: -1,
-  status: ACTION_STATUS['~~ Select STATUS ~~'],
 };

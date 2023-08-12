@@ -28,11 +28,15 @@ i18n
       //
       // If allowMultiLoading is false, lngs and namespaces will have only one element each,
       // If allowMultiLoading is true, lngs and namespaces can have multiple elements
-      loadPath: `${process.env.REACT_APP_I18N}/{{lng}}/{{ns}}.json`,
+      loadPath: `${process.env.NX_I18N}/{{lng}}/{{ns}}.json`,
       addPath: '/locales/add/{{lng}}/{{ns}}',
       allowMultiLoading: true,
-      reloadInterval: process.env.NODE_ENV === 'development' ? 600000 : false,
-      crossDomain: true
+      reloadInterval: false,
+      crossDomain: true,
+      customHeaders: () => ({
+        authorization: 'dhruv-techapps',
+        // ...
+      }),
     },
     interpolation: {
       escapeValue: false // not needed for react as it escapes by default

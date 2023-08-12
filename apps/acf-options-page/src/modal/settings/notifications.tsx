@@ -1,20 +1,23 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Form } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next'
-import { VolumeMute, VolumeUp } from '../../util'
-import { getElementProps } from '../../util/element'
-import { dataLayerInput } from '../../util/data-layer'
-import { SettingDiscord } from './discord'
+import React, { Dispatch, SetStateAction } from 'react';
+import PropTypes from 'prop-types';
+import { Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { VolumeMute, VolumeUp } from '../../util';
+import { getElementProps } from '../../util/element';
+import { dataLayerInput } from '../../util/data-layer';
+import { SettingDiscord } from './discord';
+import { Notifications, Settings } from '@dhruv-techapps/acf-common';
 
-function SettingNotifications({ notifications, setSettings }) {
-  const { t } = useTranslation()
+type SettingNotificationsProps = { notifications: Notifications; setSettings: Dispatch<SetStateAction<Settings>> };
 
-  const onUpdate = e => {
-    const update = getElementProps(e)
-    dataLayerInput(update, 'settings')
-    setSettings(settings => ({ ...settings, notifications: { ...settings.notifications, ...update } }))
-  }
+function SettingNotifications({ notifications, setSettings }: SettingNotificationsProps) {
+  const { t } = useTranslation();
+
+  const onUpdate = (e) => {
+    const update = getElementProps(e);
+    dataLayerInput(update, 'settings');
+    setSettings((settings: Settings) => ({ ...settings, notifications: { ...settings.notifications, ...update } }));
+  };
 
   return (
     <>
@@ -60,7 +63,7 @@ function SettingNotifications({ notifications, setSettings }) {
         </li>
       </ol>
     </>
-  )
+  );
 }
 
 SettingNotifications.propTypes = {
@@ -70,8 +73,8 @@ SettingNotifications.propTypes = {
     onBatch: PropTypes.bool,
     onConfig: PropTypes.bool,
     sound: PropTypes.bool,
-    discord: PropTypes.bool
+    discord: PropTypes.bool,
   }).isRequired,
-  setSettings: PropTypes.func.isRequired
-}
-export { SettingNotifications }
+  setSettings: PropTypes.func.isRequired,
+};
+export { SettingNotifications };

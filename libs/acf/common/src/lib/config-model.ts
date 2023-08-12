@@ -1,42 +1,38 @@
-import { Batch, defaultBatch } from './batch-model'
-import { Action, defaultAction } from './action-model'
+import { Batch } from './batch-model';
+import { Action } from './action-model';
 
 export enum LOAD_TYPES {
-  WINDOW= 'window',
-  DOCUMENT= 'document'
+  WINDOW = 'window',
+  DOCUMENT = 'document',
 }
 
-export enum START_TYPES  {
-  AUTO= 'auto',
-  MANUAL= 'manual'
+export enum START_TYPES {
+  AUTO = 'auto',
+  MANUAL = 'manual',
 }
 
-const defaultHotkey = 'Ctrl + Shift + A'
+export const defaultHotkey = 'Ctrl + Shift + A';
 
 export type Configuration = {
-  name: '',
-  url: '',
-  initWait: 0,
-  startTime: '',
-  enable: true,
-  spreadsheetId: '',
-  startType: START_TYPES.AUTO,
-  loadType: LOAD_TYPES.WINDOW,
-  hotkey: string,
-  batch: Batch,
-  actions: Array<Action>
-}
+  configId: number;
+  url: string;
+  enable: boolean;
+  startType: START_TYPES;
+  loadType: LOAD_TYPES;
+  name?: string;
+  initWait?: number;
+  startTime?: string;
+  spreadsheetId?: string;
+  hotkey?: string;
+  batch?: Batch;
+  actions: Array<Action>;
+};
 
-export const defaultConfig:Configuration = {
-  name: '',
+export const defaultConfig: Configuration = {
+  configId: -1,
   url: '',
-  initWait: 0,
-  startTime: '',
   enable: true,
-  spreadsheetId: '',
   startType: START_TYPES.AUTO,
   loadType: LOAD_TYPES.WINDOW,
-  hotkey: defaultHotkey,
-  batch: { ...defaultBatch },
-  actions: [{ ...defaultAction }]
-}
+  actions: [],
+};

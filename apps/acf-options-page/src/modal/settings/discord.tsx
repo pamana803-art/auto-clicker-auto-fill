@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Service, StorageService } from '@dhruv-techapps/core-services'
+import { Service, StorageService } from '@dhruv-techapps/core-service'
 import { Button, Form, Image } from 'react-bootstrap'
-import { LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
+import { Discord, LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
 import PropTypes from 'prop-types'
 import { Logger } from '@dhruv-techapps/core-common'
 
 function SettingDiscord({ onChange, label, checked }) {
-  const [discord, setDiscord] = useState()
+  const [discord, setDiscord] = useState<Discord>()
 
   useEffect(() => {
     if (chrome.runtime) {
@@ -16,7 +16,7 @@ function SettingDiscord({ onChange, label, checked }) {
             setDiscord(result)
           }
         })
-        .catch(Logger.error)
+        .catch(console.error)
     }
   }, [])
 
@@ -30,7 +30,7 @@ function SettingDiscord({ onChange, label, checked }) {
   const remove = async () => {
     const response = await Service.message(window.EXTENSION_ID, { action: RUNTIME_MESSAGE_ACF.DISCORD_LOGIN, remove: true })
     if (response === RESPONSE_CODE.REMOVED) {
-      setDiscord()
+      setDiscord(undefined)
     }
   }
 

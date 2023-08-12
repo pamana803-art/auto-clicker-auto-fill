@@ -15,10 +15,7 @@
         "baseHref": "/",
         "main": "apps/acf-options-page/src/main.tsx",
         "tsConfig": "apps/acf-options-page/tsconfig.app.json",
-        "assets": [
-          "apps/acf-options-page/src/favicon.ico",
-          "apps/acf-options-page/src/assets"
-        ],
+        "assets": ["apps/acf-options-page/src/favicon.ico", "apps/acf-options-page/src/assets"],
         "styles": ["apps/acf-options-page/src/styles.scss"],
         "scripts": [],
         "isolatedConfig": true,
@@ -52,11 +49,14 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "acf-options-page:build",
-        "hmr": true
+        "hmr": true,
+        "proxyConfig": "apps/acf-options-page/proxy.conf.json"
       },
       "configurations": {
         "development": {
-          "buildTarget": "acf-options-page:build:development"
+          "buildTarget": "acf-options-page:build:development",
+          "dev": true,
+          "port": 3000
         },
         "production": {
           "buildTarget": "acf-options-page:build:production",

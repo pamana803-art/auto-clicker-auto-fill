@@ -1,42 +1,41 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { Service, StorageService } from '@dhruv-techapps/core-services'
-import { Button, Form, Image } from 'react-bootstrap'
-import { LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
-import { Logger } from '@dhruv-techapps/core-common'
-import { ThemeContext } from '../../_providers'
+import React, { useEffect, useState } from 'react';
+import { Service, StorageService } from '@dhruv-techapps/core-service';
+import { Button, Form, Image } from 'react-bootstrap';
+import { Google, LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common';
 
-import GoogleSignInLight from '../../assets/btn_google_signin_light_normal_web.png'
-import GoogleSignInDark from '../../assets/btn_google_signin_dark_normal_web.png'
+import GoogleSignInLight from '../../assets/btn_google_signin_light_normal_web.png';
+import GoogleSignInDark from '../../assets/btn_google_signin_dark_normal_web.png';
+import { useAppSelector } from '../../hooks';
+import { themeSelector } from '../../store/theme.slice';
 
 function SettingGoogleSheets() {
-  const { theme } = useContext(ThemeContext)
-  const [google, setGoogle] = useState()
-
+  const [google, setGoogle] = useState<Google>();
+  const  theme  = useAppSelector(themeSelector);
   useEffect(() => {
     if (chrome.runtime) {
       StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.GOOGLE)
         .then(({ google: result }) => {
           if (result) {
-            setGoogle(result)
+            setGoogle(result);
           }
         })
-        .catch(Logger.error)
+        .catch(console.error);
     }
-  }, [])
+  }, []);
 
   const connect = async () => {
-    const response = await Service.message(window.EXTENSION_ID, { action: RUNTIME_MESSAGE_ACF.GOOGLE_SHEETS, login: true })
+    const response = await Service.message(window.EXTENSION_ID, { action: RUNTIME_MESSAGE_ACF.GOOGLE_SHEETS, login: true });
     if (response !== RESPONSE_CODE.ERROR) {
-      setGoogle(response)
+      setGoogle(response);
     }
-  }
+  };
 
   const remove = async () => {
-    const response = await Service.message(window.EXTENSION_ID, { action: RUNTIME_MESSAGE_ACF.GOOGLE_SHEETS, remove: true })
+    const response = await Service.message(window.EXTENSION_ID, { action: RUNTIME_MESSAGE_ACF.GOOGLE_SHEETS, remove: true });
     if (response !== RESPONSE_CODE.ERROR) {
-      setGoogle()
+      setGoogle(undefined);
     }
-  }
+  };
 
   if (google) {
     return (
@@ -52,7 +51,7 @@ function SettingGoogleSheets() {
           </Form.Label>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -62,9 +61,9 @@ function SettingGoogleSheets() {
         <img src={theme === 'light' ? GoogleSignInLight : GoogleSignInDark} alt='Logo' />
       </Button>
     </div>
-  )
+  );
 }
 
-SettingGoogleSheets.displayName = 'SettingGoogleSheets'
-SettingGoogleSheets.propTypes = {}
-export { SettingGoogleSheets }
+SettingGoogleSheets.displayName = 'SettingGoogleSheets';
+SettingGoogleSheets.propTypes = {};
+export { SettingGoogleSheets };

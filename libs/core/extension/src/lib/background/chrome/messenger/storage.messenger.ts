@@ -1,15 +1,13 @@
 export type StorageMessengerSetProps = { [key: string]: any };
 
-export type StorageMessengerGetProps = {
-  keys?: string | string[] | { [key: string]: any } | null | undefined;
-};
+export type StorageMessengerGetProps = string | string[] | { [key: string]: any } | null | undefined;
 
 export type StorageMessengerRemoveProps = string | string[];
 
 export type StorageRequest = {
   class: 'storage';
   methodName: 'get' | 'set' | 'remove';
-};
+} & (StorageMessengerGetProps | StorageMessengerSetProps | StorageMessengerRemoveProps);
 
 export class StorageMessenger {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
