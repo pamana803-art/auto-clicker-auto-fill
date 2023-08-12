@@ -1,5 +1,5 @@
 export type ActionRequest = {
-  class: 'action';
+  messenger: 'action';
   methodName: 'setIcon' | 'setBadgeBackgroundColor' | 'setBadgeText' | 'setTitle';
 } & { details: chrome.action.TabIconDetails | chrome.action.BadgeColorDetails | chrome.action.BadgeTextDetails | chrome.action.TitleDetails };
 

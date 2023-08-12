@@ -1,15 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-const initialState = 'light';
-
-// dataLayerInput({ mode: mode === 'light' ? 'pro' : 'light' }, LOCAL_STORAGE_KEY.SETTINGS);
+const initialState = localStorage.getItem('mode') || 'light';
 
 const slice = createSlice({
   name: 'mode',
   initialState,
   reducers: {
-    switchMode: (state) => (state === 'light' ? 'pro' : 'light'),
+    switchMode: (state) => {
+      const mode = state === 'light' ? 'pro' : 'light'
+      localStorage.setItem('mode', mode)
+      return mode
+    }
   },
 });
 

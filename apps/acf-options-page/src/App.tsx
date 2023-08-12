@@ -15,7 +15,7 @@ function App() {
   const extensionNotFoundRef = useRef<ExtensionNotFoundRef>(null);
   const [loading, setLoading] = useState<boolean>();
   const [manifest, setManifest] = useState<chrome.runtime.Manifest>();
-  const [error, setError] = useState();
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     if (chrome.runtime) {
@@ -31,6 +31,11 @@ function App() {
           setError(_error);
         })
         .finally(() => setLoading(false));
+    } else {
+      setError('Extension not found');
+      setTimeout(() => {
+        extensionNotFoundRef.current?.show();
+      }, 1000);
     }
   }, []);
 
@@ -42,6 +47,8 @@ function App() {
     }
   }, []);
 
+  console.log(manifest, error);
+
   return (
     <Router>
       <Suspense fallback='loading'>
@@ -50,7 +57,7 @@ function App() {
         <ErrorAlert error={error} />
         {/*<Configs toastRef={toastRef} blogRef={blogRef} confirmRef={confirmRef} />*/}
         <Footer version={manifest?.version} />
-       {/* <ToastHandler ref={toastRef} />
+        {/* <ToastHandler ref={toastRef} />
         <ConfirmModal ref={confirmRef} />
         <BlogModal ref={blogRef} />
         <ExtensionNotFound ref={extensionNotFoundRef} version={manifest?.version} />

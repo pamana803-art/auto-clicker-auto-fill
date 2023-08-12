@@ -11,7 +11,7 @@ type ManifestValueProps = {
 };
 
 export type ManifestRequest = {
-  class: 'manifest';
+  messenger: 'manifest';
   methodName: 'values' | 'value';
 } & (ManifestValueProps | ManifestValuesProps);
 

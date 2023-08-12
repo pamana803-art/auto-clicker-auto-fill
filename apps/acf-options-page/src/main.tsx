@@ -6,7 +6,7 @@ import './i18n';
 import { BROWSER } from './_helpers';
 import { Provider } from 'react-redux';
 import { store } from './store';
-console.log(process.env)
+
 window.EXTENSION_ID = process.env[`NX_${BROWSER}_EXTENSION_ID`] ?? '';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

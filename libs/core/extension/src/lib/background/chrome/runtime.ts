@@ -16,10 +16,10 @@ export type RuntimeMessageRequest = (ActionRequest | ManifestRequest | Notificat
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const messageListener = (request: any, configs: MessengerConfigObject, sendResponse: (response?: any) => void) => {
-  const { action, methodName } = request;
+  const { messenger, methodName } = request;
 
   try {
-    switch (action) {
+    switch (messenger) {
       case 'notifications':
         {
           const instance = new NotificationsMessenger();
@@ -45,9 +45,9 @@ export const messageListener = (request: any, configs: MessengerConfigObject, se
         }
         break;
       default:
-        if (configs[action]) {
-          if (typeof configs[action].processPortMessage === 'function') {
-            configs[action].processPortMessage(request).then(sendResponse).catch(sendResponse);
+        if (configs[messenger]) {
+          if (typeof configs[messenger].processPortMessage === 'function') {
+            configs[messenger].processPortMessage(request).then(sendResponse).catch(sendResponse);
           } else {
             sendResponse(new Error(`${request.action} ${chrome.i18n.getMessage('@PORT__method_not_found')}`));
           }

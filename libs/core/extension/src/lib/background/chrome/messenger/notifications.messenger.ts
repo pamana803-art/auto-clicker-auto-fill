@@ -10,7 +10,7 @@ type NotificationsMessengerUpdateProps = NotificationsMessengerProps & {
 };
 
 export type NotificationsRequest = {
-  class: 'notifications';
+  messenger: 'notifications';
   methodName: 'create' | 'update' | 'clear';
 } & (NotificationsMessengerProps | NotificationsMessengerCreateProps | NotificationsMessengerUpdateProps);
 

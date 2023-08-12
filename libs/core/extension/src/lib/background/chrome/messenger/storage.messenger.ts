@@ -5,7 +5,7 @@ export type StorageMessengerGetProps = string | string[] | { [key: string]: any 
 export type StorageMessengerRemoveProps = string | string[];
 
 export type StorageRequest = {
-  class: 'storage';
+  messenger: 'storage';
   methodName: 'get' | 'set' | 'remove';
 } & (StorageMessengerGetProps | StorageMessengerSetProps | StorageMessengerRemoveProps);
 
