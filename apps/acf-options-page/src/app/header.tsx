@@ -21,7 +21,7 @@ function Header({ confirmRef, error }) {
   }
 
   const toggleTheme = () => {
-    dispatch(switchTheme)
+    dispatch(switchTheme())
   }
 
   let imageURL = 'https://getautoclicker.com/favicons/favicon32.png'

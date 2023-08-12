@@ -1,16 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-const initialState = 'light';
+const getInitialState = () => {
+  const theme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-bs-theme', theme);
+  return theme;
+};
 
 const slice = createSlice({
   name: 'theme',
-  initialState,
+  initialState: getInitialState(),
   reducers: {
-    switchTheme: (state) => (state === 'light' ? 'dark' : 'light'),
+    switchTheme: (state) => {
+      const theme = state === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', theme);
+      localStorage.setItem('theme', theme);
+      return theme;
+    },
   },
 });
 //window.dataLayer.push({ event: 'theme', conversionValue: theme === 'light' ? 'dark' : 'light' })
 export const { switchTheme } = slice.actions;
-export const themeSelector = (state:RootState) => state.theme
+export const themeSelector = (state: RootState) => state.theme;
 export default slice.reducer;
