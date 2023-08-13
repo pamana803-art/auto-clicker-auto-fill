@@ -1,20 +1,14 @@
 {
   "name": "acf-extension-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/acf-extension-e2e/src",
-  "projectType": "application",
+  "implicitDependencies": ["acf-extension"],
   "targets": {
     "e2e": {
-      "executor": "@nx/cypress:cypress",
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "options": {
-        "cypressConfig": "apps/acf-extension-e2e/cypress.config.ts",
-        "devServerTarget": "acf-extension:serve",
-        "testingType": "e2e"
-      },
-      "configurations": {
-        "production": {
-          "devServerTarget": "acf-extension:serve:production"
-        }
+        "jestConfig": "apps/acf-extension-e2e/jest.config.ts",
+        "passWithNoTests": true
       }
     },
     "lint": {
@@ -24,7 +18,5 @@
         "lintFilePatterns": ["apps/acf-extension-e2e/**/*.{js,ts}"]
       }
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["acf-extension"]
+  }
 }

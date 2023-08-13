@@ -1,49 +1,58 @@
 {
   "name": "acf-extension",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "projectType": "application",
   "sourceRoot": "apps/acf-extension/src",
-  "tags": ["type:extension", "scope:acf"],
+  "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
+        "target": "node",
+        "compiler": "tsc",
         "outputPath": "dist/apps/acf-extension",
-        "compiler": "babel",
-        "main": "apps/acf-extension/src/main.ts",
+        "extractCss": true,
+        "main": "apps/acf-extension/src/background/index.ts",
+        "outputFileName": "background.js",
+        "additionalEntryPoints": [
+          {
+            "entryName": "content_scripts",
+            "entryPath": "apps/acf-extension/src/content_scripts/index.ts"
+          },
+          {
+            "entryName": "wizard",
+            "entryPath": "apps/acf-extension/src/wizard/index.ts"
+          },
+          {
+            "entryName": "wizard-popup",
+            "entryPath": "apps/acf-extension/src/wizard/popup/wizard-popup.ts"
+          },
+          {
+            "entryName": "wizard-popup-styles",
+            "entryPath": "apps/acf-extension/src/wizard/popup/wizard-popup.scss"
+          }
+        ],
+        "styles": ["apps/acf-extension/src/wizard/popup/wizard-popup.scss"],
         "tsConfig": "apps/acf-extension/tsconfig.app.json",
-        "webpackConfig": "apps/acf-extension/webpack.config.js",
-        "assets": ["apps/acf-extension/src/favicon.ico", "apps/acf-extension/src/assets"],
-        "index": "apps/acf-extension/src/index.html",
-        "baseHref": "/",
-        "styles": ["apps/acf-extension/src/styles.css"],
-        "scripts": []
+        "isolatedConfig": true,
+        "webpackConfig": "apps/acf-extension/webpack.config.js"
       },
       "configurations": {
-        "production": {
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/acf-extension/src/environments/environment.ts",
-              "with": "apps/acf-extension/src/environments/environment.prod.ts"
-            }
-          ]
-        }
+        "development": {},
+        "production": {}
       }
     },
     "serve": {
-      "executor": "@nx/webpack:dev-server",
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
       "options": {
         "buildTarget": "acf-extension:build"
       },
       "configurations": {
+        "development": {
+          "buildTarget": "acf-extension:build:development"
+        },
         "production": {
           "buildTarget": "acf-extension:build:production"
         }
@@ -70,5 +79,6 @@
         }
       }
     }
-  }
+  },
+  "tags": []
 }

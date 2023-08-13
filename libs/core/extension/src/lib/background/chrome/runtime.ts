@@ -2,7 +2,7 @@ import { ActionMessenger, ActionRequest, ManifestMessenger, ManifestRequest, Not
 
 export interface MessengerConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  processPortMessage: (request: any) => Promise<void>;
+  processPortMessage: (request: any) => Promise<any>;
 }
 
 export type MessengerConfigObject = {
