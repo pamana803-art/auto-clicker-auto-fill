@@ -1,10 +1,10 @@
 import { ACTION_STATUS, LOCAL_STORAGE_KEY, Settings } from '@dhruv-techapps/acf-common';
-import { DataStore, Logger } from '@dhruv-techapps/core-common';
+import { DataStore } from '@dhruv-techapps/core-common';
 import { ActionService, NotificationsService } from '@dhruv-techapps/core-service';
 import Action from './action';
 import Statement from './statement';
 import { wait } from './util';
-import Addon from './addon';
+import AddonProcessor from './addon';
 import Common from './common';
 
 const LOGGER_LETTER = 'Action';
@@ -43,7 +43,7 @@ const Actions = (() => {
       const statementResult = await checkStatement(actions, action);
       if (statementResult === true) {
         await wait(action.initWait, `${LOGGER_LETTER} initWait`);
-        if (await Addon.check(action.settings, batchRepeat, action.addon)) {
+        if (await AddonProcessor.check(action.settings, batchRepeat, action.addon)) {
           action.status = await Action.start(action, batchRepeat, sheets);
           notify(action);
         } else {

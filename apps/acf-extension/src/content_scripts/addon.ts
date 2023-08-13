@@ -10,7 +10,7 @@ const LOGGER_LETTER = 'Addon';
 
 type AddonType = { nodeValue: string } & Addon;
 
-const Addon = (() => {
+const AddonProcessor = (() => {
   const recheckFunc = async ({ nodeValue, elementFinder, value, condition, recheck, recheckInterval, recheckOption, valueExtractor, valueExtractorFlags }: AddonType, settings, batchRepeat) => {
     if (recheck > 0 || recheck < -1) {
       recheck -= 1;
@@ -137,4 +137,4 @@ const Addon = (() => {
   return { check, extractValue };
 })();
 
-export default Addon;
+export default AddonProcessor;

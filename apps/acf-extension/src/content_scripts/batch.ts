@@ -7,7 +7,7 @@ import Common from './common';
 
 const LOGGER_LETTER = 'Batch';
 
-const Batch = (() => {
+const BatchProcessor = (() => {
   let batch;
   let actions;
   let sheets;
@@ -77,4 +77,4 @@ const Batch = (() => {
   return { start };
 })();
 
-export default Batch;
+export default BatchProcessor;

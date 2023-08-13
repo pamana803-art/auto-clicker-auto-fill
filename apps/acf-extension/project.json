@@ -9,8 +9,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "target": "node",
-        "compiler": "tsc",
+        "target": "web",
+        "compiler": "babel",
         "outputPath": "dist/apps/acf-extension",
         "extractCss": true,
         "main": "apps/acf-extension/src/background/index.ts",
@@ -39,8 +39,26 @@
         "webpackConfig": "apps/acf-extension/webpack.config.js"
       },
       "configurations": {
-        "development": {},
-        "production": {}
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/acf-extension/src/environments/environment.ts",
+              "with": "apps/acf-extension/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "none",
+          "sourceMap": true,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
       }
     },
     "serve": {

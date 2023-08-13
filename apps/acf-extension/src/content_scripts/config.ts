@@ -2,7 +2,7 @@ import { ActionService, DiscordMessagingService, NotificationsService } from '@d
 import { Logger } from '@dhruv-techapps/core-common';
 import { Configuration, START_TYPES, Settings, SettingsNotifications, defaultConfig } from '@dhruv-techapps/acf-common';
 import { wait } from './util';
-import Batch from './batch';
+import BatchProcessor from './batch';
 import { ConfigError } from './error';
 import { Hotkey } from './hotkey';
 import GoogleSheets from './util/google-sheets';
@@ -25,7 +25,7 @@ const Config = (() => {
     const sheets = await new GoogleSheets().getValues(config);
 
     try {
-      await Batch.start(config.batch, config.actions, sheets);
+      await BatchProcessor.start(config.batch, config.actions, sheets);
       ActionService.setBadgeBackgroundColor(chrome.runtime.id, { color: [25, 135, 84, 1] });
       ActionService.setBadgeText(chrome.runtime.id, { text: 'Done' });
       if (onConfig) {

@@ -1,5 +1,6 @@
 const { composePlugins, withNx } = require('@nx/webpack');
 const CopyPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 function modify(buffer, name, oauth, version, { KEY }) {
   // copy-webpack-plugin passes a buffer
@@ -49,5 +50,11 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
       },
     ],
   });
+  config.plugins.push(
+    new Dotenv({
+      path: config.watch ? path.resolve(config.context, '.env') : './.env',
+      systemvars: true,
+    })
+  );
   return config;
 });

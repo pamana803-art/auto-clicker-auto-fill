@@ -19,7 +19,7 @@
     "default_icon": "assets/icons/icon64.png"
   },
   "background": {
-    "service_worker": "main.js",
+    "service_worker": "background.js",
     "type": "module"
   },
   "content_scripts": [
