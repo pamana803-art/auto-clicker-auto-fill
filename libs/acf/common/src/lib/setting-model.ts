@@ -11,7 +11,7 @@ export enum AUTO_BACKUP {
   OFF = 'off',
 }
 
-export type Notifications = {
+export type SettingsNotifications = {
   onAction: boolean;
   onBatch: boolean;
   onConfig: boolean;
@@ -31,7 +31,7 @@ export type Settings = {
   retryOption: RETRY_OPTIONS;
   checkiFrames: boolean;
   backup: SettingsBackup;
-  notifications: Notifications;
+  notifications: SettingsNotifications;
 };
 
 

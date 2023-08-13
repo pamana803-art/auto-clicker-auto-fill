@@ -4,6 +4,7 @@ export const ACTION_POPUP = 'action-popup'
 export const CONTEXT_MENU_CONFIG_PAGE_ID = 'config-page-mode'
 
 export const FORM_ELEMENT_NODE_NAME = /^(select|textarea|input|button|label|option|optgroup|fieldset|output)$/i
+export type FormElementType = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement | HTMLButtonElement | HTMLLabelElement | HTMLOptionElement | HTMLOptGroupElement | HTMLFieldSetElement | HTMLOutputElement
 export const FORM_CLEAR_ELEMENT_NODE_NAME = /^(select|textarea|input)$/i
 export const SELECT_TEXTAREA_NODE_NAME = /^(select|textarea)$/i
 export const RADIO_CHECKBOX_NODE_NAME = /^(radio|checkbox)$/i

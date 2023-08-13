@@ -38,7 +38,7 @@ export default class DiscordOauth2 implements MessengerConfig {
       url += `&nonce=${encodeURIComponent(getRandomValues())}`
       const responseUrl = await chrome.identity.launchWebAuthFlow({ url, interactive: true })
       if (chrome.runtime.lastError || responseUrl.includes('access_denied')) {
-        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, chrome.runtime.lastError || responseUrl)
+        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, chrome.runtime.lastError.message || responseUrl)
         return RESPONSE_CODE.ERROR
       }
       return await this.getCurrentUser(responseUrl.match(/token=(.+?)&/)[1])

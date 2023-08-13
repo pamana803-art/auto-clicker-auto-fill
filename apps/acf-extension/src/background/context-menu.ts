@@ -1,7 +1,7 @@
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
 import { ACTION_POPUP, CONTEXT_MENU_CONFIG_PAGE_ID, CONTEXT_MENU_ELEMENT_ID } from '../common/constant'
 
-export default function registerContextMenus(optionsPageUrl) {
+export default function registerContextMenus(optionsPageUrl:string) {
   chrome.contextMenus.removeAll()
   chrome.contextMenus.create({ id: CONTEXT_MENU_ELEMENT_ID, title: '★ Configure for this Field', contexts: ['all'] })
   chrome.contextMenus.create({ id: ACTION_POPUP, title: '☉ Auto Clicker (Record)', contexts: ['all'] })

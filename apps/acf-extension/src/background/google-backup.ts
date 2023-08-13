@@ -1,3 +1,5 @@
+/*global chrome*/
+
 import { AUTO_BACKUP, GOOGLE_SCOPES, GOOGLE_SCOPES_KEY, LOCAL_STORAGE_KEY, defaultConfig, defaultSettings } from '@dhruv-techapps/acf-common';
 import GoogleOauth2 from './google-oauth2';
 import { NotificationHandler } from './notifications';

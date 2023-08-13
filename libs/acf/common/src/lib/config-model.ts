@@ -26,6 +26,7 @@ export type Configuration = {
   hotkey?: string;
   batch?: Batch;
   actions: Array<Action>;
+  new?:boolean
 };
 
 export const defaultConfig: Configuration = {

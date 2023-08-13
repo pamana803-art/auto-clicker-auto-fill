@@ -17,7 +17,13 @@ export enum LoggerColor {
   GRAY = 'background-color:#f8f9fa;font-style:italic;padding:0 5px;',
 }
 
+export type LoggerType = 'log' | 'warn' | 'error' | 'info' | 'debug';
+
 export class Logger {
+  static color(module: string, type: LoggerType = 'debug', color: Logger, ...args: unknown[]) {
+    console[type].apply(null, [`%c${module}`, color, ...args]);
+  }
+
   static colorLog(module: string, ...args: unknown[]) {
     console.log.apply(null, [`%c${module}`, LoggerColor.GRAY, ...args]);
   }

@@ -22,7 +22,6 @@ function modify(buffer, name, oauth, version, { KEY }) {
 module.exports = composePlugins(withNx(), (config, ctx) => {
   // Update the webpack config as needed here.
   const { variant = 'DEV', oauth = '1068181857899-u8kurrhqoph1ht9d4psotb25ivvjhhft.apps.googleusercontent.com', name = 'Auto Clicker - AutoFill [LOCAL]' } = ctx.options;
-  console.log(variant, oauth, name);
   config.module.rules.push({
     test: /\.scss$/i,
     use: [

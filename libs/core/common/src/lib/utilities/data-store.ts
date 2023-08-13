@@ -15,7 +15,7 @@ export class DataStore {
     this[key] = value;
   }
 
-  getItem(key: string): any {
+  getItem<T>(key: string): T {
     return this[key];
   }
 }

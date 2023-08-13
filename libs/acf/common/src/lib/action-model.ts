@@ -53,6 +53,7 @@ export type Action = {
 };
 
 export type ActionSetting = {
+  iframeFirst:boolean,
   retry: number;
   retryInterval: number;
   retryOption: RETRY_OPTIONS;

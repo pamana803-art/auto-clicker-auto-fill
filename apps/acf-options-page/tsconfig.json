@@ -4,7 +4,6 @@
     "allowJs": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": false,
     "strict": true
   },
   "files": [],
