@@ -2,21 +2,20 @@ type ManifestResult = {
   [key: string]: string | ManifestResult;
 };
 
-type ManifestValuesProps = {
-  keys: string[];
-};
+type ManifestValuesProps = string[];
 
-type ManifestValueProps = {
-  key: string;
-};
+
+type ManifestValueProps = string;
+
 
 export type ManifestRequest = {
   messenger: 'manifest';
   methodName: 'values' | 'value';
-} & (ManifestValueProps | ManifestValuesProps);
+  message: ManifestValueProps | ManifestValuesProps;
+};
 
 export class ManifestMessenger {
-  async values({ keys }: ManifestValuesProps): Promise<ManifestResult> {
+  async values( keys : ManifestValuesProps): Promise<ManifestResult> {
     if (!keys || !Array.isArray(keys)) {
       throw new Error('Keys is not provided or not of type Array');
     }
@@ -27,7 +26,7 @@ export class ManifestMessenger {
     return { ...result };
   }
 
-  async value({ key }: ManifestValueProps): Promise<ManifestResult> {
+  async value(key : ManifestValueProps): Promise<ManifestResult> {
     if (!key || typeof key !== 'string') {
       throw new Error('Key is not provided or key is not of type string');
     }

@@ -20,9 +20,9 @@ export function SettingsBackup({ settings, setSettings, confirmRef }: SettingsBa
     if (autoBackup) {
       setSettings({ ...settings, backup: { autoBackup } });
     }
-    const response = await GoogleOauthService.login(window.EXTENSION_ID, GOOGLE_SCOPES_KEY.DRIVE);
+    const response = await GoogleOauthService.loginWithScope(window.EXTENSION_ID, GOOGLE_SCOPES_KEY.DRIVE);
     if (response !== RESPONSE_CODE.ERROR) {
-      GoogleBackupService.backup(window.EXTENSION_ID, autoBackup);
+      autoBackup ? GoogleBackupService.autoBackup(window.EXTENSION_ID, autoBackup) : GoogleBackupService.backup(window.EXTENSION_ID)
     }
   };
 

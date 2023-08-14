@@ -1,22 +1,23 @@
 export type ActionRequest = {
   messenger: 'action';
   methodName: 'setIcon' | 'setBadgeBackgroundColor' | 'setBadgeText' | 'setTitle';
-} & { details: chrome.action.TabIconDetails | chrome.action.BadgeColorDetails | chrome.action.BadgeTextDetails | chrome.action.TitleDetails };
+  message: chrome.action.TabIconDetails | chrome.action.BadgeColorDetails | chrome.action.BadgeTextDetails | chrome.action.TitleDetails;
+};
 
 export class ActionMessenger {
-  setIcon(details: chrome.action.TabIconDetails, callback: () => void): void {
-    chrome.action.setIcon(details, callback);
+  setIcon(details: chrome.action.TabIconDetails) {
+    return chrome.action.setIcon(details);
   }
 
-  setBadgeBackgroundColor(details: chrome.action.BadgeColorDetails, callback: () => void): void {
-    chrome.action.setBadgeBackgroundColor(details, callback);
+  setBadgeBackgroundColor(details: chrome.action.BadgeColorDetails) {
+    return chrome.action.setBadgeBackgroundColor(details);
   }
 
-  setBadgeText(details: chrome.action.BadgeTextDetails, callback: () => void): void {
-    chrome.action.setBadgeText(details, callback);
+  setBadgeText(details: chrome.action.BadgeTextDetails) {
+    return chrome.action.setBadgeText(details);
   }
 
-  setTitle(details: chrome.action.TitleDetails, callback: () => void): void {
-    chrome.action.setTitle(details, callback);
+  setTitle(details: chrome.action.TitleDetails) {
+    return chrome.action.setTitle(details);
   }
 }

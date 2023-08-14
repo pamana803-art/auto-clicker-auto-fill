@@ -12,18 +12,31 @@ type NotificationsMessengerUpdateProps = NotificationsMessengerProps & {
 export type NotificationsRequest = {
   messenger: 'notifications';
   methodName: 'create' | 'update' | 'clear';
-} & (NotificationsMessengerProps | NotificationsMessengerCreateProps | NotificationsMessengerUpdateProps);
+  message: NotificationsMessengerProps | NotificationsMessengerCreateProps | NotificationsMessengerUpdateProps;
+};
 
 export class NotificationsMessenger {
-  create({ notificationId, options }: NotificationsMessengerCreateProps, callback: ((notificationId: string) => void) | undefined) {
-    chrome.notifications.create(notificationId, options, callback);
+  create({ notificationId, options }: NotificationsMessengerCreateProps) {
+    return new Promise((resolve) => {
+      chrome.notifications.create(notificationId, options, (notificationId: string) => {
+        resolve(notificationId);
+      });
+    });
   }
 
-  update({ notificationId, options }: NotificationsMessengerUpdateProps, callback: ((wasUpdated: boolean) => void) | undefined) {
-    chrome.notifications.update(notificationId, options, callback);
+  update({ notificationId, options }: NotificationsMessengerUpdateProps) {
+    return new Promise((resolve) => {
+      return chrome.notifications.update(notificationId, options, (wasUpdated: boolean) => {
+        resolve(wasUpdated);
+      });
+    });
   }
 
-  clear({ notificationId }: NotificationsMessengerProps, callback: ((wasCleared: boolean) => void) | undefined) {
-    chrome.notifications.clear(notificationId, callback);
+  clear({ notificationId }: NotificationsMessengerProps) {
+    return new Promise((resolve) => {
+      chrome.notifications.clear(notificationId, (wasCleared: boolean) => {
+        resolve(wasCleared);
+      });
+    });
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StorageService } from '@dhruv-techapps/core-service';
 import { Button, Form, Image } from 'react-bootstrap';
 import { Google, LOCAL_STORAGE_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
@@ -7,7 +7,7 @@ import GoogleSignInLight from '../../assets/btn_google_signin_light_normal_web.p
 import GoogleSignInDark from '../../assets/btn_google_signin_dark_normal_web.png';
 import { useAppSelector } from '../../hooks';
 import { themeSelector } from '../../store/theme.slice';
-import { GoogleSheetsService } from '@dhruv-techapps/acf-service';
+import { GoogleOauthService } from '@dhruv-techapps/acf-service';
 
 function SettingGoogleSheets() {
   const [google, setGoogle] = useState<Google>();
@@ -25,14 +25,14 @@ function SettingGoogleSheets() {
   }, []);
 
   const connect = async () => {
-    const response = await GoogleSheetsService.login(window.EXTENSION_ID);
+    const response = await GoogleOauthService.login(window.EXTENSION_ID);
     if (response !== RESPONSE_CODE.ERROR) {
       setGoogle(response);
     }
   };
 
   const remove = async () => {
-    const response = await GoogleSheetsService.remove(window.EXTENSION_ID);
+    const response = await GoogleOauthService.remove(window.EXTENSION_ID);
     if (response !== RESPONSE_CODE.ERROR) {
       setGoogle(undefined);
     }

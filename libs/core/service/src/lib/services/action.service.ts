@@ -2,18 +2,18 @@ import { CoreService } from './service';
 
 export class ActionService extends CoreService {
   static async setBadgeBackgroundColor(extensionId: string, details: chrome.action.BadgeColorDetails) {
-    return await this.message(extensionId, { messenger: 'action', methodName: 'setBadgeBackgroundColor', details });
+    return await this.message(extensionId, { messenger: 'action', methodName: 'setBadgeBackgroundColor', message: details });
   }
 
   static async setBadgeText(extensionId: string, details: chrome.action.BadgeTextDetails) {
-    return await this.message(extensionId, { messenger: 'action', methodName: 'setBadgeText', details });
+    return await this.message(extensionId, { messenger: 'action', methodName: 'setBadgeText', message: details });
   }
 
   static async setIcon(extensionId: string, details: chrome.action.TabIconDetails) {
-    return await this.message(extensionId, { messenger: 'action', methodName: 'setIcon', details });
+    return await this.message(extensionId, { messenger: 'action', methodName: 'setIcon', message: details });
   }
 
   static async setTitle(extensionId: string, details: chrome.action.TitleDetails) {
-    return await this.message(extensionId, { messenger: 'action', methodName: 'setTitle', details });
+    return await this.message(extensionId, { messenger: 'action', methodName: 'setTitle', message: details });
   }
 }

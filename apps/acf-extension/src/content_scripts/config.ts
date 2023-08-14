@@ -7,7 +7,7 @@ import { ConfigError } from './error';
 import { Hotkey } from './hotkey';
 import GoogleSheets from './util/google-sheets';
 import Common from './common';
-import { DiscordMessagingService } from '@dhruv-techapps/acf-service';
+import DiscordMessaging from './store/discord-messaging';
 
 const LOGGER_LETTER = 'Config';
 const Config = (() => {
@@ -20,7 +20,7 @@ const Config = (() => {
     return fields;
   };
 
-  const start = async (config:Configuration, notifications:SettingsNotifications) => {
+  const start = async (config: Configuration, notifications: SettingsNotifications) => {
     Logger.colorDebug('Config Start');
     const { onConfig, onError, sound, discord } = notifications;
     const sheets = await new GoogleSheets().getValues(config);
@@ -32,7 +32,7 @@ const Config = (() => {
       if (onConfig) {
         NotificationsService.create(chrome.runtime.id, { type: 'basic', title: 'Config Completed', message: config.name || config.url, silent: !sound, iconUrl: Common.getNotificationIcon() });
         if (discord) {
-          DiscordMessagingService.push(chrome.runtime.id, { title: 'Configuration Finished', fields: getFields(config), color: '#198754' }).catch(Logger.colorError);
+          DiscordMessaging.push({ title: 'Configuration Finished', fields: getFields(config), color: '#198754' }).catch(Logger.colorError);
         }
       }
     } catch (e) {
@@ -44,7 +44,7 @@ const Config = (() => {
         if (onError) {
           NotificationsService.create(chrome.runtime.id, { type: 'basic', ...error, silent: !sound, iconUrl: Common.getNotificationIcon() }, 'error');
           if (discord) {
-            DiscordMessagingService.push(chrome.runtime.id, {
+            DiscordMessaging.push({
               title: e.title || 'Configuration Error',
               fields: [
                 ...getFields(config),
@@ -76,7 +76,7 @@ const Config = (() => {
     });
   };
 
-  const checkStartTime = async (config:Configuration) => {
+  const checkStartTime = async (config: Configuration) => {
     if (config.startTime && config.startTime.match(/^\d{2}:\d{2}:\d{2}:\d{3}$/)) {
       await schedule(config);
     } else {

@@ -1,62 +1,41 @@
 import { ActionMessenger, ActionRequest, ManifestMessenger, ManifestRequest, NotificationsMessenger, NotificationsRequest, StorageMessenger, StorageRequest } from './messenger';
 
-export interface MessengerConfig {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  processPortMessage: (request: any) => Promise<any>;
-}
-
 export type MessengerConfigObject = {
-  [key: string]: MessengerConfig;
+  [key: string]: any;
 };
 
-export type RuntimeMessageRequest = (ActionRequest | ManifestRequest | NotificationsRequest | StorageRequest);
+export type RuntimeMessageRequest = ActionRequest | ManifestRequest | NotificationsRequest | StorageRequest;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const messageListener = (request: any, configs: MessengerConfigObject, sendResponse: (response?: any) => void) => {
-  const { messenger, methodName } = request;
+export const messageListener = (request: any, configs: MessengerConfigObject): Promise<any> => {
+  const { messenger, methodName, message } = request;
 
   try {
     switch (messenger) {
       case 'notifications':
-        {
-          const instance = new NotificationsMessenger();
-          instance[(methodName as keyof NotificationsMessenger) || 'create'](request, sendResponse);
-        }
-        break;
+        return new NotificationsMessenger()[(methodName as keyof NotificationsMessenger) || 'create'](message);
       case 'storage':
-        {
-          const instance = new StorageMessenger();
-          instance[(methodName as keyof StorageMessenger) || 'get'](request).then(sendResponse).catch(sendResponse);
-        }
-        break;
+        return new StorageMessenger()[(methodName as keyof StorageMessenger) || 'get'](message);
       case 'manifest':
-        {
-          const instance = new ManifestMessenger();
-          instance[(methodName as keyof ManifestMessenger) || 'values'](request).then(sendResponse).catch(sendResponse);
-        }
-        break;
+        return new ManifestMessenger()[(methodName as keyof ManifestMessenger) || 'values'](message);
       case 'action':
-        {
-          const instance = new ActionMessenger();
-          instance[(methodName as keyof ActionMessenger) || 'setIcon'](request, sendResponse);
-        }
-        break;
+        return new ActionMessenger()[(methodName as keyof ActionMessenger) || 'setIcon'](message);
       default:
         if (configs[messenger]) {
-          if (typeof configs[messenger].processPortMessage === 'function') {
-            configs[messenger].processPortMessage(request).then(sendResponse).catch(sendResponse);
+          if (typeof configs[messenger][methodName] === 'function') {
+            return configs[messenger][methodName](message);
           } else {
-            sendResponse(new Error(`${messenger} ${chrome.i18n.getMessage('@PORT__method_not_found')}`));
+            throw new Error(`${messenger}.${methodName} ${chrome.i18n.getMessage('@PORT__method_not_found')}`);
           }
         } else {
-          sendResponse(new Error(`${messenger} ${chrome.i18n.getMessage('@PORT__action_not_found')}`));
+          throw new Error(`${messenger} ${chrome.i18n.getMessage('@PORT__action_not_found')}`);
         }
     }
   } catch (error) {
     if (error instanceof Error) {
-      sendResponse(new Error(`${messenger} ${error.message}`));
+      throw new Error(`${messenger}.${methodName} ${error.message}`);
     } else {
-      console.error('Unexpected error', error);
+      throw new Error(`${messenger}.${methodName} ${error}`);
     }
   }
 };
@@ -69,14 +48,14 @@ export class Runtime {
 
   static onMessage(configs: MessengerConfigObject) {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      messageListener(request, configs, sendResponse);
+      messageListener(request, configs).then(sendResponse).catch(sendResponse);
       return true;
     });
   }
 
   static onMessageExternal(configs: MessengerConfigObject) {
     chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
-      messageListener(request, configs, sendResponse);
+      messageListener(request, configs).then(sendResponse).catch(sendResponse);
       return true;
     });
   }

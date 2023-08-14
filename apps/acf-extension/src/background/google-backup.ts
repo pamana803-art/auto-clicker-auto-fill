@@ -3,7 +3,6 @@
 import { AUTO_BACKUP, GOOGLE_SCOPES, GOOGLE_SCOPES_KEY, LOCAL_STORAGE_KEY, defaultConfig, defaultSettings } from '@dhruv-techapps/acf-common';
 import GoogleOauth2 from './google-oauth2';
 import { NotificationHandler } from './notifications';
-import { MessengerConfig } from '@dhruv-techapps/core-extension';
 
 const BACKUP_ALARM = 'backupAlarm';
 const BACKUP_FILE_NAMES = {
@@ -15,16 +14,7 @@ const MINUTES_IN_DAY = 1440;
 const NOTIFICATIONS_TITLE = 'Google Drive Backup';
 const NOTIFICATIONS_ID = 'sheets';
 
-export default class GoogleBackup implements MessengerConfig {
-  async processPortMessage({ autoBackup, restore }) {
-    if (restore) {
-      this.restore();
-    } else if (autoBackup) {
-      this.setAlarm(autoBackup);
-    } else {
-      this.backup(true);
-    }
-  }
+export default class GoogleBackup  {
 
   async setAlarm(autoBackup) {
     const alarmInfo: chrome.alarms.AlarmCreateInfo = { when: Date.now() + 500 };
@@ -59,7 +49,7 @@ export default class GoogleBackup implements MessengerConfig {
     return false;
   }
 
-  async backup(now?: any) {
+  async backup(now?: boolean) {
     try {
       const { configs = [{ ...defaultConfig }] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
       if (configs) {

@@ -2,23 +2,12 @@ import { LOCAL_STORAGE_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common'
 import { DISCORD_CLIENT_ID } from '../common/environments'
 import { NotificationHandler } from './notifications'
 import { getRandomValues } from './util'
-import { MessengerConfig } from '@dhruv-techapps/core-extension'
 
 export const NOTIFICATIONS_TITLE = 'Discord Authentication'
 export const NOTIFICATIONS_ID = 'discord'
 
-export default class DiscordOauth2 implements MessengerConfig {
-  async processPortMessage({ login, remove }) {
-    let response
-    if (remove) {
-      response = await this.remove()
-    }
-    if (login) {
-      response = await this.login()
-    }
-    return response
-  }
-
+export default class DiscordOauth2  {
+ 
   async remove() {
     await chrome.storage.local.remove(LOCAL_STORAGE_KEY.DISCORD)
     return RESPONSE_CODE.REMOVED

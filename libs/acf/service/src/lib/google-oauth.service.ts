@@ -2,7 +2,14 @@ import { GOOGLE_SCOPES_KEY, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-comm
 import { AcfService } from './service';
 
 export class GoogleOauthService extends AcfService {
-  static async login(extensionId: string, login: GOOGLE_SCOPES_KEY) {
-    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.GOOGLE_OAUTH2, login });
+  static async login(extensionId: string) {
+    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.GOOGLE_OAUTH2, methodName: 'login',});
+  }
+
+  static async loginWithScope(extensionId: string, login: GOOGLE_SCOPES_KEY) {
+    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.GOOGLE_OAUTH2, methodName: 'login', message: { login } });
+  }
+  static async remove(extensionId: string) {
+    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.GOOGLE_OAUTH2, methodName: 'remove', });
   }
 }

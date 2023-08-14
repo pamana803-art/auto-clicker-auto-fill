@@ -1,11 +1,9 @@
 import { Configuration, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
-import { MessengerConfig } from '@dhruv-techapps/core-extension';
 
-export default class Config implements MessengerConfig {
-  async processPortMessage({ href }) {
-    console.log("here", href)
+export default class ConfigStorage {
+  async getConfig(href: string) {
     const storageResult = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
-    const configs:Array<Configuration> = storageResult.configs || []
+    const configs: Array<Configuration> = storageResult.configs || [];
     let result = null;
     let fullMatch = false;
     configs

@@ -1,15 +1,14 @@
-import { Configuration, LOAD_TYPES, LOCAL_STORAGE_KEY, RUNTIME_MESSAGE_ACF, defaultSettings } from '@dhruv-techapps/acf-common'
+import { Configuration, LOAD_TYPES, LOCAL_STORAGE_KEY,  defaultSettings } from '@dhruv-techapps/acf-common'
 import { DataStore,  Logger, LoggerColor } from '@dhruv-techapps/core-common'
-import {AcfService} from '@dhruv-techapps/acf-service'
 import Config from './config'
 import Session from './util/session'
+import ConfigStorage from './store/config-storage'
 
 async function loadConfig(loadType) {
   try {
     const { href, host } = document.location
     console.log(chrome)
-    AcfService.message(chrome.runtime.id, { messenger: RUNTIME_MESSAGE_ACF.CONFIG, href, frameElement: window.top !== window.self }).then(async (config:Configuration) => {
-      console.log(config)
+    new ConfigStorage().getConfig(href).then(async (config:Configuration) => {
       if (config) {
         const { settings = defaultSettings } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.SETTINGS)
         DataStore.getInst().setItem(LOCAL_STORAGE_KEY.SETTINGS, settings)
