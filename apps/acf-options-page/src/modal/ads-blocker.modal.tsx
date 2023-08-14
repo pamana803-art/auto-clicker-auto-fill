@@ -2,6 +2,8 @@ import React, {  MouseEvent, forwardRef, useEffect, useImperativeHandle, useStat
 import PropTypes from 'prop-types';
 import { Button, Image, Modal, Nav, Tab } from 'react-bootstrap';
 import { PatchQuestionFill } from '../util';
+import { useAppSelector } from '../hooks';
+import { configsSelector } from '../store/config.slice';
 
 export type AdsBlockerModalRef = {
   show: () => void;
@@ -11,22 +13,17 @@ type AdsBlockerModalProps = {
   version?: string;
 };
 
-const AdsBlockerModal = forwardRef<AdsBlockerModalRef, AdsBlockerModalProps>(({ version }, ref) => {
-  const [show, setShow] = useState(false);
-
+const AdsBlockerModal = () => {
+  const {adsBlocker} = useAppSelector(configsSelector)
+const setShow = (values) => {}
   useEffect(() => {
     setTimeout(() => {
-      if (chrome.runtime && version && !window.adsLoaded) {
+      if (!window.adsLoaded) {
         setShow(true);
       }
     }, 2000);
-  }, [chrome.runtime, version, window.adsLoaded]);
+  }, [window.adsLoaded]);
 
-  useImperativeHandle(ref, () => ({
-    show() {
-      setShow(true);
-    },
-  }));
 
   const closeClick = (event: MouseEvent<HTMLButtonElement>) => {
     document.addEventListener('visibilitychange', () => {
@@ -42,7 +39,7 @@ const AdsBlockerModal = forwardRef<AdsBlockerModalRef, AdsBlockerModalProps>(({ 
   };
 
   return (
-    <Modal show={show} centered backdrop="static" keyboard={false} id="ads-blocker">
+    <Modal show={adsBlocker} centered backdrop="static" keyboard={false} id="ads-blocker">
       <Modal.Header className="justify-content-center">
         <Modal.Title as="h6">Please allow ads on our site</Modal.Title>
       </Modal.Header>
@@ -156,7 +153,7 @@ const AdsBlockerModal = forwardRef<AdsBlockerModalRef, AdsBlockerModalProps>(({ 
       </Modal.Footer>
     </Modal>
   );
-});
+};
 AdsBlockerModal.displayName = 'AdsBlockerModal';
 
 AdsBlockerModal.defaultProps = {

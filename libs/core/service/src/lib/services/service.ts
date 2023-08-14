@@ -6,9 +6,9 @@ export class CoreService {
     return new Promise<T>((resolve, reject) => {
       chrome.runtime.sendMessage(extensionId, message, (response) => {
         if (chrome.runtime.lastError || response?.error) {
-          reject(chrome.runtime.lastError || response?.error);
+          reject(chrome.runtime.lastError?.message || response?.error);
         } else {
-          resolve(response.result);
+          resolve(response);
         }
       });
     });

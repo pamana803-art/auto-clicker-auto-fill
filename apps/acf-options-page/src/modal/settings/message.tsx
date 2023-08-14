@@ -1,19 +1,13 @@
-import { forwardRef, useImperativeHandle, useState } from 'react';
 import { Modal } from 'react-bootstrap';
+import { useAppSelector } from '../../hooks';
+import { settingsSelector } from '../../store/settings.slice';
 
 export type SettingMessageRef = {
   showMessage: (message: string) => void;
 };
 
-const SettingMessage = forwardRef<SettingMessageRef>((_, ref) => {
-  const [message, setMessage] = useState<string>();
-
-  useImperativeHandle(ref, () => ({
-    showMessage(_message) {
-      setMessage(_message);
-      setTimeout(setMessage, 1500);
-    },
-  }));
+const SettingMessage = () => {
+  const { message } = useAppSelector(settingsSelector);
 
   if (!message) {
     return null;
@@ -21,10 +15,10 @@ const SettingMessage = forwardRef<SettingMessageRef>((_, ref) => {
 
   return (
     <Modal.Footer>
-      <span className="text-success">{message}</span>
+      <span className='text-success'>{message}</span>
     </Modal.Footer>
   );
-});
+};
 
 SettingMessage.displayName = 'SettingMessage';
 export { SettingMessage };

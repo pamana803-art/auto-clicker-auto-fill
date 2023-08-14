@@ -3,9 +3,9 @@ import { AcfService } from './service';
 
 export class DiscordOauthService extends AcfService {
   static async login(extensionId: string) {
-    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.DISCORD_LOGIN, methodName: 'login' });
+    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.DISCORD_OAUTH2, methodName: 'login' });
   }
   static async remove(extensionId: string) {
-    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.DISCORD_LOGIN, methodName: 'remove' });
+    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.DISCORD_OAUTH2, methodName: 'remove' });
   }
 }

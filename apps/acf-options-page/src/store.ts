@@ -3,6 +3,7 @@ import configsReducer from './store/config.slice';
 import addonReducer from './store/addon.slice';
 import modeReducer from './store/mode.slice';
 import themeReducer from './store/theme.slice';
+import settingsReducer from './store/settings.slice';
 
 export const store = configureStore({
   reducer: {
@@ -10,8 +11,10 @@ export const store = configureStore({
     addon: addonReducer,
     mode: modeReducer,
     theme: themeReducer,
+    settings: settingsReducer,
   },
 });
+
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

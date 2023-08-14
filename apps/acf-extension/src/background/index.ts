@@ -79,7 +79,7 @@ try {
    * Setup on Message Listener
    */
   const onMessageListener = {
-    [RUNTIME_MESSAGE_ACF.DISCORD_LOGIN]: new DiscordOauth2(),
+    [RUNTIME_MESSAGE_ACF.DISCORD_OAUTH2]: new DiscordOauth2(),
     [RUNTIME_MESSAGE_ACF.GOOGLE_OAUTH2]: new GoogleOauth2(),
     [RUNTIME_MESSAGE_ACF.GOOGLE_BACKUP]: new GoogleBackup(),
     [RUNTIME_MESSAGE_ACF.GOOGLE_SHEETS]: new GoogleSheets(),

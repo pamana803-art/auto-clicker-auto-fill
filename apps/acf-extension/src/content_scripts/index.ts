@@ -6,13 +6,12 @@ import ConfigStorage from './store/config-storage'
 
 async function loadConfig(loadType) {
   try {
-    const { href, host } = document.location
-    console.log(chrome)
-    new ConfigStorage().getConfig(href).then(async (config:Configuration) => {
+    new ConfigStorage().getConfig().then(async (config:Configuration) => {
       if (config) {
         const { settings = defaultSettings } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.SETTINGS)
         DataStore.getInst().setItem(LOCAL_STORAGE_KEY.SETTINGS, settings)
         if ((config.loadType || settings.loadType || LOAD_TYPES.WINDOW) === loadType) {
+          const { host } = document.location
           Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, host, loadType)
           await Config.checkStartType(settings, config)
           Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, host, 'END')

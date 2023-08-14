@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
+export type modeType = 'light' | 'pro'
+
 const initialState = localStorage.getItem('mode') || 'light';
 
 const slice = createSlice({
@@ -8,7 +10,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     switchMode: (state) => {
-      const mode = state === 'light' ? 'pro' : 'light'
+      const mode:modeType = state === 'light' ? 'pro' : 'light'
       localStorage.setItem('mode', mode)
       return mode
     }

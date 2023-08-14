@@ -15,7 +15,7 @@ export function ErrorAlert({ heading = 'Error', error }) {
   }
 
   return (
-    <Container className='d-flex align-items-center justify-content-center'>
+    <Container className='d-flex align-items-center justify-content-center my-5'>
       <Row>
         <Col>
           <Alert variant='danger'>

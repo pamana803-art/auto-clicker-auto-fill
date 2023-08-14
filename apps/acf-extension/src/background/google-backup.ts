@@ -50,6 +50,7 @@ export default class GoogleBackup  {
   }
 
   async backup(now?: boolean) {
+    console.log("backup", now)
     try {
       const { configs = [{ ...defaultConfig }] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
       if (configs) {

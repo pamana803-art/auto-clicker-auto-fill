@@ -1,34 +1,36 @@
-import React, {  useRef } from 'react'
-import PropTypes from 'prop-types'
-import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next'
-import { GearFill, Moon, Sun } from '../util'
-import { SettingsModal, SettingsModalRef } from '../modal'
-import { APP_LANGUAGES, APP_NAME } from '../constants'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { switchTheme, themeSelector } from '../store/theme.slice'
+import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
+import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { GearFill, Moon, Sun } from '../util';
+import { SettingsModal } from '../modal';
+import { APP_LANGUAGES, APP_NAME } from '../constants';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { switchTheme, themeSelector } from '../store/theme.slice';
+import { configsSelector } from '../store/config.slice';
+import { switchSettings } from '../store/settings.slice';
 
-function Header({ confirmRef, error }) {
+function Header({ confirmRef }) {
+  const theme = useAppSelector(themeSelector);
+  const { error } = useAppSelector(configsSelector);
+  const dispatch = useAppDispatch();
+    const { t, i18n } = useTranslation();
 
-  const theme = useAppSelector(themeSelector)
-  const dispatch = useAppDispatch()
-  const settingsRef = useRef<SettingsModalRef>(null)
-  const { t, i18n } = useTranslation()
-
-  const changeLanguage = lng => {
-    window.dataLayer.push({ event: 'language', conversionValue: lng })
-    i18n.changeLanguage(lng)
-  }
+  const changeLanguage = (lng) => {
+    window.dataLayer.push({ event: 'language', conversionValue: lng });
+    i18n.changeLanguage(lng);
+  };
 
   const toggleTheme = () => {
-    dispatch(switchTheme())
-  }
+    dispatch(switchTheme());
+  };
 
-  let imageURL = 'https://getautoclicker.com/favicons/favicon32.png'
-  let appName = APP_NAME
-  if (/(DEV|BETA)/.test(process.env.NX_VARIANT || "")) {
-    imageURL = `https://getautoclicker.com/favicons/${process.env.NX_VARIANT}/icon32.png`
-    appName += ` [${process.env.NX_VARIANT}]`
+  let imageURL = 'https://getautoclicker.com/favicons/favicon32.png';
+  let appName = APP_NAME;
+  
+  if (/(DEV|BETA)/.test(process.env.NX_VARIANT || '')) {
+    imageURL = `https://getautoclicker.com/favicons/${process.env.NX_VARIANT}/icon32.png`;
+    appName += ` [${process.env.NX_VARIANT}]`;
   }
 
   return (
@@ -46,13 +48,13 @@ function Header({ confirmRef, error }) {
                 {theme !== 'light' ? <Sun width='24' height='24' title={t('header.theme.dark')} /> : <Moon width='24' height='24' title={t('header.theme.light')} />}
               </Nav.Link>
 
-              {!error.message && (
+              {!error && (
                 <>
-                  <Nav.Link onClick={() => settingsRef.current?.showSettings()} className='px-4 py-3'>
+                  <Nav.Link onClick={() => dispatch(switchSettings())} className='px-4 py-3'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
                   <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder'>
-                    {APP_LANGUAGES.map(language => (
+                    {APP_LANGUAGES.map((language) => (
                       <NavDropdown.Item key={language} title={language} onClick={() => changeLanguage(language)} className='text-secondary'>
                         {t(`language.${language}`)}
                       </NavDropdown.Item>
@@ -60,19 +62,16 @@ function Header({ confirmRef, error }) {
                   </NavDropdown>
                 </>
               )}
-              <SettingsModal ref={settingsRef} confirmRef={confirmRef} />
+              <SettingsModal confirmRef={confirmRef} />
             </Nav>
           </Navbar>
         </Container>
       </nav>
     </header>
-  )
+  );
 }
-Header.defaultProps = {
-  error: {}
-}
+
 Header.propTypes = {
   confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired,
-  error: PropTypes.shape({ message: PropTypes.string })
-}
-export default Header
+};
+export default Header;

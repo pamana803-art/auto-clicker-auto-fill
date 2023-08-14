@@ -1,38 +1,36 @@
-import React, { useEffect, useState } from 'react'
-import {  StorageService } from '@dhruv-techapps/core-service'
-import { Button, Form, Image } from 'react-bootstrap'
-import { Discord, LOCAL_STORAGE_KEY, RESPONSE_CODE} from '@dhruv-techapps/acf-common'
-import PropTypes from 'prop-types'
-import { DiscordOauthService } from '@dhruv-techapps/acf-service'
+import React, { useEffect, useState } from 'react';
+import { StorageService } from '@dhruv-techapps/core-service';
+import { Button, Form, Image } from 'react-bootstrap';
+import { Discord, LOCAL_STORAGE_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
+import PropTypes from 'prop-types';
+import { DiscordOauthService } from '@dhruv-techapps/acf-service';
 
 function SettingDiscord({ onChange, label, checked }) {
-  const [discord, setDiscord] = useState<Discord>()
+  const [discord, setDiscord] = useState<Discord>();
 
   useEffect(() => {
-    if (chrome.runtime) {
-      StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.DISCORD)
-        .then(({ discord: result }) => {
-          if (result) {
-            setDiscord(result)
-          }
-        })
-        .catch(console.error)
-    }
-  }, [])
+    StorageService.get<{ discord: Discord }>(window.EXTENSION_ID, LOCAL_STORAGE_KEY.DISCORD)
+      .then(({ discord: result }) => {
+        if (result) {
+          setDiscord(result);
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   const connect = async () => {
-    const response = await DiscordOauthService.login(window.EXTENSION_ID)
+    const response = await DiscordOauthService.login(window.EXTENSION_ID);
     if (response !== RESPONSE_CODE.ERROR) {
-      setDiscord(response)
+      setDiscord(response);
     }
-  }
+  };
 
   const remove = async () => {
-    const response = await DiscordOauthService.remove(window.EXTENSION_ID)
+    const response = await DiscordOauthService.remove(window.EXTENSION_ID);
     if (response === RESPONSE_CODE.REMOVED) {
-      setDiscord(undefined)
+      setDiscord(undefined);
     }
-  }
+  };
 
   if (discord) {
     return (
@@ -57,20 +55,20 @@ function SettingDiscord({ onChange, label, checked }) {
           <Form.Check type='switch' id='discord' onChange={onChange} checked={checked} name='discord' />
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <Button variant='link' onClick={connect}>
       Connect with discord
     </Button>
-  )
+  );
 }
 
-SettingDiscord.displayName = 'SettingDiscord'
+SettingDiscord.displayName = 'SettingDiscord';
 SettingDiscord.propTypes = {
   checked: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-}
-export { SettingDiscord }
+  onChange: PropTypes.func.isRequired,
+};
+export { SettingDiscord };

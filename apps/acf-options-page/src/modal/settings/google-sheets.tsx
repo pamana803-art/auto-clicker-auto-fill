@@ -13,15 +13,13 @@ function SettingGoogleSheets() {
   const [google, setGoogle] = useState<Google>();
   const theme = useAppSelector(themeSelector);
   useEffect(() => {
-    if (chrome.runtime) {
-      StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.GOOGLE)
-        .then(({ google: result }) => {
-          if (result) {
-            setGoogle(result);
-          }
-        })
-        .catch(console.error);
-    }
+    StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.GOOGLE)
+      .then(({ google: result }) => {
+        if (result) {
+          setGoogle(result);
+        }
+      })
+      .catch(console.error);
   }, []);
 
   const connect = async () => {

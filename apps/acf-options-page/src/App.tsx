@@ -4,40 +4,29 @@ import { ManifestService } from '@dhruv-techapps/core-service';
 import Header from './app/header';
 import Footer from './app/footer';
 import { ToastHandler, ErrorAlert, DataList, Loading, ToastHandlerRef } from './components';
-import { AdsBlockerModal, AdsBlockerModalRef, BlogModal, BlogModelRef, ConfirmModal, ConfirmModalRef, ExtensionNotFound, ExtensionNotFoundRef } from './modal';
+import { AdsBlockerModal, AdsBlockerModalRef, BlogModal, BlogModelRef, ConfirmModal, ConfirmModalRef, ExtensionNotFound } from './modal';
 import { APP_NAME, NO_EXTENSION_ERROR } from './constants';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { configsSelector, setConfigsError, setManifest, switchAdsBlocker, switchExtensionNotFound } from './store/config.slice';
+import { ErrorBoundary } from './_helpers/error-boundary';
 
 function App() {
   const toastRef = useRef<ToastHandlerRef>(null);
   const blogRef = useRef<BlogModelRef>(null);
   const confirmRef = useRef<ConfirmModalRef>(null);
-  const adsBlockerRef = useRef<AdsBlockerModalRef>(null);
-  const extensionNotFoundRef = useRef<ExtensionNotFoundRef>(null);
-  const [loading, setLoading] = useState<boolean>();
-  const [manifest, setManifest] = useState<chrome.runtime.Manifest>();
-  const [error, setError] = useState<string>();
+  const { loading, manifest, error } = useAppSelector(configsSelector);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (chrome.runtime) {
-      setLoading(true);
-      ManifestService.values(window.EXTENSION_ID, ['name', 'version'])
-        .then(setManifest)
-        .catch((_error) => {
-          if (NO_EXTENSION_ERROR.includes(_error.message)) {
-            setTimeout(() => {
-              extensionNotFoundRef.current?.show();
-            }, 1000);
-          }
-          setError(_error);
-        })
-        .finally(() => setLoading(false));
+      ManifestService.values(window.EXTENSION_ID, ['name', 'version']).then(
+        (manifest) => dispatch(setManifest(manifest)),
+        (_error) => dispatch(setConfigsError(_error))
+      );
     } else {
-      setError('Extension not found');
-      setTimeout(() => {
-        extensionNotFoundRef.current?.show();
-      }, 1000);
+      dispatch(setConfigsError('Extension not found'));
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (/(DEV|BETA)/.test(process.env.NX_VARIANT || '')) {
@@ -47,24 +36,27 @@ function App() {
     }
   }, []);
 
-  console.log(manifest, error);
+  if (loading) {
+    return <Loading message='Connecting with extension...' className='m-5 p-5' />;
+  }
+  console.log('App');
 
   return (
-    <Router>
-      <Suspense fallback='loading'>
-        <Header error={error} confirmRef={confirmRef} />
-        {loading && <Loading />}
+    <Suspense fallback={<Loading message='Connecting with extension...' className='m-5 p-5' />}>
+      <ErrorBoundary fallback={<ErrorAlert error={{ message: 'fallback' }} />}>
+        <Header confirmRef={confirmRef} />
         <ErrorAlert error={error} />
         {/*<Configs toastRef={toastRef} blogRef={blogRef} confirmRef={confirmRef} />*/}
         <Footer version={manifest?.version} />
-        {/* <ToastHandler ref={toastRef} />
+        <ToastHandler ref={toastRef} />
         <ConfirmModal ref={confirmRef} />
         <BlogModal ref={blogRef} />
-        <ExtensionNotFound ref={extensionNotFoundRef} version={manifest?.version} />
-  <AdsBlockerModal ref={adsBlockerRef} version={manifest?.version} />*/}
-      </Suspense>
-      <DataList />
-    </Router>
+
+        <ExtensionNotFound />
+        <AdsBlockerModal />
+        <DataList />
+      </ErrorBoundary>
+    </Suspense>
   );
 }
 

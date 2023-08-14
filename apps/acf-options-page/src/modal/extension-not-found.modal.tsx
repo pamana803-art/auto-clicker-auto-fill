@@ -5,36 +5,16 @@ import { Trans, useTranslation } from 'react-i18next';
 import { CHROME_WEB_STORE, EDGE_WEB_STORE } from '../constants';
 import { dataLayerModel } from '../util/data-layer';
 import { BROWSER } from '../_helpers';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { configsSelector, switchExtensionNotFound } from '../store/config.slice';
 
-type ExtensionNotFoundProps = {
-  version?: string;
-};
 
-export type ExtensionNotFoundRef = {
-  show: () => void
-}
-
-const ExtensionNotFound = forwardRef<ExtensionNotFoundRef, ExtensionNotFoundProps>(({ version }, ref) => {
+const ExtensionNotFound = () => {
   const { t } = useTranslation();
-  const [show, setShow] = useState<boolean>();
 
-  useEffect(() => {
-    if (!chrome.runtime) {
-      setShow(true);
-    }
-  }, [chrome.runtime]);
+  const {extensionNotFound } = useAppSelector(configsSelector)
 
-  useEffect(() => {
-    if (!version) {
-      setShow(true);
-    }
-  }, [version]);
-
-  useImperativeHandle(ref, () => ({
-    show() {
-      setShow(true);
-    },
-  }));
+  const dispatch = useAppDispatch()
 
   const downloadClick = () => {
     const webStore = BROWSER === 'EDGE' ? EDGE_WEB_STORE : CHROME_WEB_STORE;
@@ -49,11 +29,11 @@ const ExtensionNotFound = forwardRef<ExtensionNotFoundRef, ExtensionNotFoundProp
 
   const onHide = () => {
     dataLayerModel('extension-not-found', 'close');
-    setShow(false);
+    dispatch(switchExtensionNotFound())
   };
 
   return (
-    <Modal show={show} size="lg" centered backdrop="static" keyboard={false} onShow={() => dataLayerModel('extension-not-found', 'open')} onHide={onHide}>
+    <Modal show={extensionNotFound} size="lg" centered backdrop="static" keyboard={false} onShow={() => dataLayerModel('extension-not-found', 'open')} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.extensionNotFound.title')}</Modal.Title>
       </Modal.Header>
@@ -79,7 +59,7 @@ const ExtensionNotFound = forwardRef<ExtensionNotFoundRef, ExtensionNotFoundProp
       </Modal.Footer>
     </Modal>
   );
-});
+};
 
 ExtensionNotFound.displayName = 'ExtensionNotFound';
 ExtensionNotFound.defaultProps = {

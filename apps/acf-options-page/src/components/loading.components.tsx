@@ -1,11 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-export function Loading() {
+export function Loading({ message = 'Loading...', className = '' }) {
   return (
-    <div className='d-flex justify-content-center align-items-center' style={{ color: '#712cf9' }}>
-      <div className='spinner-border' role='status'>
-        <span className='visually-hidden'>Loading...</span>
-      </div>
+    <div className={`d-flex justify-content-center align-items-center ${className}`}>
+      <strong role='status' className='me-5'>{message}</strong>
+      <div className='spinner-border' role='status' aria-hidden='true'></div>
     </div>
-  )
+  );
 }

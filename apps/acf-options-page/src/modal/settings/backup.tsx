@@ -2,27 +2,32 @@ import React, { Dispatch, SetStateAction } from 'react';
 import PropTypes from 'prop-types';
 import { ListGroup, NavDropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { AUTO_BACKUP, GOOGLE_SCOPES_KEY, RESPONSE_CODE,  Settings } from '@dhruv-techapps/acf-common';
+import { AUTO_BACKUP, GOOGLE_SCOPES_KEY, RESPONSE_CODE, Settings } from '@dhruv-techapps/acf-common';
 import { CloudArrowUpFill } from '../../util';
 import { ConfirmModalRef } from '../confirm.modal';
 import { GoogleBackupService, GoogleOauthService } from '@dhruv-techapps/acf-service';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { settingsSelector, updateSettingsBackup } from '../../store/settings.slice';
 
 type SettingsBackupProps = {
-  settings: Settings;
-  setSettings: Dispatch<SetStateAction<Settings>>;
   confirmRef: React.RefObject<ConfirmModalRef>;
 };
 
-export function SettingsBackup({ settings, setSettings, confirmRef }: SettingsBackupProps) {
+export function SettingsBackup({ confirmRef }: SettingsBackupProps) {
   const { t } = useTranslation();
 
+  const { backup } = useAppSelector(settingsSelector).settings;
+  const dispatch = useAppDispatch();
   const onBackup = async (autoBackup?: AUTO_BACKUP) => {
-    if (autoBackup) {
-      setSettings({ ...settings, backup: { autoBackup } });
-    }
     const response = await GoogleOauthService.loginWithScope(window.EXTENSION_ID, GOOGLE_SCOPES_KEY.DRIVE);
     if (response !== RESPONSE_CODE.ERROR) {
-      autoBackup ? GoogleBackupService.autoBackup(window.EXTENSION_ID, autoBackup) : GoogleBackupService.backup(window.EXTENSION_ID)
+      if (autoBackup) {
+        GoogleBackupService.autoBackup(window.EXTENSION_ID, autoBackup).then(() => {
+          dispatch(updateSettingsBackup(autoBackup));
+        });
+      } else {
+        GoogleBackupService.backup(window.EXTENSION_ID);
+      }
     }
   };
 
@@ -36,8 +41,6 @@ export function SettingsBackup({ settings, setSettings, confirmRef }: SettingsBa
       },
     });
   };
-
-  const { backup } = settings;
 
   return (
     <>
@@ -92,18 +95,7 @@ export function SettingsBackup({ settings, setSettings, confirmRef }: SettingsBa
     </>
   );
 }
-SettingsBackup.defaultProps = {
-  settings: {
-    backup: {},
-  },
-};
+
 SettingsBackup.propTypes = {
-  settings: PropTypes.shape({
-    backup: PropTypes.shape({
-      lastBackup: PropTypes.string,
-      autoBackup: PropTypes.string,
-    }),
-  }),
-  setSettings: PropTypes.func.isRequired,
   confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired,
 };

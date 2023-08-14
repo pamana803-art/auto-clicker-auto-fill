@@ -1,7 +1,7 @@
 export enum GOOGLE_SCOPES_KEY {
-  SHEETS = 'sheets',
-  PROFILE = 'profile',
-  DRIVE = 'drive',
+  SHEETS = 'SHEETS',
+  PROFILE = 'PROFILE',
+  DRIVE = 'DRIVE',
 }
 export enum GOOGLE_SCOPES {
   SHEETS = 'https://www.googleapis.com/auth/spreadsheets.readonly',

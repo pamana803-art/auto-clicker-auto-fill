@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { VolumeMute, VolumeUp } from '../../util';
-import { getElementProps } from '../../util/element';
-import { dataLayerInput } from '../../util/data-layer';
+import { getFieldNameValue } from '../../util/element';
 import { SettingDiscord } from './discord';
-import {  Settings, SettingsNotifications } from '@dhruv-techapps/acf-common';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { settingsSelector, updateSettingsNotification } from '../../store/settings.slice';
 
-type SettingNotificationsProps = { notifications: SettingsNotifications; setSettings: Dispatch<SetStateAction<Settings>> };
-
-function SettingNotifications({ notifications, setSettings }: SettingNotificationsProps) {
+function SettingNotifications() {
   const { t } = useTranslation();
 
+  const { notifications } = useAppSelector(settingsSelector).settings;
+  const dispatch = useAppDispatch();
   const onUpdate = (e) => {
-    const update = getElementProps(e);
-    dataLayerInput(update, 'settings');
-    setSettings((settings: Settings) => ({ ...settings, notifications: { ...settings.notifications, ...update } }));
+    const update = getFieldNameValue<boolean>(e);
+    dispatch(updateSettingsNotification(update));
   };
 
   return (
@@ -66,15 +65,4 @@ function SettingNotifications({ notifications, setSettings }: SettingNotificatio
   );
 }
 
-SettingNotifications.propTypes = {
-  notifications: PropTypes.shape({
-    onError: PropTypes.bool,
-    onAction: PropTypes.bool,
-    onBatch: PropTypes.bool,
-    onConfig: PropTypes.bool,
-    sound: PropTypes.bool,
-    discord: PropTypes.bool,
-  }).isRequired,
-  setSettings: PropTypes.func.isRequired,
-};
 export { SettingNotifications };

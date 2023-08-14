@@ -2,6 +2,22 @@
 // @ts-nocheck
 import { NUMBER_FIELDS, IN_VALID_CLASS } from './validation';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getFieldNameValue = <T = any>(e): { name: string; value: T } | null => {
+  if (e.target.classList.contains(IN_VALID_CLASS)) {
+    return null;
+  }
+  let { value } = e.target;
+  const { name, type } = e.target;
+  if (type === 'checkbox') {
+    value = e.target.checked;
+  } else if (typeof value === 'string' && NUMBER_FIELDS.indexOf(name) !== -1 && value.indexOf('e') === -1) {
+    value = Number(value);
+  }
+
+  return { name, value };
+};
+
 const getElementProps = (e) => {
   if (e.target.classList.contains(IN_VALID_CLASS)) {
     return null;
@@ -33,4 +49,4 @@ const updateForm = (formId: string, data: any) => {
   }
 };
 
-export { getElementProps, updateForm };
+export { getElementProps, updateForm, getFieldNameValue };
