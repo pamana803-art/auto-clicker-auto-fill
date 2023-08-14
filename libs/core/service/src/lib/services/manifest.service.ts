@@ -1,6 +1,6 @@
-import { Service } from './service';
+import { CoreService } from './service';
 
-export class ManifestService extends Service {
+export class ManifestService extends CoreService {
   static async values(extensionId: string, keys: string[]) {
     return await this.message(extensionId, { messenger: 'manifest', methodName: 'values', keys });
   }

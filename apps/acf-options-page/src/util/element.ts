@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { NUMBER_FIELDS, IN_VALID_CLASS } from './validation';
 
 const getElementProps = (e) => {

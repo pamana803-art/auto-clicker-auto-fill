@@ -1,6 +1,6 @@
-import { Service } from './service';
+import { CoreService } from './service';
 
-export class NotificationsService extends Service {
+export class NotificationsService extends CoreService {
   static async create(extensionId: string, options: chrome.notifications.NotificationOptions<true>, notificationId:string = crypto.randomUUID()) {
     return await this.message(extensionId, { messenger: 'notifications', notificationId, options, methodName: 'create' });
   }

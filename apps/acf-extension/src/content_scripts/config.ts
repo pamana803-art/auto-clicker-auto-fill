@@ -1,4 +1,4 @@
-import { ActionService, DiscordMessagingService, NotificationsService } from '@dhruv-techapps/core-service';
+import { ActionService, NotificationsService } from '@dhruv-techapps/core-service';
 import { Logger } from '@dhruv-techapps/core-common';
 import { Configuration, START_TYPES, Settings, SettingsNotifications, defaultConfig } from '@dhruv-techapps/acf-common';
 import { wait } from './util';
@@ -7,6 +7,7 @@ import { ConfigError } from './error';
 import { Hotkey } from './hotkey';
 import GoogleSheets from './util/google-sheets';
 import Common from './common';
+import { DiscordMessagingService } from '@dhruv-techapps/acf-service';
 
 const LOGGER_LETTER = 'Config';
 const Config = (() => {

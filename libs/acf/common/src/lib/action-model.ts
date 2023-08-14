@@ -39,10 +39,9 @@ export enum ELEMENT_TYPE {
 }
 
 export type Action = {
-  actionId: number;
   elementFinder: string;
-  elementType: ELEMENT_TYPE;
-  enable: boolean;
+  elementType?: ELEMENT_TYPE;
+  actionId?: number;
   name?: string;
   initWait?: number;
   value?: string;
@@ -53,7 +52,7 @@ export type Action = {
 };
 
 export type ActionSetting = {
-  iframeFirst:boolean,
+  iframeFirst?: boolean;
   retry: number;
   retryInterval: number;
   retryOption: RETRY_OPTIONS;

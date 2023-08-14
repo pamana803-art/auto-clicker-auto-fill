@@ -1,7 +1,7 @@
-import { Service } from './service';
+import { CoreService } from './service';
 import { StorageMessengerGetProps, StorageMessengerRemoveProps, StorageMessengerSetProps } from '@dhruv-techapps/core-extension';
 
-export class StorageService extends Service {
+export class StorageService extends CoreService {
   static async get<T = any>(extensionId: string, keys: StorageMessengerGetProps): Promise<T> {
     return await this.message<T>(extensionId, { messenger: 'storage', methodName: 'get', keys });
   }

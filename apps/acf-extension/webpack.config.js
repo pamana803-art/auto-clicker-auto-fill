@@ -1,4 +1,4 @@
-const { composePlugins, withNx } = require('@nx/webpack');
+const { composePlugins, withNx, withWeb } = require('@nx/webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
@@ -23,6 +23,7 @@ function modify(buffer, name, oauth, version, { KEY }) {
 module.exports = composePlugins(withNx(), (config, ctx) => {
   // Update the webpack config as needed here.
   const { variant = 'DEV', oauth = '1068181857899-u8kurrhqoph1ht9d4psotb25ivvjhhft.apps.googleusercontent.com', name = 'Auto Clicker - AutoFill [LOCAL]' } = ctx.options;
+  config.entry.styles =  ctx.options.styles
   config.module.rules.push({
     test: /\.scss$/i,
     use: [

@@ -9,10 +9,7 @@ export type MessengerConfigObject = {
   [key: string]: MessengerConfig;
 };
 
-export type RuntimeMessageRequest = (ActionRequest | ManifestRequest | NotificationsRequest | StorageRequest) | {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [index: string]: any;
-};
+export type RuntimeMessageRequest = (ActionRequest | ManifestRequest | NotificationsRequest | StorageRequest);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const messageListener = (request: any, configs: MessengerConfigObject, sendResponse: (response?: any) => void) => {
@@ -49,15 +46,15 @@ export const messageListener = (request: any, configs: MessengerConfigObject, se
           if (typeof configs[messenger].processPortMessage === 'function') {
             configs[messenger].processPortMessage(request).then(sendResponse).catch(sendResponse);
           } else {
-            sendResponse(new Error(`${request.action} ${chrome.i18n.getMessage('@PORT__method_not_found')}`));
+            sendResponse(new Error(`${messenger} ${chrome.i18n.getMessage('@PORT__method_not_found')}`));
           }
         } else {
-          sendResponse(new Error(`${request.action} ${chrome.i18n.getMessage('@PORT__action_not_found')}`));
+          sendResponse(new Error(`${messenger} ${chrome.i18n.getMessage('@PORT__action_not_found')}`));
         }
     }
   } catch (error) {
     if (error instanceof Error) {
-      sendResponse(new Error(`${request.action} ${error.message}`));
+      sendResponse(new Error(`${messenger} ${error.message}`));
     } else {
       console.error('Unexpected error', error);
     }

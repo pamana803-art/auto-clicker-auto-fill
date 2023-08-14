@@ -1,6 +1,6 @@
-import { Service } from './service';
+import { CoreService } from './service';
 
-export class ActionService extends Service {
+export class ActionService extends CoreService {
   static async setBadgeBackgroundColor(extensionId: string, details: chrome.action.BadgeColorDetails) {
     return await this.message(extensionId, { messenger: 'action', methodName: 'setBadgeBackgroundColor', details });
   }

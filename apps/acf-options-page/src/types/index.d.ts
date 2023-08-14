@@ -6,5 +6,5 @@ declare global {
     adsbygoogle: any;
   }
 }
-
+declare module 'react-table';
 export {};

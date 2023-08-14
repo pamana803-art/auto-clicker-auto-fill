@@ -14,23 +14,22 @@ export enum START_TYPES {
 export const defaultHotkey = 'Ctrl + Shift + A';
 
 export type Configuration = {
-  configId: number;
   url: string;
   enable: boolean;
   startType: START_TYPES;
   loadType: LOAD_TYPES;
+  actions: Array<Action>;
+  configId?: number;
   name?: string;
   initWait?: number;
   startTime?: string;
   spreadsheetId?: string;
   hotkey?: string;
   batch?: Batch;
-  actions: Array<Action>;
   new?:boolean
 };
 
 export const defaultConfig: Configuration = {
-  configId: -1,
   url: '',
   enable: true,
   startType: START_TYPES.AUTO,

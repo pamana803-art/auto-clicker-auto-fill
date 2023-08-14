@@ -1,8 +1,8 @@
-import { RuntimeMessageRequest } from '@dhruv-techapps/core-extension';
+import { RuntimeMessageRequest } from '@dhruv-techapps/acf-common';
 
-export class CoreService {
+export class AcfService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static messageChrome<T = any>(extensionId: string, message: RuntimeMessageRequest): Promise<T> {
+  static #messageChrome<T = any>(extensionId: string, message: RuntimeMessageRequest): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       chrome.runtime.sendMessage(extensionId, message, (response) => {
         if (chrome.runtime.lastError || response?.error) {
@@ -19,6 +19,6 @@ export class CoreService {
     if (extensionId && typeof extensionId !== 'string') {
       return Promise.reject(new Error('extensionId is not undefined neither string'));
     }
-    return await this.messageChrome<T>(extensionId, message);
+    return await this.#messageChrome<T>(extensionId, message);
   }
 }

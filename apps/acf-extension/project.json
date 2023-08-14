@@ -27,10 +27,6 @@
           {
             "entryName": "wizard-popup",
             "entryPath": "apps/acf-extension/src/wizard/popup/wizard-popup.ts"
-          },
-          {
-            "entryName": "wizard-popup-styles",
-            "entryPath": "apps/acf-extension/src/wizard/popup/wizard-popup.scss"
           }
         ],
         "styles": ["apps/acf-extension/src/wizard/popup/wizard-popup.scss"],
@@ -40,18 +36,13 @@
       },
       "configurations": {
         "development": {
+          "watch": true,
           "extractLicenses": false,
           "optimization": false,
           "sourceMap": true,
           "vendorChunk": true
         },
         "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/acf-extension/src/environments/environment.ts",
-              "with": "apps/acf-extension/src/environments/environment.prod.ts"
-            }
-          ],
           "optimization": true,
           "outputHashing": "none",
           "sourceMap": true,
@@ -62,17 +53,50 @@
       }
     },
     "serve": {
-      "executor": "@nx/js:node",
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "acf-extension:build"
+        "target": "web",
+        "compiler": "babel",
+        "outputPath": "dist/apps/acf-extension",
+        "extractCss": true,
+        "main": "apps/acf-extension/src/background/index.ts",
+        "outputFileName": "background.js",
+        "additionalEntryPoints": [
+          {
+            "entryName": "content_scripts",
+            "entryPath": "apps/acf-extension/src/content_scripts/index.ts"
+          },
+          {
+            "entryName": "wizard",
+            "entryPath": "apps/acf-extension/src/wizard/index.ts"
+          },
+          {
+            "entryName": "wizard-popup",
+            "entryPath": "apps/acf-extension/src/wizard/popup/wizard-popup.ts"
+          }
+        ],
+        "styles": ["apps/acf-extension/src/wizard/popup/wizard-popup.scss"],
+        "tsConfig": "apps/acf-extension/tsconfig.app.json",
+        "isolatedConfig": true,
+        "webpackConfig": "apps/acf-extension/webpack.config.js"
       },
       "configurations": {
         "development": {
-          "buildTarget": "acf-extension:build:development"
+          "watch": true,
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
         },
         "production": {
-          "buildTarget": "acf-extension:build:production"
+          "optimization": true,
+          "outputHashing": "none",
+          "sourceMap": true,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
         }
       }
     },

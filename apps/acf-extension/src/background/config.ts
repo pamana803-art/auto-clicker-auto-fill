@@ -3,6 +3,7 @@ import { MessengerConfig } from '@dhruv-techapps/core-extension';
 
 export default class Config implements MessengerConfig {
   async processPortMessage({ href }) {
+    console.log("here", href)
     const storageResult = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
     const configs:Array<Configuration> = storageResult.configs || []
     let result = null;

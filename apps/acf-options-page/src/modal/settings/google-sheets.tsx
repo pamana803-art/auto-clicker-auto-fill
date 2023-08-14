@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Service, StorageService } from '@dhruv-techapps/core-service';
+import { StorageService } from '@dhruv-techapps/core-service';
 import { Button, Form, Image } from 'react-bootstrap';
-import { Google, LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common';
+import { Google, LOCAL_STORAGE_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
 
 import GoogleSignInLight from '../../assets/btn_google_signin_light_normal_web.png';
 import GoogleSignInDark from '../../assets/btn_google_signin_dark_normal_web.png';
 import { useAppSelector } from '../../hooks';
 import { themeSelector } from '../../store/theme.slice';
+import { GoogleSheetsService } from '@dhruv-techapps/acf-service';
 
 function SettingGoogleSheets() {
   const [google, setGoogle] = useState<Google>();
-  const  theme  = useAppSelector(themeSelector);
+  const theme = useAppSelector(themeSelector);
   useEffect(() => {
     if (chrome.runtime) {
       StorageService.get(window.EXTENSION_ID, LOCAL_STORAGE_KEY.GOOGLE)
@@ -24,14 +25,14 @@ function SettingGoogleSheets() {
   }, []);
 
   const connect = async () => {
-    const response = await Service.message(window.EXTENSION_ID, { action: RUNTIME_MESSAGE_ACF.GOOGLE_SHEETS, login: true });
+    const response = await GoogleSheetsService.login(window.EXTENSION_ID);
     if (response !== RESPONSE_CODE.ERROR) {
       setGoogle(response);
     }
   };
 
   const remove = async () => {
-    const response = await Service.message(window.EXTENSION_ID, { action: RUNTIME_MESSAGE_ACF.GOOGLE_SHEETS, remove: true });
+    const response = await GoogleSheetsService.remove(window.EXTENSION_ID);
     if (response !== RESPONSE_CODE.ERROR) {
       setGoogle(undefined);
     }

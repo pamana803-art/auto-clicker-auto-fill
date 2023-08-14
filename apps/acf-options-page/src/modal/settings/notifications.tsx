@@ -6,9 +6,9 @@ import { VolumeMute, VolumeUp } from '../../util';
 import { getElementProps } from '../../util/element';
 import { dataLayerInput } from '../../util/data-layer';
 import { SettingDiscord } from './discord';
-import { Notifications, Settings } from '@dhruv-techapps/acf-common';
+import {  Settings, SettingsNotifications } from '@dhruv-techapps/acf-common';
 
-type SettingNotificationsProps = { notifications: Notifications; setSettings: Dispatch<SetStateAction<Settings>> };
+type SettingNotificationsProps = { notifications: SettingsNotifications; setSettings: Dispatch<SetStateAction<Settings>> };
 
 function SettingNotifications({ notifications, setSettings }: SettingNotificationsProps) {
   const { t } = useTranslation();

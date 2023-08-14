@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Service, StorageService } from '@dhruv-techapps/core-service'
+import {  StorageService } from '@dhruv-techapps/core-service'
 import { Button, Form, Image } from 'react-bootstrap'
-import { Discord, LOCAL_STORAGE_KEY, RESPONSE_CODE, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common'
+import { Discord, LOCAL_STORAGE_KEY, RESPONSE_CODE} from '@dhruv-techapps/acf-common'
 import PropTypes from 'prop-types'
-import { Logger } from '@dhruv-techapps/core-common'
+import { DiscordOauthService } from '@dhruv-techapps/acf-service'
 
 function SettingDiscord({ onChange, label, checked }) {
   const [discord, setDiscord] = useState<Discord>()
@@ -21,14 +21,14 @@ function SettingDiscord({ onChange, label, checked }) {
   }, [])
 
   const connect = async () => {
-    const response = await Service.message(window.EXTENSION_ID, { action: RUNTIME_MESSAGE_ACF.DISCORD_LOGIN, login: true })
+    const response = await DiscordOauthService.login(window.EXTENSION_ID)
     if (response !== RESPONSE_CODE.ERROR) {
       setDiscord(response)
     }
   }
 
   const remove = async () => {
-    const response = await Service.message(window.EXTENSION_ID, { action: RUNTIME_MESSAGE_ACF.DISCORD_LOGIN, remove: true })
+    const response = await DiscordOauthService.remove(window.EXTENSION_ID)
     if (response === RESPONSE_CODE.REMOVED) {
       setDiscord(undefined)
     }
