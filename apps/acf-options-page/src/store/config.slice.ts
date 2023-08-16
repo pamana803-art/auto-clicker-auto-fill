@@ -1,6 +1,16 @@
 import { Configuration } from '@dhruv-techapps/acf-common';
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
+import { ManifestService } from '@dhruv-techapps/core-service';
+import { NO_EXTENSION_ERROR } from '../constants';
+
+export const getManifest = createAsyncThunk('getManifest', async (): Promise<chrome.runtime.Manifest> => {
+  if (chrome.runtime) {
+    const manifest = await ManifestService.values(window.EXTENSION_ID, ['name', 'version']);
+    return manifest;
+  }
+  throw new Error(NO_EXTENSION_ERROR[0]);
+});
 
 type ConfigurationsStore = {
   manifest?: chrome.runtime.Manifest;
@@ -48,8 +58,12 @@ const slice = createSlice({
         config[field] = value;
       }
     },
-    switchExtensionNotFound: (state) => {
+    switchExtensionNotFound: (state, action: PayloadAction<string | undefined>) => {
+      state.loading = false;
       state.extensionNotFound = !state.extensionNotFound;
+      if (action.payload) {
+        state.error = action.payload;
+      }
     },
     switchAdsBlocker: (state) => {
       state.adsBlocker = !state.adsBlocker;
@@ -72,6 +86,22 @@ const slice = createSlice({
         }
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getManifest.fulfilled, (state, action) => {
+      state.manifest = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(getManifest.rejected, (state, action) => {
+      state.loading = false;
+      const error = action.error.message;
+      if (error) {
+        state.error = error;
+        if (NO_EXTENSION_ERROR.includes(error)) {
+          state.extensionNotFound = !state.extensionNotFound;
+        }
+      }
+    });
   },
 });
 

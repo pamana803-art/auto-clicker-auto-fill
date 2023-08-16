@@ -1,12 +1,11 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { StorageService } from '@dhruv-techapps/core-service';
-import { LOCAL_STORAGE_KEY, Settings, defaultSettings } from '@dhruv-techapps/acf-common';
+import { useEffect, useState } from 'react';
+import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { getElementProps, getFieldNameValue } from '../util/element';
+import { getFieldNameValue } from '../util/element';
 import { SettingNotifications } from './settings/notifications';
 import { SettingRetry } from './settings/retry';
-import { dataLayerInput, dataLayerModel } from '../util/data-layer';
+import { dataLayerModel } from '../util/data-layer';
 import { SettingMessage } from './settings/message';
 import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill } from '../util';
 import { SettingsBackup } from './settings/backup';
@@ -14,7 +13,7 @@ import { SettingGoogleSheets } from './settings/google-sheets';
 import { ErrorAlert, Loading } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { modeSelector, switchMode } from '../store/mode.slice';
-import { setSettings, setSettingsError, setSettingsMessage, settingsSelector, switchSettings, updateSettings } from '../store/settings.slice';
+import { getSettings, settingsSelector, switchSettings, updateSettings } from '../store/settings.slice';
 
 enum SETTINGS_PAGE {
   NOTIFICATION = 'notification',
@@ -26,7 +25,7 @@ export type SettingsModalRef = {
   showSettings: () => void;
 };
 
-const SettingsModal = ({ confirmRef }) => {
+const SettingsModal = () => {
   const { t } = useTranslation();
   const [page, setPage] = useState<SETTINGS_PAGE>();
 
@@ -39,20 +38,10 @@ const SettingsModal = ({ confirmRef }) => {
   };
 
   useEffect(() => {
-    StorageService.get<{ settings: Settings }>(window.EXTENSION_ID, LOCAL_STORAGE_KEY.SETTINGS).then(
-      (result) => dispatch(setSettings(result.settings)),
-      (error) => dispatch(setSettingsError(error))
-    );
+    if (chrome.runtime) {
+      dispatch(getSettings());
+    }
   }, [dispatch]);
-
-  useEffect(() => {
-    console.log('Updated', JSON.stringify(settings));
-    /*
-    StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: settings }).then(
-      () => dispatch(setSettingsMessage(t('modal.settings.saveMessage'))),
-      (error) => dispatch(setSettingsError(error))
-    );*/
-  }, [settings]);
 
   const onUpdate = (e) => {
     dispatch(updateSettings(getFieldNameValue(e)));
@@ -130,7 +119,7 @@ const SettingsModal = ({ confirmRef }) => {
               )}
               {page === SETTINGS_PAGE.NOTIFICATION && <SettingNotifications />}
               {page === SETTINGS_PAGE.RETRY && <SettingRetry />}
-              {page === SETTINGS_PAGE.BACKUP && <SettingsBackup confirmRef={confirmRef} />}
+              {page === SETTINGS_PAGE.BACKUP && <SettingsBackup />}
             </>
           )}
         </Modal.Body>

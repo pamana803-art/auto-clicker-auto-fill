@@ -1,59 +1,40 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { dataLayerModel } from '../util/data-layer';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { confirmSelector, hideConfirm } from '../store/confirm.slice';
 
-export type ConfirmModalProps = {
-  confirmFunc: () => void;
-  headerClass: string;
-  title: string;
-  message: string;
-};
-
-export type ConfirmModalRef = {
-  confirm: (confirmProps: ConfirmModalProps) => void;
-};
-
-const ConfirmModal = forwardRef<ConfirmModalRef>((_, ref) => {
+const ConfirmModal = () => {
   const { t } = useTranslation();
-  const [show, setShow] = useState(false);
-  const confirm = useRef<ConfirmModalProps>();
-  useImperativeHandle(ref, () => ({
-    confirm(confirmProps) {
-      confirm.current = confirmProps;
-      setShow(true);
-    },
-  }));
+
+  const { confirm, visible, message, title, headerClass } = useAppSelector(confirmSelector);
+  const dispatch = useAppDispatch();
 
   const noClick = () => {
-    setShow(false);
+    dispatch(hideConfirm());
   };
 
   const yesClick = () => {
-    confirm.current?.confirmFunc();
-    setShow(false);
+    confirm && confirm();
+    dispatch(hideConfirm());
   };
 
-  if(!confirm.current){
-    return null
-  }
-
   return (
-    <Modal show={show} centered backdrop="static" keyboard={false} onShow={() => dataLayerModel('confirm', 'open')} onHide={() => dataLayerModel('confirm', 'close')}>
-      <Modal.Body className="p-4 text-center">
-        <h4 className={`my-3 fw-normal ${confirm.current.headerClass}`}>{confirm.current.title || 'Confirm'}</h4>
-        {confirm.current.message}
+    <Modal show={visible} centered backdrop='static' keyboard={false} onShow={() => dataLayerModel('confirm', 'open')} onHide={() => dataLayerModel('confirm', 'close')}>
+      <Modal.Body className='p-4 text-center'>
+        <h4 className={`my-3 fw-normal ${headerClass}`}>{title || 'Confirm'}</h4>
+        {message}
       </Modal.Body>
-      <Modal.Footer className="flex-nowrap p-0">
-        <Button variant="link" className="fs-6 text-decoration-none col-6 m-0 rounded-0 border-end" size="lg" onClick={noClick}>
+      <Modal.Footer className='flex-nowrap p-0'>
+        <Button variant='link' className='fs-6 text-decoration-none col-6 m-0 rounded-0 border-end' size='lg' onClick={noClick}>
           {t('common.no')}
         </Button>
-        <Button variant="link" className={`fs-6 text-decoration-none col-6 m-0 rounded-0 ${confirm.current.headerClass}`} size="lg" onClick={yesClick}>
+        <Button variant='link' className={`fs-6 text-decoration-none col-6 m-0 rounded-0 ${headerClass}`} size='lg' onClick={yesClick}>
           {t('common.yes')}
         </Button>
       </Modal.Footer>
     </Modal>
   );
-});
+};
 ConfirmModal.displayName = 'ConfirmModal';
 export { ConfirmModal };

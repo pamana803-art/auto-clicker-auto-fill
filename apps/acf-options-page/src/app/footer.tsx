@@ -1,16 +1,19 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Col, Container, Row } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next'
-import { Discord, Instagram, Twitter, Github, Youtube, ChatFill } from '../util'
-import { APP_LINK, APP_NAME, SOCIAL_LINKS } from '../constants'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Col, Container, Row } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { Discord, Instagram, Twitter, Github, Youtube, ChatFill } from '../util';
+import { APP_LINK, APP_NAME, SOCIAL_LINKS } from '../constants';
+import { useAppSelector } from '../hooks';
+import { configsSelector } from '../store/config.slice';
 
-function Footer({ version }) {
-  const { t } = useTranslation()
+function Footer() {
+  const { manifest } = useAppSelector(configsSelector);
+  const { t } = useTranslation();
 
-  let imageURL = 'https://getautoclicker.com/favicons/favicon48.png'
-  if (/(DEV|BETA)/.test(process.env.NX_VARIANT ?? "")) {
-    imageURL = `https://getautoclicker.com/favicons/${process.env.NX_VARIANT}/icon48.png`
+  let imageURL = 'https://getautoclicker.com/favicons/favicon48.png';
+  if (/(DEV|BETA)/.test(process.env.NX_VARIANT ?? '')) {
+    imageURL = `https://getautoclicker.com/favicons/${process.env.NX_VARIANT}/icon48.png`;
   }
 
   return (
@@ -26,7 +29,7 @@ function Footer({ version }) {
               </h6>
               <div className='text-muted'>
                 <small>© 2017 - 2023</small>
-                <small className='ms-2'>v{version}</small>
+                <small className='ms-2'>v{manifest?.version}</small>
               </div>
             </div>
           </Col>
@@ -114,12 +117,12 @@ function Footer({ version }) {
         </Row>
       </Container>
     </footer>
-  )
+  );
 }
 Footer.defaultProps = {
-  version: ''
-}
+  version: '',
+};
 Footer.propTypes = {
-  version: PropTypes.string
-}
-export default Footer
+  version: PropTypes.string,
+};
+export default Footer;

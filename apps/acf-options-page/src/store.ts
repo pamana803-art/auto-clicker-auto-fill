@@ -3,7 +3,10 @@ import configsReducer from './store/config.slice';
 import addonReducer from './store/addon.slice';
 import modeReducer from './store/mode.slice';
 import themeReducer from './store/theme.slice';
-import settingsReducer from './store/settings.slice';
+import settingsReducer, { settingsListenerMiddleware } from './store/settings.slice';
+import toastReducer from './store/toast.slice';
+import blogReducer from './store/blog.slice';
+import confirmReducer from './store/confirm.slice';
 
 export const store = configureStore({
   reducer: {
@@ -12,9 +15,12 @@ export const store = configureStore({
     mode: modeReducer,
     theme: themeReducer,
     settings: settingsReducer,
+    toast: toastReducer,
+    blog: blogReducer,
+    confirm: confirmReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(settingsListenerMiddleware.middleware),
 });
-
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

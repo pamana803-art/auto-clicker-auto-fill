@@ -1,39 +1,15 @@
-import  { forwardRef, useImperativeHandle, useState } from 'react';
-import { Toast, ToastProps } from 'react-bootstrap';
+import { Toast } from 'react-bootstrap';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { hideToast, toastSelector } from '../store/toast.slice';
 
-export type ToastHandlerProps = ToastProps & {
-  body: any;
-  toastClass?: string;
-  bodyClass?: string;
-};
-
-export type ToastHandlerRef = {
-  push: (toast: ToastHandlerProps) => void;
-};
-
-export const ToastHandler = forwardRef<ToastHandlerRef>((props, ref) => {
-  const [list, setList] = useState<Array<ToastHandlerProps>>([]);
-
-  const close = (selected) => {
-    setList((prevList) =>
-      prevList.map((toast, index) => {
-        if (index === selected) {
-          return { ...toast[selected], show: false };
-        }
-        return toast;
-      })
-    );
-  };
-
-  useImperativeHandle(ref, () => ({
-    push(toast) {
-      setList([toast, ...list]);
-    },
-  }));
+export const ToastHandler = () => {
+  const toasts = useAppSelector(toastSelector);
+  const dispatch = useAppDispatch();
+  const close = (selected: number) => dispatch(hideToast(selected));
 
   return (
     <div className='toast-container position-fixed bottom-0 start-0 p-3'>
-      {list.map(({ body, toastClass, bodyClass, delay = 5000, autohide = true, show = true, onClose }, index) => (
+      {toasts.map(({ body, header, headerClass, toastClass, bodyClass, delay = 5000, autohide = true, show = true, onClose }, index) => (
         <Toast
           key={index}
           onClose={() => {
@@ -45,10 +21,11 @@ export const ToastHandler = forwardRef<ToastHandlerRef>((props, ref) => {
           className={toastClass}
           autohide={autohide}
         >
-          <Toast.Header className={bodyClass}>{body}</Toast.Header>
+          <Toast.Header className={headerClass}>{header}</Toast.Header>
+          <Toast.Body className={bodyClass}>{body}</Toast.Body>
         </Toast>
       ))}
     </div>
   );
-});
+};
 ToastHandler.displayName = 'ToastHandler';

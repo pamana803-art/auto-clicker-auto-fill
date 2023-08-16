@@ -1,5 +1,3 @@
-import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { GearFill, Moon, Sun } from '../util';
@@ -10,7 +8,7 @@ import { switchTheme, themeSelector } from '../store/theme.slice';
 import { configsSelector } from '../store/config.slice';
 import { switchSettings } from '../store/settings.slice';
 
-function Header({ confirmRef }) {
+function Header() {
   const theme = useAppSelector(themeSelector);
   const { error } = useAppSelector(configsSelector);
   const dispatch = useAppDispatch();
@@ -62,7 +60,7 @@ function Header({ confirmRef }) {
                   </NavDropdown>
                 </>
               )}
-              <SettingsModal confirmRef={confirmRef} />
+              <SettingsModal  />
             </Nav>
           </Navbar>
         </Container>
@@ -71,7 +69,4 @@ function Header({ confirmRef }) {
   );
 }
 
-Header.propTypes = {
-  confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired,
-};
 export default Header;

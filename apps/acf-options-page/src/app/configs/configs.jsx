@@ -11,6 +11,8 @@ import { DropdownToggle, ErrorAlert, Loading, Sponsors } from '../../components'
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal, ActionConditionModal } from '../../modal'
 import { ModeContext } from '../../_providers'
 import { download } from '../../_helpers'
+import { useAppDispatch } from '../../hooks'
+import { checkBlog } from '../../store/blog.slice'
 
 function Configs({ toastRef, blogRef, confirmRef }) {
   const { mode } = useContext(ModeContext)
@@ -27,6 +29,8 @@ function Configs({ toastRef, blogRef, confirmRef }) {
   const configSettingsRef = useRef()
   const reorderConfigsRef = useRef()
   const removeConfigsRef = useRef()
+
+  const dispatch = useAppDispatch()
 
   const importFiled = createRef()
 
@@ -74,7 +78,7 @@ function Configs({ toastRef, blogRef, confirmRef }) {
           }
         }
       } else if (object.version) {
-        blogRef.current.showBlog(object.version)
+        dispatch(checkBlog(object.version))
       }
     }
     return selectedConfigIndex

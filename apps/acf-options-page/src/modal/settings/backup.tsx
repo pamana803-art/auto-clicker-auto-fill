@@ -1,19 +1,13 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import PropTypes from 'prop-types';
 import { ListGroup, NavDropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { AUTO_BACKUP, GOOGLE_SCOPES_KEY, RESPONSE_CODE, Settings } from '@dhruv-techapps/acf-common';
+import { AUTO_BACKUP, GOOGLE_SCOPES_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
 import { CloudArrowUpFill } from '../../util';
-import { ConfirmModalRef } from '../confirm.modal';
 import { GoogleBackupService, GoogleOauthService } from '@dhruv-techapps/acf-service';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { settingsSelector, updateSettingsBackup } from '../../store/settings.slice';
+import { showConfirm } from '../../store/confirm.slice';
 
-type SettingsBackupProps = {
-  confirmRef: React.RefObject<ConfirmModalRef>;
-};
-
-export function SettingsBackup({ confirmRef }: SettingsBackupProps) {
+export function SettingsBackup() {
   const { t } = useTranslation();
 
   const { backup } = useAppSelector(settingsSelector).settings;
@@ -32,14 +26,14 @@ export function SettingsBackup({ confirmRef }: SettingsBackupProps) {
   };
 
   const restore = () => {
-    confirmRef.current?.confirm({
-      title: t('confirm.backup.restore.title'),
-      message: t('confirm.backup.restore.message'),
-      headerClass: 'text-danger',
-      confirmFunc: () => {
-        GoogleBackupService.restore(window.EXTENSION_ID);
-      },
-    });
+    dispatch(
+      showConfirm({
+        title: t('confirm.backup.restore.title'),
+        message: t('confirm.backup.restore.message'),
+        headerClass: 'text-danger',
+        confirm: () => console.log("Yes")// GoogleBackupService.restore(window.EXTENSION_ID),
+      })
+    );
   };
 
   return (
@@ -95,7 +89,3 @@ export function SettingsBackup({ confirmRef }: SettingsBackupProps) {
     </>
   );
 }
-
-SettingsBackup.propTypes = {
-  confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired,
-};

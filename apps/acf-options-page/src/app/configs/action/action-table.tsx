@@ -6,9 +6,10 @@ import { Action, Configuration } from '@dhruv-techapps/acf-common';
 import { useTranslation } from 'react-i18next';
 import { EditableCell } from './editable-cell';
 import { CaretDown, CaretUp, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util';
-import { ConfirmModal, ConfirmModalRef } from '../../../modal';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
 import { DropdownToggle } from '../../../components';
+// import { useAppDispatch } from 'apps/acf-options-page/src/hooks';
+// import { showConfirm } from 'apps/acf-options-page/src/store/confirm.slice';
 
 type ActionTableProps = {
   actions: Array<Action>;
@@ -30,7 +31,8 @@ const ActionTable = forwardRef<ActionTableRef, ActionTableProps>(({ actions, con
   const { t } = useTranslation();
   const [data, setData] = useState(actions);
 
-  const confirmRef = useRef<ConfirmModalRef>(null);
+  // const dispatch = useAppDispatch();
+
   const didMountRef = useRef(true);
   const didUpdateRef = useRef(false);
   const defaultColumn = { Cell: EditableCell };
@@ -160,12 +162,14 @@ const ActionTable = forwardRef<ActionTableRef, ActionTableProps>(({ actions, con
 
   const removeActionConfirm = (rowIndex) => {
     const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].elementFinder || 'row'}`;
-    confirmRef.current?.confirm({
-      title: t('confirm.action.remove.title'),
-      message: t('confirm.action.remove.message', name),
-      headerClass: 'text-danger',
-      confirmFunc: removeAction.bind(null, Number(rowIndex)),
-    });
+    // dispatch(
+    //   showConfirm({
+    //     title: t('confirm.action.remove.title'),
+    //     message: t('confirm.action.remove.message', name),
+    //     headerClass: 'text-danger',
+    //     confirm: removeAction.bind(null, Number(rowIndex)),
+    //   })
+    // );
   };
 
   const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction });
@@ -291,7 +295,6 @@ const ActionTable = forwardRef<ActionTableRef, ActionTableProps>(({ actions, con
           })}
         </tbody>
       </Table>
-      <ConfirmModal ref={confirmRef} />
     </Form>
   );
 });

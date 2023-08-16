@@ -1,17 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Alert, Col, Container, Row } from 'react-bootstrap'
-import { NO_EXTENSION_ERROR } from '../constants'
+import PropTypes from 'prop-types';
+import { Alert, Col, Container, Row } from 'react-bootstrap';
 
 export function ErrorAlert({ heading = 'Error', error }) {
-  if (!error) {
-    return null
-  }
 
-  if (error.message) {
-    if (NO_EXTENSION_ERROR.includes(error.message)) {
-      return null
-    }
+  if(!error){
+    return null
   }
 
   return (
@@ -21,19 +14,18 @@ export function ErrorAlert({ heading = 'Error', error }) {
           <Alert variant='danger'>
             <p className='m-0'>
               <strong className='me-2'>{heading}</strong>
-              {error.message ? error.message : JSON.stringify(error)}
+              {error}
             </p>
           </Alert>
         </Col>
       </Row>
     </Container>
-  )
+  );
 }
 ErrorAlert.defaultProps = {
   heading: 'Error',
-  error: null
-}
+};
 ErrorAlert.propTypes = {
   heading: PropTypes.string,
-  error: PropTypes.shape({ message: PropTypes.string })
-}
+  error: PropTypes.oneOfType([PropTypes.shape({ message: PropTypes.string.isRequired }).isRequired, PropTypes.string.isRequired]),
+};

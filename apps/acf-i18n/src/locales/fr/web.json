@@ -121,7 +121,7 @@
     },
     "extensionNotFound": {
       "title": "Extension non trouvée",
-      "subTitle": "Ceci est la page de configuration pour<b>{{REACT_APP_NAME}}</b> <Badge>{{REACT_APP_VARIANT}}</Badge> extension",
+      "subTitle": "Ceci est la page de configuration pour<b>{{NX_NAME}}</b> <Badge>{{REACT_APP_VARIANT}}</Badge> extension",
       "hint": "Vous devez télécharger d'abord une extension afin de l'utiliser"
     },
     "actionSettings": {
