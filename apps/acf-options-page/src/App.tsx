@@ -1,6 +1,7 @@
 import { Suspense, useEffect } from 'react';
 import Header from './app/header';
 import Footer from './app/footer';
+import Configs from "./app/configs"
 import { ToastHandler, ErrorAlert, DataList, Loading } from './components';
 import { AdsBlockerModal, BlogModal, ExtensionNotFoundModal } from './modal';
 import { APP_NAME } from './constants';
@@ -33,7 +34,7 @@ function App() {
       <ConfirmationModalContextProvider>
         <Header />
         <ErrorAlert error={error} />
-        {/*<Configs toastRef={toastRef} blogRef={blogRef} confirmRef={confirmRef} />*/}
+        <Configs />
         <Footer />
         <ToastHandler />
         <BlogModal />

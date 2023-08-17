@@ -6,7 +6,7 @@ import { APP_LANGUAGES, APP_NAME } from '../constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { switchTheme, themeSelector } from '../store/theme.slice';
 import { appSelector } from '../store/app.slice';
-import { switchSettings } from '../store/settings.slice';
+import { switchSettings } from '../store/settings/settings.slice';
 
 function Header() {
   const theme = useAppSelector(themeSelector);

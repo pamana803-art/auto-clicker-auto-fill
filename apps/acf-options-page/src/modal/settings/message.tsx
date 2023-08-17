@@ -1,6 +1,6 @@
 import { Modal } from 'react-bootstrap';
 import { useAppSelector } from '../../hooks';
-import { settingsSelector } from '../../store/settings.slice';
+import { settingsSelector } from '../../store/settings/settings.slice';
 
 export type SettingMessageRef = {
   showMessage: (message: string) => void;

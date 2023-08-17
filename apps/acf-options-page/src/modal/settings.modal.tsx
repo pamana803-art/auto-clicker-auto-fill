@@ -13,7 +13,7 @@ import { SettingGoogleSheets } from './settings/google-sheets';
 import { ErrorAlert, Loading } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { modeSelector, switchMode } from '../store/mode.slice';
-import { getSettings, settingsSelector, switchSettings, updateSettings } from '../store/settings.slice';
+import { getSettings, settingsSelector, switchSettings, updateSettings } from '../store/settings/settings.slice';
 
 enum SETTINGS_PAGE {
   NOTIFICATION = 'notification',

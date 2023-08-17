@@ -1,127 +1,84 @@
-import React, { createRef, useState } from 'react'
-import PropTypes from 'prop-types'
-import { Logger } from '@dhruv-techapps/core-common'
-import { StorageService } from '@dhruv-techapps/core-service'
-import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common'
-import { useTranslation } from 'react-i18next'
-import { Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap'
-import ConfigBody from './config-body'
-import Action from '../action'
-import Batch from '../batch'
-import { Format, ThreeDots, numberWithExponential } from '../../../util'
-import { DropdownToggle } from '../../../components'
-import { getElementProps } from '../../../util/element'
-import { download } from '../../../_helpers'
-import { dataLayerInput } from '../../../util/data-layer'
+import React, { createRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap';
+import ConfigBody from './config-body';
+import { ThreeDots } from '../../../util';
+import { DropdownToggle } from '../../../components';
+import { getFieldNameValue } from '../../../util/element';
+import { download } from '../../../_helpers';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { configSelector, selectedConfigSelector, switchConfigSettingsModal, updateConfig } from '../../../store/config';
+import { configImportAPI } from '../../../store/config/config.api';
+import { useConfirmationModalContext } from '../../../_providers/confirm.provider';
 
-function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef, confirmRef, setSelected }) {
-  const config = configs[configIndex]
-  const configsLength = configs.length
-  const { t } = useTranslation()
-  const importFiled = createRef()
-  const [message, setMessage] = useState()
+function Config() {
+  const { message, configs } = useAppSelector(configSelector);
+  const lastConfig = configs.length === 1
+  const modalContext = useConfirmationModalContext();
+  const config = useAppSelector(selectedConfigSelector);
+  const dispatch = useAppDispatch();
+  //  const configsLength = configs.length
+  const { t } = useTranslation();
+  const importFiled = createRef();
+  //const [message, setMessage] = useState()
 
-  const onUpdate = e => {
-    const update = getElementProps(e)
-    if (update) {
-      setConfigs(prevConfigs =>
-        prevConfigs.map((prevConfig, index) => {
-          if (index === configIndex) {
-            return { ...prevConfig, ...update }
-          }
-          return prevConfig
-        })
-      )
+  const onUpdate = (e) => {
+    const update = getFieldNameValue(e);
+    dispatch(updateConfig(update));
+    /*if (update) {
       dataLayerInput(update, 'configuration')
       setMessage(t('configuration.saveMessage'))
       setTimeout(setMessage, 1500)
-    }
-  }
+    }*/
+  };
 
   const exportConfig = () => {
-    let url = config.url.split('/')
-    url = url[2] || 'default'
-    const name = config.name || url || `configuration-${configIndex}`
-    download(name, config)
-  }
+    let url = config.url.split('/');
+    url = url[2] || 'default';
+    const name = config.name || url;
+    download(name, config);
+  };
 
   const importConfig = ({ currentTarget: { files } }) => {
     if (files.length <= 0) {
-      return false
+      return false;
     }
-    const fr = new FileReader()
+    const fr = new FileReader();
     fr.onload = function ({ target }) {
-      try {
-        let importedConfig = JSON.parse(target.result)
-        if (Array.isArray(importedConfig)) {
-          toastRef.current.push({
-            body: t('error.json')
-          })
-        } else {
-          const importedIndex = configs.findIndex(_config => _config.url === importedConfig.url)
-          if (importedIndex === -1) {
-            configs.push(importedConfig)
-          } else {
-            configs[importedIndex] = importedConfig
-          }
-
-          StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: configs }).then(() => {
-            toastRef.current.push({
-              body: t('toast.configuration.importSuccess.body', { name: importedConfig.name || importedConfig.url || 'configuration' }),
-              delay: 2000,
-              onClose: () => {
-                window.location.reload()
-              }
-            })
-          })
-        }
-      } catch (error) {
-        toastRef.current.push({
-          body: JSON.stringify(error)
-        })
-        Logger.colorError(error)
-      }
-    }
-    fr.readAsText(files.item(0))
-    return false
-  }
+      dispatch(configImportAPI(target));
+    };
+    fr.readAsText(files.item(0));
+    return false;
+  };
 
   const showSettings = () => {
-    configSettingsRef.current.showSettings(config)
-  }
+    dispatch(switchConfigSettingsModal());
+  };
 
   const removeConfig = () => {
-    const { name } = config
-    setConfigs(_configs => _configs.filter((_, index) => index !== configIndex))
-    setSelected(prevSelected => {
-      if (configsLength === 2) {
-        return 0
-      }
-      return prevSelected === 0 ? prevSelected : prevSelected - 1
-    })
-    toastRef.current.push({
-      body: t('toast.configuration.remove.body', { name })
-    })
-  }
+    dispatch(removeConfig());
+    /*toastRef.current.push({
+      body: t('toast.configuration.remove.body', { name }),
+    });*/
+  };
 
-  const removeConfigConfirm = () => {
-    const name = config.name || config.url || `configuration-${configIndex}`
-    confirmRef.current.confirm({
+  const removeConfigConfirm = async () => {
+    const name = config.name || config.url;
+    const result = await modalContext.showConfirmation({
       title: t('confirm.configuration.remove.title'),
       message: t('confirm.configuration.remove.message', { name }),
       headerClass: 'text-danger',
-      confirmFunc: removeConfig
-    })
-  }
+      confirmFunc: removeConfig,
+    });
+    result && removeConfig();
+  };
 
   const duplicateConfig = () => {
-    const configCopy = { ...config, name: `${config.name} - Duplicate`, batch: { ...config.batch }, actions: config.actions.map(action => ({ ...action, addon: { ...action.addon } })) }
-    setConfigs(_configs => [{ ...configCopy }, ..._configs])
-    setSelected(0)
-    toastRef.current.push({
-      body: t('toast.configuration.add.body', { name: configCopy.name })
-    })
-  }
+    dispatch(duplicateConfig())
+    /*toastRef.current.push({
+      body: t('toast.configuration.add.body', { name: configCopy.name }),
+    });*/
+  };
 
   return (
     <Card className='mb-3'>
@@ -152,7 +109,7 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={duplicateConfig}>{t('configuration.duplicate')}</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={removeConfigConfirm} className={configsLength === 1 ? '' : 'text-danger'} disabled={configsLength === 1}>
+                <Dropdown.Item onClick={removeConfigConfirm} className={lastConfig ? '' : 'text-danger'} disabled={lastConfig}>
                   {t('configuration.remove')}
                 </Dropdown.Item>
                 <Dropdown.Divider />
@@ -168,29 +125,8 @@ function Config({ configs, configIndex, toastRef, setConfigs, configSettingsRef,
           </Col>
         </Row>
       </Card.Header>
-      <ConfigBody config={config} configIndex={configIndex} setConfigs={setConfigs} onUpdate={onUpdate} />
+      <ConfigBody />
     </Card>
-  )
+  );
 }
-
-Config.propTypes = {
-  configIndex: PropTypes.number.isRequired,
-  setConfigs: PropTypes.func.isRequired,
-  setSelected: PropTypes.func.isRequired,
-  toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
-  configSettingsRef: PropTypes.shape({ current: PropTypes.shape({ showSettings: PropTypes.func.isRequired }) }).isRequired,
-  confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired,
-  configs: PropTypes.arrayOf(
-    PropTypes.shape({
-      enable: PropTypes.bool.isRequired,
-      name: PropTypes.string,
-      url: PropTypes.string,
-      initWait: numberWithExponential,
-      startTime: PropTypes.string,
-      batch: Batch.type.propTypes.batch,
-      actions: Action.type.propTypes.actions,
-      startManually: PropTypes.bool
-    }).isRequired
-  ).isRequired
-}
-export default React.memo(Config)
+export default Config;

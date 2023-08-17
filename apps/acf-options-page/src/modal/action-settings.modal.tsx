@@ -5,32 +5,30 @@ import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstra
 import { ActionSetting, RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { useTranslation } from 'react-i18next';
 
-import { getElementProps, updateForm } from '../util/element';
+import {  getFieldNameValue, updateForm } from '../util/element';
 import { dataLayerInput, dataLayerModel } from '../util/data-layer';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { actionSettingSelector, hideActionSetting, resetActionSetting, showActionSetting, updateActionSetting } from '../store/action-settings.slice';
+import {  resetActionSetting,  updateActionSettings } from '../store/config';
+import { actionSettingsSelector,  selectedActionSelector,  switchActionSettingsModal } from '../store/config/action';
 
 const FORM_ID = 'action-settings';
 
-export type ActionSettingsModalRef = {
-  showSettings: (settings: ActionSetting) => void;
-};
-const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
+
+const ActionSettingsModal = () => {
   const { t } = useTranslation();
-  const { message,visible, actionSetting } = useAppSelector(actionSettingSelector);
+  const {settings} = useAppSelector(selectedActionSelector);
+  const { message,visible } = useAppSelector(actionSettingsSelector);
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
-    const update = getElementProps(e);
-    if (update) {
-      dataLayerInput(update, 'action-settings');
-      dispatch(updateActionSetting(update))
-    }
+    const update = getFieldNameValue(e);
+      dispatch(updateActionSettings(update))
+  
   };
 
   const handleClose = () => {
     dataLayerModel('action-settings', 'close');
-    dispatch(hideActionSetting());
+    dispatch(switchActionSettingsModal());
   };
 
   useEffect(() => {
@@ -53,7 +51,7 @@ const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
       setMessage(t('modal.actionSettings.saveMessage'))
       setTimeout(setMessage, 1500)
       */
-  }, [actionSetting]);
+  }, [settings]);
 
   /*
   useEffect(() => {
@@ -67,12 +65,6 @@ const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
     handleClose();
   };
 
-  useImperativeHandle(ref, () => ({
-    showSettings(_settings) {
-      dispatch(showActionSetting(_settings))
-    },
-  }));
-
   return (
     <Modal show={visible} size='lg' onHide={handleClose} onShow={() => dataLayerModel('action-settings', 'open')}>
       <Form id={FORM_ID}>
@@ -85,7 +77,7 @@ const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
             <Card.Body>
               <Row>
                 <Col md={12} sm={12}>
-                  <Form.Check type='switch' name='iframeFirst' value={actionSetting.iframeFirst} checked={actionSetting.iframeFirst} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
+                  <Form.Check type='switch' name='iframeFirst' checked={settings?.iframeFirst} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
                   <small className='text-muted'>{t('modal.actionSettings.iframeFirstHint')}</small>
                 </Col>
               </Row>
@@ -96,7 +88,7 @@ const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
               <Row className='mb-2 mb-md-0'>
                 <Col md={6} sm={12}>
                   <Form.Group controlId='retry'>
-                    <FormControl placeholder={t('modal.actionSettings.retry.title')} name='retry' type='number' onBlur={onUpdate} defaultValue={actionSetting.retry} pattern='NUMBER' list='retry' />
+                    <FormControl placeholder={t('modal.actionSettings.retry.title')} name='retry' type='number' onBlur={onUpdate} defaultValue={settings?.retry} pattern='NUMBER' list='retry' />
                     <Form.Label>{t('modal.actionSettings.retry.title')}</Form.Label>
                     <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
                   </Form.Group>
@@ -108,7 +100,7 @@ const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
                       list='interval'
                       onBlur={onUpdate}
                       name='retryInterval'
-                      defaultValue={actionSetting.retryInterval}
+                      defaultValue={settings?.retryInterval}
                       pattern='INTERVAL'
                     />
                     <Form.Label>
@@ -124,7 +116,7 @@ const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
                   <Form.Check
                     type='radio'
                     value={RETRY_OPTIONS.STOP}
-                    checked={actionSetting.retryOption === RETRY_OPTIONS.STOP}
+                    checked={settings?.retryOption === RETRY_OPTIONS.STOP}
                     onChange={onUpdate}
                     name='retryOption'
                     label={t('modal.actionSettings.retry.stop')}
@@ -132,7 +124,7 @@ const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
                   <Form.Check
                     type='radio'
                     value={RETRY_OPTIONS.SKIP}
-                    checked={actionSetting.retryOption === RETRY_OPTIONS.SKIP}
+                    checked={settings?.retryOption === RETRY_OPTIONS.SKIP}
                     onChange={onUpdate}
                     name='retryOption'
                     label={t('modal.actionSettings.retry.skip')}
@@ -140,7 +132,7 @@ const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
                   <Form.Check
                     type='radio'
                     value={RETRY_OPTIONS.RELOAD}
-                    checked={actionSetting.retryOption === RETRY_OPTIONS.RELOAD}
+                    checked={settings?.retryOption === RETRY_OPTIONS.RELOAD}
                     onChange={onUpdate}
                     name='retryOption'
                     label={t('modal.actionSettings.retry.refresh')}
@@ -159,7 +151,6 @@ const ActionSettingsModal = forwardRef<ActionSettingsModalRef>((_, ref) => {
       </Form>
     </Modal>
   );
-});
+};
 
-ActionSettingsModal.displayName = 'ActionSettingsModal';
 export {  ActionSettingsModal };

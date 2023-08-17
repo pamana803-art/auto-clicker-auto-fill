@@ -1,7 +1,7 @@
 import { PayloadAction, createAsyncThunk, createListenerMiddleware, createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 import { AUTO_BACKUP, LOCAL_STORAGE_KEY, Settings, defaultSettings } from '@dhruv-techapps/acf-common';
-import { dataLayerInput, dataLayerModel } from '../util/data-layer';
+import { dataLayerInput, dataLayerModel } from '../../util/data-layer';
 import { StorageService } from '@dhruv-techapps/core-service';
 
 type SettingsStore = {
@@ -33,12 +33,6 @@ const slice = createSlice({
       //:TODO
       dataLayerModel(LOCAL_STORAGE_KEY.SETTINGS, state.visible ? 'close' : 'open');
     },
-    setSettings: (state, action: PayloadAction<Settings | null>) => {
-      if (action.payload && Object.keys(action.payload).length) {
-        state.settings = action.payload;
-      }
-      state.loading = false;
-    },
     setSettingsMessage: (state, action: PayloadAction<string>) => {
       state.message = action.payload;
     },
@@ -69,7 +63,9 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getSettings.fulfilled, (state, action) => {
-      state.settings = action.payload;
+      if (action.payload && Object.keys(action.payload).length) {
+        state.settings = action.payload;
+      }
       state.loading = false;
     });
     builder.addCase(getSettings.rejected, (state, action) => {
@@ -79,32 +75,8 @@ const slice = createSlice({
   },
 });
 
-export const { switchSettings, setSettings, setSettingsError, updateSettings, setSettingsMessage, updateSettingsNotification, updateSettingsBackup } = slice.actions;
+export const { switchSettings, setSettingsError, updateSettings, setSettingsMessage, updateSettingsNotification, updateSettingsBackup } = slice.actions;
 
 export const settingsSelector = (state: RootState) => state.settings;
 
-const settingsListenerMiddleware = createListenerMiddleware();
-
-// Add one or more listener entries that look for specific actions.
-// They may contain any sync or async logic, similar to thunks.
-settingsListenerMiddleware.startListening({
-  matcher: isAnyOf(updateSettings, updateSettingsBackup, updateSettingsNotification),
-  effect: async (action, listenerApi) => {
-    // Run whatever additional side-effect-y logic you want here
-    const state = listenerApi.getState() as RootState;
-
-    StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: state.settings.settings }).then(
-      () => {
-        listenerApi.dispatch(setSettingsMessage('saved'));
-        setTimeout(() => {
-          listenerApi.dispatch(setSettingsMessage(''));
-        }, 1000);
-      },
-      (error) => listenerApi.dispatch(setSettingsError(error))
-    );
-  },
-});
-
-export { settingsListenerMiddleware };
-
-export default slice.reducer;
+export const settingsReducer = slice.reducer;

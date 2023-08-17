@@ -1,15 +1,22 @@
 import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { Card, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { numberWithExponential } from '../../../util'
-import { updateForm } from '../../../util/element'
+import { getFieldNameValue, updateForm } from '../../../util/element'
 import { APP_LINK } from '../../../constants'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
+import { selectedConfigSelector, updateConfig } from '../../../store/config'
 
 const FORM_ID = 'config-body'
 
-function ConfigBody({ config, onUpdate }) {
+function ConfigBody() {
+  const config = useAppSelector(selectedConfigSelector)
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
+
+  const onUpdate = (e) => {
+    const { value } = getFieldNameValue(e);
+    dispatch(updateConfig(value));
+  }
 
   useEffect(() => {
     updateForm(FORM_ID, config)
@@ -48,14 +55,5 @@ function ConfigBody({ config, onUpdate }) {
     </Form>
   )
 }
-ConfigBody.propTypes = {
-  config: PropTypes.shape({
-    enable: PropTypes.bool.isRequired,
-    name: PropTypes.string,
-    url: PropTypes.string,
-    initWait: numberWithExponential,
-    startTime: PropTypes.string
-  }).isRequired,
-  onUpdate: PropTypes.func.isRequired
-}
+
 export default ConfigBody

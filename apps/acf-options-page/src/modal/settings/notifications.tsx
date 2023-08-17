@@ -6,7 +6,7 @@ import { VolumeMute, VolumeUp } from '../../util';
 import { getFieldNameValue } from '../../util/element';
 import { SettingDiscord } from './discord';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { settingsSelector, updateSettingsNotification } from '../../store/settings.slice';
+import { settingsSelector, updateSettingsNotification } from '../../store/settings/settings.slice';
 
 function SettingNotifications() {
   const { t } = useTranslation();

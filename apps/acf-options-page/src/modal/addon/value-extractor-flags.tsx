@@ -1,7 +1,10 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { ValueExtractorFlags } from '@dhruv-techapps/acf-common';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { selectedActionAddonSelector } from '../../store/config/action';
+import { updateActionAddon } from '../../store/config';
 
 const FLAGS = [
   {
@@ -51,18 +54,15 @@ const FLAGS = [
   },
 ];
 
-type Props = {
-  valueExtractor: string;
-  valueExtractorFlags: ValueExtractorFlags;
-  onUpdate: (valueExtractorFlags: ValueExtractorFlags) => void;
-};
-
 type Flags = {
   [index: string]: boolean;
 };
 
-function AddonValueExtractorFlags({ valueExtractor, valueExtractorFlags, onUpdate }: Props) {
-  const flags: Flags = valueExtractorFlags.split('').reduce((a, flag) => ({ ...a, [flag]: true }), {});
+function AddonValueExtractorFlags() {
+  const addon = useAppSelector(selectedActionAddonSelector);
+  const dispatch = useAppDispatch();
+
+  const flags: Flags = addon?.valueExtractorFlags?.split('').reduce((a, flag) => ({ ...a, [flag]: true }), {}) || {};
 
   const title = (label?: string) => {
     const flagTitle = Object.entries(flags)
@@ -80,11 +80,12 @@ function AddonValueExtractorFlags({ valueExtractor, valueExtractorFlags, onUpdat
 
     if (flag) {
       flags[flag] = !classList.contains('active');
+      dispatch(updateActionAddon({ name: 'valueExtractorFlags', value: flags }));
       //TODO onUpdate(title());
     }
   };
 
-  if (!valueExtractor || /^@\w+(-\w+)?$/.test(valueExtractor)) {
+  if (!addon?.valueExtractor || /^@\w+(-\w+)?$/.test(addon?.valueExtractor)) {
     return null;
   }
 
@@ -99,13 +100,5 @@ function AddonValueExtractorFlags({ valueExtractor, valueExtractorFlags, onUpdat
     </DropdownButton>
   );
 }
-AddonValueExtractorFlags.defaultProps = {
-  valueExtractorFlags: '',
-  valueExtractor: null,
-};
-AddonValueExtractorFlags.propTypes = {
-  valueExtractorFlags: PropTypes.string,
-  valueExtractor: PropTypes.string,
-  onUpdate: PropTypes.func.isRequired,
-};
+
 export { AddonValueExtractorFlags };

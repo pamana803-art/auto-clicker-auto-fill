@@ -4,7 +4,7 @@ import { AUTO_BACKUP, GOOGLE_SCOPES_KEY, RESPONSE_CODE } from '@dhruv-techapps/a
 import { CloudArrowUpFill } from '../../util';
 import { GoogleBackupService, GoogleOauthService } from '@dhruv-techapps/acf-service';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { settingsSelector, updateSettingsBackup } from '../../store/settings.slice';
+import { settingsSelector, updateSettingsBackup } from '../../store/settings/settings.slice';
 import { useConfirmationModalContext } from '../../_providers/confirm.provider';
 
 export function SettingsBackup() {

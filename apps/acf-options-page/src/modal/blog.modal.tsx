@@ -2,7 +2,7 @@ import { Alert, Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { dataLayerModel } from '../util/data-layer';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { blogSelector, hideBlog } from '../store/blog.slice';
+import { blogSelector, hideBlog } from '../store/blog/blog.slice';
 
 const BlogModal = () => {
   const { t } = useTranslation();

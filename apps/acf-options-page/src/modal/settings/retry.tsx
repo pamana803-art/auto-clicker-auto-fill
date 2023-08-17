@@ -2,7 +2,7 @@ import { Form, FormControl } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { settingsSelector, updateSettings } from '../../store/settings.slice';
+import { settingsSelector, updateSettings } from '../../store/settings/settings.slice';
 import { getFieldNameValue } from '../../util/element';
 
 function SettingRetry() {

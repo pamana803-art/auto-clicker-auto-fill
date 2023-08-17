@@ -38,22 +38,24 @@ export enum ELEMENT_TYPE {
   RADIO = 'radio',
 }
 
+export type ActionSetting = {
+  iframeFirst?: boolean;
+  retry: number;
+  retryInterval: number;
+  retryOption: RETRY_OPTIONS;
+};
+
 export type Action = {
   elementFinder: string;
   elementType?: ELEMENT_TYPE;
   actionId?: number;
   name?: string;
+  error?: string;
   initWait?: number;
   value?: string;
   repeat?: number;
   repeatInterval?: number;
   addon?: Addon;
   statement?: ActionStatement;
-};
-
-export type ActionSetting = {
-  iframeFirst?: boolean;
-  retry: number;
-  retryInterval: number;
-  retryOption: RETRY_OPTIONS;
+  settings?: ActionSetting;
 };
