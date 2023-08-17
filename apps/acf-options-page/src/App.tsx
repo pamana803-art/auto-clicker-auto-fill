@@ -6,6 +6,7 @@ import { AdsBlockerModal, BlogModal, ConfirmModal, ExtensionNotFound } from './m
 import { APP_NAME } from './constants';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { configsSelector, getManifest } from './store/config.slice';
+import ConfirmationModalContextProvider from './_providers/confirm.provider';
 
 function App() {
   const { loading, error } = useAppSelector(configsSelector);
@@ -29,15 +30,16 @@ function App() {
 
   return (
     <Suspense fallback={<Loading message='Connecting with extension...' className='m-5 p-5' />}>
-      <Header />
-      <ErrorAlert error={error} />
-      {/*<Configs toastRef={toastRef} blogRef={blogRef} confirmRef={confirmRef} />*/}
-      <Footer />
-      <ToastHandler />
-      <ConfirmModal />
-      <BlogModal />
-      <ExtensionNotFound />
-      <AdsBlockerModal />
+      <ConfirmationModalContextProvider>
+        <Header />
+        <ErrorAlert error={error} />
+        {/*<Configs toastRef={toastRef} blogRef={blogRef} confirmRef={confirmRef} />*/}
+        <Footer />
+        <ToastHandler />
+        <BlogModal />
+        <ExtensionNotFound />
+        <AdsBlockerModal />
+      </ConfirmationModalContextProvider>
       <DataList />
     </Suspense>
   );

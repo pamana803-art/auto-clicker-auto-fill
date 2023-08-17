@@ -6,7 +6,6 @@ import themeReducer from './store/theme.slice';
 import settingsReducer, { settingsListenerMiddleware } from './store/settings.slice';
 import toastReducer from './store/toast.slice';
 import blogReducer from './store/blog.slice';
-import confirmReducer from './store/confirm.slice';
 
 export const store = configureStore({
   reducer: {
@@ -17,7 +16,6 @@ export const store = configureStore({
     settings: settingsReducer,
     toast: toastReducer,
     blog: blogReducer,
-    confirm: confirmReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(settingsListenerMiddleware.middleware),
 });

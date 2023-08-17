@@ -1,23 +1,9 @@
 import { Button, Modal } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
 import { dataLayerModel } from '../util/data-layer';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { confirmSelector, hideConfirm } from '../store/confirm.slice';
+import { useTranslation } from 'react-i18next';
 
-const ConfirmModal = () => {
+const ConfirmModal = ({ visible, message, title, headerClass, noClick, yesClick }) => {
   const { t } = useTranslation();
-
-  const { confirm, visible, message, title, headerClass } = useAppSelector(confirmSelector);
-  const dispatch = useAppDispatch();
-
-  const noClick = () => {
-    dispatch(hideConfirm());
-  };
-
-  const yesClick = () => {
-    confirm && confirm();
-    dispatch(hideConfirm());
-  };
 
   return (
     <Modal show={visible} centered backdrop='static' keyboard={false} onShow={() => dataLayerModel('confirm', 'open')} onHide={() => dataLayerModel('confirm', 'close')}>

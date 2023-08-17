@@ -5,12 +5,13 @@ import { CloudArrowUpFill } from '../../util';
 import { GoogleBackupService, GoogleOauthService } from '@dhruv-techapps/acf-service';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { settingsSelector, updateSettingsBackup } from '../../store/settings.slice';
-import { showConfirm } from '../../store/confirm.slice';
+import { useConfirmationModalContext } from '../../_providers/confirm.provider';
 
 export function SettingsBackup() {
   const { t } = useTranslation();
 
   const { backup } = useAppSelector(settingsSelector).settings;
+  const modalContext = useConfirmationModalContext();
   const dispatch = useAppDispatch();
   const onBackup = async (autoBackup?: AUTO_BACKUP) => {
     const response = await GoogleOauthService.loginWithScope(window.EXTENSION_ID, GOOGLE_SCOPES_KEY.DRIVE);
@@ -25,15 +26,13 @@ export function SettingsBackup() {
     }
   };
 
-  const restore = () => {
-    dispatch(
-      showConfirm({
-        title: t('confirm.backup.restore.title'),
-        message: t('confirm.backup.restore.message'),
-        headerClass: 'text-danger',
-        confirm: () => console.log("Yes")// GoogleBackupService.restore(window.EXTENSION_ID),
-      })
-    );
+  const restore = async () => {
+    const result = await modalContext.showConfirmation({
+      title: t('confirm.backup.restore.title'),
+      message: t('confirm.backup.restore.message'),
+      headerClass: 'text-danger',
+    });
+    result && GoogleBackupService.restore(window.EXTENSION_ID);
   };
 
   return (
