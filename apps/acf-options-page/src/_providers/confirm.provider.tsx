@@ -47,7 +47,6 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
   return (
     <ConfirmationModalContext.Provider value={modalContext}>
       {props.children}
-
       {content && (
         <ConfirmModal visible={show} {...content} noClick={handleCancel} yesClick={handleOk} />
       )}

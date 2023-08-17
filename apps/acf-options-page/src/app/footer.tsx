@@ -1,14 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Discord, Instagram, Twitter, Github, Youtube, ChatFill } from '../util';
 import { APP_LINK, APP_NAME, SOCIAL_LINKS } from '../constants';
 import { useAppSelector } from '../hooks';
-import { configsSelector } from '../store/config.slice';
+import { appSelector } from '../store/app.slice';
 
 function Footer() {
-  const { manifest } = useAppSelector(configsSelector);
+  const { manifest } = useAppSelector(appSelector);
   const { t } = useTranslation();
 
   let imageURL = 'https://getautoclicker.com/favicons/favicon48.png';
@@ -119,10 +117,4 @@ function Footer() {
     </footer>
   );
 }
-Footer.defaultProps = {
-  version: '',
-};
-Footer.propTypes = {
-  version: PropTypes.string,
-};
 export default Footer;

@@ -2,14 +2,14 @@ import { Suspense, useEffect } from 'react';
 import Header from './app/header';
 import Footer from './app/footer';
 import { ToastHandler, ErrorAlert, DataList, Loading } from './components';
-import { AdsBlockerModal, BlogModal, ConfirmModal, ExtensionNotFound } from './modal';
+import { AdsBlockerModal, BlogModal, ExtensionNotFoundModal } from './modal';
 import { APP_NAME } from './constants';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { configsSelector, getManifest } from './store/config.slice';
+import { appSelector, getManifest } from './store/app.slice';
 import ConfirmationModalContextProvider from './_providers/confirm.provider';
 
 function App() {
-  const { loading, error } = useAppSelector(configsSelector);
+  const { loading, error } = useAppSelector(appSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function App() {
         <Footer />
         <ToastHandler />
         <BlogModal />
-        <ExtensionNotFound />
+        <ExtensionNotFoundModal />
         <AdsBlockerModal />
       </ConfirmationModalContextProvider>
       <DataList />

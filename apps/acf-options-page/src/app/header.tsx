@@ -5,12 +5,12 @@ import { SettingsModal } from '../modal';
 import { APP_LANGUAGES, APP_NAME } from '../constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { switchTheme, themeSelector } from '../store/theme.slice';
-import { configsSelector } from '../store/config.slice';
+import { appSelector } from '../store/app.slice';
 import { switchSettings } from '../store/settings.slice';
 
 function Header() {
   const theme = useAppSelector(themeSelector);
-  const { error } = useAppSelector(configsSelector);
+  const { error } = useAppSelector(appSelector);
   const dispatch = useAppDispatch();
     const { t, i18n } = useTranslation();
 

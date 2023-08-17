@@ -1,4 +1,3 @@
-import React from 'react';
 import { Alert, Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { dataLayerModel } from '../util/data-layer';
@@ -27,6 +26,4 @@ const BlogModal = () => {
   );
 };
 
-BlogModal.displayName = 'BlogModal';
-const memo = React.memo(BlogModal);
-export { memo as BlogModal };
+export { BlogModal };

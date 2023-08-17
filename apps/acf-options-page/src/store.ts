@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import configsReducer from './store/config.slice';
+import configsReducer from './store/app.slice';
 import addonReducer from './store/addon.slice';
 import modeReducer from './store/mode.slice';
 import themeReducer from './store/theme.slice';
@@ -9,7 +9,7 @@ import blogReducer from './store/blog.slice';
 
 export const store = configureStore({
   reducer: {
-    configs: configsReducer,
+    app: configsReducer,
     addon: addonReducer,
     mode: modeReducer,
     theme: themeReducer,
