@@ -1,25 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit';
 import appReducer from './store/app.slice';
-import addonReducer from './store/addon.slice';
 import modeReducer from './store/mode.slice';
 import themeReducer from './store/theme.slice';
 import toastReducer from './store/toast.slice';
 import { blogReducer } from './store/blog';
 import { settingsReducer, settingsListenerMiddleware } from './store/settings';
-import { configReducers, configsListenerMiddleware } from './store/config';
-
+import { configReducers, configsListenerMiddleware, configsToastListenerMiddleware } from './store/config';
+import i18nReducer from './store/i18n.slice';
 export const store = configureStore({
   reducer: {
     app: appReducer,
-    addon: addonReducer,
     mode: modeReducer,
     theme: themeReducer,
     settings: settingsReducer,
     toast: toastReducer,
     blog: blogReducer,
+    i18n: i18nReducer,
     ...configReducers,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(settingsListenerMiddleware.middleware, configsListenerMiddleware.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(settingsListenerMiddleware.middleware, configsListenerMiddleware.middleware, configsToastListenerMiddleware.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

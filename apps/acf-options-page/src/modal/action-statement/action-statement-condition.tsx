@@ -5,7 +5,7 @@ import { ACTION_CONDITION_OPR, ACTION_STATUS,  ActionCondition } from '@dhruv-te
 import { X } from '../../util';
 import {  getFieldNameValue } from '../../util/element';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { removeActionStatementCondition, selectedConfigSelector, updateActionStatementCondition } from '../../store/config';
+import { removeActionStatementCondition, selectedConfigSelector, updateActionStatementCondition, } from '../../store/config';
 
 type Props = {
   condition: ActionCondition;

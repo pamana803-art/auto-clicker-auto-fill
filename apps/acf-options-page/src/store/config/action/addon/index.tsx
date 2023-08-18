@@ -1,12 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { ConfigStore } from '../../config.slice';
 
 export * from './addon.slice';
 
 type Addon = { name: string; value: any } | null;
 
 export const actionAddonActions = {
-  updateActionAddon: (state: ConfigStore, action: PayloadAction<Addon>) => {
+  updateActionAddon: (state, action: PayloadAction<Addon>) => {
     if (action.payload) {
       const { configs, selectedActionIndex, selectedConfigIndex } = state;
       const { name, value } = action.payload;
@@ -16,7 +15,7 @@ export const actionAddonActions = {
       }
     }
   },
-  resetActionAddon: (state: ConfigStore) => {
+  resetActionAddon: (state) => {
     const { configs, selectedActionIndex, selectedConfigIndex } = state;
     delete configs[selectedConfigIndex].actions[selectedActionIndex].addon;
   },

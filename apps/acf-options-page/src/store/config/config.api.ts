@@ -1,6 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { addToast } from '../toast.slice';
-import { RootState } from '../../store';
 import { Configuration, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 import { StorageService } from '@dhruv-techapps/core-service';
 import { checkQueryParams } from './config.slice.util';

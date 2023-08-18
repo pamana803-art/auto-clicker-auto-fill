@@ -14,8 +14,10 @@ function ConfigBody() {
   const { t } = useTranslation()
 
   const onUpdate = (e) => {
-    const { value } = getFieldNameValue(e);
-    dispatch(updateConfig(value));
+    const update = getFieldNameValue(e);
+    if(update){
+      dispatch(updateConfig(update));
+    }
   }
 
   useEffect(() => {

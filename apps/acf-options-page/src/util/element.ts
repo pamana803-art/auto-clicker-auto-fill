@@ -7,6 +7,7 @@ const getFieldNameValue = <T = any>(e): { name: string; value: T } | null => {
   if (e.target.classList.contains(IN_VALID_CLASS)) {
     return null;
   }
+  
   let { value } = e.target;
   const { name, type } = e.target;
   if (type === 'checkbox') {

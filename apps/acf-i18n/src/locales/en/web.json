@@ -40,11 +40,15 @@
   },
   "toast": {
     "configuration": {
-      "add": {
+      "addConfig": {
         "header": "Configuration",
         "body": "{{name}} added successfully"
       },
-      "remove": {
+      "duplicateConfig": {
+        "header": "Configuration",
+        "body": "{{name}} duplicated successfully"
+      },
+      "removeConfig": {
         "header": "Configuration",
         "body": "{{name}} removed successfully"
       },

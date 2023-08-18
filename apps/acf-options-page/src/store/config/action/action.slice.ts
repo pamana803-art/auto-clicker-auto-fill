@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../../../store";
 import { selectedConfigSelector } from "../config.slice";
 
-const selectedActionIndexSelector = (state: RootState) => state.config.selectedActionIndex;
+const selectedActionIndexSelector = (state: RootState) => state.configuration.selectedActionIndex;
 
 export const selectedActionSelector = createSelector(selectedConfigSelector, selectedActionIndexSelector, (config, selectedActionIndex) => config.actions[selectedActionIndex]);
 

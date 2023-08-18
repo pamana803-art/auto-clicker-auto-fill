@@ -7,9 +7,9 @@ import { Trans, useTranslation } from 'react-i18next';
 import { HotkeyPopover } from '../popover';
 import { getFieldNameValue } from '../util/element';
 import { StartTimePopover } from '../popover/start-time.popover';
-import { dataLayerInput, dataLayerModel } from '../util/data-layer';
+import { dataLayerModel } from '../util/data-layer';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { configSettingsSelector, selectedConfigSelector, switchConfigSettingsModal, updateConfig } from '../store/config';
+import { configSettingsSelector, selectedConfigSelector, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 
 const ConfigSettingsModal = () => {
   const { t } = useTranslation();
@@ -47,7 +47,9 @@ const ConfigSettingsModal = () => {
 
   const onUpdate = (e) => {
     const update = getFieldNameValue(e);
-    dispatch(updateConfig(update));
+    if (update) {
+      dispatch(updateConfigSettings(update));
+    }
 
     /*dataLayerInput(update, 'config-settings');
       setMessage(t('modal.configSettings.saveMessage'));

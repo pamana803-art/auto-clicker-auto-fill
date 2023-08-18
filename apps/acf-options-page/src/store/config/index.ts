@@ -10,9 +10,9 @@ export * from './remove';
 export * from './reorder';
 export * from './settings';
 export const configReducers = {
-  config: configReducer,
+  ...actionReducers,
   configRemove: configRemoveReducer,
   configReorder: configReorderReducer,
   configSettings: configSettingsReducer,
-  ...actionReducers,
+  configuration: configReducer,
 };

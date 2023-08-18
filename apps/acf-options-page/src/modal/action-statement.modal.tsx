@@ -2,21 +2,13 @@ import React, { ChangeEvent } from 'react';
 
 import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ACTION_RUNNING } from '@dhruv-techapps/acf-common';
-import { getFieldNameValue } from '../util/element';
+import { ACTION_RUNNING, ACTION_STATUS } from '@dhruv-techapps/acf-common';
 import { ActionStatementCondition } from './action-statement/action-statement-condition';
 import { Plus } from '../util/svg';
 import { dataLayerModel } from '../util/data-layer';
 import { selectedActionSelector } from '../store/config/action';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import {
-  addActionStatementCondition,
-  configSelector,
-  resetActionStatement,
-  selectedConfigSelector,
-  updateActionStatementGoto,
-  updateActionStatementThen,
-} from '../store/config';
+import { addActionStatementCondition, configSelector, resetActionStatement, selectedConfigSelector, updateActionStatementGoto, updateActionStatementThen } from '../store/config';
 import { actionStatementSelector, switchActionStatementModal } from '../store/config/action/statement';
 
 const FORM_ID = 'actionCondition';
@@ -47,7 +39,7 @@ const ActionStatementModal = () => {
   };
 
   const addCondition = () => {
-    dispatch(addActionStatementCondition());
+    dispatch(addActionStatementCondition({ actionIndex: -1, status: ACTION_STATUS[0] }));
   };
 
   return (

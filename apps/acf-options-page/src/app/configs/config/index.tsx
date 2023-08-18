@@ -7,7 +7,7 @@ import { DropdownToggle } from '../../../components';
 import { getFieldNameValue } from '../../../util/element';
 import { download } from '../../../_helpers';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { configSelector, selectedConfigSelector, switchConfigSettingsModal, updateConfig } from '../../../store/config';
+import { configSelector, duplicateConfig, removeConfig, selectedConfigSelector, switchConfigSettingsModal, updateConfig } from '../../../store/config';
 import { configImportAPI } from '../../../store/config/config.api';
 import { useConfirmationModalContext } from '../../../_providers/confirm.provider';
 
@@ -17,24 +17,18 @@ function Config() {
   const modalContext = useConfirmationModalContext();
   const config = useAppSelector(selectedConfigSelector);
   const dispatch = useAppDispatch();
-  //  const configsLength = configs.length
   const { t } = useTranslation();
-  const importFiled = createRef();
-  //const [message, setMessage] = useState()
+  const importFiled = createRef<HTMLInputElement>();
 
   const onUpdate = (e) => {
     const update = getFieldNameValue(e);
-    dispatch(updateConfig(update));
-    /*if (update) {
-      dataLayerInput(update, 'configuration')
-      setMessage(t('configuration.saveMessage'))
-      setTimeout(setMessage, 1500)
-    }*/
+    if(update){
+      dispatch(updateConfig(update));
+    }
   };
 
   const exportConfig = () => {
-    let url = config.url.split('/');
-    url = url[2] || 'default';
+    const url = config.url.split('/')[2] || 'default';
     const name = config.name || url;
     download(name, config);
   };
@@ -55,29 +49,19 @@ function Config() {
     dispatch(switchConfigSettingsModal());
   };
 
-  const removeConfig = () => {
-    dispatch(removeConfig());
-    /*toastRef.current.push({
-      body: t('toast.configuration.remove.body', { name }),
-    });*/
-  };
 
-  const removeConfigConfirm = async () => {
+  const onRemoveConfigConfirm = async () => {
     const name = config.name || config.url;
     const result = await modalContext.showConfirmation({
       title: t('confirm.configuration.remove.title'),
       message: t('confirm.configuration.remove.message', { name }),
-      headerClass: 'text-danger',
-      confirmFunc: removeConfig,
+      headerClass: 'text-danger'
     });
-    result && removeConfig();
+    result && dispatch(removeConfig());
   };
 
-  const duplicateConfig = () => {
+  const onDuplicateConfig = () => {
     dispatch(duplicateConfig())
-    /*toastRef.current.push({
-      body: t('toast.configuration.add.body', { name: configCopy.name }),
-    });*/
   };
 
   return (
@@ -105,11 +89,11 @@ function Config() {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={exportConfig}>{t('configuration.export')}</Dropdown.Item>
-                <Dropdown.Item onClick={() => importFiled.current.click()}>{t('configuration.import')}</Dropdown.Item>
+                <Dropdown.Item onClick={() => importFiled.current?.click()}>{t('configuration.import')}</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={duplicateConfig}>{t('configuration.duplicate')}</Dropdown.Item>
+                <Dropdown.Item onClick={onDuplicateConfig}>{t('configuration.duplicate')}</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={removeConfigConfirm} className={lastConfig ? '' : 'text-danger'} disabled={lastConfig}>
+                <Dropdown.Item onClick={onRemoveConfigConfirm} className={lastConfig ? '' : 'text-danger'} disabled={lastConfig}>
                   {t('configuration.remove')}
                 </Dropdown.Item>
                 <Dropdown.Divider />

@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { LocalStorage } from '../../../_helpers'
 import ActionTable, { ActionTableRef } from './action-table'
 import { DropdownToggle } from '../../../components'
-import { Filter, numberWithExponential } from '../../../util'
+import { Filter } from '../../../util'
+import { ActionSettingsModal, ActionStatementModal, AddonModal } from '../../../modal'
 
 const HIDDEN_COLUMN_KEY = 'hiddenColumns'
 const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval']
@@ -37,6 +38,7 @@ function Action(props) {
   }, [hiddenColumns])
 
   return (
+    <>
     <Card className='mt-3'>
       <Card.Header as='h6'>
         <Row>
@@ -75,6 +77,10 @@ function Action(props) {
         <ActionTable ref={actionTableRef} {...props} hiddenColumns={hiddenColumns} setMessage={setMessage} setError={setError} />
       </Card.Body>
     </Card>
+    <AddonModal />
+    <ActionSettingsModal />
+    <ActionStatementModal />
+    </>
   )
 }
 Action.propTypes = {

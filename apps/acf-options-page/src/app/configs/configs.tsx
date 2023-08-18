@@ -11,12 +11,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addConfig, configSelector, selectConfig, switchConfigRemoveModal, switchConfigReorderModal } from '../../store/config';
 import { addToast } from '../../store/toast.slice';
 import { configGetAllAPI, configImportAllAPI } from '../../store/config/config.api';
+import { modeSelector } from '../../store/mode.slice';
+import Batch from './batch';
 
 function Configs() {
   const { t, i18n } = useTranslation();
 
   const [scroll, setScroll] = useState(false);
-
+  const mode = useAppSelector(modeSelector)
   const { configs, error, loading, selectedConfigIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
 
@@ -87,10 +89,10 @@ function Configs() {
               <Form>
                 <Form.Group controlId='selected' className='mb-0'>
                   <Form.Select onChange={onChange} value={selectedConfigIndex} id='configuration-list' className='ps-4 border-0' data-type='number'>
-                    {configs.map((_config, index) => (
-                      <option key={index} value={index} className={!_config.enable ? 'bg-secondary' : ''}>
+                    {configs.map((config, index) => (
+                      <option key={index} value={index} className={!config.enable ? 'bg-secondary' : ''}>
                         {/*style={{ '--bs-bg-opacity': `.25` }}*/}
-                        {_config.name} {_config.url}
+                        {config.name} {config.url || index} 
                       </option>
                     ))}
                   </Form.Select>
@@ -129,8 +131,8 @@ function Configs() {
       <main>
         <Container>
           <Config />
-          {/*{mode === 'pro' && <Batch batch={config.batch} configEnable={config.enable} configIndex={selected} setConfigs={setConfigs} />}
-          <Ads configIndex={selected} />
+          {mode === 'pro' && <Batch />}
+          {/*<Ads configIndex={selected} />
           <Action
             actions={config.actions}
             configEnable={config.enable}
@@ -140,11 +142,10 @@ function Configs() {
             addonRef={addonRef}
             actionSettingsRef={actionSettingsRef}
             actionConditionRef={actionConditionRef}
-                  />*/}
+                  />
+                  */}
         </Container>
-        <AddonModal />
-        <ActionSettingsModal />
-        <ActionStatementModal />
+        
         <ConfigSettingsModal />
         <ReorderConfigsModal />
         <RemoveConfigsModal />

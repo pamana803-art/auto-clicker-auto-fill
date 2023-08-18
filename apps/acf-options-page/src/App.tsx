@@ -1,18 +1,17 @@
 import { Suspense, useEffect } from 'react';
 import Header from './app/header';
 import Footer from './app/footer';
-import Configs from "./app/configs"
 import { ToastHandler, ErrorAlert, DataList, Loading } from './components';
 import { AdsBlockerModal, BlogModal, ExtensionNotFoundModal } from './modal';
 import { APP_NAME } from './constants';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { appSelector, getManifest } from './store/app.slice';
 import ConfirmationModalContextProvider from './_providers/confirm.provider';
+import Configs from './app/configs/configs';
 
 function App() {
   const { loading, error } = useAppSelector(appSelector);
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     dispatch(getManifest());
   }, [dispatch]);

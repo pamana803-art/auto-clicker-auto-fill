@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../store';
 
 type ConfigSettingsStore = {
@@ -18,10 +18,13 @@ const slice = createSlice({
     switchConfigSettingsModal: (state) => {
       state.visible = !state.visible;
     },
+    updateConfigSettingsMessage: (state, action: PayloadAction<string | undefined>) => {
+      state.message = action.payload;
+    },
   },
 });
 
-export const { switchConfigSettingsModal } = slice.actions;
+export const { switchConfigSettingsModal, updateConfigSettingsMessage } = slice.actions;
 
 export const configSettingsSelector = (state: RootState) => state.configSettings;
 export const configSettingsReducer = slice.reducer;

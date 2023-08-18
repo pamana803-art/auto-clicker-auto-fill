@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { ConfigStore } from '../../config.slice';
-import { ACTION_RUNNING } from '@dhruv-techapps/acf-common';
+import { ACTION_RUNNING, ActionCondition } from '@dhruv-techapps/acf-common';
 
 export * from './action-statement.slice';
 
@@ -17,11 +17,11 @@ export const actionStatementActions = {
       }
     }
   },
-  addActionStatementCondition:(state:ConfigStore)=>{
+  addActionStatementCondition:(state:ConfigStore,action:PayloadAction<ActionCondition>)=>{
     const { configs, selectedActionIndex, selectedConfigIndex } = state;
     const statement = configs[selectedConfigIndex].actions[selectedActionIndex].statement;
     if (statement) {
-      statement.conditions.push({});
+      statement.conditions.push(action.payload);
     }
   },
   removeActionStatementCondition:(state:ConfigStore,action:PayloadAction<number>)=>{

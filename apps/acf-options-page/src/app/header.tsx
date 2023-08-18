@@ -1,3 +1,4 @@
+import {useEffect} from "react";
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { GearFill, Moon, Sun } from '../util';
@@ -7,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { switchTheme, themeSelector } from '../store/theme.slice';
 import { appSelector } from '../store/app.slice';
 import { switchSettings } from '../store/settings/settings.slice';
+import { updateI18n } from '../store/i18n.slice';
 
 function Header() {
   const theme = useAppSelector(themeSelector);
@@ -14,10 +16,15 @@ function Header() {
   const dispatch = useAppDispatch();
     const { t, i18n } = useTranslation();
 
-  const changeLanguage = (lng) => {
+  const changeLanguage = async (lng) => {
     window.dataLayer.push({ event: 'language', conversionValue: lng });
-    i18n.changeLanguage(lng);
+    await i18n.changeLanguage(lng);
+    dispatch(updateI18n(i18n.getDataByLanguage(lng)))
   };
+
+  useEffect(()=>{
+    dispatch(updateI18n(i18n.getDataByLanguage(i18n.language)))
+  },[dispatch,i18n])
 
   const toggleTheme = () => {
     dispatch(switchTheme());

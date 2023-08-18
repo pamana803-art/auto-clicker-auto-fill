@@ -1,5 +1,5 @@
 import { Batch } from './batch-model';
-import { Action } from './action-model';
+import { Action, defaultAction } from './action-model';
 
 export enum LOAD_TYPES {
   WINDOW = 'window',
@@ -26,14 +26,14 @@ export type Configuration = {
   spreadsheetId?: string;
   hotkey?: string;
   batch?: Batch;
-  new?:boolean
+  new?: boolean;
 };
 
 export const defaultConfig: Configuration = {
   url: '',
-  name:'',
+  name: '',
   enable: true,
   startType: START_TYPES.AUTO,
   loadType: LOAD_TYPES.WINDOW,
-  actions: [],
+  actions: [{...defaultAction}],
 };

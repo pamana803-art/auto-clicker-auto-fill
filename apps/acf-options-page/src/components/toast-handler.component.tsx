@@ -21,8 +21,8 @@ export const ToastHandler = () => {
           className={toastClass}
           autohide={autohide}
         >
-          <Toast.Header className={headerClass}>{header}</Toast.Header>
-          <Toast.Body className={bodyClass}>{body}</Toast.Body>
+          <Toast.Header className={headerClass}><strong className="me-auto">{header}</strong></Toast.Header>
+          {body && <Toast.Body className={bodyClass}>{body}</Toast.Body>}
         </Toast>
       ))}
     </div>

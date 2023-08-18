@@ -4,8 +4,8 @@ import { ToastProps } from 'react-bootstrap';
 import { ReactNode } from 'react';
 
 export type ToastHandlerProps = Omit<ToastProps, 'defaultValue'> & {
-  body: string | ReactNode;
   header: string | ReactNode;
+  body?: string | ReactNode;
   bodyClass?: string;
   headerClass?: string;
   toastClass?: string;

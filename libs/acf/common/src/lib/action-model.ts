@@ -59,3 +59,8 @@ export type Action = {
   statement?: ActionStatement;
   settings?: ActionSetting;
 };
+
+
+export const defaultAction:Action = {
+  elementFinder: ''
+}
