@@ -1,6 +1,4 @@
-import React, {  SyntheticEvent,  useEffect, } from 'react';
-
-import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap';
 import { ADDON_CONDITIONS,ValueExtractorFlags } from '@dhruv-techapps/acf-common';
 import { useTranslation } from 'react-i18next';
@@ -9,12 +7,10 @@ import { ValueExtractorPopover } from '../popover';
 import { AddonRecheck } from './addon/recheck';
 import { getFieldNameValue } from '../util/element';
 import { AddonValueExtractorFlags } from './addon/value-extractor-flags';
-import { dataLayerModel } from '../util/data-layer';
-
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { actionAddonSelector, switchActionAddonModal } from '../store/config/action/addon/addon.slice';
 import { updateActionAddon } from '../store/config';
-import { selectedActionAddonSelector } from '../store/config/action';
+import { selectedActionAddonSelector } from '../store/config';
 
 const FORM_ID = 'addon';
 
@@ -24,7 +20,7 @@ const AddonModal = () => {
   const { visible, message } = useAppSelector(actionAddonSelector);
   const dispatch = useAppDispatch();
 
-  const onUpdate = (e: SyntheticEvent) => {
+  const onUpdate = (e) => {
     const update = getFieldNameValue(e);
     if (update) {
       dispatch(updateActionAddon(update));
@@ -32,7 +28,6 @@ const AddonModal = () => {
   };
 
   const handleClose = () => {
-    dataLayerModel('addon-modal', 'close');
     dispatch(switchActionAddonModal());
   };
 
@@ -63,8 +58,12 @@ const AddonModal = () => {
     dispatch(updateActionAddon({ name: 'valueExtractorFlags', value: valueExtractorFlags }));
   };
 
+  const onShow = () =>{
+    //:TODO
+  }
+
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} onShow={() => dataLayerModel('addon-modal', 'open')}>
+    <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
       <Form id={FORM_ID}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.addon.title')}</Modal.Title>

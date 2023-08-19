@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 import { CHROME_WEB_STORE, EDGE_WEB_STORE } from '../constants';
-import { dataLayerModel } from '../util/data-layer';
 import { BROWSER } from '../_helpers';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { appSelector, switchExtensionNotFound } from '../store/app.slice';
@@ -26,12 +25,15 @@ const ExtensionNotFoundModal = () => {
   };
 
   const onHide = () => {
-    dataLayerModel('extension-not-found', 'close');
     dispatch(switchExtensionNotFound());
   };
 
+  const onShow = () => {
+    //:TODO
+  }
+
   return (
-    <Modal show={extensionNotFound} size='lg' centered backdrop='static' keyboard={false} onShow={() => dataLayerModel('extension-not-found', 'open')} onHide={onHide}>
+    <Modal show={extensionNotFound} size='lg' centered backdrop='static' keyboard={false} onShow={onShow} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.extensionNotFound.title')}</Modal.Title>
       </Modal.Header>

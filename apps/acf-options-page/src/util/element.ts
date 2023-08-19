@@ -47,9 +47,9 @@ const updateForm = (formId: string, data: any) => {
     Array.from(form.elements).forEach((element) => {
       const inputElement = element as HTMLInputElement;
       if (inputElement.type === 'radio') {
-        inputElement.checked = data[inputElement.name] === inputElement.value;
+        inputElement.checked = data?.[inputElement.name] === inputElement.value;
       } else if (inputElement.type !== 'checkbox') {
-        inputElement.value = data[inputElement.name] || '';
+        inputElement.value = data?.[inputElement.name] || '';
       }
     });
   }

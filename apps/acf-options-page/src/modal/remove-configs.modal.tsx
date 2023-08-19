@@ -1,53 +1,51 @@
-import  { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { Badge, Button, Form, ListGroup, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ErrorAlert, Loading } from '../components';
-import { dataLayerModel } from '../util/data-layer';
+import { ErrorAlert } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { configRemoveSelector, configRemoveUpdateAPI, switchConfigRemoveModal, switchConfigRemoveSelection } from '../store/config';
 
-
 const RemoveConfigsModal = () => {
-  const {visible, configs, loading, error } = useAppSelector(configRemoveSelector)
-  const dispatch = useAppDispatch()
+  const { visible, configs, error } = useAppSelector(configRemoveSelector);
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
-  const onSubmit = (e:FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(configRemoveUpdateAPI())
+    dispatch(configRemoveUpdateAPI());
   };
 
   const handleClose = () => {
-    dispatch(switchConfigRemoveModal())
+    dispatch(switchConfigRemoveModal());
   };
 
   const remove = (e: ChangeEvent<HTMLInputElement>) => {
     const { dataset } = e.currentTarget;
-    if(dataset.index){
-      dispatch(switchConfigRemoveSelection(Number(dataset.index)))
+    if (dataset.index) {
+      dispatch(switchConfigRemoveSelection(Number(dataset.index)));
     }
   };
 
-  if(loading){
-    return <Loading />
-  }
-
   const checkedConfigLength = () => configs.filter((config) => config.checked).length + 1;
 
+  const onShow = () => {
+    //:TODO
+  };
+
   return (
-    <Modal show={visible} size="lg" onHide={handleClose} scrollable onShow={() => dataLayerModel('remove-configs', 'open')}>
-      <Form onSubmit={onSubmit} id="remove-configs">
+    <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow}>
+      <Form onSubmit={onSubmit} id='remove-configs'>
         <Modal.Header>
-          <Modal.Title as="h6">{t('configuration.removeConfigs')}</Modal.Title>
+          <Modal.Title as='h6'>{t('configuration.removeConfigs')}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }}>
           <ErrorAlert error={error} />
-          <p className="text-muted">This action cant be reverted.</p>
+          <p className='text-muted'>This action cant be reverted.</p>
           <ListGroup>
             {configs.map((config, index) => (
               <ListGroup.Item key={index}>
                 <Form.Check
-                  type="checkbox"
+                  type='checkbox'
                   checked={config.checked || false}
                   onChange={remove}
                   className={config.checked ? 'text-danger' : ''}
@@ -59,7 +57,7 @@ const RemoveConfigsModal = () => {
                     <>
                       {config.name}
                       {!config.enable && (
-                        <Badge pill bg="secondary" className="ms-2">
+                        <Badge pill bg='secondary' className='ms-2'>
                           {t('common.disabled')}
                         </Badge>
                       )}
@@ -70,11 +68,11 @@ const RemoveConfigsModal = () => {
             ))}
           </ListGroup>
         </Modal.Body>
-        <Modal.Footer className="justify-content-between">
-          <Button type="button" variant="outline-primary px-5" onClick={handleClose}>
+        <Modal.Footer className='justify-content-between'>
+          <Button type='button' variant='outline-primary px-5' onClick={handleClose}>
             {t('common.close')}
           </Button>
-          <Button type="submit" variant="danger px-5" className="ml-3" id="remove-configs-button">
+          <Button type='submit' variant='danger px-5' className='ml-3' id='remove-configs-button'>
             {t('configuration.removeConfigs')}
           </Button>
         </Modal.Footer>

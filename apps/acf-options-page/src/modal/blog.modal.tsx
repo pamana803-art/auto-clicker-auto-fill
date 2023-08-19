@@ -1,6 +1,5 @@
 import { Alert, Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { dataLayerModel } from '../util/data-layer';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { blogSelector, hideBlog } from '../store/blog/blog.slice';
 
@@ -10,9 +9,12 @@ const BlogModal = () => {
   const { visible, version, data } = useAppSelector(blogSelector);
   const dispatch = useAppDispatch();
   const handleClose = () => dispatch(hideBlog());
+  const onShow = () => {
+    //:TODO
+  }
 
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={() => dataLayerModel('blog', 'open')}>
+    <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow}>
       <Modal.Header>
         <Modal.Title as='h6'>Version {version}</Modal.Title>
       </Modal.Header>

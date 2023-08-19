@@ -2,8 +2,11 @@ import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { Configuration, defaultConfig } from '@dhruv-techapps/acf-common';
 import { configGetAllAPI, configImportAPI, configImportAllAPI } from './config.api';
-import { actionAddonActions, actionSettingsActions, actionStatementActions } from './action';
+import { actionActions } from './action';
 import { batchActions } from './batch';
+import { actionAddonActions } from './action/addon';
+import { actionSettingsActions } from './action/settings';
+import { actionStatementActions } from './action/statement';
 
 export type ConfigStore = {
   visible: boolean;
@@ -23,12 +26,17 @@ const slice = createSlice({
   name: 'configuration',
   initialState,
   reducers: {
+    setConfigError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+      state.message = undefined
+    },
+    setConfigMessage: (state, action: PayloadAction<string | undefined>) => {
+      state.message = action.payload;
+      state.error = undefined
+    },
     addConfig: (state) => {
       state.configs.push({ ...defaultConfig });
       state.selectedConfigIndex = 0;
-    },
-    setConfigError: (state, action: PayloadAction<string>) => {
-      state.error = action.payload;
     },
     updateConfig: (state, action: PayloadAction<ConfigAction>) => {
       const { name, value } = action.payload;
@@ -39,9 +47,6 @@ const slice = createSlice({
       const { name, value } = action.payload;
       const { configs, selectedConfigIndex } = state;
       configs[selectedConfigIndex][name] = value;
-    },
-    updateConfigMessage: (state, action: PayloadAction<string | undefined>) => {
-      state.message = action.payload;
     },
     removeConfig: (state) => {
       const { configs, selectedConfigIndex } = state;
@@ -60,10 +65,11 @@ const slice = createSlice({
       state.selectedConfigIndex = action.payload;
       window.dataLayer.push({ event: 'select', conversionName: 'configurations', section: 'configurations' });
     },
+    ...actionActions,
     ...actionAddonActions,
     ...actionSettingsActions,
     ...actionStatementActions,
-    ...batchActions
+    ...batchActions,
   },
   extraReducers: (builder) => {
     builder.addCase(configGetAllAPI.fulfilled, (state, action) => {
@@ -92,14 +98,19 @@ const slice = createSlice({
 });
 
 export const {
+  setConfigMessage,
+  setConfigError,
   addConfig,
   selectConfig,
-  setConfigError,
   updateConfig,
   updateConfigSettings,
-  updateConfigMessage,
   removeConfig,
   duplicateConfig,
+  updateBatch,
+  addAction,
+  reorderActions,
+  removeAction,
+  updateAction,
   addActionStatementCondition,
   updateActionAddon,
   updateActionSettings,
@@ -110,14 +121,24 @@ export const {
   resetActionAddon,
   resetActionSetting,
   resetActionStatement,
-  updateBatch
 } = slice.actions;
 
 export const configSelector = (state: RootState) => state.configuration;
 
-const selectedConfigIndexSelector = (state: RootState) => state.configuration.selectedConfigIndex;
 const configsSelector = (state: RootState) => state.configuration.configs;
+const selectedConfigIndexSelector = (state: RootState) => state.configuration.selectedConfigIndex;
+const selectedActionIndexSelector = (state: RootState) => state.configuration.selectedActionIndex;
 
 export const selectedConfigSelector = createSelector(configsSelector, selectedConfigIndexSelector, (configs, selectedConfigIndex) => configs[selectedConfigIndex]);
+
+export const selectedActionSelector = createSelector(selectedConfigSelector, selectedActionIndexSelector, (config, selectedActionIndex) => config.actions[selectedActionIndex]);
+
+export const selectedActionSettingsSelector = createSelector(selectedActionSelector, action => action.settings)
+
+export const selectedActionStatementSelector = createSelector(selectedActionSelector, action => action.statement)
+
+export const selectedActionAddonSelector = createSelector(selectedActionSelector, action => action.addon)
+
+export const selectedActionStatementConditionsSelector = createSelector(selectedActionSelector, action => action.statement?.conditions)
 
 export const configReducer = slice.reducer;

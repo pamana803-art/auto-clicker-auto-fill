@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Col, Row } from 'react-bootstrap'
 
-export function GoogleAds({ client, slot, className, configIndex }) {
+export function GoogleAds({ client, slot, className }) {
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
     ;(window.adsbygoogle = window.adsbygoogle || []).push({})
@@ -13,7 +13,6 @@ export function GoogleAds({ client, slot, className, configIndex }) {
       <Col xs={12} className='text-center'>
         <ins
           className={`${className} adsbygoogle`}
-          data-configIndex={configIndex}
           style={{ display: 'block' }}
           data-ad-client={client}
           data-ad-slot={slot}
@@ -25,13 +24,11 @@ export function GoogleAds({ client, slot, className, configIndex }) {
   )
 }
 GoogleAds.defaultProps = {
-  configIndex: -1,
   className: 'mb-3',
   client: process.env.NX_GOOGLE_ADS_CLIENT,
   slot: process.env.NX_GOOGLE_ADS_SLOT
 }
 GoogleAds.propTypes = {
-  configIndex: PropTypes.number,
   client: PropTypes.string,
   slot: PropTypes.string,
   className: PropTypes.string

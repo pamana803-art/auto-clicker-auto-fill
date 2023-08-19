@@ -1,12 +1,16 @@
 import { Button, Modal } from 'react-bootstrap';
-import { dataLayerModel } from '../util/data-layer';
 import { useTranslation } from 'react-i18next';
 
 const ConfirmModal = ({ visible, message, title, headerClass, noClick, yesClick }) => {
   const { t } = useTranslation();
-
+  const onShow = () => {
+    //:TODO
+  };
+  const onHide = () => {
+    //:TODO
+  };
   return (
-    <Modal show={visible} centered backdrop='static' keyboard={false} onShow={() => dataLayerModel('confirm', 'open')} onHide={() => dataLayerModel('confirm', 'close')}>
+    <Modal show={visible} centered backdrop='static' keyboard={false} onShow={onShow} onHide={onHide}>
       <Modal.Body className='p-4 text-center'>
         <h4 className={`my-3 fw-normal ${headerClass}`}>{title || 'Confirm'}</h4>
         {message}

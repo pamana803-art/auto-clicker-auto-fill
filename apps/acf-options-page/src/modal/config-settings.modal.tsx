@@ -7,7 +7,6 @@ import { Trans, useTranslation } from 'react-i18next';
 import { HotkeyPopover } from '../popover';
 import { getFieldNameValue } from '../util/element';
 import { StartTimePopover } from '../popover/start-time.popover';
-import { dataLayerModel } from '../util/data-layer';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { configSettingsSelector, selectedConfigSelector, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 
@@ -19,7 +18,6 @@ const ConfigSettingsModal = () => {
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dataLayerModel('config-settings', 'close');
     dispatch(switchConfigSettingsModal());
   };
 
@@ -56,8 +54,12 @@ const ConfigSettingsModal = () => {
       setTimeout(setMessage, 1500);*/
   };
 
+  const onShow = () => {
+//:TODO
+  }
+
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} onShow={() => dataLayerModel('config-settings', 'open')}>
+    <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
       <Form>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.configSettings.title')}</Modal.Title>

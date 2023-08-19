@@ -1,7 +1,6 @@
 import { PayloadAction, createAsyncThunk, createListenerMiddleware, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { AUTO_BACKUP, LOCAL_STORAGE_KEY, Settings, defaultSettings } from '@dhruv-techapps/acf-common';
-import { dataLayerInput, dataLayerModel } from '../../util/data-layer';
 import { StorageService } from '@dhruv-techapps/core-service';
 
 type SettingsStore = {
@@ -28,36 +27,33 @@ const slice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    switchSettings: (state) => {
+    switchSettingsModal: (state) => {
       state.visible = !state.visible;
-      //:TODO
-      dataLayerModel(LOCAL_STORAGE_KEY.SETTINGS, state.visible ? 'close' : 'open');
     },
-    setSettingsMessage: (state, action: PayloadAction<string>) => {
+    setSettingsMessage: (state, action: PayloadAction<string | undefined>) => {
       state.message = action.payload;
+      state.error = undefined
     },
     updateSettings: (state, action: PayloadAction<SettingsAction | null>) => {
       if (action.payload) {
         const { name, value } = action.payload;
         state.settings[name] = value;
-        dataLayerInput(action.payload, LOCAL_STORAGE_KEY.SETTINGS);
       }
     },
     updateSettingsNotification: (state, action: PayloadAction<SettingsAction | null>) => {
       if (action.payload) {
         const { name, value } = action.payload;
         state.settings.notifications[name] = value;
-        dataLayerInput(action.payload, LOCAL_STORAGE_KEY.SETTINGS);
       }
     },
     updateSettingsBackup: (state, action: PayloadAction<AUTO_BACKUP>) => {
       if (action.payload) {
         state.settings.backup.autoBackup = action.payload;
-        dataLayerInput(action.payload, LOCAL_STORAGE_KEY.SETTINGS);
       }
     },
     setSettingsError: (state, action) => {
       state.error = action.payload;
+      state.message = undefined
       state.loading = false;
     },
   },
@@ -75,7 +71,7 @@ const slice = createSlice({
   },
 });
 
-export const { switchSettings, setSettingsError, updateSettings, setSettingsMessage, updateSettingsNotification, updateSettingsBackup } = slice.actions;
+export const { switchSettingsModal, setSettingsError, updateSettings, setSettingsMessage, updateSettingsNotification, updateSettingsBackup } = slice.actions;
 
 export const settingsSelector = (state: RootState) => state.settings;
 

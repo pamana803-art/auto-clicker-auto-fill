@@ -1,33 +1,29 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { useEffect } from 'react';
 
-import PropTypes from 'prop-types';
 import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
-import { ActionSetting, RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
+import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { useTranslation } from 'react-i18next';
 
-import {  getFieldNameValue, updateForm } from '../util/element';
-import { dataLayerInput, dataLayerModel } from '../util/data-layer';
+import { getFieldNameValue } from '../util/element';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import {  resetActionSetting,  updateActionSettings } from '../store/config';
-import { actionSettingsSelector,  selectedActionSelector,  switchActionSettingsModal } from '../store/config/action';
+import { resetActionSetting, updateActionSettings } from '../store/config';
+import { actionSettingsSelector, switchActionSettingsModal } from '../store/config/action/settings';
+import { selectedActionSelector } from '../store/config';
 
 const FORM_ID = 'action-settings';
 
-
 const ActionSettingsModal = () => {
   const { t } = useTranslation();
-  const {settings} = useAppSelector(selectedActionSelector);
-  const { message,visible } = useAppSelector(actionSettingsSelector);
+  const { settings } = useAppSelector(selectedActionSelector);
+  const { message, visible } = useAppSelector(actionSettingsSelector);
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
     const update = getFieldNameValue(e);
-      dispatch(updateActionSettings(update))
-  
+    dispatch(updateActionSettings(update));
   };
 
   const handleClose = () => {
-    dataLayerModel('action-settings', 'close');
     dispatch(switchActionSettingsModal());
   };
 
@@ -61,12 +57,16 @@ const ActionSettingsModal = () => {
   }, [actionIndex.current]);*/
 
   const onReset = () => {
-    dispatch(resetActionSetting())
+    dispatch(resetActionSetting());
     handleClose();
   };
 
+  const onShow = () => {
+//:TODO
+  }
+
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} onShow={() => dataLayerModel('action-settings', 'open')}>
+    <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
       <Form id={FORM_ID}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.actionSettings.title')}</Modal.Title>
@@ -153,4 +153,4 @@ const ActionSettingsModal = () => {
   );
 };
 
-export {  ActionSettingsModal };
+export { ActionSettingsModal };

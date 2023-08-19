@@ -24,14 +24,11 @@ function App() {
     }
   }, []);
 
-  if (loading) {
-    return <Loading message='Connecting with extension...' className='m-5 p-5' />;
-  }
-
   return (
-    <Suspense fallback={<Loading message='Connecting with extension...' className='m-5 p-5' />}>
+    <Suspense fallback={<Loading message='Loading localization...' className='m-5 p-5' />}>
       <ConfirmationModalContextProvider>
         <Header />
+        {loading && <Loading message='Connecting with extension...' className='m-5 p-5' />}
         <ErrorAlert error={error} />
         <Configs />
         <Footer />

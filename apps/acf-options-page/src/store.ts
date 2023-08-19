@@ -6,7 +6,7 @@ import toastReducer from './store/toast.slice';
 import { blogReducer } from './store/blog';
 import { settingsReducer, settingsListenerMiddleware } from './store/settings';
 import { configReducers, configsListenerMiddleware, configsToastListenerMiddleware } from './store/config';
-import i18nReducer from './store/i18n.slice';
+import { batchReducer } from './store/config/batch';
 export const store = configureStore({
   reducer: {
     app: appReducer,
@@ -15,7 +15,7 @@ export const store = configureStore({
     settings: settingsReducer,
     toast: toastReducer,
     blog: blogReducer,
-    i18n: i18nReducer,
+    batch: batchReducer,
     ...configReducers,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(settingsListenerMiddleware.middleware, configsListenerMiddleware.middleware, configsToastListenerMiddleware.middleware),

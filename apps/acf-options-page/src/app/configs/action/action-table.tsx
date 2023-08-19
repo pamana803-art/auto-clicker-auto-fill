@@ -1,43 +1,49 @@
-import React, { Dispatch, SetStateAction, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
+import {  useEffect, useMemo } from 'react';
 import { useTable } from 'react-table';
 import { Dropdown, Form, Table } from 'react-bootstrap';
-import { Action, Configuration } from '@dhruv-techapps/acf-common';
 import { useTranslation } from 'react-i18next';
 import { EditableCell } from './editable-cell';
-import { CaretDown, CaretUp, REGEX_INTERVAL, REGEX_NUM, ThreeDots, numberWithExponential } from '../../../util';
+import { CaretDown, CaretUp, REGEX_INTERVAL, REGEX_NUM, ThreeDots } from '../../../util';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
 import { DropdownToggle } from '../../../components';
-// import { useAppDispatch } from 'apps/acf-options-page/src/hooks';
-// import { showConfirm } from 'apps/acf-options-page/src/store/confirm.slice';
+import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
+import { removeAction, reorderActions, selectedConfigSelector, updateAction } from '@apps/acf-options-page/src/store/config';
+import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
+import { switchActionAddonModal } from '@apps/acf-options-page/src/store/config/action/addon';
+import { switchActionStatementModal } from '@apps/acf-options-page/src/store/config/action/statement';
+import { switchActionSettingsModal } from '@apps/acf-options-page/src/store/config/action/settings';
 
-type ActionTableProps = {
-  actions: Array<Action>;
-  configIndex: number;
-  setConfigs: Dispatch<SetStateAction<Array<Configuration>>>;
-  hiddenColumns: Array<string | null | undefined>;
-  setMessage: (message?: string) => void;
-  setError: (error?: string) => void;
-  addonRef: any;
-  actionSettingsRef: any;
-  actionConditionRef: any;
-};
-
-export type ActionTableRef = {
-  addAction: () => void;
-};
-
-const ActionTable = forwardRef<ActionTableRef, ActionTableProps>(({ actions, configIndex, setConfigs, hiddenColumns, addonRef, actionSettingsRef, actionConditionRef, setMessage, setError }, ref) => {
+const ActionTable = ({ hiddenColumns }) => {
   const { t } = useTranslation();
-  const [data, setData] = useState(actions);
-
-  // const dispatch = useAppDispatch();
-
-  const didMountRef = useRef(true);
-  const didUpdateRef = useRef(false);
+  const { actions } = useAppSelector(selectedConfigSelector);
+  const dispatch = useAppDispatch();
+  const modalContext = useConfirmationModalContext();
   const defaultColumn = { Cell: EditableCell };
   const initialState = { hiddenColumns };
-  const columns = React.useMemo(
+
+  /*const validateActions = () => {
+    let isValid = true;
+    data.forEach((action, index) => {
+      document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`)?.classList.remove('is-invalid');
+      if (!action.elementFinder) {
+        document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`)?.classList.add('is-invalid');
+        isValid = false;
+      }
+    });
+    return isValid;
+  };*/
+
+  const removeActionConfirm = async (rowIndex) => {
+    const name = `#${+rowIndex + 1} - ${actions[rowIndex].name || actions[rowIndex].elementFinder || 'row'}`;
+    const result = await modalContext.showConfirmation({
+      title: t('confirm.action.remove.title'),
+      message: t('confirm.action.remove.message', name),
+      headerClass: 'text-danger',
+    });
+    result && dispatch(removeAction(Number(rowIndex)));
+  };
+
+  const columns = useMemo(
     () => [
       {
         Header: t('action.initWait'),
@@ -89,138 +95,35 @@ const ActionTable = forwardRef<ActionTableRef, ActionTableProps>(({ actions, con
     ],
     [t]
   );
-
-  const validateActions = () => {
-    let isValid = true;
-    data.forEach((action, index) => {
-      document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`)?.classList.remove('is-invalid');
-      if (!action.elementFinder) {
-        document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`)?.classList.add('is-invalid');
-        isValid = false;
-      }
-    });
-    return isValid;
-  };
-
-  const saveActions = () => {
-    setError();
-    if (validateActions()) {
-      setConfigs((configs) =>
-        configs.map((config, index) => {
-          if (index === configIndex) {
-            config.actions = [...data];
-            return config;
-          }
-          return config;
-        })
-      );
-      didUpdateRef.current = false;
-      setMessage(t('action.saveMessage'));
-      setTimeout(setMessage, 1500);
-    } else {
-      setError(t('error.elementFinder'));
-    }
-  };
-
-  useImperativeHandle(ref, () => ({
-    addAction() {
-      //TODO setData([...data, { ...defaultAction, focus: true }]);
-      didUpdateRef.current = true;
-    },
-  }));
-
-  useEffect(() => {
-    if (didMountRef.current) {
-      didMountRef.current = false;
-      return;
-    }
-    setData(actions);
-  }, [actions]);
-
-  useEffect(() => {
-    if (didUpdateRef.current) {
-      saveActions();
-    }
-  }, [data]);
-
-  const updateAction = (rowIndex, columnId, value) => {
-    setData((prevActions) =>
-      prevActions.map((action, index) => {
-        if (index === rowIndex) {
-          return { ...action, [columnId]: value };
-        }
-        return action;
-      })
-    );
-    didUpdateRef.current = true;
-  };
-
-  const removeAction = (rowIndex) => {
-    setData((prevActions) => prevActions.filter((_, index) => index !== rowIndex));
-    didUpdateRef.current = true;
-  };
-
-  const removeActionConfirm = (rowIndex) => {
-    const name = `#${+rowIndex + 1} - ${data[rowIndex].name || data[rowIndex].elementFinder || 'row'}`;
-    // dispatch(
-    //   showConfirm({
-    //     title: t('confirm.action.remove.title'),
-    //     message: t('confirm.action.remove.message', name),
-    //     headerClass: 'text-danger',
-    //     confirm: removeAction.bind(null, Number(rowIndex)),
-    //   })
-    // );
-  };
-
-  const tableInstance = useTable({ columns, data, defaultColumn, initialState, updateAction });
+  const tableInstance = useTable({ columns: columns, data: actions, defaultColumn, initialState, updateAction });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, setHiddenColumns } = tableInstance;
 
   useEffect(() => {
-    if (didMountRef.current) {
-      didMountRef.current = false;
-      return;
-    }
     setHiddenColumns(hiddenColumns);
   }, [hiddenColumns, setHiddenColumns]);
 
   const showAddon = (row) => {
-    addonRef.current.showAddon(row.id, row.original.addon);
+    dispatch(switchActionAddonModal(row.id));
   };
 
   const showCondition = (row) => {
-    actionConditionRef.current.showCondition(row.id, actions, row.original.statement);
+    dispatch(switchActionStatementModal(row.id));
   };
 
   const showSettings = (row) => {
-    actionSettingsRef.current.showSettings(row.id, row.original.settings);
-  };
-
-  const arrayMove = (arr, oldIndex, newIndex) => {
-    if (newIndex >= arr.length) {
-      let k = newIndex - arr.length + 1;
-      k -= 1;
-      while (k) {
-        arr.push(undefined);
-      }
-    }
-    arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
-    return arr; // for testing
+    dispatch(switchActionSettingsModal(row.id));
   };
 
   const moveUp = (e, rowId) => {
     if (e.currentTarget.getAttribute('disabled') === null) {
-      setData((prevActions) => [...arrayMove(prevActions, +rowId, rowId - 1)]);
-      window.dataLayer.push({ event: 'move-up', section: 'action' });
-      didUpdateRef.current = true;
+      dispatch(reorderActions({ oldIndex: +rowId, newIndex: rowId - 1 }));
     }
   };
 
   const moveDown = (e, rowId) => {
     if (e.currentTarget.getAttribute('disabled') === null) {
-      setData((prevActions) => [...arrayMove(prevActions, +rowId, +rowId + 1)]);
-      window.dataLayer.push({ event: 'move-down', section: 'action' });
-      didUpdateRef.current = true;
+      dispatch(reorderActions({ oldIndex: +rowId, newIndex: +rowId + 1 }));
     }
   };
 
@@ -281,8 +184,8 @@ const ActionTable = forwardRef<ActionTableRef, ActionTableProps>(({ actions, con
                           onClick={() => {
                             removeActionConfirm(row.id);
                           }}
-                          className={data.length === 1 ? '' : 'text-danger'}
-                          disabled={data.length === 1}
+                          className={actions.length === 1 ? '' : 'text-danger'}
+                          disabled={actions.length === 1}
                         >
                           {t('action.remove')}
                         </Dropdown.Item>
@@ -297,28 +200,6 @@ const ActionTable = forwardRef<ActionTableRef, ActionTableProps>(({ actions, con
       </Table>
     </Form>
   );
-});
-
-ActionTable.propTypes = {
-  /* actions: PropTypes.arrayOf(
-    PropTypes.shape({
-      elementFinder: PropTypes.string.isRequired,
-      initWait: PropTypes.number,
-      name: PropTypes.string,
-      value: PropTypes.string,
-      repeat: PropTypes.number,
-      // repeatInterval: numberWithExponential,
-    }).isRequired
-  ).isRequired,
-  toastRef: PropTypes.shape({ current: PropTypes.shape({ push: PropTypes.func.isRequired }) }).isRequired,
-  addonRef: PropTypes.shape({ current: PropTypes.shape({ showAddon: PropTypes.func.isRequired }) }).isRequired,
-  actionSettingsRef: PropTypes.shape({ current: PropTypes.shape({ showSettings: PropTypes.func.isRequired }) }).isRequired,
-  actionConditionRef: PropTypes.shape({ current: PropTypes.shape({ showCondition: PropTypes.func.isRequired }) }).isRequired,
-  configIndex: PropTypes.number.isRequired,
-  setConfigs: PropTypes.func.isRequired,
-  setMessage: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired,
-  hiddenColumns: PropTypes.arrayOf(PropTypes.string).isRequired,*/
 };
-ActionTable.displayName = 'ActionTable';
+
 export default ActionTable;

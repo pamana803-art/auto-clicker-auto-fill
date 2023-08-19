@@ -7,7 +7,7 @@ import { APP_LANGUAGES, APP_NAME } from '../constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { switchTheme, themeSelector } from '../store/theme.slice';
 import { appSelector } from '../store/app.slice';
-import { switchSettings } from '../store/settings/settings.slice';
+import { switchSettingsModal } from '../store/settings/settings.slice';
 import { updateI18n } from '../store/i18n.slice';
 
 function Header() {
@@ -55,7 +55,7 @@ function Header() {
 
               {!error && (
                 <>
-                  <Nav.Link onClick={() => dispatch(switchSettings())} className='px-4 py-3'>
+                  <Nav.Link onClick={() => dispatch(switchSettingsModal())} className='px-4 py-3'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
                   <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder'>

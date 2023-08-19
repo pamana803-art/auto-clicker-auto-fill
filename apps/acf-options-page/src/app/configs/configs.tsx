@@ -4,7 +4,7 @@ import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Config from './config';
 import { ThreeDots } from '../../util';
-import { DropdownToggle, ErrorAlert, Loading, Sponsors } from '../../components';
+import { Ads, DropdownToggle, ErrorAlert, Loading, Sponsors } from '../../components';
 import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal, ActionStatementModal } from '../../modal';
 import { download } from '../../_helpers';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -13,13 +13,14 @@ import { addToast } from '../../store/toast.slice';
 import { configGetAllAPI, configImportAllAPI } from '../../store/config/config.api';
 import { modeSelector } from '../../store/mode.slice';
 import Batch from './batch';
+import Action from './action';
 
 function Configs() {
   const { t, i18n } = useTranslation();
 
   const [scroll, setScroll] = useState(false);
-  const mode = useAppSelector(modeSelector)
-  const { configs, error, loading, selectedConfigIndex } = useAppSelector(configSelector);
+  const mode = useAppSelector(modeSelector);
+  const { configs, loading, selectedConfigIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
 
   const importFiled = createRef<HTMLInputElement>();
@@ -81,7 +82,6 @@ function Configs() {
           </a>
         </div>
       )}
-      <ErrorAlert error={error} />
       <div id='configs' className={`${scroll ? 'shadow bg-body-tertiary' : ' mb-4 mt-3'} sticky-top`}>
         <Container>
           <Row className={`rounded-pill ${!scroll && 'border'}`}>
@@ -92,7 +92,7 @@ function Configs() {
                     {configs.map((config, index) => (
                       <option key={index} value={index} className={!config.enable ? 'bg-secondary' : ''}>
                         {/*style={{ '--bs-bg-opacity': `.25` }}*/}
-                        {config.name} {config.url || index} 
+                        {config.name} {config.url || index}
                       </option>
                     ))}
                   </Form.Select>
@@ -132,20 +132,9 @@ function Configs() {
         <Container>
           <Config />
           {mode === 'pro' && <Batch />}
-          {/*<Ads configIndex={selected} />
-          <Action
-            actions={config.actions}
-            configEnable={config.enable}
-            configIndex={selected}
-            toastRef={toastRef}
-            setConfigs={setConfigs}
-            addonRef={addonRef}
-            actionSettingsRef={actionSettingsRef}
-            actionConditionRef={actionConditionRef}
-                  />
-                  */}
+          <Ads />
+          <Action />
         </Container>
-        
         <ConfigSettingsModal />
         <ReorderConfigsModal />
         <RemoveConfigsModal />

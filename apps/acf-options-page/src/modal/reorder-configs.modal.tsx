@@ -3,7 +3,6 @@ import { Badge, Button, Form, ListGroup, Modal } from 'react-bootstrap';
 import Reorder, { reorder } from 'react-reorder';
 import { useTranslation } from 'react-i18next';
 import { ErrorAlert } from '../components';
-import { dataLayerModel } from '../util/data-layer';
 import { configReorderSelector, configReorderUpdateAPI, switchConfigReorderModal, updateConfigReorder } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../hooks';
 
@@ -25,8 +24,11 @@ const ReorderConfigsModal = () => {
     dispatch(updateConfigReorder(reorder(configs, previousIndex, nextIndex)));
   };
 
+  const onShow = () =>{
+    //:TODO
+  }
   return (
-    <Modal show={visible} size="lg" onHide={handleClose} scrollable onShow={() => dataLayerModel('reorder-configs', 'open')}>
+    <Modal show={visible} size="lg" onHide={handleClose} scrollable onShow={onShow}>
       <Form onSubmit={onSubmit} id="reorder-configs">
         <Modal.Header>
           <Modal.Title as="h6">{t('modal.reorder.title')}</Modal.Title>

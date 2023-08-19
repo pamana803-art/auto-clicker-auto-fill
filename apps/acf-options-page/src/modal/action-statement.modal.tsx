@@ -5,8 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ACTION_RUNNING, ACTION_STATUS } from '@dhruv-techapps/acf-common';
 import { ActionStatementCondition } from './action-statement/action-statement-condition';
 import { Plus } from '../util/svg';
-import { dataLayerModel } from '../util/data-layer';
-import { selectedActionSelector } from '../store/config/action';
+import { selectedActionSelector } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { addActionStatementCondition, configSelector, resetActionStatement, selectedConfigSelector, updateActionStatementGoto, updateActionStatementThen } from '../store/config';
 import { actionStatementSelector, switchActionStatementModal } from '../store/config/action/statement';
@@ -42,8 +41,12 @@ const ActionStatementModal = () => {
     dispatch(addActionStatementCondition({ actionIndex: -1, status: ACTION_STATUS[0] }));
   };
 
+  const onShow = () =>{
+    //:TODO
+  }
+
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} onShow={() => dataLayerModel('action-condition', 'open')}>
+    <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
       <Modal.Header closeButton>
         <Modal.Title as='h6'>{t('modal.actionCondition.title')}</Modal.Title>
       </Modal.Header>

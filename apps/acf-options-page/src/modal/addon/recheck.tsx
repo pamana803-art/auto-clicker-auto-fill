@@ -1,10 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { RECHECK_OPTIONS } from '@dhruv-techapps/acf-common';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectedActionAddonSelector } from '../../store/config/action';
+import { selectedActionAddonSelector } from '../../store/config';
 import { getFieldNameValue } from '../../util/element';
 import { updateActionAddon } from '../../store/config';
 

@@ -18,13 +18,18 @@ const slice = createSlice({
     switchConfigSettingsModal: (state) => {
       state.visible = !state.visible;
     },
-    updateConfigSettingsMessage: (state, action: PayloadAction<string | undefined>) => {
+    setConfigSettingsMessage: (state, action: PayloadAction<string | undefined>) => {
+      state.error = undefined;
       state.message = action.payload;
+    },
+    setConfigSettingsError: (state, action: PayloadAction<string>) => {
+      state.message = undefined;
+      state.error = action.payload;
     },
   },
 });
 
-export const { switchConfigSettingsModal, updateConfigSettingsMessage } = slice.actions;
+export const { switchConfigSettingsModal, setConfigSettingsMessage, setConfigSettingsError } = slice.actions;
 
 export const configSettingsSelector = (state: RootState) => state.configSettings;
 export const configSettingsReducer = slice.reducer;

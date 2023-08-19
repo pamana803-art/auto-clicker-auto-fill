@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { dataLayerModel } from '../../util/data-layer';
 import { RootState } from '../../store';
 import { blogCheckAPI } from './blog.api';
 
@@ -14,7 +13,6 @@ const slice = createSlice({
   initialState,
   reducers: {
     hideBlog: () => {
-      dataLayerModel('blog', 'close');
       return initialState;
     },
   },

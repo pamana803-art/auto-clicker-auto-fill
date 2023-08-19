@@ -6,10 +6,11 @@ import { getFieldNameValue } from '../../../util/element';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { selectedConfigSelector } from '../../../store/config';
 import { updateBatch } from '../../../store/config';
+import { batchSelector } from '@apps/acf-options-page/src/store/config/batch';
 
 function Batch() {
   const { batch } = useAppSelector(selectedConfigSelector);
-  const message = '';
+  const { message, error } = useAppSelector(batchSelector);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
@@ -26,6 +27,7 @@ function Batch() {
         <Row>
           <Col>
             {t('batch.title')}
+            <small className='text-danger ms-3'>{error}</small>
             <small className='text-success ms-3'>{message}</small>
           </Col>
           <Col xs='auto' className='d-flex align-items-center justify-content-end'>

@@ -50,7 +50,6 @@ export default class GoogleBackup  {
   }
 
   async backup(now?: boolean) {
-    console.log("backup", now)
     try {
       const { configs = [{ ...defaultConfig }] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
       if (configs) {
@@ -62,11 +61,13 @@ export default class GoogleBackup  {
         if (!settings.backup) {
           settings.backup = {};
         }
-        settings.backup.lastBackup = new Date().toLocaleString();
+        const lastBackup = new Date().toLocaleString();
+        settings.backup.lastBackup = lastBackup;
         chrome.storage.local.set({ [LOCAL_STORAGE_KEY.SETTINGS]: settings });
         if (now) {
           NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, `Configurations are backup on Google Drive at ${settings.backup.lastBackup}`);
         }
+        return lastBackup
       }
     } catch ({ message }) {
       const retry = await this.checkInvalidCredentials(message);

@@ -4,12 +4,12 @@
       "light": "Switch to the light theme",
       "dark": "Switch to the dark theme"
     },
-    "google-group":"Google Group",
+    "google-group": "Google Group",
     "login": "Login",
     "logout": "Logout",
     "settings": "Global Settings",
     "backup": {
-      "last-backup":"Last Backup:",
+      "last-backup": "Last Backup:",
       "backup": "Backup to Cloud",
       "restore": "Restore from Cloud",
       "now": "Backup Now",
@@ -64,6 +64,10 @@
       "importSuccess": {
         "header": "Configuration",
         "body": "{{name}} imported successfully"
+      },
+      "updateBatch": {
+        "header": "Batch",
+        "body": "batch saved successfully !"
       }
     },
     "action": {
@@ -210,14 +214,14 @@
     "name": "Name",
     "initWait": "Init Wait",
     "startTime": "Start Time",
-    "saveMessage": "Configuration saved successfully!"
+    "updateConfig": "Configuration saved successfully!",
+    "updateBatch": "Batch saved successfully!"
   },
   "batch": {
     "title": "Batch",
     "repeat": "Repeat",
     "repeatInterval": "R-Interval",
-    "refresh": "Refresh",
-    "saveMessage": "Batch saved successfully!"
+    "refresh": "Refresh"
   },
   "error": {
     "number": "Only valid numbers are allowed",

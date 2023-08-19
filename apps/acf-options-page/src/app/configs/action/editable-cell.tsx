@@ -1,16 +1,14 @@
 import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Form } from 'react-bootstrap'
-
-type Props = {
-  value: string | number;
-  data: any;
-}
+import { useAppDispatch } from '@apps/acf-options-page/src/hooks'
 
 // Create an editable cell renderer
-export function EditableCell({ value: initialValue, data, row: { index }, column: { id, required, pattern, validate, dataType, ariaLabel, list }, updateAction }) {
+export function EditableCell({ value: initialValue, data, row: { index }, column: { id, required, pattern, validate, dataType, ariaLabel, list } }) {
   // We need to keep and update the state of the cell normally
   // We need to keep and update the state of the cell normally
+
+  const dispatch = useAppDispatch()
   const [value, setValue] = React.useState(initialValue)
   const [invalid, setInvalid] = React.useState(data[index].error === id)
   const input = useRef<HTMLInputElement>(null)
@@ -32,7 +30,9 @@ export function EditableCell({ value: initialValue, data, row: { index }, column
 
   // We'll only update the external data when the input is blurred
   const onBlur = ({ currentTarget: { value: blurValue } }) => {
-    updateAction(index, id, dataType === 'number' && blurValue.indexOf('e') === -1 ? Number(blurValue) : blurValue)
+    //dispatch(updateAction({name:columnId, value}))
+  
+    //updateAction(index, id, dataType === 'number' && blurValue.indexOf('e') === -1 ? Number(blurValue) : blurValue)
   }
 
   // If the initialValue is changed external, sync it up with our state
@@ -58,5 +58,4 @@ EditableCell.propTypes = {
     dataType: PropTypes.string,
     list: PropTypes.string
   }).isRequired,
-  updateAction: PropTypes.func.isRequired
 }

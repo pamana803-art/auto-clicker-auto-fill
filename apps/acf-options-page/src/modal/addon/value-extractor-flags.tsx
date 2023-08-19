@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
-import { ValueExtractorFlags } from '@dhruv-techapps/acf-common';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectedActionAddonSelector } from '../../store/config/action';
+import { selectedActionAddonSelector } from '../../store/config';
 import { updateActionAddon } from '../../store/config';
 
 const FLAGS = [

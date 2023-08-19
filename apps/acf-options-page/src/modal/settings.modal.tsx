@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { getFieldNameValue } from '../util/element';
 import { SettingNotifications } from './settings/notifications';
 import { SettingRetry } from './settings/retry';
-import { dataLayerModel } from '../util/data-layer';
 import { SettingMessage } from './settings/message';
 import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill } from '../util';
 import { SettingsBackup } from './settings/backup';
@@ -13,7 +12,7 @@ import { SettingGoogleSheets } from './settings/google-sheets';
 import { ErrorAlert, Loading } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { modeSelector, switchMode } from '../store/mode.slice';
-import { getSettings, settingsSelector, switchSettings, updateSettings } from '../store/settings/settings.slice';
+import { getSettings, settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
 
 enum SETTINGS_PAGE {
   NOTIFICATION = 'notification',
@@ -21,20 +20,15 @@ enum SETTINGS_PAGE {
   BACKUP = 'backup',
 }
 
-export type SettingsModalRef = {
-  showSettings: () => void;
-};
-
 const SettingsModal = () => {
   const { t } = useTranslation();
   const [page, setPage] = useState<SETTINGS_PAGE>();
-
   const { loading, error, settings, visible } = useAppSelector(settingsSelector);
   const mode = useAppSelector(modeSelector);
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dispatch(switchSettings());
+    dispatch(switchSettingsModal());
   };
 
   useEffect(() => {
@@ -51,8 +45,12 @@ const SettingsModal = () => {
     dispatch(switchMode());
   };
 
+  const onShow = () =>{
+    //:TODO
+  }
+
   return (
-    <Modal show={visible} onHide={handleClose} size='lg' onShow={() => dataLayerModel(LOCAL_STORAGE_KEY.SETTINGS, 'open')}>
+    <Modal show={visible} onHide={handleClose} size='lg' onShow={onShow}>
       <Form>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>

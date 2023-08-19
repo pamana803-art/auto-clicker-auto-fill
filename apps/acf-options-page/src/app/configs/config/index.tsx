@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap';
+import { Alert, Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap';
 import ConfigBody from './config-body';
 import { ThreeDots } from '../../../util';
 import { DropdownToggle } from '../../../components';
@@ -12,8 +12,8 @@ import { configImportAPI } from '../../../store/config/config.api';
 import { useConfirmationModalContext } from '../../../_providers/confirm.provider';
 
 function Config() {
-  const { message, configs } = useAppSelector(configSelector);
-  const lastConfig = configs.length === 1
+  const { message, configs, error } = useAppSelector(configSelector);
+  const lastConfig = configs.length === 1;
   const modalContext = useConfirmationModalContext();
   const config = useAppSelector(selectedConfigSelector);
   const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ function Config() {
 
   const onUpdate = (e) => {
     const update = getFieldNameValue(e);
-    if(update){
+    if (update) {
       dispatch(updateConfig(update));
     }
   };
@@ -49,19 +49,18 @@ function Config() {
     dispatch(switchConfigSettingsModal());
   };
 
-
   const onRemoveConfigConfirm = async () => {
     const name = config.name || config.url;
     const result = await modalContext.showConfirmation({
       title: t('confirm.configuration.remove.title'),
       message: t('confirm.configuration.remove.message', { name }),
-      headerClass: 'text-danger'
+      headerClass: 'text-danger',
     });
     result && dispatch(removeConfig());
   };
 
   const onDuplicateConfig = () => {
-    dispatch(duplicateConfig())
+    dispatch(duplicateConfig());
   };
 
   return (
@@ -77,6 +76,7 @@ function Config() {
                 </Badge>
               )}
             </div>
+            <small className='text-danger ms-3'>{error}</small>
             <small className='text-success ms-3'>{message}</small>
           </Col>
           <Col xs='auto' className='d-flex align-items-center'>

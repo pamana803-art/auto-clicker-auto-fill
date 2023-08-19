@@ -3,6 +3,7 @@ import { setSettingsError, setSettingsMessage, updateSettings, updateSettingsBac
 import { RootState } from "../../store";
 import { LOCAL_STORAGE_KEY } from "@dhruv-techapps/acf-common";
 import { StorageService } from "@dhruv-techapps/core-service";
+import { getI18n } from "react-i18next";
 
 const settingsListenerMiddleware = createListenerMiddleware();
 
@@ -13,13 +14,14 @@ settingsListenerMiddleware.startListening({
   effect: async (action, listenerApi) => {
     // Run whatever additional side-effect-y logic you want here
     const state = listenerApi.getState() as RootState;
-
-    StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: state.settings.settings }).then(
-      () => {
-        listenerApi.dispatch(setSettingsMessage('saved'));
-        setTimeout(() => {
-          listenerApi.dispatch(setSettingsMessage(''));
-        }, 1000);
+    const i18n = getI18n();
+    const language: any = i18n.getDataByLanguage(i18n.language)?.web;
+    await StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: state.settings.settings }).then(
+      async () => {
+        
+        listenerApi.dispatch(setSettingsMessage(language.modal.settings.saveMessage));
+          await listenerApi.delay(1500);
+          listenerApi.dispatch(setSettingsMessage());
       },
       (error) => listenerApi.dispatch(setSettingsError(error))
     );

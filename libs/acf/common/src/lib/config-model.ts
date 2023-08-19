@@ -1,4 +1,4 @@
-import { Batch } from './batch-model';
+import { Batch, defaultBatch } from './batch-model';
 import { Action, defaultAction } from './action-model';
 
 export enum LOAD_TYPES {
@@ -33,7 +33,9 @@ export const defaultConfig: Configuration = {
   url: '',
   name: '',
   enable: true,
+  hotkey: defaultHotkey,
   startType: START_TYPES.AUTO,
   loadType: LOAD_TYPES.WINDOW,
-  actions: [{...defaultAction}],
+  actions: [{ ...defaultAction }],
+  batch: { ...defaultBatch },
 };
