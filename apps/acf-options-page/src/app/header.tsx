@@ -19,6 +19,7 @@ function Header() {
   const changeLanguage = async (lng) => {
     window.dataLayer.push({ event: 'language', conversionValue: lng });
     await i18n.changeLanguage(lng);
+    localStorage.setItem('language', lng)
     dispatch(updateI18n(i18n.getDataByLanguage(lng)))
   };
 

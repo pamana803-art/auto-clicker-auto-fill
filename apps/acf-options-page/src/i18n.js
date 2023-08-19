@@ -19,6 +19,7 @@ i18n
     ns: 'web',
     debug: false,
     defaultNS: 'web',
+    lng: window.localStorage.getItem('language'),
     backend: {
       loadPath: `${process.env.NX_I18N}/{{lng}}/{{ns}}.json`,
       addPath: '/locales/add/{{lng}}/{{ns}}',

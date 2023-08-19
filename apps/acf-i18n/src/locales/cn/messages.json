@@ -1,0 +1,71 @@
+{
+  "message_action_not_found": {
+    "message": "未配置"
+  },
+  "@PORT__action_not_found": {
+    "message": "未配置"
+  },
+  "@PORT__method_not_found": {
+    "message": "未找到处理方法"
+  },
+  "@RATE__title": {
+    "message": "有用的扩展程序"
+  },
+  "@RATE__message": {
+    "message": "您认为我们的扩展程序有用吗?"
+  },
+  "@RATE__yes_button": {
+    "message": "是"
+  },
+  "@RATE__no_button": {
+    "message": "否"
+  },
+  "@RATE__yes_title": {
+    "message": "喜欢这个扩展程序吗?"
+  },
+  "@RATE__yes_message": {
+    "message": "请帮助我们成为5星级扩展程序,\n谢谢!"
+  },
+  "@RATE__no_title": {
+    "message": "让我们帮助您"
+  },
+  "@RATE__no_message": {
+    "message": "如果您发现问题,请在Discord上与我们联系或提问"
+  },
+  "@RATE__issue_button": {
+    "message": "☉ 提问"
+  },
+  "@RATE__connect_button": {
+    "message": "★ 与我们联系"
+  },
+  "@RATE__rate_button": {
+    "message": "❤ 立即评价"
+  },
+  "@RATE__later_button": {
+    "message": "☹ 稍后"
+  },
+  "@RATE__review_url_missing": {
+    "message": "用于评分的评价网址丢失"
+  },
+  "@NOTIFICATIONS__permission_error": {
+    "message": "清单中未提供通知权限。请更新清单权限"
+  },
+  "@NOTIFICATIONS__default_icon_missing": {
+    "message": "清单中browser_action下未定义default_icon。请添加 {browser_action:{default_icon}}"
+  },
+  "@TAB__options_page_url_missing": {
+    "message": "清单中未定义选项页。请添加 {config{options_page_url}}"
+  },
+  "@IMPORT_DATA___target": {
+    "message": "未指定导入目标"
+  },
+  "@NOTIFICATIONS_config_finish": {
+    "message": "配置完成"
+  },
+  "@CLOUD_MESSAGE_config_error_title": {
+    "message": "配置错误"
+  },
+  "@CLOUD_MESSAGE_config_finish_title": {
+    "message": "配置完成"
+  }
+}

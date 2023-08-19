@@ -74,7 +74,7 @@ function Configs() {
 
   return (
     <div>
-      {!i18n.language.includes('en') && (
+      {i18n.language.includes('en') && t('common.translate') && (
         <div className='text-muted text-center my-3'>
           {t('common.translate')}{' '}
           <a href='https://github.com/Dhruv-Techapps/acf-i18n/discussions/4' target='_blank' rel='noopener noreferrer'>

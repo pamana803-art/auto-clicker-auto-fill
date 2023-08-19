@@ -173,6 +173,7 @@
       "info": "Action condition are used to add condition with relates to previous action status",
       "saveMessage": "Action Condition saved successfully!",
       "skip": "Skip",
+      "goto": "Goto",
       "proceed": "Proceed"
     },
     "ads": {
@@ -214,14 +215,14 @@
     "name": "Name",
     "initWait": "Init Wait",
     "startTime": "Start Time",
-    "updateConfig": "Configuration saved successfully!",
-    "updateBatch": "Batch saved successfully!"
+    "saveMessage": "Configuration saved successfully!"
   },
   "batch": {
     "title": "Batch",
     "repeat": "Repeat",
     "repeatInterval": "R-Interval",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "saveMessage": "Batch saved successfully!"
   },
   "error": {
     "number": "Only valid numbers are allowed",
@@ -285,6 +286,7 @@
     "fr": "French",
     "kr": "Korean",
     "ca": "Canada",
-    "hi": "Hindi"
+    "hi": "Hindi",
+    "cn": "Chinese"
   }
 }
