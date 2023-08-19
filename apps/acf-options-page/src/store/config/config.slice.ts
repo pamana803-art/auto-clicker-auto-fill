@@ -1,7 +1,7 @@
 import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { Configuration, defaultConfig } from '@dhruv-techapps/acf-common';
-import { configGetAllAPI, configImportAPI, configImportAllAPI } from './config.api';
+import { configGetAllAPI, configImportAPI } from './config.api';
 import { actionActions } from './action';
 import { batchActions } from './batch';
 import { actionAddonActions } from './action/addon';
@@ -28,11 +28,11 @@ const slice = createSlice({
   reducers: {
     setConfigError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
-      state.message = undefined
+      state.message = undefined;
     },
     setConfigMessage: (state, action: PayloadAction<string | undefined>) => {
       state.message = action.payload;
-      state.error = undefined
+      state.error = undefined;
     },
     addConfig: (state) => {
       state.configs.push({ ...defaultConfig });
@@ -55,6 +55,14 @@ const slice = createSlice({
         state.selectedConfigIndex = 0;
       }
       state.selectedConfigIndex = selectedConfigIndex === 0 ? selectedConfigIndex : selectedConfigIndex - 1;
+    },
+    setConfigs:(state, action:PayloadAction<Array<Configuration>>) => {
+      state.configs = action.payload;
+      state.selectedConfigIndex = 0;
+    },
+    importAll: (state, action:PayloadAction<Array<Configuration>>) => {
+      state.configs = action.payload;
+      state.selectedConfigIndex = 0;
     },
     duplicateConfig: (state) => {
       const { configs, selectedConfigIndex } = state;
@@ -90,10 +98,6 @@ const slice = createSlice({
         state.selectedConfigIndex = 0;
       }
     });
-    builder.addCase(configImportAllAPI.fulfilled, (state, action) => {
-      state.configs = action.payload;
-      state.selectedConfigIndex = 0;
-    });
   },
 });
 
@@ -101,11 +105,13 @@ export const {
   setConfigMessage,
   setConfigError,
   addConfig,
+  setConfigs,
   selectConfig,
   updateConfig,
   updateConfigSettings,
   removeConfig,
   duplicateConfig,
+  importAll,
   updateBatch,
   addAction,
   reorderActions,
@@ -133,12 +139,12 @@ export const selectedConfigSelector = createSelector(configsSelector, selectedCo
 
 export const selectedActionSelector = createSelector(selectedConfigSelector, selectedActionIndexSelector, (config, selectedActionIndex) => config.actions[selectedActionIndex]);
 
-export const selectedActionSettingsSelector = createSelector(selectedActionSelector, action => action.settings)
+export const selectedActionSettingsSelector = createSelector(selectedActionSelector, (action) => action.settings);
 
-export const selectedActionStatementSelector = createSelector(selectedActionSelector, action => action.statement)
+export const selectedActionStatementSelector = createSelector(selectedActionSelector, (action) => action.statement);
 
-export const selectedActionAddonSelector = createSelector(selectedActionSelector, action => action.addon)
+export const selectedActionAddonSelector = createSelector(selectedActionSelector, (action) => action.addon);
 
-export const selectedActionStatementConditionsSelector = createSelector(selectedActionSelector, action => action.statement?.conditions)
+export const selectedActionStatementConditionsSelector = createSelector(selectedActionSelector, (action) => action.statement?.conditions);
 
 export const configReducer = slice.reducer;

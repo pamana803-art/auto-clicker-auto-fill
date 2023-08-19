@@ -7,22 +7,26 @@ export const ToastHandler = () => {
   const dispatch = useAppDispatch();
   const close = (selected: number) => dispatch(hideToast(selected));
 
+  const darkColors: Array<string> = ['primary', 'secondary', 'success', 'danger', 'dark'];
   return (
     <div className='toast-container position-fixed bottom-0 start-0 p-3'>
-      {toasts.map(({ body, header, headerClass, toastClass, bodyClass, delay = 5000, autohide = true, show = true, onClose }, index) => (
+      {toasts.map(({ body, header, variant = 'success', delay = 5000, autohide = true, show = true, onClose }, index) => (
         <Toast
           key={index}
           onClose={() => {
             close(index);
             if (onClose) onClose();
           }}
+          bg={variant}
           show={show}
           delay={delay}
-          className={toastClass}
-          autohide={autohide}
+          className={`${darkColors.includes(variant) && 'text-white'}`}
+          autohide={variant === 'danger' ? false : autohide}
         >
-          <Toast.Header className={headerClass}><strong className="me-auto">{header}</strong></Toast.Header>
-          {body && <Toast.Body className={bodyClass}>{body}</Toast.Body>}
+          <Toast.Header>
+            <strong className='me-auto'>{header}</strong>
+          </Toast.Header>
+          {body && <Toast.Body >{body}</Toast.Body>}
         </Toast>
       ))}
     </div>

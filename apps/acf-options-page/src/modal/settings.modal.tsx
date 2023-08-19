@@ -45,9 +45,9 @@ const SettingsModal = () => {
     dispatch(switchMode());
   };
 
-  const onShow = () =>{
+  const onShow = () => {
     //:TODO
-  }
+  };
 
   return (
     <Modal show={visible} onHide={handleClose} size='lg' onShow={onShow}>
@@ -63,63 +63,57 @@ const SettingsModal = () => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {loading ? (
-            <Loading />
-          ) : (
-            <>
-              <ErrorAlert error={error} />
-              {!page && (
-                <ol className='list-group'>
-                  <li className='list-group-item d-flex justify-content-between align-items-center'>
-                    <Form.Label className='ms-2 me-auto' htmlFor='settings-checkiFrames'>
-                      <div className='fw-bold'>{t('modal.settings.checkIFrames')}</div>
-                      {t('modal.settings.checkIFramesHint')}
-                    </Form.Label>
-                    <Form.Check type='switch' name='checkiFrames' onChange={onUpdate} id='settings-checkiFrames' checked={settings.checkiFrames} />
-                  </li>
-                  <li className='list-group-item d-flex justify-content-between align-items-center'>
-                    <Form.Label className='ms-2 me-auto' htmlFor='advance'>
-                      <div className='fw-bold'>{t('modal.settings.advance')}</div>
-                      {t('modal.settings.advanceHint')}
-                    </Form.Label>
-                    <Form.Check type='switch' checked={mode === 'pro'} onChange={toggleMode} id='advance' />
-                  </li>
-                  <li className='list-group-item'>
-                    <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} className='btn btn-link text-muted d-flex justify-content-between w-100'>
-                      <div className='fw-bold'>
-                        <BellFill width='24' height='24' className='me-2' />
-                        {t('modal.settings.notification.title')}
-                      </div>
-                      <ChevronRight width='24' height='24' />
-                    </Button>
-                  </li>
-                  <li className='list-group-item'>
-                    <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} className='btn btn-link text-muted d-flex justify-content-between w-100'>
-                      <div className='fw-bold'>
-                        <ArrowRepeat width='24' height='24' className='me-2' />
-                        {t('modal.settings.retry.title')}
-                      </div>
-                      <ChevronRight width='24' height='24' />
-                    </Button>
-                  </li>
-                  <li className='list-group-item'>
-                    <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} className='btn btn-link text-muted d-flex justify-content-between w-100'>
-                      <div className='fw-bold'>
-                        <CloudArrowUpFill width='24' height='24' className='me-2' /> Backup
-                      </div>
-                      <ChevronRight width='24' height='24' />
-                    </Button>
-                  </li>
-                  <li className='list-group-item'>
-                    <SettingGoogleSheets />
-                  </li>
-                </ol>
-              )}
-              {page === SETTINGS_PAGE.NOTIFICATION && <SettingNotifications />}
-              {page === SETTINGS_PAGE.RETRY && <SettingRetry />}
-              {page === SETTINGS_PAGE.BACKUP && <SettingsBackup />}
-            </>
+          <ErrorAlert error={error} />
+          {!page && (
+            <ol className='list-group'>
+              <li className='list-group-item d-flex justify-content-between align-items-center'>
+                <Form.Label className='ms-2 me-auto' htmlFor='settings-checkiFrames'>
+                  <div className='fw-bold'>{t('modal.settings.checkIFrames')}</div>
+                  {t('modal.settings.checkIFramesHint')}
+                </Form.Label>
+                <Form.Check type='switch' name='checkiFrames' onChange={onUpdate} id='settings-checkiFrames' checked={settings.checkiFrames} />
+              </li>
+              <li className='list-group-item d-flex justify-content-between align-items-center'>
+                <Form.Label className='ms-2 me-auto' htmlFor='advance'>
+                  <div className='fw-bold'>{t('modal.settings.advance')}</div>
+                  {t('modal.settings.advanceHint')}
+                </Form.Label>
+                <Form.Check type='switch' checked={mode === 'pro'} onChange={toggleMode} id='advance' />
+              </li>
+              <li className='list-group-item'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} className='btn btn-link text-muted d-flex justify-content-between w-100'>
+                  <div className='fw-bold'>
+                    <BellFill width='24' height='24' className='me-2' />
+                    {t('modal.settings.notification.title')}
+                  </div>
+                  <ChevronRight width='24' height='24' />
+                </Button>
+              </li>
+              <li className='list-group-item'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} className='btn btn-link text-muted d-flex justify-content-between w-100'>
+                  <div className='fw-bold'>
+                    <ArrowRepeat width='24' height='24' className='me-2' />
+                    {t('modal.settings.retry.title')}
+                  </div>
+                  <ChevronRight width='24' height='24' />
+                </Button>
+              </li>
+              <li className='list-group-item'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} className='btn btn-link text-muted d-flex justify-content-between w-100'>
+                  <div className='fw-bold'>
+                    <CloudArrowUpFill width='24' height='24' className='me-2' /> Backup
+                  </div>
+                  <ChevronRight width='24' height='24' />
+                </Button>
+              </li>
+              <li className='list-group-item'>
+                <SettingGoogleSheets />
+              </li>
+            </ol>
           )}
+          {page === SETTINGS_PAGE.NOTIFICATION && <SettingNotifications />}
+          {page === SETTINGS_PAGE.RETRY && <SettingRetry />}
+          {page === SETTINGS_PAGE.BACKUP && <SettingsBackup />}
         </Modal.Body>
         <SettingMessage />
       </Form>

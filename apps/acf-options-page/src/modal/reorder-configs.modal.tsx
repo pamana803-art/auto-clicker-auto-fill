@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 
 
 const ReorderConfigsModal = () => {
-  const {visible, configs, loading, error } = useAppSelector(configReorderSelector)
+  const {visible, configs, error } = useAppSelector(configReorderSelector)
   const dispatch = useAppDispatch()
   const { t } = useTranslation();
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {

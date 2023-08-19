@@ -22,14 +22,3 @@ export const configImportAPI = createAsyncThunk<Configuration, FileReader | null
   }
   return importedConfig;
 });
-
-export const configImportAllAPI = createAsyncThunk<Array<Configuration>, FileReader | null>('config/importAll', (target) => {
-  if (target === null || target.result === null) {
-    throw new Error('No files selected');
-  }
-  const importedConfigs: Array<Configuration> = JSON.parse(target.result as string);
-  if (!Array.isArray(importedConfigs)) {
-    throw new Error('JSON File error');
-  }
-  return importedConfigs;
-});

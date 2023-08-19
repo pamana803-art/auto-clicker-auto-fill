@@ -4,16 +4,17 @@ import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Config from './config';
 import { ThreeDots } from '../../util';
-import { Ads, DropdownToggle, ErrorAlert, Loading, Sponsors } from '../../components';
-import { ActionSettingsModal, AddonModal, ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal, ActionStatementModal } from '../../modal';
+import { Ads, DropdownToggle, Loading, Sponsors } from '../../components';
+import { ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal } from '../../modal';
 import { download } from '../../_helpers';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { addConfig, configSelector, selectConfig, switchConfigRemoveModal, switchConfigReorderModal } from '../../store/config';
+import { addConfig, configSelector, importAll, selectConfig, switchConfigRemoveModal, switchConfigReorderModal } from '../../store/config';
 import { addToast } from '../../store/toast.slice';
-import { configGetAllAPI, configImportAllAPI } from '../../store/config/config.api';
+import { configGetAllAPI } from '../../store/config/config.api';
 import { modeSelector } from '../../store/mode.slice';
 import Batch from './batch';
 import Action from './action';
+import { Configuration } from '@dhruv-techapps/acf-common';
 
 function Configs() {
   const { t, i18n } = useTranslation();
@@ -51,7 +52,7 @@ function Configs() {
     dispatch(addConfig());
   };
 
-  const exportAll = () => {
+  const onExportAll = () => {
     download('All Configurations', configs);
   };
 
@@ -62,15 +63,32 @@ function Configs() {
     }
     const fr = new FileReader();
     fr.onload = function ({ target }) {
-      dispatch(configImportAllAPI(target));
+      try {
+        if (target === null || target.result === null) {
+          dispatch(addToast({ header: 'File', body: t('error.json'), variant: 'danger' }));
+        } else {
+          const importedConfigs: Array<Configuration> = JSON.parse(target.result as string);
+          if (!Array.isArray(importedConfigs)) {
+            dispatch(addToast({ header: 'File', body: t('error.json'), variant: 'danger' }));
+          } else {
+            dispatch(importAll(importedConfigs));
+          }
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          dispatch(addToast({ header: 'File', body: error.message, variant: 'danger' }));
+        } else if (typeof error === 'string') {
+          dispatch(addToast({ header: 'File', body: error, variant: 'danger' }));
+        } else {
+          dispatch(addToast({ header: 'File', body: JSON.stringify(error), variant: 'danger' }));
+        }
+      }
     };
     fr.readAsText(files.item(0));
     return false;
   };
 
-  if (loading) {
-    return <Loading />;
-  }
+  const style = { '--bs-bg-opacity': `.25` } as React.CSSProperties;
 
   return (
     <div>
@@ -90,7 +108,7 @@ function Configs() {
                 <Form.Group controlId='selected' className='mb-0'>
                   <Form.Select onChange={onChange} value={selectedConfigIndex} id='configuration-list' className='ps-4 border-0' data-type='number'>
                     {configs.map((config, index) => (
-                      <option key={index} value={index} className={!config.enable ? 'bg-secondary' : ''}>
+                      <option key={index} value={index} className={!config.enable ? 'bg-secondary' : ''} style={style}>
                         {/*style={{ '--bs-bg-opacity': `.25` }}*/}
                         {config.name} {config.url || index}
                       </option>
@@ -108,14 +126,14 @@ function Configs() {
                   <ThreeDots width='24' height='24' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={exportAll}>{t('configuration.exportAll')}</Dropdown.Item>
+                  <Dropdown.Item onClick={onExportAll}>{t('configuration.exportAll')}</Dropdown.Item>
                   <Dropdown.Item onClick={() => importFiled.current?.click()}>{t('configuration.importAll')}</Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item className={configs.length === 1 ? '' : 'text-danger'} disabled={configs.length === 1} onClick={() => dispatch(switchConfigRemoveModal())}>
+                  <Dropdown.Item className={configs.length === 1 ? '' : 'text-danger'} disabled={configs.length === 1} onClick={() => dispatch(switchConfigRemoveModal(configs))}>
                     {t('configuration.removeConfigs')}
                   </Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item onClick={() => dispatch(switchConfigReorderModal())}>{t('configuration.reorder')}</Dropdown.Item>
+                  <Dropdown.Item onClick={() => dispatch(switchConfigReorderModal(configs))}>{t('configuration.reorder')}</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
               <div className='custom-file d-none'>

@@ -6,9 +6,7 @@ import { ReactNode } from 'react';
 export type ToastHandlerProps = Omit<ToastProps, 'defaultValue'> & {
   header: string | ReactNode;
   body?: string | ReactNode;
-  bodyClass?: string;
-  headerClass?: string;
-  toastClass?: string;
+  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
 };
 
 const initialState: Array<ToastHandlerProps> = [];

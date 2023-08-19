@@ -53,10 +53,12 @@
         "body": "{{name}} removed successfully"
       },
       "exportAll": {
-        "header": "Bulk Export"
+        "header": "Bulk Export",
+        "body": "Configurations exported successfully"
       },
       "importAll": {
-        "header": "Bulk Import"
+        "header": "Bulk Import",
+        "body": "Configurations imported successfully"
       },
       "importError": {
         "header": "Import Error"

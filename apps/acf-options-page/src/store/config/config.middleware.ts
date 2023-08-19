@@ -1,14 +1,13 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
-import { addConfig, duplicateConfig, removeConfig, setConfigError, updateBatch, updateConfig, setConfigMessage, updateConfigSettings } from './config.slice';
+import { addConfig, duplicateConfig, removeConfig, setConfigError, updateBatch, updateConfig, setConfigMessage, updateConfigSettings, importAll } from './config.slice';
 import { RootState } from '../../store';
 import { addToast } from '../toast.slice';
 import { StorageService } from '@dhruv-techapps/core-service';
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
-import { configImportAPI, configImportAllAPI } from './config.api';
+import { configImportAPI } from './config.api';
 import { setConfigSettingsError, setConfigSettingsMessage } from './settings';
 import { setBatchError, setBatchMessage } from './batch';
 import { getI18n } from 'react-i18next';
-
 
 const configsToastListenerMiddleware = createListenerMiddleware();
 configsToastListenerMiddleware.startListening({
@@ -20,9 +19,8 @@ configsToastListenerMiddleware.startListening({
 
     const header = language.toast[type][method]?.header?.replace('{{name}}', type);
     const body = language.toast[type][method]?.body?.replace('{{name}}', type);
-    console.log(header, body);
     if (header) {
-      listenerApi.dispatch(addToast({ header, body }));
+      listenerApi.dispatch(addToast({ header, body, autohide: false }));
     }
   },
 });
@@ -31,10 +29,8 @@ const getMessageFunc = (action) => {
   switch (action.type) {
     case updateConfigSettings.type:
       return { success: setConfigSettingsMessage, failure: setConfigSettingsError };
-      break;
     case updateBatch.type:
       return { success: setBatchMessage, failure: setBatchError };
-      break;
     default:
       return { success: setConfigMessage, failure: setConfigError };
   }
@@ -42,7 +38,7 @@ const getMessageFunc = (action) => {
 
 const configsListenerMiddleware = createListenerMiddleware();
 configsListenerMiddleware.startListening({
-  matcher: isAnyOf(configImportAllAPI.fulfilled, configImportAPI.fulfilled, updateConfig, updateConfigSettings, removeConfig, updateBatch),
+  matcher: isAnyOf(importAll, configImportAPI.fulfilled, updateConfig, updateConfigSettings, removeConfig, updateBatch),
   effect: async (action, listenerApi) => {
     // Run whatever additional side-effect-y logic you want here
     const state = listenerApi.getState() as RootState;
