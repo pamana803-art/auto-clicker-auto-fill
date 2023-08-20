@@ -217,7 +217,9 @@
     "name": "Name",
     "initWait": "Init Wait",
     "startTime": "Start Time",
-    "saveMessage": "Configuration saved successfully!"
+    "updateConfig": "Configuration saved successfully!",
+    "updateConfigSettings": "Configuration saved successfully!",
+    "updateBatch":"Batch saved successfully!"
   },
   "batch": {
     "title": "Batch",

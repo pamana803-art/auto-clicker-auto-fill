@@ -1,5 +1,3 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { GoogleAds } from './google-ads.components'
 
 export function Ads() {
