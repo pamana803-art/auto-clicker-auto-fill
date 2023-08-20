@@ -7,6 +7,7 @@ import { blogReducer } from './store/blog';
 import { settingsReducer, settingsListenerMiddleware } from './store/settings';
 import { configReducers, configsListenerMiddleware, configsToastListenerMiddleware } from './store/config';
 import { batchReducer } from './store/config/batch';
+import { actionReducer } from './store/config/action/action.slice';
 export const store = configureStore({
   reducer: {
     app: appReducer,
@@ -16,6 +17,7 @@ export const store = configureStore({
     toast: toastReducer,
     blog: blogReducer,
     batch: batchReducer,
+    action: actionReducer,
     ...configReducers,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(settingsListenerMiddleware.middleware, configsListenerMiddleware.middleware, configsToastListenerMiddleware.middleware),

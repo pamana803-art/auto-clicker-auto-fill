@@ -9,13 +9,13 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@swc/helpers": "~0.5.0",
+    "@tanstack/react-table": "^8.9.3",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "axios": "^1.0.0",
     "bootstrap-icons": "^1.10.5",
     "discord.js": "^14.12.1",
     "express": "^4.18.1",
     "i18next": "^23.3.0",
-    "i18next-browser-languagedetector": "^7.1.0",
     "i18next-http-backend": "^2.2.1",
     "puppeteer": "^20.9.0",
     "react": "18.2.0",
@@ -24,8 +24,6 @@
     "react-i18next": "^13.0.2",
     "react-redux": "^8.1.2",
     "react-reorder": "^3.0.0-alpha.7",
-    "react-router-dom": "^6.14.2",
-    "react-table": "^7.8.0",
     "sitemap": "^7.1.1",
     "tslib": "^2.3.0"
   },

@@ -219,14 +219,14 @@
     "startTime": "Start Time",
     "updateConfig": "Configuration saved successfully!",
     "updateConfigSettings": "Configuration saved successfully!",
-    "updateBatch":"Batch saved successfully!"
+    "updateBatch":"Batch saved successfully!",
+    "updateAction":"Action saved successfully!"
   },
   "batch": {
     "title": "Batch",
     "repeat": "Repeat",
     "repeatInterval": "R-Interval",
-    "refresh": "Refresh",
-    "saveMessage": "Batch saved successfully!"
+    "refresh": "Refresh"
   },
   "error": {
     "number": "Only valid numbers are allowed",
@@ -252,8 +252,7 @@
     "elementFinder": "Element Finder",
     "value": "Value",
     "repeat": "Repeat",
-    "repeatInterval": "R-Interval",
-    "saveMessage": "Action saved successfully!"
+    "repeatInterval": "R-Interval"
   },
   "popover": {
     "valueExtractor": {

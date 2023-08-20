@@ -23,10 +23,10 @@ export const actionActions = {
     const { configs, selectedConfigIndex } = state;
     configs[selectedConfigIndex].actions.push({ ...defaultAction });
   },
-  updateAction: (state, action: PayloadAction<{ name: string; value: any }>) => {
-    const { configs, selectedConfigIndex, selectedActionIndex } = state;
-    const { name, value } = action.payload;
-    configs[selectedConfigIndex].actions[selectedActionIndex][name] = value;
+  updateAction: (state, action: PayloadAction<{ index: number; name: string; value: any }>) => {
+    const { configs, selectedConfigIndex } = state;
+    const { name, value, index } = action.payload;
+    configs[selectedConfigIndex].actions[index][name] = value;
   },
   removeAction: (state, action: PayloadAction<number>) => {
     const { configs, selectedConfigIndex } = state;

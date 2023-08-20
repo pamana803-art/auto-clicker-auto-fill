@@ -1,5 +1,5 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
-import { addConfig, duplicateConfig, removeConfig, setConfigError, updateBatch, updateConfig, setConfigMessage, updateConfigSettings, importAll, importConfig } from './config.slice';
+import { addConfig, duplicateConfig, removeConfig, setConfigError, updateBatch, updateConfig, setConfigMessage, updateConfigSettings, importAll, importConfig, updateAction } from './config.slice';
 import { RootState } from '../../store';
 import { addToast } from '../toast.slice';
 import { StorageService } from '@dhruv-techapps/core-service';
@@ -7,6 +7,7 @@ import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 import { setConfigSettingsError, setConfigSettingsMessage } from './settings';
 import { setBatchError, setBatchMessage } from './batch';
 import { getI18n } from 'react-i18next';
+import { setActionError, setActionMessage } from './action/action.slice';
 
 const configsToastListenerMiddleware = createListenerMiddleware();
 configsToastListenerMiddleware.startListening({
@@ -30,6 +31,8 @@ const getMessageFunc = (action) => {
       return { success: setConfigSettingsMessage, failure: setConfigSettingsError };
     case updateBatch.type:
       return { success: setBatchMessage, failure: setBatchError };
+    case updateAction.type:
+      return { success: setActionMessage, failure: setActionError };
     default:
       return { success: setConfigMessage, failure: setConfigError };
   }
@@ -37,7 +40,7 @@ const getMessageFunc = (action) => {
 
 const configsListenerMiddleware = createListenerMiddleware();
 configsListenerMiddleware.startListening({
-  matcher: isAnyOf(importAll, importConfig, updateConfig, updateConfigSettings, removeConfig, updateBatch),
+  matcher: isAnyOf(importAll, importConfig, updateConfig, updateConfigSettings, removeConfig, updateBatch, updateAction),
   effect: async (action, listenerApi) => {
     // Run whatever additional side-effect-y logic you want here
     const state = listenerApi.getState() as RootState;
@@ -49,9 +52,11 @@ configsListenerMiddleware.startListening({
       .then(async () => {
         if (success) {
           const [type, method] = action.type.split('/');
-          listenerApi.dispatch(success(language[type][method]));
-          await listenerApi.delay(1500);
-          listenerApi.dispatch(success());
+          if (language[type][method]) {
+            listenerApi.dispatch(success(language[type][method]));
+            await listenerApi.delay(1500);
+            listenerApi.dispatch(success());
+          }
         }
       })
       .catch((error) => {

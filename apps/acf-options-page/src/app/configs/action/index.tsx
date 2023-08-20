@@ -2,37 +2,27 @@ import { useEffect, useState } from 'react';
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap';
 
 import { useTranslation } from 'react-i18next';
-import { LocalStorage } from '../../../_helpers';
 import ActionTable from './action-table';
 import { DropdownToggle } from '../../../components';
 import { Filter } from '../../../util';
 import { ActionSettingsModal, ActionStatementModal, AddonModal } from '../../../modal';
-import { useAppDispatch } from '@apps/acf-options-page/src/hooks';
+import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
 import { addAction } from '@apps/acf-options-page/src/store/config';
+import { actionSelector, setColumnVisibility } from '@apps/acf-options-page/src/store/config/action/action.slice';
 
-const HIDDEN_COLUMN_KEY = 'hiddenColumns';
-const defaultHiddenColumns = ['name', 'initWait', 'repeat', 'repeatInterval'];
-
-function Action(props) {
+function Action() {
   const { t } = useTranslation();
-  const [hiddenColumns, setHiddenColumns] = useState(LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultHiddenColumns));
+  const { message, error, columnVisibility } = useAppSelector(actionSelector);
   const dispatch = useAppDispatch();
-  const [message, setMessage] = useState();
-  const [error, setError] = useState();
 
   const onColumnChange = (e) => {
     const column = e.currentTarget.getAttribute('data-column');
-    const columnIndex = hiddenColumns.indexOf(column);
-    setHiddenColumns((prevHiddenColumns) => (columnIndex !== -1 ? prevHiddenColumns.filter((_, prevColumnIndex) => prevColumnIndex !== columnIndex) : [...prevHiddenColumns, column]));
+    dispatch(setColumnVisibility(column));
   };
 
   const onAddAction = () => {
     dispatch(addAction());
   };
-
-  useEffect(() => {
-    LocalStorage.setItem(HIDDEN_COLUMN_KEY, hiddenColumns);
-  }, [hiddenColumns]);
 
   return (
     <>
@@ -53,16 +43,16 @@ function Action(props) {
                   <Filter width='28' height='28' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={onColumnChange} data-column='name' active={hiddenColumns.indexOf('name') === -1}>
+                  <Dropdown.Item onClick={onColumnChange} data-column='name' active={columnVisibility.name}>
                     {t('action.name')}
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={onColumnChange} data-column='initWait' active={hiddenColumns.indexOf('initWait') === -1}>
+                  <Dropdown.Item onClick={onColumnChange} data-column='initWait' active={columnVisibility.initWait}>
                     {t('action.initWait')}
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={onColumnChange} data-column='repeat' active={hiddenColumns.indexOf('repeat') === -1}>
+                  <Dropdown.Item onClick={onColumnChange} data-column='repeat' active={columnVisibility.repeat}>
                     {t('action.repeat')}
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={onColumnChange} data-column='repeatInterval' active={hiddenColumns.indexOf('repeatInterval') === -1}>
+                  <Dropdown.Item onClick={onColumnChange} data-column='repeatInterval' active={columnVisibility.repeatInterval}>
                     {t('action.repeatInterval')}
                   </Dropdown.Item>
                 </Dropdown.Menu>
@@ -71,7 +61,7 @@ function Action(props) {
           </Row>
         </Card.Header>
         <Card.Body className='p-0'>
-          <ActionTable {...props} hiddenColumns={hiddenColumns} setMessage={setMessage} setError={setError} />
+          <ActionTable />
         </Card.Body>
       </Card>
       <AddonModal />

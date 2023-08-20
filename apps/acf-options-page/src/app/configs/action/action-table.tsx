@@ -1,9 +1,8 @@
-import {  useEffect, useMemo } from 'react';
-import { useTable } from 'react-table';
+import { useMemo } from 'react';
 import { Dropdown, Form, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { EditableCell } from './editable-cell';
-import { CaretDown, CaretUp, REGEX_INTERVAL, REGEX_NUM, ThreeDots } from '../../../util';
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import { CaretDown, CaretUp, ThreeDots } from '../../../util';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
 import { DropdownToggle } from '../../../components';
 import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
@@ -12,26 +11,15 @@ import { useConfirmationModalContext } from '@apps/acf-options-page/src/_provide
 import { switchActionAddonModal } from '@apps/acf-options-page/src/store/config/action/addon';
 import { switchActionStatementModal } from '@apps/acf-options-page/src/store/config/action/statement';
 import { switchActionSettingsModal } from '@apps/acf-options-page/src/store/config/action/settings';
-
-const ActionTable = ({ hiddenColumns }) => {
+import { Action } from '@dhruv-techapps/acf-common';
+import { defaultColumn } from './editable-cell';
+import { actionSelector } from '@apps/acf-options-page/src/store/config/action/action.slice';
+const ActionTable = () => {
   const { t } = useTranslation();
   const { actions } = useAppSelector(selectedConfigSelector);
+  const { columnVisibility } = useAppSelector(actionSelector);
   const dispatch = useAppDispatch();
   const modalContext = useConfirmationModalContext();
-  const defaultColumn = { Cell: EditableCell };
-  const initialState = { hiddenColumns };
-
-  /*const validateActions = () => {
-    let isValid = true;
-    data.forEach((action, index) => {
-      document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`)?.classList.remove('is-invalid');
-      if (!action.elementFinder) {
-        document.querySelector(`#actions tbody tr:nth-child(${index + 1}) input[name=elementFinder]`)?.classList.add('is-invalid');
-        isValid = false;
-      }
-    });
-    return isValid;
-  };*/
 
   const removeActionConfirm = async (rowIndex) => {
     const name = `#${+rowIndex + 1} - ${actions[rowIndex].name || actions[rowIndex].elementFinder || 'row'}`;
@@ -43,65 +31,83 @@ const ActionTable = ({ hiddenColumns }) => {
     result && dispatch(removeAction(Number(rowIndex)));
   };
 
-  const columns = useMemo(
+  const columns = useMemo<ColumnDef<Action, { dataType: string; list: string; pattern: string; required: boolean }>[]>(
     () => [
       {
-        Header: t('action.initWait'),
-        style: { width: '100px' },
-        accessor: 'initWait',
-        ariaLabel: 'initWait',
-        dataType: 'number',
-        list: 'interval',
-        pattern: REGEX_INTERVAL,
+        header: t('action.initWait'),
+        accessorKey: 'initWait',
+        size: 100,
+        meta: {
+          dataType: 'number',
+          list: 'interval',
+          pattern: 'INTERVAL',
+        },
       },
       {
-        Header: t('action.name'),
-        style: { width: '10%' },
-        accessor: 'name',
-        ariaLabel: 'name',
-        autoComplete: 'off',
+        header: t('action.name'),
+        accessorKey: 'name',
       },
       {
-        Header: t('action.elementFinder'),
-        accessor: 'elementFinder',
-        ariaLabel: 'elementFinder',
-        list: 'elementFinder',
-        required: true,
+        header: () => (
+          <>
+            {t('action.elementFinder')} <small className='text-danger'>*</small> <ElementFinderPopover />
+          </>
+        ),
+        accessorKey: 'elementFinder',
+        meta: {
+          list: 'elementFinder',
+          required: true,
+        },
       },
       {
-        Header: t('action.value'),
-        list: 'value',
-        accessor: 'value',
-        ariaLabel: 'value',
+        header: () => (
+          <>
+            {t('action.value')} <ValuePopover />
+          </>
+        ),
+        accessorKey: 'value',
+        meta: {
+          list: 'value',
+        },
       },
       {
-        Header: t('action.repeat'),
-        style: { width: '100px' },
-        accessor: 'repeat',
-        ariaLabel: 'repeat',
-        dataType: 'number',
-        list: 'repeat',
-        pattern: REGEX_NUM,
+        header: t('action.repeat'),
+        accessorKey: 'repeat',
+        meta: {
+          dataType: 'number',
+          list: 'repeat',
+          type: 'number',
+          pattern: 'NUMBER',
+        },
       },
       {
-        Header: t('action.repeatInterval'),
-        style: { width: '100px' },
-        accessor: 'repeatInterval',
-        ariaLabel: 'repeatInterval',
-        dataType: 'number',
-        list: 'interval',
-        pattern: REGEX_INTERVAL,
+        header: t('action.repeatInterval'),
+        accessorKey: 'repeatInterval',
+        meta: {
+          dataType: 'number',
+          list: 'interval',
+          pattern: 'INTERVAL',
+        },
       },
     ],
     [t]
   );
-  const tableInstance = useTable({ columns: columns, data: actions, defaultColumn, initialState, updateAction });
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, setHiddenColumns } = tableInstance;
-
-  useEffect(() => {
-    setHiddenColumns(hiddenColumns);
-  }, [hiddenColumns, setHiddenColumns]);
+  const table = useReactTable<Action>({
+    columns: columns,
+    data: actions,
+    defaultColumn,
+    state: { columnVisibility },
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    // Provide our updateData function to our table meta
+    meta: {
+      updateData: (rowIndex, columnId, value) => {
+        dispatch(updateAction({ index: rowIndex, name: columnId, value }));
+      },
+    },
+  });
 
   const showAddon = (row) => {
     dispatch(switchActionAddonModal(row.id));
@@ -129,73 +135,64 @@ const ActionTable = ({ hiddenColumns }) => {
 
   return (
     <Form>
-      <Table {...getTableProps()} id='actions' bordered hover className='mb-0'>
+      <Table id='actions' bordered hover className='mb-0'>
         <thead>
-          {headerGroups.map((headerGroup, headerGroupIndex) => (
-            <tr {...headerGroup.getHeaderGroupProps()} key={headerGroupIndex}>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
               <th style={{ width: '30px' }}>&nbsp;</th>
-              {headerGroup.headers.map((column, headerIndex) => (
-                <th {...column.getHeaderProps([{ style: column.style }])} key={headerIndex}>
-                  {column.render('Header')} {column.required && <small className='text-danger'>*</small>}
-                  {column.Header === t('action.elementFinder') && <ElementFinderPopover />}
-                  {column.Header === t('action.value') && <ValuePopover />}
-                </th>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</th>
               ))}
               <th style={{ width: '54px' }}>&nbsp;</th>
             </tr>
           ))}
         </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, index) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} key={index} className={actions[index] ? '' : 'edited'}>
-                <td align='center'>
-                  <div className='d-flex flex-column align-items-center text-secondary'>
-                    <CaretUp
-                      width='20'
-                      height='20'
-                      onClick={(e) => moveUp(e, row.id)} //disabled={index === 0}
-                    />
-                    <CaretDown
-                      width='20'
-                      height='20'
-                      onClick={(e) => moveDown(e, row.id)} //disabled={index === rows.length - 1}
-                    />
-                  </div>
-                </td>
-                {row.cells.map((cell, cellIndex) => (
-                  <td {...cell.getCellProps()} key={cellIndex}>
-                    {cell.render('Cell')}
-                  </td>
-                ))}
-                <td align='center'>
-                  {actions[row.id] && (
-                    <Dropdown id='acton-dropdown-wrapper'>
-                      <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' aria-label='Action more option'>
-                        <ThreeDots width='24' height='24' />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => showAddon(row)}>{t('action.addon')}</Dropdown.Item>
-                        {index !== 0 && <Dropdown.Item onClick={() => showCondition(row)}>{t('modal.actionCondition.title')}</Dropdown.Item>}
-                        <Dropdown.Item onClick={() => showSettings(row)}>{t('action.settings')}</Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item
-                          onClick={() => {
-                            removeActionConfirm(row.id);
-                          }}
-                          className={actions.length === 1 ? '' : 'text-danger'}
-                          disabled={actions.length === 1}
-                        >
-                          {t('action.remove')}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
+        <tbody>
+          {table.getRowModel().rows.map((row, index) => (
+            <tr key={row.id}>
+              <td align='center'>
+                <div className='d-flex flex-column align-items-center text-secondary'>
+                  <CaretUp
+                    width='20'
+                    height='20'
+                    onClick={(e) => moveUp(e, row.id)} //disabled={index === 0}
+                  />
+                  <CaretDown
+                    width='20'
+                    height='20'
+                    onClick={(e) => moveDown(e, row.id)} //disabled={index === rows.length - 1}
+                  />
+                </div>
+              </td>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+              ))}
+              <td align='center'>
+                {actions[row.id] && (
+                  <Dropdown id='acton-dropdown-wrapper'>
+                    <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' aria-label='Action more option'>
+                      <ThreeDots width='24' height='24' />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => showAddon(row)}>{t('action.addon')}</Dropdown.Item>
+                      {index !== 0 && <Dropdown.Item onClick={() => showCondition(row)}>{t('modal.actionCondition.title')}</Dropdown.Item>}
+                      <Dropdown.Item onClick={() => showSettings(row)}>{t('action.settings')}</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item
+                        onClick={() => {
+                          removeActionConfirm(row.id);
+                        }}
+                        className={actions.length === 1 ? '' : 'text-danger'}
+                        disabled={actions.length === 1}
+                      >
+                        {t('action.remove')}
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                )}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </Form>

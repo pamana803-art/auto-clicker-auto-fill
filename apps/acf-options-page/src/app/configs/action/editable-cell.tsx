@@ -1,61 +1,48 @@
-import React, { useRef } from 'react'
-import PropTypes from 'prop-types'
-import { Form } from 'react-bootstrap'
-import { useAppDispatch } from '@apps/acf-options-page/src/hooks'
+import { useEffect, useRef, useState } from 'react';
+import { Form } from 'react-bootstrap';
+import { ColumnDef } from '@tanstack/react-table';
+import { Action } from '@dhruv-techapps/acf-common';
+import { IN_VALID_CLASS } from '@apps/acf-options-page/src/util';
 
-// Create an editable cell renderer
-export function EditableCell({ value: initialValue, data, row: { index }, column: { id, required, pattern, validate, dataType, ariaLabel, list } }) {
-  // We need to keep and update the state of the cell normally
-  // We need to keep and update the state of the cell normally
+export const defaultColumn: Partial<ColumnDef<Action>> = {
+  cell: Cell,
+};
 
-  const dispatch = useAppDispatch()
-  const [value, setValue] = React.useState(initialValue)
-  const [invalid, setInvalid] = React.useState(data[index].error === id)
-  const input = useRef<HTMLInputElement>(null)
-  const onChange = ({ currentTarget: { value: changeValue } }) => {
-    input.current?.classList.remove('is-valid')
-    setInvalid(false)
-    if (changeValue) {
-      if (pattern && !pattern.test(changeValue)) {
-        setInvalid(true)
-      }
-      if (validate && !validate(changeValue)) {
-        setInvalid(true)
-      }
-    } else if (required) {
-      setInvalid(true)
+function Cell({ getValue, row: { index }, column: { id, columnDef }, table }) {
+  const { meta } = columnDef;
+  const initialValue = getValue();
+
+  const [value, setValue] = useState(initialValue);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onBlur = () => {
+    if (!inputRef.current?.classList.contains(IN_VALID_CLASS)) {
+      table.options.meta?.updateData(index, id, value);
     }
-    setValue(changeValue)
-  }
+  };
 
-  // We'll only update the external data when the input is blurred
-  const onBlur = ({ currentTarget: { value: blurValue } }) => {
-    //dispatch(updateAction({name:columnId, value}))
-  
-    //updateAction(index, id, dataType === 'number' && blurValue.indexOf('e') === -1 ? Number(blurValue) : blurValue)
-  }
+  const onChange = ({ currentTarget: { value: changeValue } }) => {
+    setValue(changeValue);
+  };
 
   // If the initialValue is changed external, sync it up with our state
-  React.useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
-  return <Form.Control ref={input} aria-label={ariaLabel} value={value} name={id} onChange={onChange} onBlur={onBlur} isInvalid={invalid} list={list} autoComplete='off' />
-}
-
-EditableCell.propTypes = {
-  data: PropTypes.instanceOf(Array).isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  row: PropTypes.shape({
-    index: PropTypes.number.isRequired
-  }).isRequired,
-  column: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    ariaLabel: PropTypes.string,
-    required: PropTypes.bool,
-    pattern: PropTypes.instanceOf(RegExp),
-    validate: PropTypes.func,
-    dataType: PropTypes.string,
-    list: PropTypes.string
-  }).isRequired,
+  return (
+    <Form.Control
+      ref={inputRef}
+      aria-label={meta?.ariaLabel}
+      type={meta?.type}
+      value={value || ''}
+      name={id}
+      onChange={onChange}
+      onBlur={onBlur}
+      pattern={meta?.pattern}
+      required={meta?.required}
+      list={meta?.list}
+      autoComplete='off'
+    />
+  );
 }
