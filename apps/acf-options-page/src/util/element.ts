@@ -3,7 +3,7 @@
 import { NUMBER_FIELDS, IN_VALID_CLASS } from './validation';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getFieldNameValue = <T = any>(e): { name: string; value: T } | null => {
+const getFieldNameValue = <T = any>(e,data): { name: string; value: T } | null => {
   if (e.target.classList.contains(IN_VALID_CLASS)) {
     return null;
   }
@@ -12,8 +12,12 @@ const getFieldNameValue = <T = any>(e): { name: string; value: T } | null => {
   const { name, type } = e.target;
   if (type === 'checkbox') {
     value = e.target.checked;
-  } else if (typeof value === 'string' && NUMBER_FIELDS.indexOf(name) !== -1 && value.indexOf('e') === -1) {
+  } else if (NUMBER_FIELDS.includes(name) && value.indexOf('e') === -1) {
     value = Number(value);
+  }
+
+  if(data[name] === value){
+    return null
   }
 
   return { name, value };

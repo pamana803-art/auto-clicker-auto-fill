@@ -10,8 +10,10 @@ function SettingRetry() {
   const { settings } = useAppSelector(settingsSelector);
   const dispatch = useAppDispatch();
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e);
-    dispatch(updateSettings(update));
+    const update = getFieldNameValue(e,settings);
+    if(update){
+      dispatch(updateSettings(update));
+    }
   };
 
   return (

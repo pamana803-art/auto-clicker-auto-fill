@@ -1,5 +1,3 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { VolumeMute, VolumeUp } from '../../util';
@@ -14,8 +12,10 @@ function SettingNotifications() {
   const { notifications } = useAppSelector(settingsSelector).settings;
   const dispatch = useAppDispatch();
   const onUpdate = (e) => {
-    const update = getFieldNameValue<boolean>(e);
-    dispatch(updateSettingsNotification(update));
+    const update = getFieldNameValue<boolean>(e,notifications);
+    if(update){
+      dispatch(updateSettingsNotification(update));
+    }
   };
 
   return (

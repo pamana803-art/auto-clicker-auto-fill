@@ -21,7 +21,7 @@ const AddonModal = () => {
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e);
+    const update = getFieldNameValue(e,addon);
     if (update) {
       dispatch(updateActionAddon(update));
     }

@@ -13,7 +13,7 @@ function BatchBody() {
   const { t } = useTranslation();
 
   const onBlur = (e) => {
-    const update = getFieldNameValue(e);
+    const update = getFieldNameValue(e,batch);
     if (update) {
       dispatch(updateBatch(update));
     }

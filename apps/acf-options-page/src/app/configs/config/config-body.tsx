@@ -1,28 +1,28 @@
-import React, { useEffect } from 'react'
-import { Card, Col, Form, FormControl, Row } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next'
-import { getFieldNameValue, updateForm } from '../../../util/element'
-import { APP_LINK } from '../../../constants'
-import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { selectedConfigSelector, updateConfig } from '../../../store/config'
+import React, { useEffect } from 'react';
+import { Card, Col, Form, FormControl, Row } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { getFieldNameValue, updateForm } from '../../../util/element';
+import { APP_LINK } from '../../../constants';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { selectedConfigSelector, updateConfig } from '../../../store/config';
 
-const FORM_ID = 'config-body'
+const FORM_ID = 'config-body';
 
 function ConfigBody() {
-  const config = useAppSelector(selectedConfigSelector)
-  const dispatch = useAppDispatch()
-  const { t } = useTranslation()
+  const config = useAppSelector(selectedConfigSelector);
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e);
-    if(update){
+    const update = getFieldNameValue(e, config);
+    if (update) {
       dispatch(updateConfig(update));
     }
-  }
+  };
 
   useEffect(() => {
-    updateForm(FORM_ID, config)
-  }, [config])
+    updateForm(FORM_ID, config);
+  }, [config]);
 
   return (
     <Form id={FORM_ID}>
@@ -55,7 +55,7 @@ function ConfigBody() {
         </Row>
       </Card.Body>
     </Form>
-  )
+  );
 }
 
-export default ConfigBody
+export default ConfigBody;

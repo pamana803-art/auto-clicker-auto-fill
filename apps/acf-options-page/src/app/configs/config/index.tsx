@@ -1,15 +1,16 @@
-import React, { createRef } from 'react';
+import { createRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap';
+import {  Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap';
 import ConfigBody from './config-body';
 import { ThreeDots } from '../../../util';
 import { DropdownToggle } from '../../../components';
 import { getFieldNameValue } from '../../../util/element';
 import { download } from '../../../_helpers';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { configSelector, duplicateConfig, removeConfig, selectedConfigSelector, switchConfigSettingsModal, updateConfig } from '../../../store/config';
-import { configImportAPI } from '../../../store/config/config.api';
+import { configSelector, duplicateConfig, importConfig, removeConfig, selectedConfigSelector, switchConfigSettingsModal, updateConfig } from '../../../store/config';
 import { useConfirmationModalContext } from '../../../_providers/confirm.provider';
+import { addToast } from '@apps/acf-options-page/src/store/toast.slice';
+import { Configuration } from '@dhruv-techapps/acf-common';
 
 function Config() {
   const { message, configs, error } = useAppSelector(configSelector);
@@ -21,25 +22,44 @@ function Config() {
   const importFiled = createRef<HTMLInputElement>();
 
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e);
+    const update = getFieldNameValue(e,config);
     if (update) {
       dispatch(updateConfig(update));
     }
   };
 
-  const exportConfig = () => {
+  const onExportConfig = () => {
     const url = config.url.split('/')[2] || 'default';
     const name = config.name || url;
     download(name, config);
   };
 
-  const importConfig = ({ currentTarget: { files } }) => {
+  const onImportConfig = ({ currentTarget: { files } }) => {
     if (files.length <= 0) {
       return false;
     }
     const fr = new FileReader();
     fr.onload = function ({ target }) {
-      dispatch(configImportAPI(target));
+      try {
+        if (target === null || target.result === null) {
+          dispatch(addToast({ header: 'File', body: t('error.json'), variant: 'danger' }));
+        } else {
+          const importedConfig: Configuration = JSON.parse(target.result as string);
+          if (Array.isArray(importedConfig)) {
+            dispatch(addToast({ header: 'File', body: t('error.json'), variant: 'danger' }));
+          } else {
+            dispatch(importConfig(importedConfig));
+          }
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          dispatch(addToast({ header: 'File', body: error.message, variant: 'danger' }));
+        } else if (typeof error === 'string') {
+          dispatch(addToast({ header: 'File', body: error, variant: 'danger' }));
+        } else {
+          dispatch(addToast({ header: 'File', body: JSON.stringify(error), variant: 'danger' }));
+        }
+      }
     };
     fr.readAsText(files.item(0));
     return false;
@@ -88,7 +108,7 @@ function Config() {
                 <ThreeDots width='24' height='24' />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={exportConfig}>{t('configuration.export')}</Dropdown.Item>
+                <Dropdown.Item onClick={onExportConfig}>{t('configuration.export')}</Dropdown.Item>
                 <Dropdown.Item onClick={() => importFiled.current?.click()}>{t('configuration.import')}</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={onDuplicateConfig}>{t('configuration.duplicate')}</Dropdown.Item>
@@ -103,7 +123,7 @@ function Config() {
             <div className='custom-file d-none'>
               <label className='custom-file-label' htmlFor='import-configuration' style={{ fontSize: `${1}rem`, fontWeight: 400 }}>
                 {t('configuration.import')}
-                <input type='file' className='custom-file-input' ref={importFiled} accept='.json' id='import-configuration' onChange={importConfig} />
+                <input type='file' className='custom-file-input' ref={importFiled} accept='.json' id='import-configuration' onChange={onImportConfig} />
               </label>
             </div>
           </Col>

@@ -44,7 +44,7 @@ const ConfigSettingsModal = () => {
   };
 
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e);
+    const update = getFieldNameValue(e,config);
     if (update) {
       dispatch(updateConfigSettings(update));
     }

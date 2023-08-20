@@ -1,7 +1,7 @@
 import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { Configuration, defaultConfig } from '@dhruv-techapps/acf-common';
-import { configGetAllAPI, configImportAPI } from './config.api';
+import { configGetAllAPI } from './config.api';
 import { actionActions } from './action';
 import { batchActions } from './batch';
 import { actionAddonActions } from './action/addon';
@@ -64,10 +64,17 @@ const slice = createSlice({
       state.configs = action.payload;
       state.selectedConfigIndex = 0;
     },
+    importConfig: (state, action:PayloadAction<Configuration>) => {
+      state.configs.push(action.payload);
+      state.selectedConfigIndex = state.configs.length - 1;
+    },
     duplicateConfig: (state) => {
       const { configs, selectedConfigIndex } = state;
+      const config = configs[selectedConfigIndex];
+      config.name = "(Duplicate) " + config.name
       state.configs.push(configs[selectedConfigIndex]);
-      state.selectedConfigIndex = 0;
+      state.selectedConfigIndex = state.configs.length - 1;
+
     },
     selectConfig: (state, action: PayloadAction<number>) => {
       state.selectedConfigIndex = action.payload;
@@ -92,12 +99,6 @@ const slice = createSlice({
       state.error = action.error.message;
       state.loading = false;
     });
-    builder.addCase(configImportAPI.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.configs.push(action.payload);
-        state.selectedConfigIndex = 0;
-      }
-    });
   },
 });
 
@@ -112,6 +113,7 @@ export const {
   removeConfig,
   duplicateConfig,
   importAll,
+  importConfig,
   updateBatch,
   addAction,
   reorderActions,

@@ -26,7 +26,7 @@ function ActionStatementCondition({ condition: { actionIndex, status, operator }
   };
 
   const onUpdate = (e: ChangeEvent<HTMLSelectElement>) => {
-    const update = getFieldNameValue(e);
+    const update = getFieldNameValue(e,actions[conditionIndex]);
     if (update) {
       dispatch(updateActionStatementCondition({ ...update, index: conditionIndex }));
     }

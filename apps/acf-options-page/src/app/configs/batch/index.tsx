@@ -15,7 +15,7 @@ function Batch() {
   const { t } = useTranslation();
 
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e);
+    const update = getFieldNameValue(e,batch);
     if (update) {
       dispatch(updateBatch(update));
     }

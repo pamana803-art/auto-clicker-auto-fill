@@ -9,10 +9,11 @@ import { SettingMessage } from './settings/message';
 import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill } from '../util';
 import { SettingsBackup } from './settings/backup';
 import { SettingGoogleSheets } from './settings/google-sheets';
-import { ErrorAlert, Loading } from '../components';
+import { ErrorAlert } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { modeSelector, switchMode } from '../store/mode.slice';
-import { getSettings, settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
+import { settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
+import { settingsGetAPI } from '../store/settings/settings.api';
 
 enum SETTINGS_PAGE {
   NOTIFICATION = 'notification',
@@ -23,7 +24,7 @@ enum SETTINGS_PAGE {
 const SettingsModal = () => {
   const { t } = useTranslation();
   const [page, setPage] = useState<SETTINGS_PAGE>();
-  const { loading, error, settings, visible } = useAppSelector(settingsSelector);
+  const { error, settings, visible } = useAppSelector(settingsSelector);
   const mode = useAppSelector(modeSelector);
   const dispatch = useAppDispatch();
 
@@ -33,12 +34,15 @@ const SettingsModal = () => {
 
   useEffect(() => {
     if (chrome.runtime) {
-      dispatch(getSettings());
+      dispatch(settingsGetAPI());
     }
   }, [dispatch]);
 
   const onUpdate = (e) => {
-    dispatch(updateSettings(getFieldNameValue(e)));
+    const update = getFieldNameValue(e, settings);
+    if (update) {
+      dispatch(updateSettings(update));
+    }
   };
 
   const toggleMode = () => {

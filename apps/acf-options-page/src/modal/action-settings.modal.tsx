@@ -19,7 +19,7 @@ const ActionSettingsModal = () => {
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e);
+    const update = getFieldNameValue(e,settings);
     dispatch(updateActionSettings(update));
   };
 

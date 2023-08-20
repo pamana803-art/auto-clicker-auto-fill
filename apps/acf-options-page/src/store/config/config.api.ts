@@ -11,14 +11,3 @@ export const configGetAllAPI = createAsyncThunk('config/getAll', async (_, thunk
     return { configurations, selectedConfigIndex };
   }
 });
-
-export const configImportAPI = createAsyncThunk<Configuration, FileReader | null>('config/import', (target) => {
-  if (target === null || target.result === null) {
-    throw new Error('No Files Selected');
-  }
-  const importedConfig: Configuration = JSON.parse(target.result as string);
-  if (Array.isArray(importedConfig)) {
-    throw new Error('JSON File error');
-  }
-  return importedConfig;
-});
