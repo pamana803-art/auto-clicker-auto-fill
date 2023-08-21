@@ -9,7 +9,6 @@ import { actionSettingsActions } from './action/settings';
 import { actionStatementActions } from './action/statement';
 
 export type ConfigStore = {
-  visible: boolean;
   loading: boolean;
   selectedConfigIndex: number;
   selectedActionIndex: number;
@@ -20,7 +19,7 @@ export type ConfigStore = {
 
 type ConfigAction = { name: string; value: any };
 
-const initialState: ConfigStore = { visible: false, loading: true, configs: [{ ...defaultConfig }], selectedConfigIndex: 0, selectedActionIndex: 0 };
+const initialState: ConfigStore = {loading: true, configs: [{ ...defaultConfig }], selectedConfigIndex: 0, selectedActionIndex: 0 };
 
 const slice = createSlice({
   name: 'configuration',

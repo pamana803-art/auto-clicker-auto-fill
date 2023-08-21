@@ -7,8 +7,10 @@ import { addToast } from '../../toast.slice';
 
 export const configReorderUpdateAPI = createAsyncThunk<boolean, void, { state: RootState }>('configReorder/update', async (_, thunkAPI) => {
   const configReorder = thunkAPI.getState().configReorder.configs;
-  await StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: configReorder });
-  thunkAPI.dispatch(setConfigs(configReorder));
-  thunkAPI.dispatch(addToast({ header: 'Configurations reordered successfully!' }));
+  if (configReorder) {
+    await StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: configReorder });
+    thunkAPI.dispatch(setConfigs(configReorder));
+    thunkAPI.dispatch(addToast({ header: 'Configurations reordered successfully!' }));
+  }
   return true;
 });

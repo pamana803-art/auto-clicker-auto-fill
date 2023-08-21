@@ -3,12 +3,11 @@ import { RootState } from '../../../../store';
 
 type ActionSettingsStore = {
   visible: boolean;
-  loading: boolean;
   error?: string;
   message?: string;
 };
 
-const initialState: ActionSettingsStore = { visible: false, loading: true };
+const initialState: ActionSettingsStore = { visible: false };
 
 const slice = createSlice({
   name: 'actionSettings',

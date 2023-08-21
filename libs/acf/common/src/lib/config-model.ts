@@ -31,7 +31,6 @@ export type Configuration = {
 
 export const defaultConfig: Configuration = {
   url: '',
-  name: '',
   enable: true,
   startType: START_TYPES.AUTO,
   loadType: LOAD_TYPES.WINDOW,

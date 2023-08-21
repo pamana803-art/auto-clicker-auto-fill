@@ -5,13 +5,12 @@ import { configReorderUpdateAPI } from './config-reorder.api';
 
 type ConfigReorderStore = {
   visible: boolean;
-  loading: boolean;
   error?: string;
   message?: string;
-  configs: Array<Configuration>;
+  configs?: Array<Configuration>;
 };
 
-const initialState: ConfigReorderStore = { visible: false, loading: true, configs: [] };
+const initialState: ConfigReorderStore = { visible: false };
 
 const slice = createSlice({
   name: 'configReorder',
@@ -34,7 +33,7 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(configReorderUpdateAPI.rejected, (state, action) => {
       state.error = action.error.message;
-      state.message = undefined
+      state.message = undefined;
     });
     builder.addCase(configReorderUpdateAPI.fulfilled, (state) => {
       state.visible = false;
@@ -42,7 +41,7 @@ const slice = createSlice({
   },
 });
 
-export const { switchConfigReorderModal, updateConfigReorder ,setConfigReorderMessage} = slice.actions;
+export const { switchConfigReorderModal, updateConfigReorder, setConfigReorderMessage } = slice.actions;
 
 export const configReorderSelector = (state: RootState) => state.configReorder;
 export const configReorderReducer = slice.reducer;

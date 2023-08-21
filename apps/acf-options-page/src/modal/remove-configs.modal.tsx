@@ -26,7 +26,10 @@ const RemoveConfigsModal = () => {
     }
   };
 
-  const checkedConfigLength = () => configs.filter((config) => config.checked).length + 1;
+  const checkedConfigLength = () => {
+    const length = configs?.filter((config) => config.checked)?.length;
+    return length ? length  + 1 : 0;
+  }
 
   const onShow = () => {
     //:TODO
@@ -42,7 +45,7 @@ const RemoveConfigsModal = () => {
           <ErrorAlert error={error} />
           <p className='text-muted'>This action cant be reverted.</p>
           <ListGroup>
-            {configs.map((config, index) => (
+            {configs?.map((config, index) => (
               <ListGroup.Item key={index}>
                 <Form.Check
                   type='checkbox'

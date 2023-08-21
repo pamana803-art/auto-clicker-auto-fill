@@ -7,13 +7,12 @@ export type ConfigurationRemoveType = Configuration & { checked?: boolean };
 
 type ConfigRemoveStore = {
   visible: boolean;
-  loading: boolean;
   error?: string;
   message?: string;
-  configs: Array<ConfigurationRemoveType>;
+  configs?: Array<ConfigurationRemoveType>;
 };
 
-const initialState: ConfigRemoveStore = { visible: false, loading: true, configs: [] };
+const initialState: ConfigRemoveStore = { visible: false};
 
 const slice = createSlice({
   name: 'configRemove',
@@ -26,7 +25,9 @@ const slice = createSlice({
       state.visible = !state.visible;
     },
     switchConfigRemoveSelection: (state, action: PayloadAction<number>) => {
-      state.configs[action.payload].checked = !state.configs[action.payload].checked;
+      if(state.configs){
+        state.configs[action.payload].checked = !state.configs[action.payload].checked;
+      }
     },
     setConfigRemoveMessage: (state, action: PayloadAction<string | undefined>) => {
       state.error = undefined;

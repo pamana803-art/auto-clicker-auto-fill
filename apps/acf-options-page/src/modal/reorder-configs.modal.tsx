@@ -38,7 +38,7 @@ const ReorderConfigsModal = () => {
           <p className="text-muted">{t('modal.reorder.hint')}</p>
           <div className="list-group">
             <Reorder reorderId="configurations" draggedClassName="active" placeholderClassName="list-group" onReorder={onReorder}>
-              {configs.map((config, index) => (
+              {configs?.map((config, index) => (
                 <ListGroup.Item key={index}>
                   {config.name}
                   {!config.enable && (

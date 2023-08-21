@@ -3,13 +3,12 @@ import { RootState } from '../../../store';
 
 type ConfigSettingsStore = {
   visible: boolean;
-  loading: boolean;
   error?: string;
   message?: string;
   dev: boolean;
 };
 
-const initialState: ConfigSettingsStore = { visible: false, loading: true, dev: !!localStorage.getItem('DEV') };
+const initialState: ConfigSettingsStore = { visible: false, dev: !!localStorage.getItem('DEV') };
 
 const slice = createSlice({
   name: 'configSettings',
