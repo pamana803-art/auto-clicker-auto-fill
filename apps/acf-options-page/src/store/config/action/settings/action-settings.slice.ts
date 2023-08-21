@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../../store';
 
 type ActionSettingsStore = {
@@ -17,10 +17,18 @@ const slice = createSlice({
     switchActionSettingsModal: (state) => {
       state.visible = !state.visible;
     },
+    setActionSettingsMessage: (state, action: PayloadAction<string | undefined>) => {
+      state.message = action.payload;
+      state.error = undefined;
+    },
+    setActionSettingsError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+      state.message = undefined;
+    },
   },
 });
 
-export const { switchActionSettingsModal } = slice.actions;
+export const { switchActionSettingsModal, setActionSettingsMessage, setActionSettingsError } = slice.actions;
 
 export const actionSettingsSelector = (state: RootState) => state.actionSettings;
 export const actionSettingsReducer = slice.reducer;

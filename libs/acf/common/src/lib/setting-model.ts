@@ -20,9 +20,22 @@ export type SettingsNotifications = {
   discord: boolean;
 };
 
+export const defaultSettingsNotifications = {
+  onAction: false,
+  onBatch: false,
+  onConfig: false,
+  onError: false,
+  sound: false,
+  discord: false,
+};
+
 export type SettingsBackup = {
   autoBackup: AUTO_BACKUP;
   lastBackup?: string;
+};
+
+export const defaultSettingsBackup = {
+  autoBackup: AUTO_BACKUP.OFF,
 };
 
 export type Settings = {
@@ -30,27 +43,15 @@ export type Settings = {
   retryInterval: number;
   retryOption: RETRY_OPTIONS;
   checkiFrames: boolean;
-  backup: SettingsBackup;
-  notifications: SettingsNotifications;
+  backup?: SettingsBackup;
+  notifications?: SettingsNotifications;
 };
-
 
 export const defaultSettings: Settings = {
   retry: 5,
   retryInterval: 1,
   retryOption: RETRY_OPTIONS.STOP,
   checkiFrames: false,
-  backup: {
-    autoBackup: AUTO_BACKUP.OFF,
-  },
-  notifications: {
-    onAction: false,
-    onBatch: false,
-    onConfig: false,
-    onError: false,
-    sound: false,
-    discord: false,
-  },
 };
 
 export type Discord = {

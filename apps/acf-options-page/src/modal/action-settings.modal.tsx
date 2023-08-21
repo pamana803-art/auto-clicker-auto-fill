@@ -4,9 +4,9 @@ import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstra
 import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { useTranslation } from 'react-i18next';
 
-import { getFieldNameValue } from '../util/element';
+import { getFieldNameValue, updateForm } from '../util/element';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { resetActionSetting, updateActionSettings } from '../store/config';
+import { configSelector, resetActionSetting, updateActionSettings } from '../store/config';
 import { actionSettingsSelector, switchActionSettingsModal } from '../store/config/action/settings';
 import { selectedActionSelector } from '../store/config';
 
@@ -14,13 +14,17 @@ const FORM_ID = 'action-settings';
 
 const ActionSettingsModal = () => {
   const { t } = useTranslation();
-  const { settings } = useAppSelector(selectedActionSelector);
+  const {selectedActionIndex, configs, selectedConfigIndex} = useAppSelector(configSelector)
+  const action = useAppSelector(selectedActionSelector);
+  const {settings } = action
   const { message, visible } = useAppSelector(actionSettingsSelector);
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
     const update = getFieldNameValue(e,settings);
-    dispatch(updateActionSettings(update));
+    if(update){
+      dispatch(updateActionSettings(update));
+    }
   };
 
   const handleClose = () => {
@@ -28,38 +32,18 @@ const ActionSettingsModal = () => {
   };
 
   useEffect(() => {
-    /*
-    TODO
-    setConfigs(configs =>
-        configs.map((config, index) => {
-          if (index === configIndex) {
-            if (!config.actions[actionIndex.current]) {
-              config.actions[actionIndex.current] = {}
-            }
-            config.actions[actionIndex.current].settings = { ...settings }
-            return { ...config }
-          }
-          return config
-        })
-      )
-
-      updateRef.current = false
-      setMessage(t('modal.actionSettings.saveMessage'))
-      setTimeout(setMessage, 1500)
-      */
+    console.log(settings)
+      updateForm(FORM_ID, settings);
   }, [settings]);
 
-  /*
-  useEffect(() => {
-    if (actionIndex.current !== -1) {
-      updateForm(FORM_ID, settings);
-    }
-  }, [actionIndex.current]);*/
+  console.log(settings)
 
   const onReset = () => {
     dispatch(resetActionSetting());
     handleClose();
   };
+
+  console.log(selectedActionIndex,selectedConfigIndex, action ,configs[selectedConfigIndex])
 
   const onShow = () => {
 //:TODO

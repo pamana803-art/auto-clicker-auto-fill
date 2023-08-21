@@ -1,7 +1,6 @@
-import { PayloadAction, createAsyncThunk, createListenerMiddleware, createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { AUTO_BACKUP, LOCAL_STORAGE_KEY, Settings, defaultSettings } from '@dhruv-techapps/acf-common';
-import { StorageService } from '@dhruv-techapps/core-service';
+import { AUTO_BACKUP, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
 import { settingsGetAPI } from './settings.api';
 
 type SettingsStore = {
@@ -16,8 +15,6 @@ type SettingsAction = {
   name: string;
   value: boolean;
 };
-
-
 
 const initialState: SettingsStore = { visible: false, loading: true, settings: defaultSettings };
 
@@ -38,12 +35,18 @@ const slice = createSlice({
     },
     updateSettingsNotification: (state, action: PayloadAction<SettingsAction>) => {
       const { name, value } = action.payload;
-      state.settings.notifications[name] = value;
+      if (state.settings.notifications) {
+        state.settings.notifications[name] = value;
+      } else {
+        state.settings.notifications = { ...defaultSettingsNotifications, [name]: value };
+      }
     },
     updateSettingsBackup: (state, action: PayloadAction<AUTO_BACKUP>) => {
-
+      if (state.settings.backup) {
         state.settings.backup.autoBackup = action.payload;
-      
+      } else {
+        state.settings.backup = { autoBackup: action.payload };
+      }
     },
     setSettingsError: (state, action) => {
       state.error = action.payload;

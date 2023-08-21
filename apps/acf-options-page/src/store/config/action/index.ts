@@ -1,5 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { defaultAction } from '@dhruv-techapps/acf-common';
+import { ConfigStore } from '../config.slice';
 
 const arrayMove = (arr, oldIndex, newIndex) => {
   if (newIndex >= arr.length) {
@@ -14,21 +15,21 @@ const arrayMove = (arr, oldIndex, newIndex) => {
 };
 
 export const actionActions = {
-  reorderActions: (state, action: PayloadAction<{ oldIndex: number; newIndex: number }>) => {
+  reorderActions: (state:ConfigStore, action: PayloadAction<{ oldIndex: number; newIndex: number }>) => {
     const { configs, selectedConfigIndex } = state;
     const { oldIndex, newIndex } = action.payload;
     configs[selectedConfigIndex].actions = [...arrayMove(configs[selectedConfigIndex].actions, oldIndex, newIndex)];
   },
-  addAction: (state) => {
+  addAction: (state:ConfigStore) => {
     const { configs, selectedConfigIndex } = state;
     configs[selectedConfigIndex].actions.push({ ...defaultAction });
   },
-  updateAction: (state, action: PayloadAction<{ index: number; name: string; value: any }>) => {
+  updateAction: (state:ConfigStore, action: PayloadAction<{ index: number; name: string; value: any }>) => {
     const { configs, selectedConfigIndex } = state;
     const { name, value, index } = action.payload;
     configs[selectedConfigIndex].actions[index][name] = value;
   },
-  removeAction: (state, action: PayloadAction<number>) => {
+  removeAction: (state:ConfigStore, action: PayloadAction<number>) => {
     const { configs, selectedConfigIndex } = state;
     configs[selectedConfigIndex].actions.splice(action.payload, 1);
   },

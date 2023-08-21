@@ -115,11 +115,13 @@ const ActionTable = () => {
   };
 
   const showCondition = (row) => {
-    dispatch(switchActionStatementModal(row.id));
+    dispatch(selectAction(Number(row.id)));
+    dispatch(switchActionStatementModal());
   };
 
   const showSettings = (row) => {
-    dispatch(switchActionSettingsModal(row.id));
+    dispatch(selectAction(Number(row.id)));
+    dispatch(switchActionSettingsModal());
   };
 
   const moveUp = (e, rowId) => {

@@ -1,6 +1,8 @@
 import { Addon } from './addon-model';
 import { RETRY_OPTIONS } from './setting-model';
 
+
+// Action Condition
 export enum ACTION_STATUS {
   '~~ Select STATUS ~~' = '',
   SKIPPED = 'skipped',
@@ -13,16 +15,25 @@ export enum ACTION_RUNNING {
   PROCEED = 'proceed',
 }
 
-export type ActionCondition = {
-  actionIndex: number;
-  status: ACTION_STATUS;
-  operator?: ACTION_CONDITION_OPR;
-};
-
 export enum ACTION_CONDITION_OPR {
   AND = 'and',
   OR = 'or',
 }
+
+export type ActionCondition = {
+  actionIndex: number;
+  status: ACTION_STATUS;
+  operator: ACTION_CONDITION_OPR;
+};
+
+export const defaultActionCondition = {
+  actionIndex: -1,
+  status: ACTION_STATUS['~~ Select STATUS ~~'],
+  operator: ACTION_CONDITION_OPR.AND,
+};
+
+
+// Action Statement
 
 export type ActionStatement = {
   conditions: Array<ActionCondition>;
@@ -30,6 +41,22 @@ export type ActionStatement = {
   goto?: number;
 };
 
+export const defaultActionStatement = {
+  conditions: [{ ...defaultActionCondition }],
+  then: ACTION_RUNNING.PROCEED,
+};
+
+// Action Setting
+export type ActionSettings = {
+  iframeFirst?: boolean;
+  retry?: number;
+  retryInterval?: number;
+  retryOption?: RETRY_OPTIONS;
+};
+
+export const defaultActionSettings = {}
+
+// Action
 export enum ELEMENT_TYPE {
   INPUT = 'input',
   TEXTAREA = 'textarea',
@@ -37,13 +64,6 @@ export enum ELEMENT_TYPE {
   CHECKBOX = 'checkbox',
   RADIO = 'radio',
 }
-
-export type ActionSetting = {
-  iframeFirst?: boolean;
-  retry: number;
-  retryInterval: number;
-  retryOption: RETRY_OPTIONS;
-};
 
 export type Action = {
   elementFinder: string;
@@ -57,10 +77,9 @@ export type Action = {
   repeatInterval?: number;
   addon?: Addon;
   statement?: ActionStatement;
-  settings?: ActionSetting;
+  settings?: ActionSettings;
 };
 
-
-export const defaultAction:Action = {
-  elementFinder: ''
-}
+export const defaultAction: Action = {
+  elementFinder: '',
+};

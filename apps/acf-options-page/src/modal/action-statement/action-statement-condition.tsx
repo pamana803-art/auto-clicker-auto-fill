@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonGroup, Form } from 'react-bootstrap';
-import { ACTION_CONDITION_OPR, ACTION_STATUS,  ActionCondition } from '@dhruv-techapps/acf-common';
+import { ACTION_CONDITION_OPR, ACTION_STATUS,  ActionCondition, defaultActionCondition } from '@dhruv-techapps/acf-common';
 import { X } from '../../util';
 import {  getFieldNameValue } from '../../util/element';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -12,7 +12,8 @@ type Props = {
   conditionIndex: number;
 };
 
-function ActionStatementCondition({ condition: { actionIndex, status, operator }, conditionIndex }: Props) {
+function ActionStatementCondition({ condition = {...defaultActionCondition}, conditionIndex }: Props) {
+  const { actionIndex, status, operator } = condition
   const { actions } = useAppSelector(selectedConfigSelector);
 
   const dispatch = useAppDispatch();

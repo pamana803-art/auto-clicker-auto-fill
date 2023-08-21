@@ -28,3 +28,9 @@ export type Addon = {
   recheckInterval?: number;
   recheckOption?: RECHECK_OPTIONS;
 };
+
+export const defaultAddon = {
+  elementFinder: '',
+  value: '',
+  condition: ADDON_CONDITIONS['~~ Select Condition ~~'],
+};

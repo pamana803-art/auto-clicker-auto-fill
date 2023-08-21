@@ -1,14 +1,15 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 
 import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ACTION_RUNNING, ACTION_STATUS } from '@dhruv-techapps/acf-common';
+import { ACTION_RUNNING, defaultActionCondition } from '@dhruv-techapps/acf-common';
 import { ActionStatementCondition } from './action-statement/action-statement-condition';
 import { Plus } from '../util/svg';
 import { selectedActionSelector } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { addActionStatementCondition, configSelector, resetActionStatement, selectedConfigSelector, updateActionStatementGoto, updateActionStatementThen } from '../store/config';
 import { actionStatementSelector, switchActionStatementModal } from '../store/config/action/statement';
+import { updateForm } from '../util/element';
 
 const FORM_ID = 'actionCondition';
 
@@ -20,8 +21,8 @@ const ActionStatementModal = () => {
   const { selectedActionIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
 
-  const onUpdateThen = (_then: ACTION_RUNNING) => {
-    dispatch(updateActionStatementThen(_then));
+  const onUpdateThen = (then: ACTION_RUNNING) => {
+    dispatch(updateActionStatementThen(then));
   };
 
   const onUpdateGoto = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -38,8 +39,13 @@ const ActionStatementModal = () => {
   };
 
   const addCondition = () => {
-    dispatch(addActionStatementCondition({ actionIndex: -1, status: ACTION_STATUS[0] }));
+    dispatch(addActionStatementCondition({ ...defaultActionCondition }));
   };
+
+  useEffect(() => {
+    updateForm(FORM_ID, statement);
+}, [statement]);
+
 
   const onShow = () =>{
     //:TODO

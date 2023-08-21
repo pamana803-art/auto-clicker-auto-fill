@@ -33,9 +33,7 @@ export const defaultConfig: Configuration = {
   url: '',
   name: '',
   enable: true,
-  hotkey: defaultHotkey,
   startType: START_TYPES.AUTO,
   loadType: LOAD_TYPES.WINDOW,
   actions: [{ ...defaultAction }],
-  batch: { ...defaultBatch },
 };

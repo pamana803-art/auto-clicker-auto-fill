@@ -38,10 +38,10 @@ export function SettingsBackup() {
   return (
     <>
       <ol className='list-group'>
-        {backup.lastBackup && (
+        {backup?.lastBackup && (
           <ListGroup.Item as='li'>
             <NavDropdown.Header>{t('header.backup.last-backup')}</NavDropdown.Header>
-            <NavDropdown.ItemText>{backup.lastBackup}</NavDropdown.ItemText>
+            <NavDropdown.ItemText>{backup?.lastBackup}</NavDropdown.ItemText>
           </ListGroup.Item>
         )}
         <ListGroup.Item as='li'>
@@ -53,22 +53,22 @@ export function SettingsBackup() {
       </ol>
       <h6 className='mt-4'>{t('header.backup.auto-backup')}</h6>
       <ol className='list-group'>
-        <ListGroup.Item as='li' active={backup.autoBackup === AUTO_BACKUP.DAILY}>
+        <ListGroup.Item as='li' active={backup?.autoBackup === AUTO_BACKUP.DAILY}>
           <NavDropdown.Item href='#backup-daily' title={t('header.backup.daily')} onClick={() => onBackup(AUTO_BACKUP.DAILY)}>
             {t('header.backup.daily')}
           </NavDropdown.Item>
         </ListGroup.Item>
-        <ListGroup.Item as='li' active={backup.autoBackup === AUTO_BACKUP.WEEKLY}>
+        <ListGroup.Item as='li' active={backup?.autoBackup === AUTO_BACKUP.WEEKLY}>
           <NavDropdown.Item href='#backup-weekly' title={t('header.backup.weekly')} onClick={() => onBackup(AUTO_BACKUP.WEEKLY)}>
             {t('header.backup.weekly')}
           </NavDropdown.Item>
         </ListGroup.Item>
-        <ListGroup.Item as='li' active={backup.autoBackup === AUTO_BACKUP.MONTHLY}>
+        <ListGroup.Item as='li' active={backup?.autoBackup === AUTO_BACKUP.MONTHLY}>
           <NavDropdown.Item href='#backup-monthly' title={t('header.backup.monthly')} onClick={() => onBackup(AUTO_BACKUP.MONTHLY)}>
             {t('header.backup.monthly')}
           </NavDropdown.Item>
         </ListGroup.Item>
-        <ListGroup.Item as='li' active={!backup.autoBackup || backup.autoBackup === AUTO_BACKUP.OFF}>
+        <ListGroup.Item as='li' active={!backup?.autoBackup || backup?.autoBackup === AUTO_BACKUP.OFF}>
           <NavDropdown.Item href='#backup-off' title={t('header.backup.off')} onClick={() => onBackup(AUTO_BACKUP.OFF)}>
             {t('header.backup.off')}
           </NavDropdown.Item>
