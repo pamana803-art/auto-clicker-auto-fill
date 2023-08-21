@@ -78,8 +78,7 @@ function AddonValueExtractorFlags() {
 
     if (flag) {
       flags[flag] = !classList.contains('active');
-      dispatch(updateActionAddon({ name: 'valueExtractorFlags', value: flags }));
-      //TODO onUpdate(title());
+      dispatch(updateActionAddon({ name: 'valueExtractorFlags', value: title() }));
     }
   };
 

@@ -78,7 +78,9 @@ const slice = createSlice({
     },
     selectConfig: (state, action: PayloadAction<number>) => {
       state.selectedConfigIndex = action.payload;
-      window.dataLayer.push({ event: 'select', conversionName: 'configurations', section: 'configurations' });
+    },
+    selectAction: (state, action: PayloadAction<number>) => {
+      state.selectedActionIndex = action.payload;
     },
     ...actionActions,
     ...actionAddonActions,
@@ -115,6 +117,7 @@ export const {
   importAll,
   importConfig,
   updateBatch,
+  selectAction,
   addAction,
   reorderActions,
   removeAction,

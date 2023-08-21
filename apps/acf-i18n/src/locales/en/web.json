@@ -196,8 +196,7 @@
         "stop": "Stop",
         "skip": "Skip Action",
         "refresh": "Refresh"
-      },
-      "saveMessage": "Addon saved successfully!"
+      }      
     }
   },
   "configuration": {
@@ -220,7 +219,10 @@
     "updateConfig": "Configuration saved successfully!",
     "updateConfigSettings": "Configuration saved successfully!",
     "updateBatch":"Batch saved successfully!",
-    "updateAction":"Action saved successfully!"
+    "updateAction":"Action saved successfully!",
+    "reorderActions":"Action reordered successfully!",
+    "removeAction":"Action removed successfully!",
+    "updateActionAddon": "Addon saved successfully!"
   },
   "batch": {
     "title": "Batch",

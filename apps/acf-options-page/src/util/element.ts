@@ -16,7 +16,7 @@ const getFieldNameValue = <T = any>(e,data): { name: string; value: T } | null =
     value = Number(value);
   }
 
-  if(data[name] === value){
+  if(data && data[name] === value){
     return null
   }
 

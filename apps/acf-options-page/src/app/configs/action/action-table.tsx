@@ -6,7 +6,7 @@ import { CaretDown, CaretUp, ThreeDots } from '../../../util';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
 import { DropdownToggle } from '../../../components';
 import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
-import { removeAction, reorderActions, selectedConfigSelector, updateAction } from '@apps/acf-options-page/src/store/config';
+import { removeAction, reorderActions, selectAction, selectedConfigSelector, updateAction } from '@apps/acf-options-page/src/store/config';
 import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
 import { switchActionAddonModal } from '@apps/acf-options-page/src/store/config/action/addon';
 import { switchActionStatementModal } from '@apps/acf-options-page/src/store/config/action/statement';
@@ -103,14 +103,15 @@ const ActionTable = () => {
     getPaginationRowModel: getPaginationRowModel(),
     // Provide our updateData function to our table meta
     meta: {
-      updateData: (rowIndex, columnId, value) => {
+      updateData: (rowIndex:number, columnId:string, value:any) => {
         dispatch(updateAction({ index: rowIndex, name: columnId, value }));
       },
     },
   });
 
   const showAddon = (row) => {
-    dispatch(switchActionAddonModal(row.id));
+    dispatch(selectAction(Number(row.id)));
+    dispatch(switchActionAddonModal());
   };
 
   const showCondition = (row) => {

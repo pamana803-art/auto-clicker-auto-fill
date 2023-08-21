@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
 import { Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap';
-import { ADDON_CONDITIONS,ValueExtractorFlags } from '@dhruv-techapps/acf-common';
+import { ADDON_CONDITIONS, ValueExtractorFlags } from '@dhruv-techapps/acf-common';
 import { useTranslation } from 'react-i18next';
 
 import { ValueExtractorPopover } from '../popover';
@@ -11,17 +10,18 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { actionAddonSelector, switchActionAddonModal } from '../store/config/action/addon/addon.slice';
 import { updateActionAddon } from '../store/config';
 import { selectedActionAddonSelector } from '../store/config';
+import { ErrorAlert } from '../components';
 
 const FORM_ID = 'addon';
 
 const AddonModal = () => {
   const { t } = useTranslation();
   const addon = useAppSelector(selectedActionAddonSelector);
-  const { visible, message } = useAppSelector(actionAddonSelector);
+  const { visible, message, error } = useAppSelector(actionAddonSelector);
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e,addon);
+    const update = getFieldNameValue(e, addon);
     if (update) {
       dispatch(updateActionAddon(update));
     }
@@ -31,36 +31,13 @@ const AddonModal = () => {
     dispatch(switchActionAddonModal());
   };
 
-  useEffect(() => {
-    /*
-    TODO
-    setConfigs((configs) =>
-      configs.map((config, index) => {
-        if (index === configIndex) {
-          if (!config.actions[actionIndex.current]) {
-            config.actions[actionIndex.current] = defaultAction;
-          }
-          config.actions[actionIndex.current].addon = { ...addon };
-          return { ...config };
-        }
-        return config;
-      })
-    );*/
-    // dispatch(setMessage(t('modal.addon.saveMessage')));
-    //setTimeout(setMessage, 1500);
-  }, [addon]);
-
   const onReset = () => {
     handleClose();
   };
 
-  const onFlagsUpdate = (valueExtractorFlags: ValueExtractorFlags) => {
-    dispatch(updateActionAddon({ name: 'valueExtractorFlags', value: valueExtractorFlags }));
-  };
-
-  const onShow = () =>{
+  const onShow = () => {
     //:TODO
-  }
+  };
 
   return (
     <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
@@ -72,6 +49,7 @@ const AddonModal = () => {
           <p className='text-muted'>{t('modal.addon.info')}</p>
           <Card>
             <Card.Body>
+              <ErrorAlert error={error} />
               <Row className='mb-3'>
                 <Col md={6} sm={12}>
                   <Form.Group controlId='addon-element'>

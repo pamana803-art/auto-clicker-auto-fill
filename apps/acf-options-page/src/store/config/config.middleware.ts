@@ -1,5 +1,20 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
-import { addConfig, duplicateConfig, removeConfig, setConfigError, updateBatch, updateConfig, setConfigMessage, updateConfigSettings, importAll, importConfig, updateAction } from './config.slice';
+import {
+  addConfig,
+  duplicateConfig,
+  removeConfig,
+  setConfigError,
+  updateBatch,
+  updateConfig,
+  setConfigMessage,
+  updateConfigSettings,
+  importAll,
+  importConfig,
+  updateAction,
+  reorderActions,
+  removeAction,
+  updateActionAddon,
+} from './config.slice';
 import { RootState } from '../../store';
 import { addToast } from '../toast.slice';
 import { StorageService } from '@dhruv-techapps/core-service';
@@ -8,6 +23,7 @@ import { setConfigSettingsError, setConfigSettingsMessage } from './settings';
 import { setBatchError, setBatchMessage } from './batch';
 import { getI18n } from 'react-i18next';
 import { setActionError, setActionMessage } from './action/action.slice';
+import { setActionAddonError, setActionAddonMessage } from './action/addon';
 
 const configsToastListenerMiddleware = createListenerMiddleware();
 configsToastListenerMiddleware.startListening({
@@ -31,7 +47,11 @@ const getMessageFunc = (action) => {
       return { success: setConfigSettingsMessage, failure: setConfigSettingsError };
     case updateBatch.type:
       return { success: setBatchMessage, failure: setBatchError };
+    case updateActionAddon.type:
+      return { success: setActionAddonMessage, failure: setActionAddonError };
     case updateAction.type:
+    case reorderActions.type:
+    case removeAction.type:
       return { success: setActionMessage, failure: setActionError };
     default:
       return { success: setConfigMessage, failure: setConfigError };
@@ -40,7 +60,7 @@ const getMessageFunc = (action) => {
 
 const configsListenerMiddleware = createListenerMiddleware();
 configsListenerMiddleware.startListening({
-  matcher: isAnyOf(importAll, importConfig, updateConfig, updateConfigSettings, removeConfig, updateBatch, updateAction),
+  matcher: isAnyOf(importAll, importConfig, updateConfig, updateConfigSettings, removeConfig, updateBatch, updateAction, reorderActions, removeAction, updateActionAddon),
   effect: async (action, listenerApi) => {
     // Run whatever additional side-effect-y logic you want here
     const state = listenerApi.getState() as RootState;
