@@ -5,6 +5,8 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "strict": true
   },
   "files": [],

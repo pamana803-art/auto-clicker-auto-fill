@@ -4,10 +4,10 @@ import { defaultAddon } from '@dhruv-techapps/acf-common';
 
 export * from './addon.slice';
 
-type Addon = { name: string; value: any };
+type AddonRequest = { name: string; value: any };
 
 export const actionAddonActions = {
-  updateActionAddon: (state:ConfigStore, action: PayloadAction<Addon>) => {
+  updateActionAddon: (state: ConfigStore, action: PayloadAction<AddonRequest>) => {
     const { configs, selectedActionIndex, selectedConfigIndex } = state;
     const { name, value } = action.payload;
     const { addon } = configs[selectedConfigIndex].actions[selectedActionIndex];
@@ -17,7 +17,7 @@ export const actionAddonActions = {
       configs[selectedConfigIndex].actions[selectedActionIndex].addon = { ...defaultAddon, [name]: value };
     }
   },
-  resetActionAddon: (state:ConfigStore) => {
+  resetActionAddon: (state: ConfigStore) => {
     const { configs, selectedActionIndex, selectedConfigIndex } = state;
     delete configs[selectedConfigIndex].actions[selectedActionIndex].addon;
   },

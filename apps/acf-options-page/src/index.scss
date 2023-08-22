@@ -1,4 +1,8 @@
-@import "theme/main.scss";
-html, body {
-    height: 100%;
+@import 'theme/main.scss';
+html,
+body {
+  height: 100%;
+}
+.popover {
+  --bs-popover-max-width: 550px;
 }

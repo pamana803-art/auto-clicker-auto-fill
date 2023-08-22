@@ -1,5 +1,5 @@
 import { Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap';
-import { ADDON_CONDITIONS, ValueExtractorFlags } from '@dhruv-techapps/acf-common';
+import { ADDON_CONDITIONS } from '@dhruv-techapps/acf-common';
 import { useTranslation } from 'react-i18next';
 
 import { ValueExtractorPopover } from '../popover';

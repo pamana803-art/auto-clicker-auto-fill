@@ -3,7 +3,7 @@ import { Badge, Button, Form, ListGroup, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ErrorAlert } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { configRemoveSelector, configRemoveUpdateAPI,  switchConfigRemoveModal, switchConfigRemoveSelection } from '../store/config';
+import { configRemoveSelector, configRemoveUpdateAPI, switchConfigRemoveModal, switchConfigRemoveSelection } from '../store/config';
 
 const RemoveConfigsModal = () => {
   const { visible, configs, error } = useAppSelector(configRemoveSelector);
@@ -28,8 +28,8 @@ const RemoveConfigsModal = () => {
 
   const checkedConfigLength = () => {
     const length = configs?.filter((config) => config.checked)?.length;
-    return length ? length  + 1 : 0;
-  }
+    return length ? length + 1 : 0;
+  };
 
   const onShow = () => {
     //:TODO
@@ -58,7 +58,7 @@ const RemoveConfigsModal = () => {
                   id={`configuration-checkbox-${index}`}
                   label={
                     <>
-                      {config.name}
+                      {config.name || 'configuration - ' + index}
                       {!config.enable && (
                         <Badge pill bg='secondary' className='ms-2'>
                           {t('common.disabled')}

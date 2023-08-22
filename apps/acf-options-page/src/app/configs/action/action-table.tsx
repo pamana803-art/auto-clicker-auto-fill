@@ -103,7 +103,7 @@ const ActionTable = () => {
     getPaginationRowModel: getPaginationRowModel(),
     // Provide our updateData function to our table meta
     meta: {
-      updateData: (rowIndex:number, columnId:string, value:any) => {
+      updateData: (rowIndex: number, columnId: string, value: any) => {
         dispatch(updateAction({ index: rowIndex, name: columnId, value }));
       },
     },
@@ -171,7 +171,7 @@ const ActionTable = () => {
                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
               ))}
               <td align='center'>
-                {actions[row.id] && (
+                {actions[row.id].elementFinder && (
                   <Dropdown id='acton-dropdown-wrapper'>
                     <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' aria-label='Action more option'>
                       <ThreeDots width='24' height='24' />
