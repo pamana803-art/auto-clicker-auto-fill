@@ -47,14 +47,14 @@ export class Runtime {
   }
 
   static onMessage(configs: MessengerConfigObject) {
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       messageListener(request, configs).then(sendResponse).catch(sendResponse);
       return true;
     });
   }
 
   static onMessageExternal(configs: MessengerConfigObject) {
-    chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+    chrome.runtime.onMessageExternal.addListener((request, _, sendResponse) => {
       messageListener(request, configs).then(sendResponse).catch(sendResponse);
       return true;
     });

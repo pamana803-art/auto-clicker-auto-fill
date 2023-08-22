@@ -1,4 +1,3 @@
-import {useEffect} from "react";
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { GearFill, Moon, Sun } from '../util';
@@ -8,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { switchTheme, themeSelector } from '../store/theme.slice';
 import { appSelector } from '../store/app.slice';
 import { switchSettingsModal } from '../store/settings/settings.slice';
-import { updateI18n } from '../store/i18n.slice';
 
 function Header() {
   const theme = useAppSelector(themeSelector);
@@ -20,12 +18,7 @@ function Header() {
     window.dataLayer.push({ event: 'language', conversionValue: lng });
     await i18n.changeLanguage(lng);
     localStorage.setItem('language', lng)
-    dispatch(updateI18n(i18n.getDataByLanguage(lng)))
   };
-
-  useEffect(()=>{
-    dispatch(updateI18n(i18n.getDataByLanguage(i18n.language)))
-  },[dispatch,i18n])
 
   const toggleTheme = () => {
     dispatch(switchTheme());
@@ -50,7 +43,7 @@ function Header() {
           <Navbar className='p-0'>
             <Nav className='me-auto' />
             <Nav>
-              <Nav.Link onClick={toggleTheme} className='px-4 py-3'>
+              <Nav.Link onClick={toggleTheme} className='px-4 py-3' data-testid="switch-theme">
                 {theme !== 'light' ? <Sun width='24' height='24' title={t('header.theme.dark')} /> : <Moon width='24' height='24' title={t('header.theme.light')} />}
               </Nav.Link>
 

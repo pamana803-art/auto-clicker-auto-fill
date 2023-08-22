@@ -1,5 +1,3 @@
-import React from 'react'
-
 /* eslint-disable react/jsx-no-comment-textnodes */
 export function DataList() {
   const REGEX_RANGE_STRING = '{6,12}'

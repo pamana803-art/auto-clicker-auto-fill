@@ -1,4 +1,4 @@
-import { Batch, defaultBatch } from './batch-model';
+import { Batch } from './batch-model';
 import { Action, defaultAction } from './action-model';
 
 export enum LOAD_TYPES {

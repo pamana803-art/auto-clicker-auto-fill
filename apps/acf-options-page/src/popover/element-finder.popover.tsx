@@ -1,4 +1,3 @@
-import React from 'react'
 import { OverlayTrigger, Popover, Table } from 'react-bootstrap'
 import { APP_LINK } from '../constants'
 import { InfoCircle } from '../util'

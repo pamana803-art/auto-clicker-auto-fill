@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StorageService } from '@dhruv-techapps/core-service';
 import { Button, Form, Image } from 'react-bootstrap';
 import { Discord, LOCAL_STORAGE_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
