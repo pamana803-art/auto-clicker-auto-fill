@@ -8,7 +8,8 @@ import { HotkeyPopover } from '../popover';
 import { getFieldNameValue } from '../util/element';
 import { StartTimePopover } from '../popover/start-time.popover';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { configSettingsSelector, selectedConfigSelector, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
+import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
+import { useTimeout } from '../_hooks/message.hooks';
 
 const ConfigSettingsModal = () => {
   const { t } = useTranslation();
@@ -16,6 +17,10 @@ const ConfigSettingsModal = () => {
   const { visible, message, dev } = useAppSelector(configSettingsSelector);
   const config = useAppSelector(selectedConfigSelector);
   const dispatch = useAppDispatch();
+
+  useTimeout(() => {
+    dispatch(setConfigSettingsMessage());
+  }, [message]);
 
   const handleClose = () => {
     dispatch(switchConfigSettingsModal());
@@ -48,10 +53,6 @@ const ConfigSettingsModal = () => {
     if (update) {
       dispatch(updateConfigSettings(update));
     }
-
-    /*dataLayerInput(update, 'config-settings');
-      setMessage(t('modal.configSettings.saveMessage'));
-      setTimeout(setMessage, 1500);*/
   };
 
   const onShow = () => {

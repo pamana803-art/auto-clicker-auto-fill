@@ -8,8 +8,9 @@ import { Plus } from '../util/svg';
 import { selectedActionSelector } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { addActionStatementCondition, configSelector, resetActionStatement, selectedConfigSelector, updateActionStatementGoto, updateActionStatementThen } from '../store/config';
-import { actionStatementSelector, switchActionStatementModal } from '../store/config/action/statement';
+import { actionStatementSelector, setActionStatementMessage, switchActionStatementModal } from '../store/config/action/statement';
 import { updateForm } from '../util/element';
+import { useTimeout } from '../_hooks/message.hooks';
 
 const FORM_ID = 'actionCondition';
 
@@ -20,6 +21,10 @@ const ActionStatementModal = () => {
   const { actions } = useAppSelector(selectedConfigSelector);
   const { selectedActionIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
+
+  useTimeout(() => {
+    dispatch(setActionStatementMessage());
+  }, [message]);
 
   const onUpdateThen = (then: ACTION_RUNNING) => {
     dispatch(updateActionStatementThen(then));

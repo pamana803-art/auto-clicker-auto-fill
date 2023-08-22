@@ -1,16 +1,17 @@
 import { createRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import {  Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap';
+import { Badge, Card, Col, Dropdown, Form, Row } from 'react-bootstrap';
 import ConfigBody from './config-body';
 import { ThreeDots } from '../../../util';
 import { DropdownToggle } from '../../../components';
 import { getFieldNameValue } from '../../../util/element';
 import { download } from '../../../_helpers';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { configSelector, duplicateConfig, importConfig, removeConfig, selectedConfigSelector, switchConfigSettingsModal, updateConfig } from '../../../store/config';
+import { configSelector, duplicateConfig, importConfig, removeConfig, selectedConfigSelector, setConfigMessage, switchConfigSettingsModal, updateConfig } from '../../../store/config';
 import { useConfirmationModalContext } from '../../../_providers/confirm.provider';
 import { addToast } from '@apps/acf-options-page/src/store/toast.slice';
 import { Configuration } from '@dhruv-techapps/acf-common';
+import { useTimeout } from '@apps/acf-options-page/src/_hooks/message.hooks';
 
 function Config() {
   const { message, configs, error } = useAppSelector(configSelector);
@@ -21,8 +22,12 @@ function Config() {
   const { t } = useTranslation();
   const importFiled = createRef<HTMLInputElement>();
 
+  useTimeout(() => {
+    dispatch(setConfigMessage());
+  }, [message]);
+
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e,config);
+    const update = getFieldNameValue(e, config);
     if (update) {
       dispatch(updateConfig(update));
     }

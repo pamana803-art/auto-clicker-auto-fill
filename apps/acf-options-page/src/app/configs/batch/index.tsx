@@ -1,14 +1,19 @@
 import React from 'react';
-import { Accordion} from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import BatchBody from './batch-body';
-import { useAppSelector } from '../../../hooks';
-import { batchSelector } from '@apps/acf-options-page/src/store/config/batch';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { batchSelector, setBatchMessage } from '@apps/acf-options-page/src/store/config/batch';
+import { useTimeout } from '@apps/acf-options-page/src/_hooks/message.hooks';
 
 function Batch() {
   const { message, error } = useAppSelector(batchSelector);
   const { t } = useTranslation();
 
+  const dispatch = useAppDispatch();
+  useTimeout(() => {
+    dispatch(setBatchMessage());
+  }, [message]);
 
   return (
     <Accordion>
@@ -25,4 +30,4 @@ function Batch() {
     </Accordion>
   );
 }
-export default React.memo(Batch);
+export default Batch;

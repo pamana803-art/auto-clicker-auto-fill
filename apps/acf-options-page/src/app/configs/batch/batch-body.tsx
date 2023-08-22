@@ -28,9 +28,7 @@ function BatchBody() {
       <Card.Body>
         <Row>
           <Col md='12' sm='12'>
-            <Form>
-              <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch?.refresh} onChange={onUpdate} />
-            </Form>
+            <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch?.refresh} onChange={onUpdate} />
           </Col>
           {!batch?.refresh && (
             <>

@@ -7,10 +7,11 @@ import { AddonRecheck } from './addon/recheck';
 import { getFieldNameValue } from '../util/element';
 import { AddonValueExtractorFlags } from './addon/value-extractor-flags';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { actionAddonSelector, switchActionAddonModal } from '../store/config/action/addon/addon.slice';
+import { actionAddonSelector, setActionAddonMessage, switchActionAddonModal } from '../store/config/action/addon/addon.slice';
 import { updateActionAddon } from '../store/config';
 import { selectedActionAddonSelector } from '../store/config';
 import { ErrorAlert } from '../components';
+import { useTimeout } from '../_hooks/message.hooks';
 
 const FORM_ID = 'addon';
 
@@ -26,6 +27,10 @@ const AddonModal = () => {
       dispatch(updateActionAddon(update));
     }
   };
+
+  useTimeout(() => {
+    dispatch(setActionAddonMessage());
+  }, [message]);
 
   const handleClose = () => {
     dispatch(switchActionAddonModal());

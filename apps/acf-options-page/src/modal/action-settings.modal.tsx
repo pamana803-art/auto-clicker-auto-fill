@@ -6,15 +6,15 @@ import { useTranslation } from 'react-i18next';
 
 import { getFieldNameValue, updateForm } from '../util/element';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { configSelector, resetActionSetting, updateActionSettings } from '../store/config';
-import { actionSettingsSelector, switchActionSettingsModal } from '../store/config/action/settings';
+import { resetActionSetting, updateActionSettings } from '../store/config';
+import { actionSettingsSelector, setActionSettingsMessage, switchActionSettingsModal } from '../store/config/action/settings';
 import { selectedActionSelector } from '../store/config';
+import { useTimeout } from '../_hooks/message.hooks';
 
 const FORM_ID = 'action-settings';
 
 const ActionSettingsModal = () => {
   const { t } = useTranslation();
-  const {selectedActionIndex, configs, selectedConfigIndex} = useAppSelector(configSelector)
   const action = useAppSelector(selectedActionSelector);
   const {settings } = action
   const { message, visible } = useAppSelector(actionSettingsSelector);
@@ -27,23 +27,22 @@ const ActionSettingsModal = () => {
     }
   };
 
+  useTimeout(() => {
+    dispatch(setActionSettingsMessage());
+  }, [message]);
+
   const handleClose = () => {
     dispatch(switchActionSettingsModal());
   };
 
   useEffect(() => {
-    console.log(settings)
       updateForm(FORM_ID, settings);
   }, [settings]);
-
-  console.log(settings)
 
   const onReset = () => {
     dispatch(resetActionSetting());
     handleClose();
   };
-
-  console.log(selectedActionIndex,selectedConfigIndex, action ,configs[selectedConfigIndex])
 
   const onShow = () => {
 //:TODO

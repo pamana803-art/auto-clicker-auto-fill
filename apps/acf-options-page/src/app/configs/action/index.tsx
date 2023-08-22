@@ -8,12 +8,17 @@ import { Filter } from '../../../util';
 import { ActionSettingsModal, ActionStatementModal, AddonModal } from '../../../modal';
 import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
 import { addAction } from '@apps/acf-options-page/src/store/config';
-import { actionSelector, setColumnVisibility } from '@apps/acf-options-page/src/store/config/action/action.slice';
+import { actionSelector, setActionMessage, setColumnVisibility } from '@apps/acf-options-page/src/store/config/action/action.slice';
+import { useTimeout } from '@apps/acf-options-page/src/_hooks/message.hooks';
 
 function Action() {
   const { t } = useTranslation();
   const { message, error, columnVisibility } = useAppSelector(actionSelector);
   const dispatch = useAppDispatch();
+
+  useTimeout(() => {
+    dispatch(setActionMessage());
+  }, [message]);
 
   const onColumnChange = (e) => {
     const column = e.currentTarget.getAttribute('data-column');

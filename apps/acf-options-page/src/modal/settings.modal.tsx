@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getFieldNameValue } from '../util/element';

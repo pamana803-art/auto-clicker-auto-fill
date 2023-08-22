@@ -35,7 +35,7 @@ const slice = createSlice({
       state.error = undefined;
     },
     addConfig: (state) => {
-      state.configs.push({ ...defaultConfig });
+      state.configs.unshift({ ...defaultConfig });
       state.selectedConfigIndex = 0;
     },
     updateConfig: (state, action: PayloadAction<ConfigAction>) => {

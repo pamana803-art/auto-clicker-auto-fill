@@ -102,16 +102,12 @@ configsListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     const i18n = getI18n();
     const language: any = i18n.getDataByLanguage(i18n.language)?.web;
-
     const { success, failure, message } = getMessageFunc(action, language);
-    await StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: state.configuration.configs })
-      .then(async () => {
-        if (success) {
-          if (message) {
-            listenerApi.dispatch(success(message));
-            await listenerApi.delay(1500);
-            listenerApi.dispatch(success());
-          }
+
+    StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: state.configuration.configs })
+      .then(() => {
+        if (success && message) {
+          listenerApi.dispatch(success(message));
         }
       })
       .catch((error) => {
