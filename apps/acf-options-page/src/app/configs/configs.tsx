@@ -4,14 +4,13 @@ import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Config from './config';
 import { ThreeDots } from '../../util';
-import { Ads, DropdownToggle, Loading, Sponsors } from '../../components';
+import { Ads, DropdownToggle, Sponsors } from '../../components';
 import { ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal } from '../../modal';
 import { download } from '../../_helpers';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addConfig, configSelector, importAll, selectConfig, switchConfigRemoveModal, switchConfigReorderModal } from '../../store/config';
 import { addToast } from '../../store/toast.slice';
 import { configGetAllAPI } from '../../store/config/config.api';
-import { modeSelector } from '../../store/mode.slice';
 import Batch from './batch';
 import Action from './action';
 import { Configuration } from '@dhruv-techapps/acf-common';
@@ -20,8 +19,7 @@ function Configs() {
   const { t, i18n } = useTranslation();
 
   const [scroll, setScroll] = useState(false);
-  const mode = useAppSelector(modeSelector);
-  const { configs, loading, selectedConfigIndex } = useAppSelector(configSelector);
+  const { configs, selectedConfigIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
 
   const importFiled = createRef<HTMLInputElement>();
@@ -109,8 +107,7 @@ function Configs() {
                   <Form.Select onChange={onChange} value={selectedConfigIndex} id='configuration-list' className='ps-4 border-0' data-type='number'>
                     {configs.map((config, index) => (
                       <option key={index} value={index} className={!config.enable ? 'bg-secondary' : ''} style={style}>
-                        {/*style={{ '--bs-bg-opacity': `.25` }}*/}
-                        {config.name} {config.url || index}
+                        {`(${config.name || 'configuration - ' + index})`} {config.url}
                       </option>
                     ))}
                   </Form.Select>
@@ -149,7 +146,7 @@ function Configs() {
       <main>
         <Container>
           <Config />
-          {mode === 'pro' && <Batch />}
+          <Batch />
           <Ads />
           <Action />
         </Container>

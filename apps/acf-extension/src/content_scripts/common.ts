@@ -1,5 +1,5 @@
 import { DataStore, Logger } from '@dhruv-techapps/core-common';
-import { ActionSetting, LOCAL_STORAGE_KEY, RETRY_OPTIONS, Settings } from '@dhruv-techapps/acf-common';
+import {  ActionSettings, LOCAL_STORAGE_KEY, RETRY_OPTIONS, Settings } from '@dhruv-techapps/acf-common';
 import { ActionService } from '@dhruv-techapps/core-service';
 import { ConfigError } from './error/config-error';
 import { wait } from './util';
@@ -142,7 +142,7 @@ const Common = (() => {
     Logger.colorInfo('RetryOption', retryOption);
   };
 
-  const start = async (elementFinder: string, settings:ActionSetting) => {
+  const start = async (elementFinder: string, settings:ActionSettings) => {
     try {
       if (!elementFinder) {
         throw new ConfigError('elementFinder can not be empty!', 'Element Finder');

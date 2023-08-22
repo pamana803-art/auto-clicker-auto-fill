@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import appReducer from './store/app.slice';
-import modeReducer from './store/mode.slice';
 import themeReducer from './store/theme.slice';
 import toastReducer from './store/toast.slice';
 import { blogReducer } from './store/blog';
@@ -11,7 +10,6 @@ import { actionReducer } from './store/config/action/action.slice';
 export const store = configureStore({
   reducer: {
     app: appReducer,
-    mode: modeReducer,
     theme: themeReducer,
     settings: settingsReducer,
     toast: toastReducer,

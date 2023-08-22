@@ -12,37 +12,46 @@ function BatchBody() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
-  const onBlur = (e) => {
-    const update = getFieldNameValue(e,batch);
+  const onUpdate = (e) => {
+    const update = getFieldNameValue(e, batch);
     if (update) {
       dispatch(updateBatch(update));
     }
   };
 
   useEffect(() => {
-    updateForm(FORM_ID, batch)
-  }, [batch])
+    updateForm(FORM_ID, batch);
+  }, [batch]);
 
   return (
     <Form id={FORM_ID}>
       <Card.Body>
         <Row>
-          <Col md='6' sm='12'>
-            <Form.Group controlId='batch-repeat'>
-              <FormControl type='number' name='repeat' pattern='NUMBER' defaultValue={batch?.repeat} onBlur={onBlur} autoComplete='off' placeholder='0' list='repeat' />
-              <Form.Label>{t('batch.repeat')}</Form.Label>
-              <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
-            </Form.Group>
+          <Col md='12' sm='12'>
+            <Form>
+              <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch?.refresh} onChange={onUpdate} />
+            </Form>
           </Col>
-          <Col md='6' sm='12'>
-            <Form.Group controlId='batch-repeat-interval'>
-              <FormControl name='repeatInterval' pattern='INTERVAL' autoComplete='off' defaultValue={batch?.repeatInterval} onBlur={onBlur} placeholder='0' list='interval' />
-              <Form.Label>
-                {t('batch.repeatInterval')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
-              </Form.Label>
-              <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
-            </Form.Group>
-          </Col>
+          {!batch?.refresh && (
+            <>
+              <Col md='6' sm='12'>
+                <Form.Group controlId='batch-repeat'>
+                  <FormControl type='number' name='repeat' pattern='NUMBER' defaultValue={batch?.repeat} onBlur={onUpdate} autoComplete='off' placeholder='0' list='repeat' />
+                  <Form.Label>{t('batch.repeat')}</Form.Label>
+                  <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+              <Col md='6' sm='12'>
+                <Form.Group controlId='batch-repeat-interval'>
+                  <FormControl name='repeatInterval' pattern='INTERVAL' autoComplete='off' defaultValue={batch?.repeatInterval} onBlur={onUpdate} placeholder='0' list='interval' />
+                  <Form.Label>
+                    {t('batch.repeatInterval')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
+                  </Form.Label>
+                  <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+            </>
+          )}
         </Row>
       </Card.Body>
     </Form>

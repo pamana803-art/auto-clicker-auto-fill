@@ -7,6 +7,7 @@ import { batchActions } from './batch';
 import { actionAddonActions } from './action/addon';
 import { actionSettingsActions } from './action/settings';
 import { actionStatementActions } from './action/statement';
+import { getConfigName } from './config.slice.util';
 
 export type ConfigStore = {
   loading: boolean;
@@ -41,6 +42,9 @@ const slice = createSlice({
       const { name, value } = action.payload;
       const { configs, selectedConfigIndex } = state;
       configs[selectedConfigIndex][name] = value;
+      if(name === 'url' && !configs[selectedConfigIndex].name){
+        configs[selectedConfigIndex].name = getConfigName(value);
+      }
     },
     updateConfigSettings: (state, action: PayloadAction<ConfigAction>) => {
       const { name, value } = action.payload;
