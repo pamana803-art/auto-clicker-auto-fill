@@ -11,9 +11,7 @@ module.exports = async function () {
       headless: false, //"new",
       args: [
         `--disable-extensions-except=${pathToExtension}`, // Path to the extension directory
-        `--load-extension=${pathToExtension}`,
-        '--user-data-dir=%userprofile%\\AppData\\Local\\Chrome\\User Data',
-        '--profile-directory=Profile 2'
+        `--load-extension=${pathToExtension}`
       ],
     });
   globalThis.__BROWSER_GLOBAL__ = browser;
