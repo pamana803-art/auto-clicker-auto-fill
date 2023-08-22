@@ -71,7 +71,7 @@ const SettingsModal = () => {
                 <Form.Check type='switch' name='checkiFrames' onChange={onUpdate} id='settings-checkiFrames' checked={settings.checkiFrames} />
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} className='btn btn-link text-muted d-flex justify-content-between w-100'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid="settings-notification">
                   <div className='fw-bold'>
                     <BellFill width='24' height='24' className='me-2' />
                     {t('modal.settings.notification.title')}
@@ -80,7 +80,7 @@ const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} className='btn btn-link text-muted d-flex justify-content-between w-100'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid="settings-retry">
                   <div className='fw-bold'>
                     <ArrowRepeat width='24' height='24' className='me-2' />
                     {t('modal.settings.retry.title')}
@@ -89,7 +89,7 @@ const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} className='btn btn-link text-muted d-flex justify-content-between w-100'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid="settings-backup">
                   <div className='fw-bold'>
                     <CloudArrowUpFill width='24' height='24' className='me-2' /> Backup
                   </div>
