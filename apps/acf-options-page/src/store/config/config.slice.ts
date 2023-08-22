@@ -18,9 +18,10 @@ export type ConfigStore = {
   message?: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ConfigAction = { name: string; value: any };
 
-const initialState: ConfigStore = {loading: true, configs: [{ ...defaultConfig }], selectedConfigIndex: 0, selectedActionIndex: 0 };
+const initialState: ConfigStore = { loading: true, configs: [{ ...defaultConfig }], selectedConfigIndex: 0, selectedActionIndex: 0 };
 
 const slice = createSlice({
   name: 'configuration',
@@ -42,7 +43,7 @@ const slice = createSlice({
       const { name, value } = action.payload;
       const { configs, selectedConfigIndex } = state;
       configs[selectedConfigIndex][name] = value;
-      if(name === 'url' && !configs[selectedConfigIndex].name){
+      if (name === 'url' && !configs[selectedConfigIndex].name) {
         configs[selectedConfigIndex].name = getConfigName(value);
       }
     },
@@ -59,25 +60,24 @@ const slice = createSlice({
       }
       state.selectedConfigIndex = selectedConfigIndex === 0 ? selectedConfigIndex : selectedConfigIndex - 1;
     },
-    setConfigs:(state, action:PayloadAction<Array<Configuration>>) => {
+    setConfigs: (state, action: PayloadAction<Array<Configuration>>) => {
       state.configs = action.payload;
       state.selectedConfigIndex = 0;
     },
-    importAll: (state, action:PayloadAction<Array<Configuration>>) => {
+    importAll: (state, action: PayloadAction<Array<Configuration>>) => {
       state.configs = action.payload;
       state.selectedConfigIndex = 0;
     },
-    importConfig: (state, action:PayloadAction<Configuration>) => {
+    importConfig: (state, action: PayloadAction<Configuration>) => {
       state.configs.push(action.payload);
       state.selectedConfigIndex = state.configs.length - 1;
     },
     duplicateConfig: (state) => {
       const { configs, selectedConfigIndex } = state;
       const config = configs[selectedConfigIndex];
-      config.name = "(Duplicate) " + config.name
+      config.name = '(Duplicate) ' + config.name;
       state.configs.push(configs[selectedConfigIndex]);
       state.selectedConfigIndex = state.configs.length - 1;
-
     },
     selectConfig: (state, action: PayloadAction<number>) => {
       state.selectedConfigIndex = action.payload;

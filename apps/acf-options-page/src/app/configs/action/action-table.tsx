@@ -103,6 +103,7 @@ const ActionTable = () => {
     getPaginationRowModel: getPaginationRowModel(),
     // Provide our updateData function to our table meta
     meta: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       updateData: (rowIndex: number, columnId: string, value: any) => {
         dispatch(updateAction({ index: rowIndex, name: columnId, value }));
       },

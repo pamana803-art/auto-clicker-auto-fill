@@ -4,6 +4,7 @@ import { ACTION_RUNNING, ActionCondition, defaultActionStatement } from '@dhruv-
 
 export * from './action-statement.slice';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type StatementCondition = { name: string; value: any; index: number };
 
 export const actionStatementActions = {

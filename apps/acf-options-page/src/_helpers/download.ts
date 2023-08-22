@@ -1,4 +1,6 @@
-export const download = (name: string, data: any) => {
+import { Configuration } from '@dhruv-techapps/acf-common';
+
+export const download = (name: string, data: Configuration | Array<Configuration>) => {
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json;charset=utf-8;' });
   const href = URL.createObjectURL(blob);
 

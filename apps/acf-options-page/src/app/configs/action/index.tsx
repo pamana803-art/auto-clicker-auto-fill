@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import { Button, Card, Col, Dropdown, Row } from 'react-bootstrap';
-
 import { useTranslation } from 'react-i18next';
 import ActionTable from './action-table';
 import { DropdownToggle } from '../../../components';

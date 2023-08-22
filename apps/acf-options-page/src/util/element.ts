@@ -1,13 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NUMBER_FIELDS, IN_VALID_CLASS } from './validation';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getFieldNameValue = <T = any>(e,data): { name: string; value: T } | null => {
+const getFieldNameValue = <T = any>(e, data): { name: string; value: T } | null => {
   if (e.target.classList.contains(IN_VALID_CLASS)) {
     return null;
   }
-  
+
   let { value } = e.target;
   const { name, type } = e.target;
   if (type === 'checkbox') {
@@ -16,33 +14,11 @@ const getFieldNameValue = <T = any>(e,data): { name: string; value: T } | null =
     value = Number(value);
   }
 
-  if(data && data[name] === value){
-    return null
+  if (data && data[name] === value) {
+    return null;
   }
 
   return { name, value };
-};
-
-/**
- * 
- * @deprecated
- * @returns 
- */
-const getElementProps = (e) => {
-  if (e.target.classList.contains(IN_VALID_CLASS)) {
-    return null;
-  }
-  let { value } = e.target;
-  const { name, type } = e.target;
-  if (type === 'checkbox') {
-    value = e.target.checked;
-  } else if (typeof value === 'string' && NUMBER_FIELDS.indexOf(name) !== -1 && value.indexOf('e') === -1) {
-    value = Number(value);
-  }
-  if (/\./.test(name)) {
-    return name.split('.').reduceRight((o, i) => (typeof o !== 'string' ? { [i]: o } : { [i]: { [o]: value } }));
-  }
-  return { [name]: value };
 };
 
 const updateForm = (formId: string, data: any) => {
@@ -59,4 +35,4 @@ const updateForm = (formId: string, data: any) => {
   }
 };
 
-export { getElementProps, updateForm, getFieldNameValue };
+export { updateForm, getFieldNameValue };

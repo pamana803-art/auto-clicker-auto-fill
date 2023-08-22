@@ -15,21 +15,22 @@ const arrayMove = (arr, oldIndex, newIndex) => {
 };
 
 export const actionActions = {
-  reorderActions: (state:ConfigStore, action: PayloadAction<{ oldIndex: number; newIndex: number }>) => {
+  reorderActions: (state: ConfigStore, action: PayloadAction<{ oldIndex: number; newIndex: number }>) => {
     const { configs, selectedConfigIndex } = state;
     const { oldIndex, newIndex } = action.payload;
     configs[selectedConfigIndex].actions = [...arrayMove(configs[selectedConfigIndex].actions, oldIndex, newIndex)];
   },
-  addAction: (state:ConfigStore) => {
+  addAction: (state: ConfigStore) => {
     const { configs, selectedConfigIndex } = state;
     configs[selectedConfigIndex].actions.push({ ...defaultAction });
   },
-  updateAction: (state:ConfigStore, action: PayloadAction<{ index: number; name: string; value: any }>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateAction: (state: ConfigStore, action: PayloadAction<{ index: number; name: string; value: any }>) => {
     const { configs, selectedConfigIndex } = state;
     const { name, value, index } = action.payload;
     configs[selectedConfigIndex].actions[index][name] = value;
   },
-  removeAction: (state:ConfigStore, action: PayloadAction<number>) => {
+  removeAction: (state: ConfigStore, action: PayloadAction<number>) => {
     const { configs, selectedConfigIndex } = state;
     configs[selectedConfigIndex].actions.splice(action.payload, 1);
   },

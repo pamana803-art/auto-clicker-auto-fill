@@ -4,6 +4,7 @@ import { defaultAddon } from '@dhruv-techapps/acf-common';
 
 export * from './addon.slice';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AddonRequest = { name: string; value: any };
 
 export const actionAddonActions = {

@@ -1,4 +1,4 @@
-import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
+import { AnyAction, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import {
   addConfig,
   duplicateConfig,
@@ -40,6 +40,7 @@ configsToastListenerMiddleware.startListening({
   effect: async (action, listenerApi) => {
     const [type, method] = action.type.split('/');
     const i18n = getI18n();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const language: any = i18n.getDataByLanguage(i18n.language)?.web;
 
     const header = language.toast[type][method]?.header?.replace('{{name}}', type);
@@ -50,7 +51,8 @@ configsToastListenerMiddleware.startListening({
   },
 });
 
-const getMessageFunc = (action, language): { success: any; failure: any; message: string } => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getMessageFunc = (action: AnyAction, language): { success: any; failure: any; message: string } => {
   switch (action.type) {
     case updateConfigSettings.type:
       return { success: setConfigSettingsMessage, failure: setConfigSettingsError, message: language.message.configSettings };
@@ -101,6 +103,7 @@ configsListenerMiddleware.startListening({
     // Run whatever additional side-effect-y logic you want here
     const state = listenerApi.getState() as RootState;
     const i18n = getI18n();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const language: any = i18n.getDataByLanguage(i18n.language)?.web;
     const { success, failure, message } = getMessageFunc(action, language);
 

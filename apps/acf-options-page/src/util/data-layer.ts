@@ -8,9 +8,10 @@ type Event = {
 /**
  * @deprecated
  * @param input
- * @param section 
+ * @param section
  */
-export function dataLayerInput_(input:any, section:string) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function dataLayerInput_(input: any, section: string) {
   const key = Object.keys(input)[0];
   const event: Event = { event: 'input', section, conversionName: key, conversionValue: input[key] };
   window.dataLayer.push(event);
@@ -18,8 +19,8 @@ export function dataLayerInput_(input:any, section:string) {
 
 /**
  * @deprecated
- * @param conversionName 
- * @param conversionValue 
+ * @param conversionName
+ * @param conversionValue
  */
 export function dataLayerModel_(conversionName: string, conversionValue: string) {
   const event = { event: 'modal', conversionName, conversionValue };

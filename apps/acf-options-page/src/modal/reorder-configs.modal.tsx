@@ -19,7 +19,7 @@ const ReorderConfigsModal = () => {
     dispatch(switchConfigReorderModal());
   };
 
-  const onReorder = (event: any, previousIndex: any, nextIndex: any) => {
+  const onReorder = (_, previousIndex: number, nextIndex: number) => {
     dispatch(updateConfigReorder(reorder(configs, previousIndex, nextIndex)));
   };
 
