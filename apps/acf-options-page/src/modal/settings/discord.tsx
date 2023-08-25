@@ -52,14 +52,14 @@ function SettingDiscord({ onChange, label, checked }) {
               (remove)
             </Button>
           </Form.Label>
-          <Form.Check type='switch' id='discord' onChange={onChange} checked={checked} name='discord' />
+          <Form.Check type='switch' id='discord' onChange={onChange} checked={checked} name='discord' data-testid="discord-switch"/>
         </div>
       </div>
     );
   }
 
   return (
-    <Button variant='link' onClick={connect}>
+    <Button variant='link' onClick={connect} data-testid="discord-connect">
       Connect with discord
     </Button>
   );

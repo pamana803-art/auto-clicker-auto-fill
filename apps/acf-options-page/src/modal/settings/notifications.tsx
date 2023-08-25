@@ -21,7 +21,7 @@ function SettingNotifications() {
   return (
     <>
       <h5>{t('modal.settings.notification.title')}</h5>
-      <ol className='list-group'>
+      <ol className='list-group' data-testid="settings-notifications">
         <li className='list-group-item d-flex justify-content-between align-items-center'>
           <Form.Label className='ms-2 mt-2 me-auto' htmlFor='notifications.onError'>
             <div className='fw-bold'>{t('modal.settings.notification.error')}</div>

@@ -1,44 +1,93 @@
-/// <reference types="chrome"/>
-
-import { Settings } from "@dhruv-techapps/acf-common";
+import { AUTO_BACKUP, Settings, defaultSettings } from '@dhruv-techapps/acf-common';
+import { TestBrowser, TestWorker } from './util';
 
 describe('Settings', () => {
-  let page;
   let worker;
+  let browser;
 
   beforeAll(async () => {
-    const browser = globalThis.__BROWSER_GLOBAL__.browser
-    worker = globalThis.__BROWSER_GLOBAL__.worker;
-    const pages = await browser.pages();
-    page = pages.find(page => page.url() === "http://localhost:3000/")
+    browser = new TestBrowser();
+    worker = new TestWorker();
+    await browser.setPage();
   });
 
   describe('Settings', () => {
     test('checkiFrames', async () => {
-      const element = await page.waitForSelector('[data-testid="switch-settings"]');
-      await element.click(); // Just an example.
-      const checkiFrames = await page.waitForSelector('#settings-checkiFrames');
-      await checkiFrames.click();
-      const settings:Settings= await worker.evaluate(async () => {
-        const result = await chrome.storage.local.get('settings');
-        return result.settings;
-      });
+      await browser.click('[data-testid="switch-settings"]');
+      await browser.click('#settings-checkiFrames');
+      const settings: Settings = await worker.getSettings();
       expect(settings.checkiFrames).toBeTruthy();
-      expect(settings.retry).toEqual(5);
-      expect(settings.retryInterval).toEqual(1);
-      expect(settings.retryOption).toEqual('stop');
-    },5000);
-    test('notification', async () => {
-      const notification = await page.waitForSelector('[data-testid="settings-notification"]');
-      await notification.click();
-      const onError = await page.waitForSelector('[name="onError"]');
-      await onError.click();
-      const settings:Settings = await worker.evaluate(async () => {
-        const result = await chrome.storage.local.get('settings');
-        return result.settings;
+    });
+    describe('notification', () => {
+      const notificationCheckbox = ['onError', 'onAction', 'onBatch', 'onConfig', 'sound'];
+      test('toggle', async () => {
+        await browser.click('[data-testid="settings-notification"]');
+        for (const element of notificationCheckbox) {
+          const checked = await browser.getPage().$eval(`[name="${element}"]`, (el) => el.checked);
+          expect(checked).toBeFalsy();
+        }
       });
-      expect(settings.notifications).toBeDefined()
-      expect(settings.notifications.onError).toBeTruthy();
-    },5000);
+      test.each(notificationCheckbox)('%s', async (notification) => {
+        await browser.click(`[name="${notification}"]`);
+        const settings: Settings = await worker.getSettings();
+        expect(settings.notifications).toBeDefined();
+        expect(settings.notifications[notification]).toBeTruthy();
+      });
+      test('back', async () => {
+        for (const element of notificationCheckbox) {
+          const checked = await browser.getPage().$eval(`[name="${element}"]`, (el) => el.checked);
+          expect(checked).toBeTruthy();
+        }
+        await browser.click('[data-testid="settings-back-button"]');
+      });
+    });
+    describe('retry', () => {
+      test('toggle', async () => {
+        await browser.click('[data-testid="settings-retry"]');
+        const settings: Settings = await worker.getSettings();
+        expect(settings.retry).toEqual(defaultSettings.retry);
+        expect(settings.retryInterval).toEqual(defaultSettings.retryInterval);
+        expect(settings.retryOption).toEqual(defaultSettings.retryOption);
+      });
+      test('retry', async () => {
+        await browser.type('input[id=retry]', '-2');
+        const settings: Settings = await worker.getSettings();
+        expect(settings.retry).toEqual(-2);
+      });
+      test('retryInterval', async () => {
+        await browser.type('input[id=retryInterval]', '1e5');
+        const settings: Settings = await worker.getSettings();
+        expect(settings.retryInterval).toEqual('1e5');
+      });
+      describe('retryOption', () => {
+        const retryOptions = ['stop', 'skip', 'reload'];
+        test.each(retryOptions)('%s', async (retryOption) => {
+          await browser.click(`input[name=retryOption][value=${retryOption}]`);
+          const settings: Settings = await worker.getSettings();
+          expect(settings.retryOption).toEqual(retryOption);
+        });
+        test('reload', async () => {
+          await browser.click('input[name=retryOption][value=reload]');
+          const settings: Settings = await worker.getSettings();
+          expect(settings.retryOption).toEqual('reload');
+        });
+      });
+      test('back', async () => {
+        await browser.click('[data-testid="settings-back-button"]');
+      });
+    });
+    describe('backup', () => {
+      test('toggle', async () => {
+        await browser.click('[data-testid="settings-backup"]');
+      });
+      test.each(Object.values(AUTO_BACKUP))('%s', async (autoBackup) => {
+        await browser.click(`a[href="#backup-${autoBackup}"]`);
+        const settings: Settings = await worker.getSettings();
+        expect(settings.backup.autoBackup).toEqual(autoBackup);
+      });
+      test('toggle', async () => {
+        await browser.click('[data-testid="settings-back-button"]');
+      });
+    });
   });
 });

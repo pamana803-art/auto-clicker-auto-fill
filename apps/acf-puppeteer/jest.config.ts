@@ -4,13 +4,10 @@ export default {
   preset: '../../jest.preset.js',
   coverageDirectory: '../../coverage/apps/acf-puppeteer',
   transform: {
-    '^.+\\.[tj]s$': [
-      'ts-jest',
-      {
-        tsconfig: '<rootDir>/tsconfig.spec.json',
-      },
-    ],
+    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
+    '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nrwl/react/babel'] }],
   },
+  // transformIgnorePatterns: ['/node_modules/(?!@dhruv-techapps/.*)'],
   moduleFileExtensions: ['ts', 'js', 'html'],
   setupFilesAfterEnv: ['./jest.setup.js'],
   globalSetup: './setup.js',

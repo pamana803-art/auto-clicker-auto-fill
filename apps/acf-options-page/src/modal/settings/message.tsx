@@ -20,7 +20,7 @@ const SettingMessage = () => {
   }
 
   return (
-    <Modal.Footer>
+    <Modal.Footer data-testid="settings-message">
       <span className='text-success'>{message}</span>
     </Modal.Footer>
   );

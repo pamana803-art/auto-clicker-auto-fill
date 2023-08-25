@@ -52,7 +52,7 @@ const SettingsModal = () => {
         <Modal.Header closeButton>
           <Modal.Title as='h6'>
             {page && (
-              <Button onClick={() => setPage(undefined)} className='btn btn-link me-2 p-0 d-inline-flex align-items-center'>
+              <Button onClick={() => setPage(undefined)} data-testid="settings-back-button" className='btn btn-link me-2 p-0 d-inline-flex align-items-center'>
                 <ChevronLeft width='24' height='24' />
               </Button>
             )}
