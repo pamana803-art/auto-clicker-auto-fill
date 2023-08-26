@@ -7,7 +7,7 @@ type ActionAddonStore = {
   message?: string;
 };
 
-const initialState: ActionAddonStore = { visible: false};
+const initialState: ActionAddonStore = { visible: false };
 
 const slice = createSlice({
   name: 'actionAddon',
@@ -27,7 +27,7 @@ const slice = createSlice({
   },
 });
 
-export const { switchActionAddonModal ,setActionAddonMessage,setActionAddonError} = slice.actions;
+export const { switchActionAddonModal, setActionAddonMessage, setActionAddonError } = slice.actions;
 
 export const actionAddonSelector = (state: RootState) => state.actionAddon;
 export const actionAddonReducer = slice.reducer;

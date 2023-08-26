@@ -55,7 +55,7 @@ const BatchProcessor = (() => {
     }
   };
 
-  const start = async (_batch:Batch, _actions:Array<Action>, _sheets) => {
+  const start = async (_batch: Batch, _actions: Array<Action>, _sheets) => {
     try {
       console.group(`${LOGGER_LETTER} #0`);
       batch = _batch;

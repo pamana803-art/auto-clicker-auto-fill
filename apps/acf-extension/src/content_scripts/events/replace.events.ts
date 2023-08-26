@@ -13,7 +13,7 @@ export const ReplaceEvents = (() => {
       element.value = element.value.replace(new RegExp(target, 'g'), string);
       element.dispatchEvent(CommonEvents.getFillEvent());
     } else {
-      console.error(UNKNOWN_ELEMENT_TYPE_ERROR, element)
+      console.error(UNKNOWN_ELEMENT_TYPE_ERROR, element);
     }
     CHANGE_EVENT.forEach((event) => {
       element.dispatchEvent(new MouseEvent(event, CommonEvents.getMouseEventProperties()));
@@ -21,7 +21,7 @@ export const ReplaceEvents = (() => {
     element.focus();
   };
 
-  const start = (elements:Array<ElementType>, value:string) => {
+  const start = (elements: Array<ElementType>, value: string) => {
     value = value.replace(/^replace::/i, '');
     Logger.colorDebug(`ReplaceEvents`, value);
     CommonEvents.loopElements(elements, value, checkNode);

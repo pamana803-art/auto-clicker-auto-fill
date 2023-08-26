@@ -7,7 +7,7 @@ import { Configuration } from '@dhruv-techapps/acf-common';
 export const Popup = (() => {
   let popupContainer;
 
-  const setHover = (xpath, operation: "add" | "remove") => {
+  const setHover = (xpath, operation: 'add' | 'remove') => {
     xpath = WizardElementUtil.clearXpath(xpath);
     const nodes = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
     if (nodes.snapshotLength !== 0) {
@@ -54,7 +54,7 @@ export const Popup = (() => {
     });
   };
 
-  const setup = async ({ name, actions }:Configuration) => {
+  const setup = async ({ name, actions }: Configuration) => {
     popupContainer = document.createElement('auto-clicker-autofill-popup');
     await setSettingsUrl();
     popupContainer.setAttribute('name', name);

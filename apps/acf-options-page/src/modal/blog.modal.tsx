@@ -11,7 +11,7 @@ const BlogModal = () => {
   const handleClose = () => dispatch(hideBlog());
   const onShow = () => {
     //:TODO
-  }
+  };
 
   return (
     <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow}>

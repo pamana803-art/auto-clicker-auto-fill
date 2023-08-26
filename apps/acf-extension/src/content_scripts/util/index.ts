@@ -1,21 +1,21 @@
-import { Logger } from '@dhruv-techapps/core-common'
+import { Logger } from '@dhruv-techapps/core-common';
 
-export const sleep = async msec =>
-  new Promise(resolve => {
-    setTimeout(resolve, msec)
-  })
+export const sleep = async (msec) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, msec);
+  });
 
 export const wait = async (time, type = '', ...args) => {
   if (time) {
-    let waitTime = Number(time) * 1000
+    let waitTime = Number(time) * 1000;
     if (/^\d+(\.\d+)?e\d+(\.\d+)?$/.test(time.toString())) {
       const [start, end] = time
         .toString()
         .split('e')
-        .map(n => Number(n))
-      waitTime = (Math.floor(Math.random() * (end - start)) + start) * 1000
+        .map((n) => Number(n));
+      waitTime = (Math.floor(Math.random() * (end - start)) + start) * 1000;
     }
-    Logger.colorDebug(type, ...args, `${waitTime / 1000} sec`)
-    await sleep(waitTime)
+    Logger.colorDebug(type, ...args, `${waitTime / 1000} sec`);
+    await sleep(waitTime);
   }
-}
+};

@@ -1,33 +1,33 @@
 import { ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonGroup, Form } from 'react-bootstrap';
-import { ACTION_CONDITION_OPR, ACTION_STATUS,  ActionCondition, defaultActionCondition } from '@dhruv-techapps/acf-common';
+import { ACTION_CONDITION_OPR, ACTION_STATUS, ActionCondition, defaultActionCondition } from '@dhruv-techapps/acf-common';
 import { X } from '../../util';
-import {  getFieldNameValue } from '../../util/element';
+import { getFieldNameValue } from '../../util/element';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { removeActionStatementCondition, selectedConfigSelector, updateActionStatementCondition, } from '../../store/config';
+import { removeActionStatementCondition, selectedConfigSelector, updateActionStatementCondition } from '../../store/config';
 
 type Props = {
   condition: ActionCondition;
   conditionIndex: number;
 };
 
-function ActionStatementCondition({ condition = {...defaultActionCondition}, conditionIndex }: Props) {
-  const { actionIndex, status, operator } = condition
+function ActionStatementCondition({ condition = { ...defaultActionCondition }, conditionIndex }: Props) {
+  const { actionIndex, status, operator } = condition;
   const { actions } = useAppSelector(selectedConfigSelector);
 
   const dispatch = useAppDispatch();
 
-  const changeOpr = (_operator: ACTION_CONDITION_OPR) => {  
-    dispatch(updateActionStatementCondition({ name:'operator', value:_operator, index: conditionIndex }));
+  const changeOpr = (_operator: ACTION_CONDITION_OPR) => {
+    dispatch(updateActionStatementCondition({ name: 'operator', value: _operator, index: conditionIndex }));
   };
 
   const removeCondition = () => {
-    dispatch(removeActionStatementCondition(conditionIndex))
+    dispatch(removeActionStatementCondition(conditionIndex));
   };
 
   const onUpdate = (e: ChangeEvent<HTMLSelectElement>) => {
-    const update = getFieldNameValue(e,actions[conditionIndex]);
+    const update = getFieldNameValue(e, actions[conditionIndex]);
     if (update) {
       dispatch(updateActionStatementCondition({ ...update, index: conditionIndex }));
     }

@@ -1,2 +1,2 @@
-export * from './settings.middleware'
-export * from './settings.slice'
+export * from './settings.middleware';
+export * from './settings.slice';

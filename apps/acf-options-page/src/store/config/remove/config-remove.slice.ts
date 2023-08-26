@@ -12,7 +12,7 @@ type ConfigRemoveStore = {
   configs?: Array<ConfigurationRemoveType>;
 };
 
-const initialState: ConfigRemoveStore = { visible: false};
+const initialState: ConfigRemoveStore = { visible: false };
 
 const slice = createSlice({
   name: 'configRemove',
@@ -25,7 +25,7 @@ const slice = createSlice({
       state.visible = !state.visible;
     },
     switchConfigRemoveSelection: (state, action: PayloadAction<number>) => {
-      if(state.configs){
+      if (state.configs) {
         state.configs[action.payload].checked = !state.configs[action.payload].checked;
       }
     },
@@ -48,7 +48,7 @@ const slice = createSlice({
   },
 });
 
-export const { switchConfigRemoveSelection, switchConfigRemoveModal, updateRemoveConfiguration,setConfigRemoveMessage } = slice.actions;
+export const { switchConfigRemoveSelection, switchConfigRemoveModal, updateRemoveConfiguration, setConfigRemoveMessage } = slice.actions;
 
 export const configRemoveSelector = (state: RootState) => state.configRemove;
 export const configRemoveReducer = slice.reducer;

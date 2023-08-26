@@ -1,6 +1,6 @@
 import { Logger } from '@dhruv-techapps/core-common';
 
-export default function registerNotifications(optionsPageUrl:string) {
+export default function registerNotifications(optionsPageUrl: string) {
   chrome.notifications.onClicked.addListener((notificationId) => {
     if (notificationId === 'error') {
       chrome.tabs.create({ url: optionsPageUrl });
@@ -13,7 +13,7 @@ export default function registerNotifications(optionsPageUrl:string) {
 }
 
 export class NotificationHandler {
-  static async notify(id:string, title:string, message:string, requireInteraction = true) {
+  static async notify(id: string, title: string, message: string, requireInteraction = true) {
     const { action } = await chrome.runtime.getManifest();
     const defaultOptions: chrome.notifications.NotificationOptions<true> = {
       type: 'basic',

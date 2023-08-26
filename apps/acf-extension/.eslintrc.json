@@ -2,7 +2,7 @@
   "extends": ["../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
   "env": {
-     "webextensions": true
+    "webextensions": true
   },
   "overrides": [
     {

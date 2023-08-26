@@ -96,7 +96,7 @@ const AddonProcessor = (() => {
     }
   };
 
-  const start = async ({ elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }:Addon, settings, batchRepeat) => {
+  const start = async ({ elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }: Addon, settings, batchRepeat) => {
     try {
       Logger.colorDebug('Start', { elementFinder, value, condition, valueExtractor, valueExtractorFlags });
       let nodeValue;
@@ -126,7 +126,7 @@ const AddonProcessor = (() => {
   };
 
   //TODO
-  const check = async (actionSettings, batchRepeat, { elementFinder, value, condition, ...props }:Addon) => {
+  const check = async (actionSettings, batchRepeat, { elementFinder, value, condition, ...props }: Addon) => {
     if (elementFinder && value && condition) {
       console.groupCollapsed(LOGGER_LETTER);
       return await start({ elementFinder, value, condition, ...props }, actionSettings, batchRepeat);

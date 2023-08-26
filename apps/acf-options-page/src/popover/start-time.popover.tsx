@@ -1,6 +1,6 @@
-import { OverlayTrigger, Popover } from 'react-bootstrap'
-import { Trans } from 'react-i18next'
-import { InfoCircle } from '../util'
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Trans } from 'react-i18next';
+import { InfoCircle } from '../util';
 
 export function StartTimePopover() {
   return (
@@ -23,8 +23,9 @@ export function StartTimePopover() {
             </p>
           </Popover.Body>
         </Popover>
-      }>
+      }
+    >
       <InfoCircle className='ms-2 text-muted' />
     </OverlayTrigger>
-  )
+  );
 }

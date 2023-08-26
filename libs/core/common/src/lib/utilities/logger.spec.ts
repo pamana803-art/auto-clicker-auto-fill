@@ -1,5 +1,4 @@
-import { Logger } from "./logger";
-
+import { Logger } from './logger';
 
 describe('Logger', () => {
   describe('color', () => {

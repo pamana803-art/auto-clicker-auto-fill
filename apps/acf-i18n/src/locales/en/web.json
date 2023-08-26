@@ -196,7 +196,7 @@
         "stop": "Stop",
         "skip": "Skip Action",
         "refresh": "Refresh"
-      }      
+      }
     }
   },
   "configuration": {
@@ -217,13 +217,13 @@
     "initWait": "Init Wait",
     "startTime": "Start Time"
   },
-  "message":{
+  "message": {
     "config": "Configuration saved successfully!",
     "configSettings": "Configuration saved successfully!",
-    "batch":"Batch saved successfully!",
-    "action":"Action saved successfully!",
-    "reorderActions":"Action reordered successfully!",
-    "removeAction":"Action removed successfully!",
+    "batch": "Batch saved successfully!",
+    "action": "Action saved successfully!",
+    "reorderActions": "Action reordered successfully!",
+    "removeAction": "Action removed successfully!",
     "actionAddon": "Addon saved successfully!",
     "actionStatement": "Action Statement saved successfully!",
     "actionSettings": "Action Settings saved successfully!"

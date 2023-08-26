@@ -5,7 +5,7 @@ import CommonEvents, { ElementType, UNKNOWN_ELEMENT_TYPE_ERROR } from './common.
 const CHANGE_EVENT = ['input', 'change'];
 
 export const PrependEvents = (() => {
-  const checkNode = (element:ElementType, value:string) => {
+  const checkNode = (element: ElementType, value: string) => {
     if (element instanceof HTMLDivElement) {
       element.textContent = value + element.textContent;
     } else if (element.nodeName === 'SELECT' || element.nodeName === 'TEXTAREA' || (element.nodeName === 'INPUT' && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
@@ -20,7 +20,7 @@ export const PrependEvents = (() => {
     element.focus();
   };
 
-  const start = (elements:Array<ElementType>, value:string) => {
+  const start = (elements: Array<ElementType>, value: string) => {
     value = value.replace(/^prepend::/i, '');
     Logger.colorDebug(`PrependEvents`, { value });
     CommonEvents.loopElements(elements, value, checkNode);

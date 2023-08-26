@@ -28,4 +28,4 @@ export const { hideBlog } = slice.actions;
 
 export const blogSelector = (state: RootState) => state.blog;
 
-export const blogReducer =  slice.reducer;
+export const blogReducer = slice.reducer;

@@ -1,5 +1,5 @@
-import { Col, Container, Image, Row } from 'react-bootstrap'
-import { SPONSORS } from '../constants'
+import { Col, Container, Image, Row } from 'react-bootstrap';
+import { SPONSORS } from '../constants';
 
 export function Sponsors() {
   return (
@@ -8,7 +8,7 @@ export function Sponsors() {
         <Col className='px-4'>
           <b className='text-muted mb-2 d-block'>Sponsored By</b>
           <div className='d-flex flex-column flex-sm-row'>
-            {SPONSORS.map(sponsor => (
+            {SPONSORS.map((sponsor) => (
               <a href={sponsor.link} key={sponsor.id} target='_blank' rel='noreferrer' className='me-3 mb-3'>
                 {sponsor.title ? (
                   <>
@@ -24,5 +24,5 @@ export function Sponsors() {
         </Col>
       </Row>
     </Container>
-  )
+  );
 }

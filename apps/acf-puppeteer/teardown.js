@@ -8,5 +8,5 @@ module.exports = async function () {
   await globalThis.__BROWSER_GLOBAL__.close();
 
   // clean-up the wsEndpoint file
-  await fs.rm(DIR, {recursive: true, force: true});
+  await fs.rm(DIR, { recursive: true, force: true });
 };

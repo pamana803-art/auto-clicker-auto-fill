@@ -1,6 +1,6 @@
-import { OverlayTrigger, Popover, Table } from 'react-bootstrap'
-import { APP_LINK } from '../constants'
-import { InfoCircle } from '../util'
+import { OverlayTrigger, Popover, Table } from 'react-bootstrap';
+import { APP_LINK } from '../constants';
+import { InfoCircle } from '../util';
 
 export function ElementFinderPopover() {
   return (
@@ -116,8 +116,9 @@ export function ElementFinderPopover() {
             </Table>
           </Popover.Body>
         </Popover>
-      }>
+      }
+    >
       <InfoCircle className='ms-2 text-muted' />
     </OverlayTrigger>
-  )
+  );
 }

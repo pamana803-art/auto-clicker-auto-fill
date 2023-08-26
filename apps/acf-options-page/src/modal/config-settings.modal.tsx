@@ -49,15 +49,15 @@ const ConfigSettingsModal = () => {
   };
 
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e,config);
+    const update = getFieldNameValue(e, config);
     if (update) {
       dispatch(updateConfigSettings(update));
     }
   };
 
   const onShow = () => {
-//:TODO
-  }
+    //:TODO
+  };
 
   return (
     <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>

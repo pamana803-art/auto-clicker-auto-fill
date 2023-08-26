@@ -12,12 +12,12 @@ function Header() {
   const theme = useAppSelector(themeSelector);
   const { error } = useAppSelector(appSelector);
   const dispatch = useAppDispatch();
-    const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const changeLanguage = async (lng) => {
     window.dataLayer.push({ event: 'language', conversionValue: lng });
     await i18n.changeLanguage(lng);
-    localStorage.setItem('language', lng)
+    localStorage.setItem('language', lng);
   };
 
   const toggleTheme = () => {
@@ -26,7 +26,7 @@ function Header() {
 
   let imageURL = 'https://getautoclicker.com/favicons/favicon32.png';
   let appName = APP_NAME;
-  
+
   if (/(DEV|BETA)/.test(process.env.NX_VARIANT || '')) {
     imageURL = `https://getautoclicker.com/favicons/${process.env.NX_VARIANT}/icon32.png`;
     appName += ` [${process.env.NX_VARIANT}]`;
@@ -43,16 +43,16 @@ function Header() {
           <Navbar className='p-0'>
             <Nav className='me-auto' />
             <Nav>
-              <Nav.Link onClick={toggleTheme} className='px-4 py-3' data-testid="switch-theme">
+              <Nav.Link onClick={toggleTheme} className='px-4 py-3' data-testid='switch-theme'>
                 {theme !== 'light' ? <Sun width='24' height='24' title={t('header.theme.dark')} /> : <Moon width='24' height='24' title={t('header.theme.light')} />}
               </Nav.Link>
 
               {!error && (
                 <>
-                  <Nav.Link onClick={() => dispatch(switchSettingsModal())} className='px-4 py-3' data-testid="switch-settings">
+                  <Nav.Link onClick={() => dispatch(switchSettingsModal())} className='px-4 py-3' data-testid='switch-settings'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
-                  <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder' data-testid="switch-language">
+                  <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder' data-testid='switch-language'>
                     {APP_LANGUAGES.map((language) => (
                       <NavDropdown.Item key={language} title={language} onClick={() => changeLanguage(language)} className='text-secondary'>
                         {t(`language.${language}`)}
@@ -61,7 +61,7 @@ function Header() {
                   </NavDropdown>
                 </>
               )}
-              <SettingsModal  />
+              <SettingsModal />
             </Nav>
           </Navbar>
         </Container>

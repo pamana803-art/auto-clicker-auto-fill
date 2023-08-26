@@ -3,7 +3,7 @@
 @import 'carbon-ads';
 @import 'sponsors';
 
-.btn{
+.btn {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -28,6 +28,6 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-button.btn[data-toggle="dropdown"]{
+button.btn[data-toggle='dropdown'] {
   color: var(--bs-body-color);
 }

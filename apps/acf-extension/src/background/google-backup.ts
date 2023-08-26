@@ -14,8 +14,7 @@ const MINUTES_IN_DAY = 1440;
 const NOTIFICATIONS_TITLE = 'Google Drive Backup';
 const NOTIFICATIONS_ID = 'sheets';
 
-export default class GoogleBackup  {
-
+export default class GoogleBackup {
   async setAlarm(autoBackup) {
     const alarmInfo: chrome.alarms.AlarmCreateInfo = { when: Date.now() + 500 };
     await chrome.alarms.clear(BACKUP_ALARM);
@@ -67,7 +66,7 @@ export default class GoogleBackup  {
         if (now) {
           NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, `Configurations are backup on Google Drive at ${settings.backup.lastBackup}`);
         }
-        return lastBackup
+        return lastBackup;
       }
     } catch ({ message }) {
       const retry = await this.checkInvalidCredentials(message);

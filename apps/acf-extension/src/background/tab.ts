@@ -1,4 +1,4 @@
-let optionsTab:chrome.tabs.Tab;
+let optionsTab: chrome.tabs.Tab;
 
 chrome.tabs.onRemoved.addListener((tabId) => {
   if (optionsTab && optionsTab.id === tabId) {

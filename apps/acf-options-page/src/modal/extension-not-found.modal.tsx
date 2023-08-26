@@ -30,7 +30,7 @@ const ExtensionNotFoundModal = () => {
 
   const onShow = () => {
     //:TODO
-  }
+  };
 
   return (
     <Modal show={extensionNotFound} size='lg' centered backdrop='static' keyboard={false} onShow={onShow} onHide={onHide}>

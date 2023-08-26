@@ -7,7 +7,7 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "allowJs":true,
+    "allowJs": true,
     "noFallthroughCasesInSwitch": true
   },
   "files": [],

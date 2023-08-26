@@ -1,7 +1,6 @@
 import { Addon } from './addon-model';
 import { RETRY_OPTIONS } from './setting-model';
 
-
 // Action Condition
 export enum ACTION_STATUS {
   '~~ Select STATUS ~~' = '',
@@ -32,7 +31,6 @@ export const defaultActionCondition = {
   operator: ACTION_CONDITION_OPR.AND,
 };
 
-
 // Action Statement
 
 export type ActionStatement = {
@@ -54,7 +52,7 @@ export type ActionSettings = {
   retryOption?: RETRY_OPTIONS;
 };
 
-export const defaultActionSettings = {}
+export const defaultActionSettings = {};
 
 // Action
 export enum ELEMENT_TYPE {

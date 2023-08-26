@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 export function DataList() {
-  const REGEX_RANGE_STRING = '{6,12}'
-  const REGEX_STRING = '{6}'
+  const REGEX_RANGE_STRING = '{6,12}';
+  const REGEX_STRING = '{6}';
 
   return (
     <>
@@ -141,5 +141,5 @@ export function DataList() {
         <option value='\d{2}-\d{2}-\d{4}'>extract in following format 28-02-2021</option>
       </datalist>
     </>
-  )
+  );
 }

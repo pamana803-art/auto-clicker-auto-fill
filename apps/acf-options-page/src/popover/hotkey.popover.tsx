@@ -1,9 +1,9 @@
-import { OverlayTrigger, Popover } from 'react-bootstrap'
-import { Trans, useTranslation } from 'react-i18next'
-import { InfoCircle } from '../util'
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Trans, useTranslation } from 'react-i18next';
+import { InfoCircle } from '../util';
 
 export function HotkeyPopover() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <OverlayTrigger
       trigger='click'
@@ -28,8 +28,9 @@ export function HotkeyPopover() {
             </span>
           </Popover.Body>
         </Popover>
-      }>
+      }
+    >
       <InfoCircle className='ms-2 text-muted' />
     </OverlayTrigger>
-  )
+  );
 }

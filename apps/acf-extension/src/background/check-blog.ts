@@ -17,11 +17,11 @@ export class Blog {
       });
   }
 
-  static show(optionsPageUrl:string, version:string) {
+  static show(optionsPageUrl: string, version: string) {
     TabsMessenger.optionsTab({ url: `${optionsPageUrl}?version=${version}` });
   }
 
-  static update(version:string) {
+  static update(version: string) {
     chrome.storage.local.set({ [LOCAL_STORAGE_VERSION]: version });
   }
 }

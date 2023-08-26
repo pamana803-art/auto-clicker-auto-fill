@@ -23,7 +23,7 @@ const SettingsModal = () => {
   const { t } = useTranslation();
   const [page, setPage] = useState<SETTINGS_PAGE>();
   const { error, settings, visible } = useAppSelector(settingsSelector);
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const handleClose = () => {
     dispatch(switchSettingsModal());
@@ -52,7 +52,7 @@ const SettingsModal = () => {
         <Modal.Header closeButton>
           <Modal.Title as='h6'>
             {page && (
-              <Button onClick={() => setPage(undefined)} data-testid="settings-back-button" className='btn btn-link me-2 p-0 d-inline-flex align-items-center'>
+              <Button onClick={() => setPage(undefined)} data-testid='settings-back-button' className='btn btn-link me-2 p-0 d-inline-flex align-items-center'>
                 <ChevronLeft width='24' height='24' />
               </Button>
             )}
@@ -71,7 +71,7 @@ const SettingsModal = () => {
                 <Form.Check type='switch' name='checkiFrames' onChange={onUpdate} id='settings-checkiFrames' checked={settings.checkiFrames} />
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid="settings-notification">
+                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid='settings-notification'>
                   <div className='fw-bold'>
                     <BellFill width='24' height='24' className='me-2' />
                     {t('modal.settings.notification.title')}
@@ -80,7 +80,7 @@ const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid="settings-retry">
+                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid='settings-retry'>
                   <div className='fw-bold'>
                     <ArrowRepeat width='24' height='24' className='me-2' />
                     {t('modal.settings.retry.title')}
@@ -89,7 +89,7 @@ const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid="settings-backup">
+                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid='settings-backup'>
                   <div className='fw-bold'>
                     <CloudArrowUpFill width='24' height='24' className='me-2' /> Backup
                   </div>

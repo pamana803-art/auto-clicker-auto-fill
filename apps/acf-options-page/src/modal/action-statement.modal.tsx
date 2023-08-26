@@ -49,12 +49,11 @@ const ActionStatementModal = () => {
 
   useEffect(() => {
     updateForm(FORM_ID, statement);
-}, [statement]);
+  }, [statement]);
 
-
-  const onShow = () =>{
+  const onShow = () => {
     //:TODO
-  }
+  };
 
   return (
     <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>

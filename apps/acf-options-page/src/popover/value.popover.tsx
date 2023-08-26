@@ -1,6 +1,6 @@
-import { OverlayTrigger, Popover, Table } from 'react-bootstrap'
-import { InfoCircle } from '../util'
-import { APP_LINK } from '../constants'
+import { OverlayTrigger, Popover, Table } from 'react-bootstrap';
+import { InfoCircle } from '../util';
+import { APP_LINK } from '../constants';
 
 export function ValuePopover() {
   return (
@@ -132,8 +132,9 @@ export function ValuePopover() {
             </div>
           </Popover.Body>
         </Popover>
-      }>
+      }
+    >
       <InfoCircle className='ms-2 text-muted' />
     </OverlayTrigger>
-  )
+  );
 }

@@ -8,8 +8,8 @@
   "env": {
     // ...
     "browser": true,
-  "chrome": true,
-  "es6": true
+    "chrome": true,
+    "es6": true
   },
   "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
 }

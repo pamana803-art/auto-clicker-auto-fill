@@ -44,7 +44,7 @@ function SettingGoogleSheets() {
             <b className='text-muted d-block mb-2'>Google Sheets</b>
             <Image alt={google.name} className='me-2' title={google.name} src={google.picture} roundedCircle width='30' height='30' />
             {google.name}
-            <Button variant='link' onClick={remove} data-testid="google-sheets-remove">
+            <Button variant='link' onClick={remove} data-testid='google-sheets-remove'>
               (remove)
             </Button>
           </Form.Label>
@@ -56,7 +56,7 @@ function SettingGoogleSheets() {
   return (
     <div className='d-flex flex-column align-items-start'>
       <b className='mx-3 text-muted'>Connect with Google Sheets</b>
-      <Button variant='link' onClick={connect} data-testid="google-sheets-connect">
+      <Button variant='link' onClick={connect} data-testid='google-sheets-connect'>
         <img src={theme === 'light' ? GoogleSignInLight : GoogleSignInDark} alt='Logo' />
       </Button>
     </div>

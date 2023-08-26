@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import { Alert, Col, Container, Row } from 'react-bootstrap';
 
 export function ErrorAlert({ heading = 'Error', error }) {
-
-  if(!error){
-    return null
+  if (!error) {
+    return null;
   }
 
   return (

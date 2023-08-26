@@ -1,8 +1,8 @@
-import { GoogleAds } from './google-ads.components'
+import { GoogleAds } from './google-ads.components';
 
 export function Ads() {
   if (window.location.href.match('.getautoclicker.com') !== null) {
-    return <GoogleAds />
+    return <GoogleAds />;
   }
-  return null
+  return null;
 }

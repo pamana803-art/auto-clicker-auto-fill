@@ -1,2 +1,2 @@
-export * from './config-reorder.api'
-export * from './config-reorder.slice'
+export * from './config-reorder.api';
+export * from './config-reorder.slice';

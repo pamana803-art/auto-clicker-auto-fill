@@ -2,7 +2,7 @@ import { Logger } from '@dhruv-techapps/core-common';
 import CommonEvents from './common.events';
 
 export const ClassEvents = (() => {
-  const execCommand = (element:HTMLElement, value:string) => {
+  const execCommand = (element: HTMLElement, value: string) => {
     const [, action, name, prop] = value.split('::');
     if (action === 'add') {
       element.classList.add(name);

@@ -4,7 +4,7 @@ import CommonEvents from './common.events';
 
 const CHANGE_EVENT = ['input', 'change'];
 
-type ElementType = HTMLInputElement | HTMLTextAreaElement | HTMLDivElement
+type ElementType = HTMLInputElement | HTMLTextAreaElement | HTMLDivElement;
 export const AppendEvents = (() => {
   const checkNode = (element: ElementType, value: string) => {
     //TODO

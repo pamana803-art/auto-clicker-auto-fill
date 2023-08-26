@@ -1,4 +1,4 @@
-import { DataStore } from "./data-store";
+import { DataStore } from './data-store';
 
 beforeAll(() => {
   DataStore.getInst().setItem('string', 'world');

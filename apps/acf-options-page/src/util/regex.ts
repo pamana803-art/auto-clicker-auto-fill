@@ -3,10 +3,10 @@ export const REGEX_FLOAT = /^([\d]+[.])?[\d]+$/;
 export const REGEX_INTERVAL = /^(([\d]+[.])?[\d]+e)?([\d]+[.])?[\d]+$/;
 
 type RegexType = {
-    [index:string]: RegExp
-}
+  [index: string]: RegExp;
+};
 
-const REGEX:RegexType = {
+const REGEX: RegexType = {
   NUMBER: /^-?\d+$/,
   FLOAT: /^([\d]+[.])?[\d]+$/,
   INTERVAL: /^(([\d]+[.])?[\d]+e)?([\d]+[.])?[\d]+$/,

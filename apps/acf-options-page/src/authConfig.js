@@ -4,8 +4,8 @@
  * Licensed under the MIT License.
  */
 
-import { LogLevel } from '@azure/msal-browser'
-import { b2cPolicies } from './policies'
+import { LogLevel } from '@azure/msal-browser';
+import { b2cPolicies } from './policies';
 
 /**
  * Configuration object to be passed to MSAL instance on creation.
@@ -16,38 +16,38 @@ export const msalConfig = {
   auth: {
     clientId: process.env.NX_AZURE_APP_CLIENT_ID,
     authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
-    knownAuthorities: [b2cPolicies.authorityDomain] // You must identify your tenant's domain as a known authority.
+    knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
   },
   cache: {
     cacheLocation: 'localStorage', // This configures where your cache will be stored
-    storeAuthStateInCookie: false // Set this to "true" if you are having issues on IE11 or Edge
+    storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
   },
   system: {
     loggerOptions: {
       loggerCallback: (level, message, containsPii) => {
         if (containsPii) {
-          return
+          return;
         }
         switch (level) {
           case LogLevel.Error:
-            console.error(message)
-            return
+            console.error(message);
+            return;
           case LogLevel.Info:
-            console.info(message)
-            return
+            console.info(message);
+            return;
           case LogLevel.Verbose:
-            console.debug(message)
-            return
+            console.debug(message);
+            return;
           case LogLevel.Warning:
-            console.warn(message)
-            break
+            console.warn(message);
+            break;
           default:
           // Nothing to be done here
         }
-      }
-    }
-  }
-}
+      },
+    },
+  },
+};
 
 /**
  * Scopes you add here will be prompted for user consent during sign-in.
@@ -56,5 +56,5 @@ export const msalConfig = {
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  scopes: []
-}
+  scopes: [],
+};

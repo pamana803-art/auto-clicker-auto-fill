@@ -21,9 +21,9 @@ export class TestBrowser {
   type = async (querySelector, value) => {
     await this.click(querySelector, { clickCount: 3 });
     await this.page.type(querySelector, value);
-    await this.page.$eval(querySelector, e => e.blur());
+    await this.page.$eval(querySelector, (e) => e.blur());
   };
-  getPage = () => this.page
+  getPage = () => this.page;
 }
 
 export class TestWorker {

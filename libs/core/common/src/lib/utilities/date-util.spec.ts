@@ -1,4 +1,4 @@
-import { DateUtil } from "./date-util";
+import { DateUtil } from './date-util';
 
 describe('DateUtil', () => {
   const date = new Date();

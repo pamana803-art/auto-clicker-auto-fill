@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 import { DateUtil, Logger } from '@dhruv-techapps/core-common';
-import { LOCAL_STORAGE_KEY,  RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common';
+import { LOCAL_STORAGE_KEY, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common';
 import { Runtime } from '@dhruv-techapps/core-extension';
 
 import registerContextMenus from './context-menu';

@@ -1,5 +1,5 @@
-import { OverlayTrigger, Popover } from 'react-bootstrap'
-import { InfoCircle } from '../util'
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { InfoCircle } from '../util';
 
 export function ValueExtractorPopover() {
   return (
@@ -36,8 +36,9 @@ export function ValueExtractorPopover() {
             </ul>
           </Popover.Body>
         </Popover>
-      }>
+      }
+    >
       <InfoCircle className='ms-2 text-muted' />
     </OverlayTrigger>
-  )
+  );
 }

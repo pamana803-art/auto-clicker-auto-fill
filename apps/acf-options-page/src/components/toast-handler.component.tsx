@@ -26,7 +26,7 @@ export const ToastHandler = () => {
           <Toast.Header>
             <strong className='me-auto'>{header}</strong>
           </Toast.Header>
-          {body && <Toast.Body >{body}</Toast.Body>}
+          {body && <Toast.Body>{body}</Toast.Body>}
         </Toast>
       ))}
     </div>

@@ -1,4 +1,4 @@
-import { ElementUtil } from "./element-util";
+import { ElementUtil } from './element-util';
 
 const stringValue = 'Dharmesh';
 const numberValue = '2';

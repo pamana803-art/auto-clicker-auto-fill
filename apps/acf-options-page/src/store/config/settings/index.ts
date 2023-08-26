@@ -1,1 +1,1 @@
-export * from './config-settings.slice'
+export * from './config-settings.slice';

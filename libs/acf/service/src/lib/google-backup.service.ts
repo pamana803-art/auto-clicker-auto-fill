@@ -9,7 +9,7 @@ export class GoogleBackupService extends AcfService {
   static async autoBackup(extensionId: string, autoBackup?: AUTO_BACKUP) {
     return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.GOOGLE_BACKUP, methodName: 'setAlarm', message: autoBackup });
   }
-  
+
   static async restore(extensionId: string) {
     return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_ACF.GOOGLE_BACKUP, methodName: 'restore' });
   }

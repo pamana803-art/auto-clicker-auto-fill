@@ -14,7 +14,7 @@ type ConfirmationModalContextProviderProps = {
 const ConfirmationModalContext = React.createContext<ModalContextType>({} as ModalContextType);
 
 const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProviderProps> = (props) => {
-  const [show, setShow] = useState<boolean>()
+  const [show, setShow] = useState<boolean>();
   const [content, setContent] = useState<ModalRequestType>();
   const resolver = useRef<(value: boolean | PromiseLike<boolean>) => void>();
 
@@ -22,7 +22,7 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
     setContent({
       title,
       message,
-      headerClass
+      headerClass,
     });
     setShow(true);
     return new Promise(function (resolve) {
@@ -47,9 +47,7 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
   return (
     <ConfirmationModalContext.Provider value={modalContext}>
       {props.children}
-      {content && (
-        <ConfirmModal visible={show} {...content} noClick={handleCancel} yesClick={handleOk} />
-      )}
+      {content && <ConfirmModal visible={show} {...content} noClick={handleCancel} yesClick={handleOk} />}
     </ConfirmationModalContext.Provider>
   );
 };

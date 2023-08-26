@@ -16,13 +16,13 @@ const FORM_ID = 'action-settings';
 const ActionSettingsModal = () => {
   const { t } = useTranslation();
   const action = useAppSelector(selectedActionSelector);
-  const {settings } = action
+  const { settings } = action;
   const { message, visible } = useAppSelector(actionSettingsSelector);
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
-    const update = getFieldNameValue(e,settings);
-    if(update){
+    const update = getFieldNameValue(e, settings);
+    if (update) {
       dispatch(updateActionSettings(update));
     }
   };
@@ -36,7 +36,7 @@ const ActionSettingsModal = () => {
   };
 
   useEffect(() => {
-      updateForm(FORM_ID, settings);
+    updateForm(FORM_ID, settings);
   }, [settings]);
 
   const onReset = () => {
@@ -45,8 +45,8 @@ const ActionSettingsModal = () => {
   };
 
   const onShow = () => {
-//:TODO
-  }
+    //:TODO
+  };
 
   return (
     <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>

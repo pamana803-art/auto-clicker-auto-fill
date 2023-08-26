@@ -1,2 +1,2 @@
-export * from './blog.api'
-export * from './blog.slice'
+export * from './blog.api';
+export * from './blog.slice';
