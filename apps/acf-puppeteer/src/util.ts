@@ -18,6 +18,7 @@ export class TestBrowser {
   click = async (querySelector, options) => {
     await this.page.click(querySelector, options);
   };
+  evaluate = async (callback) => await this.page.evaluate(callback);
   type = async (querySelector, value) => {
     await this.click(querySelector, { clickCount: 3 });
     await this.page.type(querySelector, value);

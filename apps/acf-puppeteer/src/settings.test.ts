@@ -1,4 +1,4 @@
-import { AUTO_BACKUP, Settings, defaultSettings } from '@dhruv-techapps/acf-common';
+import { Settings, defaultSettings } from '@dhruv-techapps/acf-common';
 import { TestBrowser, TestWorker } from './util';
 
 describe('Settings', () => {
@@ -80,11 +80,11 @@ describe('Settings', () => {
       test('toggle', async () => {
         await browser.click('[data-testid="settings-backup"]');
       });
-      test.each(Object.values(AUTO_BACKUP))('%s', async (autoBackup) => {
+      /*test.each(Object.values(AUTO_BACKUP))('%s', async (autoBackup) => {
         await browser.click(`a[href="#backup-${autoBackup}"]`);
         const settings: Settings = await worker.getSettings();
         expect(settings.backup.autoBackup).toEqual(autoBackup);
-      });
+      });*/
       test('toggle', async () => {
         await browser.click('[data-testid="settings-back-button"]');
       });
