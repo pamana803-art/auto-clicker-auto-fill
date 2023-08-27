@@ -26,25 +26,25 @@ function SettingNotifications() {
           <Form.Label className='ms-2 mt-2 me-auto' htmlFor='notifications.onError'>
             <div className='fw-bold'>{t('modal.settings.notification.error')}</div>
           </Form.Label>
-          <Form.Check type='switch' name='onError' checked={notifications?.onError} onChange={onUpdate} id='notifications.onError' />
+          <Form.Check type='switch' name='onError' checked={notifications?.onError || false} onChange={onUpdate} id='notifications.onError' />
         </li>
         <li className='list-group-item d-flex justify-content-between align-items-center'>
           <Form.Label className='ms-2 mt-2 me-auto' htmlFor='notifications.onAction'>
             <div className='fw-bold'>{t('modal.settings.notification.action')} </div>
           </Form.Label>
-          <Form.Check type='switch' name='onAction' checked={notifications?.onAction} onChange={onUpdate} id='notifications.onAction' />
+          <Form.Check type='switch' name='onAction' checked={notifications?.onAction || false} onChange={onUpdate} id='notifications.onAction' />
         </li>
         <li className='list-group-item d-flex justify-content-between align-items-center'>
           <Form.Label className='ms-2 mt-2 me-auto' htmlFor='notifications.onBatch'>
             <div className='fw-bold'>{t('modal.settings.notification.batch')}</div>
           </Form.Label>
-          <Form.Check type='switch' name='onBatch' checked={notifications?.onBatch} onChange={onUpdate} id='notifications.onBatch' />
+          <Form.Check type='switch' name='onBatch' checked={notifications?.onBatch || false} onChange={onUpdate} id='notifications.onBatch' />
         </li>
         <li className='list-group-item d-flex justify-content-between align-items-center'>
           <Form.Label className='ms-2 mt-2 me-auto' htmlFor='notifications.onConfig'>
             <div className='fw-bold'>{t('modal.settings.notification.config')}</div>
           </Form.Label>
-          <Form.Check type='switch' name='onConfig' checked={notifications?.onConfig} onChange={onUpdate} id='notifications.onConfig' />
+          <Form.Check type='switch' name='onConfig' checked={notifications?.onConfig || false} onChange={onUpdate} id='notifications.onConfig' />
         </li>
       </ol>
       <hr />
@@ -55,7 +55,7 @@ function SettingNotifications() {
               {t('modal.settings.notification.sound')} <span>{notifications?.sound ? <VolumeUp /> : <VolumeMute />}</span>
             </div>
           </Form.Label>
-          <Form.Check type='switch' onChange={onUpdate} name='sound' checked={notifications?.sound} id='notifications.sound' />
+          <Form.Check type='switch' onChange={onUpdate} name='sound' checked={notifications?.sound || false} id='notifications.sound' />
         </li>
         <li className='list-group-item d-flex justify-content-between align-items-center'>
           <SettingDiscord onChange={onUpdate} checked={notifications?.discord || false} label={t('modal.settings.notification.discord.title')} />

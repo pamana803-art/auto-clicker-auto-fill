@@ -40,19 +40,25 @@
   },
   "toast": {
     "configuration": {
-      "add": {
+      "addConfig": {
         "header": "配置",
         "body": "{{name}} 添加成功"
       },
-      "remove": {
+      "duplicateConfig": {
+        "header": "配置",
+        "body": "{{name}} duplicated 添加成功"
+      },
+      "removeConfig": {
         "header": "配置",
         "body": "{{name}} 移除成功"
       },
       "exportAll": {
-        "header": "批量导出"
+        "header": "批量导出",
+        "body": "Configurations exported successfully"
       },
       "importAll": {
-        "header": "批量导入"
+        "header": "批量导入",
+        "body": "Configurations imported successfully"
       },
       "importError": {
         "header": "导入错误"
@@ -60,6 +66,10 @@
       "importSuccess": {
         "header": "配置",
         "body": "{{name}} 导入成功"
+      },
+      "updateBatch": {
+        "header": "Batch",
+        "body": "batch saved successfully !"
       }
     },
     "action": {
@@ -131,8 +141,7 @@
       "windowHint": "<b>窗口</b>(默认)浏览器加载全部内容后才加载扩展",
       "document": "文档",
       "hotkey": "快捷键",
-      "documentHint": "<b>文档</b>浏览器在加载脚本和图片之前加载扩展(更快)(不安全)",
-      "saveMessage": "配置设置保存成功!"
+      "documentHint": "<b>文档</b>浏览器在加载脚本和图片之前加载扩展(更快)(不安全)"
     },
     "reorder": {
       "title": "重新排序配置",
@@ -155,15 +164,13 @@
         "stop": "停止",
         "skip": "跳过动作",
         "refresh": "刷新"
-      },
-      "saveMessage": "动作设置保存成功!"
+      }
     },
     "actionCondition": {
       "action": "动作",
       "status": "状态",
       "title": "动作条件",
       "info": "动作条件用于添加与之前动作状态相关的条件",
-      "saveMessage": "动作条件保存成功!",
       "skip": "跳过",
       "goto": "跳转到",
       "proceed": "继续"
@@ -186,9 +193,19 @@
         "stop": "停止",
         "skip": "跳过动作",
         "refresh": "刷新"
-      },
-      "saveMessage": "附加组件保存成功!"
+      }
     }
+  },
+  "message": {
+    "config": "配置保存成功!",
+    "configSettings": "配置设置保存成功!",
+    "batch": "批处理保存成功!",
+    "action": "动作保存成功!",
+    "reorderActions": "Action reordered successfully!",
+    "removeAction": "Action removed successfully!",
+    "actionAddon": "附加组件保存成功!",
+    "actionStatement": "动作条件保存成功!",
+    "actionSettings": "动作设置保存成功!"
   },
   "configuration": {
     "title": "配置",
@@ -206,15 +223,13 @@
     "url": "URL",
     "name": "名称",
     "initWait": "初始化等待",
-    "startTime": "开始时间",
-    "saveMessage": "配置保存成功!"
+    "startTime": "开始时间"
   },
   "batch": {
     "title": "批处理",
     "repeat": "重复",
     "repeatInterval": "重复间隔",
-    "refresh": "刷新",
-    "saveMessage": "批处理保存成功!"
+    "refresh": "刷新"
   },
   "error": {
     "number": "只允许有效数字",
@@ -240,8 +255,7 @@
     "elementFinder": "元素查找器",
     "value": "值",
     "repeat": "重复",
-    "repeatInterval": "重复间隔",
-    "saveMessage": "动作保存成功!"
+    "repeatInterval": "重复间隔"
   },
   "popover": {
     "valueExtractor": {

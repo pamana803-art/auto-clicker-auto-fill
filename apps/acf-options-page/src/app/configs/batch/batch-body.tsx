@@ -28,18 +28,18 @@ function BatchBody() {
       <Card.Body>
         <Row>
           <Col md='12' sm='12'>
-            <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch?.refresh} onChange={onUpdate} />
+            <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch?.refresh || false} onChange={onUpdate} />
           </Col>
           {!batch?.refresh && (
             <>
-              <Col md='6' sm='12'>
+              <Col md='6' sm='12' className='mt-4'>
                 <Form.Group controlId='batch-repeat'>
                   <FormControl type='number' name='repeat' pattern='NUMBER' defaultValue={batch?.repeat} onBlur={onUpdate} autoComplete='off' placeholder='0' list='repeat' />
                   <Form.Label>{t('batch.repeat')}</Form.Label>
                   <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md='6' sm='12'>
+              <Col md='6' sm='12' className='mt-4'>
                 <Form.Group controlId='batch-repeat-interval'>
                   <FormControl name='repeatInterval' pattern='INTERVAL' autoComplete='off' defaultValue={batch?.repeatInterval} onBlur={onUpdate} placeholder='0' list='interval' />
                   <Form.Label>

@@ -55,26 +55,26 @@ configsToastListenerMiddleware.startListening({
 const getMessageFunc = (action: AnyAction, language): { success: any; failure: any; message: string } => {
   switch (action.type) {
     case updateConfigSettings.type:
-      return { success: setConfigSettingsMessage, failure: setConfigSettingsError, message: language.message.configSettings };
+      return { success: setConfigSettingsMessage, failure: setConfigSettingsError, message: language.message?.configSettings };
     case updateBatch.type:
-      return { success: setBatchMessage, failure: setBatchError, message: language.message.batch };
+      return { success: setBatchMessage, failure: setBatchError, message: language.message?.batch };
     case updateActionAddon.type:
-      return { success: setActionAddonMessage, failure: setActionAddonError, message: language.message.actionAddon };
+      return { success: setActionAddonMessage, failure: setActionAddonError, message: language.message?.actionAddon };
     case updateAction.type:
     case reorderActions.type:
     case removeAction.type:
-      return { success: setActionMessage, failure: setActionError, message: language.message.action };
+      return { success: setActionMessage, failure: setActionError, message: language.message?.action };
     case updateActionStatementCondition.type:
     case updateActionStatementGoto.type:
     case updateActionStatementThen.type:
     case removeActionStatementCondition.type:
     case resetActionStatement.type:
-      return { success: setActionStatementMessage, failure: setActionStatementError, message: language.message.actionStatement };
+      return { success: setActionStatementMessage, failure: setActionStatementError, message: language.message?.actionStatement };
     case updateActionSettings.type:
     case resetActionSetting.type:
-      return { success: setActionSettingsMessage, failure: setActionSettingsError, message: language.message.actionSettings };
+      return { success: setActionSettingsMessage, failure: setActionSettingsError, message: language.message?.actionSettings };
     default:
-      return { success: setConfigMessage, failure: setConfigError, message: language.message.config };
+      return { success: setConfigMessage, failure: setConfigError, message: language.message?.config };
   }
 };
 

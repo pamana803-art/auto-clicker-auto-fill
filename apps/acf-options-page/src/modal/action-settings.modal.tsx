@@ -60,7 +60,7 @@ const ActionSettingsModal = () => {
             <Card.Body>
               <Row>
                 <Col md={12} sm={12}>
-                  <Form.Check type='switch' name='iframeFirst' checked={settings?.iframeFirst} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
+                  <Form.Check type='switch' name='iframeFirst' checked={settings?.iframeFirst || false} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
                   <small className='text-muted'>{t('modal.actionSettings.iframeFirstHint')}</small>
                 </Col>
               </Row>

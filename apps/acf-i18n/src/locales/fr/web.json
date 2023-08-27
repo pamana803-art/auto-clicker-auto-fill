@@ -27,19 +27,25 @@
   },
   "toast": {
     "configuration": {
-      "add": {
+      "addConfig": {
         "header": "Configuration",
         "body": "{{name}} ajouté avec succès"
       },
-      "remove": {
+      "duplicateConfig": {
+        "header": "Configuration",
+        "body": "{{name}} duplicated successfully"
+      },
+      "removeConfig": {
         "header": "Configuration",
         "body": "{{name}} enlevé avec succès"
       },
       "exportAll": {
-        "header": "Exportation en masse"
+        "header": "Exportation en masse",
+        "body": "Configurations exported successfully"
       },
       "importAll": {
-        "header": "Importation en masse"
+        "header": "Importation en masse",
+        "body": "Configurations imported successfully"
       },
       "importError": {
         "header": "Erreur d'importation"
@@ -47,6 +53,10 @@
       "importSuccess": {
         "header": "Configuration",
         "body": "{{name}} importé avec succès"
+      },
+      "updateBatch": {
+        "header": "Batch",
+        "body": "batch saved successfully !"
       }
     },
     "action": {
@@ -113,7 +123,7 @@
       "document": "Document",
       "hotkey": "Gamper",
       "documentHint": "<b>Document</b> Le navigateur charge l'extension avant que les scripts et les images soient chargés (plus rapides) (dangereux)",
-      "saveMessage": "Config enréglage enregistré avec succès !"
+      "saveMessage": ""
     },
     "reorder": {
       "title": "Réorganiser Configuration's",
@@ -121,7 +131,7 @@
     },
     "extensionNotFound": {
       "title": "Extension non trouvée",
-      "subTitle": "Ceci est la page de configuration pour<b>{{REACT_APP_NAME}}</b> <Badge>{{REACT_APP_VARIANT}}</Badge> extension",
+      "subTitle": "Ceci est la page de configuration pour<b>{{NX_NAME}}</b> extension",
       "hint": "Vous devez télécharger d'abord une extension afin de l'utiliser"
     },
     "actionSettings": {
@@ -166,9 +176,19 @@
         "stop": "Arrêter",
         "skip": "Passer non trouvé",
         "refresh": "Rafraîchir"
-      },
-      "saveMessage": "Addon enregistré avec succès !"
+      }
     }
+  },
+  "message": {
+    "config": "Configuration enregistré avec succès !",
+    "configSettings": "Config enréglage enregistré avec succès !",
+    "batch": "Batch enregistré avec succès !",
+    "action": "Action enregistré avec succès !",
+    "reorderActions": "Action reordered successfully!",
+    "removeAction": "Action removed successfully!",
+    "actionAddon": "Addon enregistré avec succès !",
+    "actionStatement": "Action Statement saved successfully!",
+    "actionSettings": "Action Settings saved successfully!"
   },
   "configuration": {
     "title": "Configuration",
@@ -186,15 +206,13 @@
     "url": "URL",
     "name": "Nom",
     "initWait": "Attendre",
-    "startTime": "Heure de début",
-    "saveMessage": "Configuration enregistré avec succès !"
+    "startTime": "Heure de début"
   },
   "batch": {
     "title": "Grouper",
     "repeat": "Répéter",
     "repeatInterval": "R-intervalle",
-    "refresh": "Rafraîchir",
-    "saveMessage": "Batch enregistré avec succès !"
+    "refresh": "Rafraîchir"
   },
   "error": {
     "number": "Seuls les nombres valides sont autorisés",
@@ -220,8 +238,7 @@
     "elementFinder": "Élévateur",
     "value": "Valeur",
     "repeat": "Répéter",
-    "repeatInterval": "R-intervalle",
-    "saveMessage": "Action enregistré avec succès !"
+    "repeatInterval": "R-intervalle"
   },
   "popover": {
     "valueExtractor": {

@@ -120,7 +120,7 @@ const ActionStatementModal = () => {
         {statement?.then === ACTION_RUNNING.GOTO && (
           <Row>
             <Col xs={{ span: 4, offset: 8 }}>
-              <Form.Select value={statement.goto} onChange={onUpdateGoto} name='goto' required>
+              <Form.Select value={statement?.goto} onChange={onUpdateGoto} name='goto' required>
                 {actions.map((_action, index) => (
                   <option key={index} value={index} disabled={index === Number(selectedActionIndex)}>
                     {index + 1} . {_action.name || _action.elementFinder}

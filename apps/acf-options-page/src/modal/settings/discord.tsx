@@ -52,7 +52,7 @@ function SettingDiscord({ onChange, label, checked }) {
               (remove)
             </Button>
           </Form.Label>
-          <Form.Check type='switch' id='discord' onChange={onChange} checked={checked} name='discord' data-testid='discord-switch' />
+          <Form.Check type='switch' id='discord' onChange={onChange} checked={checked || false} name='discord' data-testid='discord-switch' />
         </div>
       </div>
     );

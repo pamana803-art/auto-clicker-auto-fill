@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, Col, Form, FormControl, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getFieldNameValue, updateForm } from '../../../util/element';
@@ -10,9 +10,9 @@ const FORM_ID = 'config-body';
 
 function ConfigBody() {
   const config = useAppSelector(selectedConfigSelector);
+  const [isInvalid, setIsInvalid] = useState(true);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-
   const onUpdate = (e) => {
     const update = getFieldNameValue(e, config);
     if (update) {
@@ -20,7 +20,14 @@ function ConfigBody() {
     }
   };
 
+  const onKeyDown = (e) => {
+    setIsInvalid(e.target.value !== '');
+  };
+
   useEffect(() => {
+    if (config.url) {
+      setIsInvalid(false);
+    }
     updateForm(FORM_ID, config);
   }, [config]);
 
@@ -30,7 +37,7 @@ function ConfigBody() {
         <Row>
           <Col md='12' sm='12' className='mb-3'>
             <Form.Group controlId='config-url'>
-              <FormControl name='url' required defaultValue={config.url} autoComplete='off' onBlur={onUpdate} placeholder={APP_LINK.TEST} />
+              <FormControl name='url' required isInvalid={isInvalid} onKeyDown={onKeyDown} defaultValue={config.url} autoComplete='off' onBlur={onUpdate} placeholder={APP_LINK.TEST} />
               <Form.Label>
                 {t('configuration.url')}&nbsp;<small className='text-danger'>*</small>
               </Form.Label>

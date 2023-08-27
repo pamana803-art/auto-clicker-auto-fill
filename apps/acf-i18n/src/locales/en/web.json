@@ -141,8 +141,7 @@
       "windowHint": "<b>Window</b> (default) browser loads extension once all its content is loaded",
       "document": "Document",
       "hotkey": "Hotkey",
-      "documentHint": "<b>Document</b> browser loads extension before scripts and images are loaded (faster)(unsafe)",
-      "saveMessage": "Config Setting saved successfully!"
+      "documentHint": "<b>Document</b> browser loads extension before scripts and images are loaded (faster)(unsafe)"
     },
     "reorder": {
       "title": "Reorder Configuration's",
@@ -165,15 +164,13 @@
         "stop": "Stop",
         "skip": "Skip Not Found",
         "refresh": "Refresh"
-      },
-      "saveMessage": "Action Setting saved successfully!"
+      }
     },
     "actionCondition": {
       "action": "Action",
       "status": "Status",
       "title": "Action Condition",
       "info": "Action condition are used to add condition with relates to previous action status",
-      "saveMessage": "Action Condition saved successfully!",
       "skip": "Skip",
       "goto": "Goto",
       "proceed": "Proceed"
@@ -199,6 +196,17 @@
       }
     }
   },
+  "message": {
+    "config": "Configuration saved successfully!",
+    "configSettings": "Config Setting saved successfully!",
+    "batch": "Batch saved successfully!",
+    "action": "Action saved successfully!",
+    "reorderActions": "Action reordered successfully!",
+    "removeAction": "Action removed successfully!",
+    "actionAddon": "Addon saved successfully!",
+    "actionStatement": "Action Condition saved successfully!",
+    "actionSettings": "Action Settings saved successfully!"
+  },
   "configuration": {
     "title": "Configuration",
     "add": "Add Configuration",
@@ -216,17 +224,6 @@
     "name": "Name",
     "initWait": "Init Wait",
     "startTime": "Start Time"
-  },
-  "message": {
-    "config": "Configuration saved successfully!",
-    "configSettings": "Configuration saved successfully!",
-    "batch": "Batch saved successfully!",
-    "action": "Action saved successfully!",
-    "reorderActions": "Action reordered successfully!",
-    "removeAction": "Action removed successfully!",
-    "actionAddon": "Addon saved successfully!",
-    "actionStatement": "Action Statement saved successfully!",
-    "actionSettings": "Action Settings saved successfully!"
   },
   "batch": {
     "title": "Batch",

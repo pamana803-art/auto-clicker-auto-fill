@@ -3,7 +3,11 @@ import { blogCheckAPI } from '../blog';
 
 export const getConfigName = (url?: string) => {
   if (url && url.match('://.*') !== null) {
-    return url.split('/')[2];
+    const domainNames = url.split('/')[2].split(".")
+    if(domainNames.length > 2){
+      return domainNames.slice(-2).join(".")
+    }
+    return domainNames.join(".");
   }
   return url;
 };
@@ -29,7 +33,12 @@ export const checkQueryParams = (_configs: Array<Configuration>, thunkAPI) => {
       } else if (object.error) {
         const XPathIndex = _configs[selectedConfigIndex].actions.findIndex((action) => action.elementFinder === object.elementFinder);
         if (XPathIndex !== -1) {
-          _configs[selectedConfigIndex].actions[XPathIndex].error = 'elementFinder';
+          const { error } = _configs[selectedConfigIndex].actions[XPathIndex];
+          if (error) {
+            error.push('elementFinder');
+          } else {
+            _configs[selectedConfigIndex].actions[XPathIndex].error = ['elementFinder'];
+          }
         }
       } else if (object.elementFinder) {
         const XPathIndex = _configs[selectedConfigIndex].actions.findIndex((action) => action.elementFinder === object.elementFinder);

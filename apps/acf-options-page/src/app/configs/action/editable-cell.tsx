@@ -8,11 +8,12 @@ export const defaultColumn: Partial<ColumnDef<Action>> = {
   cell: Cell,
 };
 
-function Cell({ getValue, row: { index }, column: { id, columnDef }, table }) {
-  const { meta } = columnDef;
+function Cell( {  getValue,  row: { index, original },  column: { id, columnDef },  table,}) {
+    const { meta } = columnDef;
   const initialValue = getValue();
 
   const [value, setValue] = useState(initialValue);
+  const [isInvalid, setIsInvalid] = useState(original.error?.includes(id))
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onBlur = () => {
@@ -22,6 +23,7 @@ function Cell({ getValue, row: { index }, column: { id, columnDef }, table }) {
   };
 
   const onChange = ({ currentTarget: { value: changeValue } }) => {
+    setIsInvalid(false)
     setValue(changeValue);
   };
 
@@ -42,6 +44,7 @@ function Cell({ getValue, row: { index }, column: { id, columnDef }, table }) {
       pattern={meta?.pattern}
       required={meta?.required}
       list={meta?.list}
+      isInvalid={isInvalid}
       autoComplete='off'
     />
   );

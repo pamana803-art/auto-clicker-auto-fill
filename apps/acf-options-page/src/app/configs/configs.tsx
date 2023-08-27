@@ -119,7 +119,7 @@ function Configs() {
                 {t('configuration.add')}
               </Button>
               <Dropdown id='configurations-dropdown-wrapper'>
-                <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown' ariaLabel='Configurations more option' data-testid="configurations-more-option">
+                <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown' aria-label='Configurations more option' data-testid="configurations-more-option">
                   <ThreeDots width='24' height='24' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>

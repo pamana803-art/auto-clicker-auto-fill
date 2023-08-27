@@ -68,7 +68,7 @@ const SettingsModal = () => {
                   <div className='fw-bold'>{t('modal.settings.checkIFrames')}</div>
                   {t('modal.settings.checkIFramesHint')}
                 </Form.Label>
-                <Form.Check type='switch' name='checkiFrames' onChange={onUpdate} id='settings-checkiFrames' checked={settings.checkiFrames} />
+                <Form.Check type='switch' name='checkiFrames' onChange={onUpdate} id='settings-checkiFrames' checked={settings.checkiFrames || false} />
               </li>
               <li className='list-group-item'>
                 <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} className='btn btn-link text-muted d-flex justify-content-between w-100' data-testid='settings-notification'>

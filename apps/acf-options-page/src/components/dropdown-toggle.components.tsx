@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 export type DropdownToggleProps = PropsWithChildren<{
   onClick: (e: Event) => void;
   className?: string;
-  ariaLabel?: string;
 }>;
 
 export type DropdownToggleRef = HTMLButtonElement;
@@ -26,10 +25,8 @@ export const DropdownToggle = React.forwardRef<DropdownToggleRef, DropdownToggle
 DropdownToggle.displayName = 'DropdownToggle';
 DropdownToggle.defaultProps = {
   className: '',
-  ariaLabel: '',
 };
 DropdownToggle.propTypes = {
   onClick: PropTypes.func.isRequired,
   className: PropTypes.string,
-  ariaLabel: PropTypes.string,
 };
