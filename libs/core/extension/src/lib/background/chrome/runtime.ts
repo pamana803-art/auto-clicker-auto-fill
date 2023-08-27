@@ -7,7 +7,7 @@ export type MessengerConfigObject = {
 export type RuntimeMessageRequest = ActionRequest | ManifestRequest | NotificationsRequest | StorageRequest;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const messageListener = (request: any, configs: MessengerConfigObject): Promise<any> => {
+export const messageListener = async (request: any, configs: MessengerConfigObject): Promise<any> => {
   const { messenger, methodName, message } = request;
 
   try {
@@ -48,14 +48,22 @@ export class Runtime {
 
   static onMessage(configs: MessengerConfigObject) {
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
-      messageListener(request, configs).then(sendResponse).catch(sendResponse);
+      messageListener(request, configs)
+        .then(sendResponse)
+        .catch((error) => {
+          sendResponse({ error: error.message });
+        });
       return true;
     });
   }
 
   static onMessageExternal(configs: MessengerConfigObject) {
     chrome.runtime.onMessageExternal.addListener((request, _, sendResponse) => {
-      messageListener(request, configs).then(sendResponse).catch(sendResponse);
+      messageListener(request, configs)
+        .then(sendResponse)
+        .catch((error) => {
+          sendResponse({ error: error.message });
+        });
       return true;
     });
   }

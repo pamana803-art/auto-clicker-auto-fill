@@ -14,6 +14,9 @@ import { switchActionSettingsModal } from '@apps/acf-options-page/src/store/conf
 import { Action } from '@dhruv-techapps/acf-common';
 import { defaultColumn } from './editable-cell';
 import { actionSelector } from '@apps/acf-options-page/src/store/config/action/action.slice';
+
+
+type ActionMeta = { dataType: string; list: string; pattern: string; required: boolean; width?: string } 
 const ActionTable = () => {
   const { t } = useTranslation();
   const { actions } = useAppSelector(selectedConfigSelector);
@@ -31,13 +34,15 @@ const ActionTable = () => {
     result && dispatch(removeAction(Number(rowIndex)));
   };
 
-  const columns = useMemo<ColumnDef<Action, { dataType: string; list: string; pattern: string; required: boolean }>[]>(
+  const columns = useMemo<ColumnDef<Action,ActionMeta>[]>(
     () => [
       {
         header: t('action.initWait'),
         accessorKey: 'initWait',
         size: 100,
+        maxSize:100,
         meta: {
+          width: '100px',
           dataType: 'number',
           list: 'interval',
           pattern: 'INTERVAL',
@@ -45,6 +50,9 @@ const ActionTable = () => {
       },
       {
         header: t('action.name'),
+        minSize:100,
+        size: 150,
+        maxSize: 200,
         accessorKey: 'name',
       },
       {
@@ -53,6 +61,8 @@ const ActionTable = () => {
             {t('action.elementFinder')} <small className='text-danger'>*</small> <ElementFinderPopover />
           </>
         ),
+        minSize:400,
+        maxSize:1000,
         accessorKey: 'elementFinder',
         meta: {
           list: 'elementFinder',
@@ -65,6 +75,8 @@ const ActionTable = () => {
             {t('action.value')} <ValuePopover />
           </>
         ),
+        minSize:400,
+        maxSize:1000,
         accessorKey: 'value',
         meta: {
           list: 'value',
@@ -73,6 +85,7 @@ const ActionTable = () => {
       {
         header: t('action.repeat'),
         accessorKey: 'repeat',
+        size: 100,
         meta: {
           dataType: 'number',
           list: 'repeat',
@@ -83,6 +96,7 @@ const ActionTable = () => {
       {
         header: t('action.repeatInterval'),
         accessorKey: 'repeatInterval',
+        size: 100,
         meta: {
           dataType: 'number',
           list: 'interval',
@@ -145,7 +159,9 @@ const ActionTable = () => {
             <tr key={headerGroup.id}>
               <th style={{ width: '30px' }}>&nbsp;</th>
               {headerGroup.headers.map((header) => (
-                <th key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</th>
+                <th key={header.id} style={{ width: header.getSize() }}>
+                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                </th>
               ))}
               <th style={{ width: '54px' }}>&nbsp;</th>
             </tr>

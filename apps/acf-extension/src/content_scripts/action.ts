@@ -6,7 +6,7 @@ import { wait } from './util';
 
 const LOGGER_LETTER = 'Action';
 
-const Action = (() => {
+const ActionProcessor = (() => {
   let elements;
   let value;
 
@@ -34,4 +34,4 @@ const Action = (() => {
   return { start };
 })();
 
-export default Action;
+export default ActionProcessor;

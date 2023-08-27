@@ -5,9 +5,9 @@ import { GoogleSheetsService } from '@dhruv-techapps/acf-service';
 
 export type Sheets = {
   [index: string]: {
+    startRange: string;
     endRange: string;
     sessionCount?: number;
-    startRange: string;
     values: Array<any>;
   };
 };
@@ -78,7 +78,7 @@ export default class GoogleSheets {
     }, {});
   }
 
-  async getValues(config: Configuration) {
+  async getValues(config: Configuration):Promise<Sheets> {
     if (config.spreadsheetId) {
       const batchHighestRepeat = config.batch.repeat;
       const { sheets, sessionCount } = this.getSheets(config, batchHighestRepeat);

@@ -1,11 +1,12 @@
-import { ACTION_STATUS, LOCAL_STORAGE_KEY, Settings } from '@dhruv-techapps/acf-common';
+import { ACTION_STATUS, Action, LOCAL_STORAGE_KEY, Settings, defaultActionStatement } from '@dhruv-techapps/acf-common';
 import { DataStore } from '@dhruv-techapps/core-common';
 import { ActionService, NotificationsService } from '@dhruv-techapps/core-service';
-import Action from './action';
+import ActionProcessor from './action';
 import Statement from './statement';
 import { wait } from './util';
 import AddonProcessor from './addon';
 import Common from './common';
+import { Sheets } from './util/google-sheets';
 
 const LOGGER_LETTER = 'Action';
 
@@ -16,9 +17,9 @@ const Actions = (() => {
     ActionService.setTitle(chrome.runtime.id, { title: `Batch:${batchRepeat} Action:${i}` });
   };
 
-  const checkStatement = async (actions, action) => {
+  const checkStatement = async (actions: Array<Action>, action: Action) => {
     const actionStatus = actions.map((_action) => _action.status);
-    const result = await Statement.check(actionStatus, action.statement);
+    const result = await Statement.check(actionStatus, action.statement );
     return result;
   };
 
@@ -34,7 +35,7 @@ const Actions = (() => {
       });
     }
   };
-  const start = async (actions, batchRepeat, sheets) => {
+  const start = async (actions: Array<Action>, batchRepeat: number, sheets: Sheets) => {
     let i = 0;
     while (i < actions.length) {
       console.group(`${LOGGER_LETTER} #${i}`);
@@ -44,7 +45,7 @@ const Actions = (() => {
       if (statementResult === true) {
         await wait(action.initWait, `${LOGGER_LETTER} initWait`);
         if (await AddonProcessor.check(action.settings, batchRepeat, action.addon)) {
-          action.status = await Action.start(action, batchRepeat, sheets);
+          action.status = await ActionProcessor.start(action, batchRepeat, sheets);
           notify(action);
         } else {
           action.status = ACTION_STATUS.SKIPPED;

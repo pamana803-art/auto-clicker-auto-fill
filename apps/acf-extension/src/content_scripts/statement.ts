@@ -1,8 +1,8 @@
-import { ACTION_CONDITION_OPR, ACTION_RUNNING } from '@dhruv-techapps/acf-common';
+import { ACTION_CONDITION_OPR, ACTION_RUNNING, ActionCondition, ActionStatement, defaultActionStatement } from '@dhruv-techapps/acf-common';
 import { Logger } from '@dhruv-techapps/core-common';
 
 const Statement = (() => {
-  const conditionResult = (conditions, actions) => {
+  const conditionResult = (conditions: Array<ActionCondition>, actions: Array<string>) => {
     Logger.colorDebug('Condition Result', { conditions, actions });
     return conditions
       .map(({ actionIndex, status, operator }) => ({ status: actions[actionIndex] === status, operator }))
@@ -14,7 +14,7 @@ const Statement = (() => {
       }, undefined);
   };
 
-  const checkThen = (condition, then, goto) => {
+  const checkThen = (condition: boolean | { status: boolean; operator: ACTION_CONDITION_OPR }, then: ACTION_RUNNING, goto?: number) => {
     Logger.colorDebug('Check Then', { condition, then, goto });
     let result;
     if (condition) {
@@ -29,11 +29,14 @@ const Statement = (() => {
     return result;
   };
 
-  const check = async (actions, { conditions, then, goto }) => {
-    if (conditions && then) {
-      const result = checkThen(conditionResult(conditions, actions), then, goto);
-      Logger.colorDebug('Statement Result', result);
-      return result;
+  const check = async (actions: Array<string>, statement?: ActionStatement) => {
+    if (statement) {
+      const { conditions, then, goto } = statement;
+      if (conditions && then) {
+        const result = checkThen(conditionResult(conditions, actions), then, goto);
+        Logger.colorDebug('Statement Result', result);
+        return result;
+      }
     }
 
     return true;

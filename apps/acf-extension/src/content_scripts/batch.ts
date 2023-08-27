@@ -4,13 +4,14 @@ import { NotificationsService } from '@dhruv-techapps/core-service';
 import Actions from './actions';
 import { wait } from './util';
 import Common from './common';
+import { Sheets } from './util/google-sheets';
 
 const LOGGER_LETTER = 'Batch';
 
 const BatchProcessor = (() => {
-  let batch;
-  let actions;
-  let sheets;
+  let batch: Batch;
+  let actions: Array<Action>;
+  let sheets: Sheets;
 
   const refresh = () => {
     if (document.readyState === 'complete') {
@@ -24,7 +25,7 @@ const BatchProcessor = (() => {
 
   const checkRepeat = async () => {
     const settings = DataStore.getInst().getItem<Settings>(LOCAL_STORAGE_KEY.SETTINGS);
-    if (batch.repeat > 0) {
+    if (batch?.repeat > 0) {
       for (let i = 0; i < batch.repeat; i += 1) {
         console.group(`${LOGGER_LETTER} #${i + 1}`);
         if (batch.repeatInterval) {
@@ -42,11 +43,11 @@ const BatchProcessor = (() => {
         }
         console.groupEnd();
       }
-    } else if (batch.repeat < -1) {
+    } else if (batch?.repeat < -1) {
       let i = 1;
       // eslint-disable-next-line no-constant-condition
       while (true) {
-        if (batch.repeatInterval) {
+        if (batch?.repeatInterval) {
           await wait(batch.repeatInterval, `${LOGGER_LETTER} Repeat`, '∞', '<interval>');
         }
         await Actions.start(actions, i, sheets);
@@ -63,7 +64,7 @@ const BatchProcessor = (() => {
       sheets = _sheets;
       await Actions.start(_actions, 0, sheets);
       console.groupEnd();
-      if (batch.refresh) {
+      if (batch?.refresh) {
         refresh();
       } else {
         await checkRepeat();

@@ -119,18 +119,18 @@ function Configs() {
                 {t('configuration.add')}
               </Button>
               <Dropdown id='configurations-dropdown-wrapper'>
-                <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown' ariaLabel='Configurations more option'>
+                <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown' ariaLabel='Configurations more option' data-testid="configurations-more-option">
                   <ThreeDots width='24' height='24' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={onExportAll}>{t('configuration.exportAll')}</Dropdown.Item>
-                  <Dropdown.Item onClick={() => importFiled.current?.click()}>{t('configuration.importAll')}</Dropdown.Item>
+                  <Dropdown.Item onClick={onExportAll} data-testid="configurations-export-all">{t('configuration.exportAll')}</Dropdown.Item>
+                  <Dropdown.Item onClick={() => importFiled.current?.click()} data-testid="configurations-import-all">{t('configuration.importAll')}</Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item className={configs.length === 1 ? '' : 'text-danger'} disabled={configs.length === 1} onClick={() => dispatch(switchConfigRemoveModal(configs))}>
+                  <Dropdown.Item className={configs.length === 1 ? '' : 'text-danger'} disabled={configs.length === 1}  data-testid="configurations-remove-config" onClick={() => dispatch(switchConfigRemoveModal(configs))}>
                     {t('configuration.removeConfigs')}
                   </Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item onClick={() => dispatch(switchConfigReorderModal(configs))}>{t('configuration.reorder')}</Dropdown.Item>
+                  <Dropdown.Item onClick={() => dispatch(switchConfigReorderModal(configs))}   data-testid="configurations-reorder-config">{t('configuration.reorder')}</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
               <div className='custom-file d-none'>

@@ -10,7 +10,7 @@ import Common from './common';
 import DiscordMessaging from './store/discord-messaging';
 
 const LOGGER_LETTER = 'Config';
-const Config = (() => {
+const ConfigProcessor = (() => {
   const getFields = (config) => {
     Logger.colorDebug('GetFields', { url: config.url, name: config.name });
     const fields = [{ name: 'URL', value: config.url }];
@@ -63,7 +63,7 @@ const Config = (() => {
     }
   };
 
-  const schedule = async (config) => {
+  const schedule = async (config:Configuration) => {
     Logger.colorDebug('Schedule', { startTime: config.startTime });
     const rDate = new Date();
     rDate.setHours(Number(config.startTime.split(':')[0]));
@@ -77,7 +77,7 @@ const Config = (() => {
   };
 
   const checkStartTime = async (config: Configuration) => {
-    if (config.startTime && config.startTime.match(/^\d{2}:\d{2}:\d{2}:\d{3}$/)) {
+    if (config.startTime?.match(/^\d{2}:\d{2}:\d{2}:\d{3}$/)) {
       await schedule(config);
     } else {
       await wait(config.initWait, `${LOGGER_LETTER} initWait`);
@@ -103,4 +103,4 @@ const Config = (() => {
   return { checkStartType };
 })();
 
-export default Config;
+export default ConfigProcessor;

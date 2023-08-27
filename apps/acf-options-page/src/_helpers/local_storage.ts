@@ -14,7 +14,7 @@ export class LocalStorage {
     }
   }
 
-  static getItem(key: string, fallback: any) {
+  static getItem(key: string, fallback?: any) {
     const value = localStorage.getItem(key);
     // Value is not null
     if (value && value !== null && value !== 'null' && value !== 'undefined') {
@@ -28,6 +28,7 @@ export class LocalStorage {
       }
       // convert into JSON
       try {
+        console.log(value)
         return JSON.parse(value, dateParser);
       } catch (error) {
         return value;

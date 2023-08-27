@@ -12,8 +12,11 @@ describe('Settings', () => {
   });
 
   describe('Settings', () => {
-    test('checkiFrames', async () => {
+    test('open',async () =>{
       await browser.click('[data-testid="switch-settings"]');
+      await browser.getPage().waitForSelector('[data-testid="settings-modal"]')
+    })
+    test('checkiFrames', async () => {
       await browser.click('#settings-checkiFrames');
       const settings: Settings = await worker.getSettings();
       expect(settings.checkiFrames).toBeTruthy();
@@ -89,5 +92,8 @@ describe('Settings', () => {
         await browser.click('[data-testid="settings-back-button"]');
       });
     });
+    test('close',async () =>{
+      await browser.click('.btn-close');
+    })
   });
 });

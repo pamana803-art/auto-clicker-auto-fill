@@ -6,7 +6,7 @@ const NOTIFICATIONS_TITLE = 'Google Sheets';
 const NOTIFICATIONS_ID = 'sheets';
 
 export default class GoogleSheets {
-  async processPortMessage({ spreadsheetId, ranges }) {
+  async getSheets({ spreadsheetId, ranges }) {
     let response;
     if (!spreadsheetId || !ranges) {
       NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'spreadsheetId or ranges is not defined');
@@ -39,7 +39,7 @@ export default class GoogleSheets {
         return true;
       });
     } catch (error) {
-      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.messag);
+      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
       await GoogleOauth2.removeCachedAuthToken();
       return RESPONSE_CODE.ERROR;
     }

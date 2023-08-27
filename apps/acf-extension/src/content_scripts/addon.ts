@@ -126,10 +126,13 @@ const AddonProcessor = (() => {
   };
 
   //TODO
-  const check = async (actionSettings, batchRepeat, { elementFinder, value, condition, ...props }: Addon) => {
-    if (elementFinder && value && condition) {
-      console.groupCollapsed(LOGGER_LETTER);
-      return await start({ elementFinder, value, condition, ...props }, actionSettings, batchRepeat);
+  const check = async (actionSettings, batchRepeat:number, addon?: Addon) => {
+    if (addon) {
+      const { elementFinder, value, condition, ...props } = addon;
+      if (elementFinder && value && condition) {
+        console.groupCollapsed(LOGGER_LETTER);
+        return await start({ elementFinder, value, condition, ...props }, actionSettings, batchRepeat);
+      }
     }
     return true;
   };

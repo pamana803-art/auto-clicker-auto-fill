@@ -1,6 +1,6 @@
 import { Configuration, LOAD_TYPES, LOCAL_STORAGE_KEY, defaultSettings } from '@dhruv-techapps/acf-common';
 import { DataStore, Logger, LoggerColor } from '@dhruv-techapps/core-common';
-import Config from './config';
+import ConfigProcessor from './config';
 import Session from './util/session';
 import ConfigStorage from './store/config-storage';
 
@@ -13,7 +13,7 @@ async function loadConfig(loadType) {
         if ((config.loadType || settings.loadType || LOAD_TYPES.WINDOW) === loadType) {
           const { host } = document.location;
           Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, host, loadType);
-          await Config.checkStartType(settings, config);
+          await ConfigProcessor.checkStartType(settings, config);
           Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, host, 'END');
         }
       } else {

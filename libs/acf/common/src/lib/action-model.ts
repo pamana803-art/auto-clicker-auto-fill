@@ -76,6 +76,7 @@ export type Action = {
   addon?: Addon;
   statement?: ActionStatement;
   settings?: ActionSettings;
+  status?:string;
 };
 
 export const defaultAction: Action = {

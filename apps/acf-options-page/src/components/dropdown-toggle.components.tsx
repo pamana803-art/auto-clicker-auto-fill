@@ -11,14 +11,14 @@ export type DropdownToggleProps = PropsWithChildren<{
 
 export type DropdownToggleRef = HTMLButtonElement;
 
-export const DropdownToggle = React.forwardRef<DropdownToggleRef, DropdownToggleProps>(({ children, onClick, className, ariaLabel }, ref) => {
+export const DropdownToggle = React.forwardRef<DropdownToggleRef, DropdownToggleProps>(({ children, onClick, className, ...args }, ref) => {
   const DropdownToggleOnclick = (e) => {
     e.preventDefault();
     onClick(e);
   };
 
   return (
-    <button type='button' aria-label={ariaLabel} className={`btn border-0 ${className?.replace('dropdown-toggle', '')}`} data-toggle='dropdown' ref={ref} onClick={DropdownToggleOnclick}>
+    <button type='button' {...args} className={`btn border-0 ${className?.replace('dropdown-toggle', '')}`} data-toggle='dropdown' ref={ref} onClick={DropdownToggleOnclick}>
       {children}
     </button>
   );
