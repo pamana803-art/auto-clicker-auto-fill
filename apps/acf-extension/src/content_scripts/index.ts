@@ -17,7 +17,7 @@ async function loadConfig(loadType) {
           Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, host, 'END');
         }
       } else {
-        console.info('No config found', window.location.href);
+        console.info(chrome.runtime.getManifest().name, 'No config found', window.location.href);
       }
     });
   } catch (e) {

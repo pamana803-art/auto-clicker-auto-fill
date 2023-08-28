@@ -1,11 +1,27 @@
-import { DependencyList, EffectCallback, useEffect, useRef } from 'react';
+import { EffectCallback, useEffect, useRef } from 'react';
 
-export const useTimeout = (effect: EffectCallback, deps?: DependencyList) => {
+export const useTimeout = (effect: EffectCallback, deps?: string) => {
   const timeout = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    // Clear the previous timeout when the dependencies change or the component unmounts
+    return () => {
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+    };
+  }, [deps]);
+
   useEffect(() => {
     if (deps) {
-      clearTimeout(timeout.current);
+      // Set a new timeout when the dependencies change
       timeout.current = setTimeout(effect, 2000);
+      // Clear the timeout if the component unmounts
+      return () => {
+        if (timeout.current) {
+          clearTimeout(timeout.current);
+        }
+      };
     }
   }, [deps, effect]);
 };

@@ -24,7 +24,7 @@ function Config() {
 
   useTimeout(() => {
     dispatch(setConfigMessage());
-  }, [message]);
+  }, message);
 
   const onUpdate = (e) => {
     const update = getFieldNameValue(e, config);

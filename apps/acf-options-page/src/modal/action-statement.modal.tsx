@@ -25,7 +25,7 @@ const ActionStatementModal = () => {
 
   useTimeout(() => {
     dispatch(setActionStatementMessage());
-  }, [message]);
+  }, message);
 
   const onUpdateThen = (then: ACTION_RUNNING) => {
     dispatch(updateActionStatementThen(then));

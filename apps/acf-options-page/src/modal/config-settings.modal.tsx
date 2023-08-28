@@ -20,7 +20,7 @@ const ConfigSettingsModal = () => {
 
   useTimeout(() => {
     dispatch(setConfigSettingsMessage());
-  }, [message]);
+  }, message);
 
   const handleClose = () => {
     dispatch(switchConfigSettingsModal());

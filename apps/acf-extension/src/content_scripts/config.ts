@@ -1,6 +1,6 @@
 import { ActionService, NotificationsService } from '@dhruv-techapps/core-service';
 import { Logger } from '@dhruv-techapps/core-common';
-import { Configuration, START_TYPES, Settings, SettingsNotifications, defaultConfig } from '@dhruv-techapps/acf-common';
+import { Configuration, START_TYPES, Settings, SettingsNotifications, defaultConfig, defaultHotkey } from '@dhruv-techapps/acf-common';
 import { wait } from './util';
 import BatchProcessor from './batch';
 import { ConfigError } from './error';
@@ -90,7 +90,7 @@ const ConfigProcessor = (() => {
       Logger.colorDebug('Config Start Manually');
       ActionService.setBadgeText(chrome.runtime.id, { text: 'Manual' });
       ActionService.setTitle(chrome.runtime.id, { title: 'Start Manually' });
-      Hotkey.setup(config.hotkey || defaultConfig.hotkey, start.bind(this, config, notifications));
+      Hotkey.setup(config.hotkey || defaultHotkey, start.bind(this, config, notifications));
     } else {
       Logger.colorDebug('Config Start Automatically');
       ActionService.setBadgeText(chrome.runtime.id, { text: 'Auto' });

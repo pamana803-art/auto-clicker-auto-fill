@@ -13,7 +13,7 @@ const SettingMessage = () => {
 
   useTimeout(() => {
     dispatch(setSettingsMessage());
-  }, [message]);
+  }, message);
 
   if (!message) {
     return null;

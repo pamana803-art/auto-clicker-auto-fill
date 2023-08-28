@@ -7,6 +7,7 @@ import { wait } from './util';
 import AddonProcessor from './addon';
 import Common from './common';
 import { Sheets } from './util/google-sheets';
+import { ConfigError } from './error';
 
 const LOGGER_LETTER = 'Action';
 
@@ -39,8 +40,11 @@ const Actions = (() => {
     let i = 0;
     while (i < actions.length) {
       console.group(`${LOGGER_LETTER} #${i}`);
-      setBadge(batchRepeat, i);
       const action = actions[i];
+      if (!action.elementFinder) {
+        throw new ConfigError('Element Finder is blank', 'Configuration Action');
+      }
+      setBadge(batchRepeat, i);
       const statementResult = await checkStatement(actions, action);
       if (statementResult === true) {
         await wait(action.initWait, `${LOGGER_LETTER} initWait`);

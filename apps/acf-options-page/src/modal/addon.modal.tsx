@@ -30,7 +30,7 @@ const AddonModal = () => {
 
   useTimeout(() => {
     dispatch(setActionAddonMessage());
-  }, [message]);
+  }, message);
 
   const handleClose = () => {
     dispatch(switchActionAddonModal());

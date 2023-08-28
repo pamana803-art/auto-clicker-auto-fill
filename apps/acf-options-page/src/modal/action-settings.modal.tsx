@@ -29,7 +29,7 @@ const ActionSettingsModal = () => {
 
   useTimeout(() => {
     dispatch(setActionSettingsMessage());
-  }, [message]);
+  }, message);
 
   const handleClose = () => {
     dispatch(switchActionSettingsModal());

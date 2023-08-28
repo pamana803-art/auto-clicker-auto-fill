@@ -16,7 +16,7 @@ function Action() {
 
   useTimeout(() => {
     dispatch(setActionMessage());
-  }, [message]);
+  }, message);
 
   const onColumnChange = (e) => {
     const column = e.currentTarget.getAttribute('data-column');

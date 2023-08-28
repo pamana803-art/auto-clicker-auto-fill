@@ -28,8 +28,8 @@ const BatchProcessor = (() => {
     if (batch?.repeat > 0) {
       for (let i = 0; i < batch.repeat; i += 1) {
         console.group(`${LOGGER_LETTER} #${i + 1}`);
-        if (batch.repeatInterval) {
-          await wait(batch.repeatInterval, `${LOGGER_LETTER} Repeat`, batch.repeat, '<interval>');
+        if (batch?.repeatInterval) {
+          await wait(batch?.repeatInterval, `${LOGGER_LETTER} Repeat`, batch?.repeat, '<interval>');
         }
         await Actions.start(actions, i + 1, sheets);
         if (settings.notifications.onBatch) {
@@ -48,7 +48,7 @@ const BatchProcessor = (() => {
       // eslint-disable-next-line no-constant-condition
       while (true) {
         if (batch?.repeatInterval) {
-          await wait(batch.repeatInterval, `${LOGGER_LETTER} Repeat`, '∞', '<interval>');
+          await wait(batch?.repeatInterval, `${LOGGER_LETTER} Repeat`, '∞', '<interval>');
         }
         await Actions.start(actions, i, sheets);
         i += 1;

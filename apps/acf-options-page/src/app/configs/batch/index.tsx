@@ -12,7 +12,7 @@ function Batch() {
   const dispatch = useAppDispatch();
   useTimeout(() => {
     dispatch(setBatchMessage());
-  }, [message]);
+  }, message);
 
   return (
     <Accordion>
