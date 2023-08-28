@@ -6,7 +6,7 @@ import { blogSelector, hideBlog } from '../store/blog/blog.slice';
 const BlogModal = () => {
   const { t } = useTranslation();
 
-  const { visible, version, data } = useAppSelector(blogSelector);
+  const { visible, title, content } = useAppSelector(blogSelector);
   const dispatch = useAppDispatch();
   const handleClose = () => dispatch(hideBlog());
   const onShow = () => {
@@ -16,9 +16,9 @@ const BlogModal = () => {
   return (
     <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow}>
       <Modal.Header>
-        <Modal.Title as='h6'>Version {version}</Modal.Title>
+        <Modal.Title as='h3'>{title}</Modal.Title>
       </Modal.Header>
-      {data ? <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }} dangerouslySetInnerHTML={{ __html: data }} /> : <Alert>Blog content not found</Alert>}
+      {content ? <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }} dangerouslySetInnerHTML={{ __html: content }} /> : <Alert>Blog content not found</Alert>}
       <Modal.Footer className='justify-content-end'>
         <Button type='button' variant='outline-primary px-5' onClick={handleClose}>
           {t('common.close')}
