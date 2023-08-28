@@ -28,7 +28,7 @@ export class LocalStorage {
       }
       // convert into JSON
       try {
-        console.log(value)
+        console.log(value);
         return JSON.parse(value, dateParser);
       } catch (error) {
         return value;

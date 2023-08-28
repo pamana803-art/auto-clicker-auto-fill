@@ -51,10 +51,10 @@ const ReorderConfigsModal = () => {
           </div>
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='button' variant='outline-primary px-5' onClick={handleClose} data-testid="configurations-reorder-close">
+          <Button type='button' variant='outline-primary px-5' onClick={handleClose} data-testid='configurations-reorder-close'>
             {t('common.close')}
           </Button>
-          <Button type='submit' variant='primary px-5' className='ml-3' id='reorder-configs-button' data-testid="configurations-reorder-save">
+          <Button type='submit' variant='primary px-5' className='ml-3' id='reorder-configs-button' data-testid='configurations-reorder-save'>
             {t('common.save')}
           </Button>
         </Modal.Footer>

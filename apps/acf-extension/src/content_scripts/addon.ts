@@ -126,7 +126,7 @@ const AddonProcessor = (() => {
   };
 
   //TODO
-  const check = async (actionSettings, batchRepeat:number, addon?: Addon) => {
+  const check = async (actionSettings, batchRepeat: number, addon?: Addon) => {
     if (addon) {
       const { elementFinder, value, condition, ...props } = addon;
       if (elementFinder && value && condition) {

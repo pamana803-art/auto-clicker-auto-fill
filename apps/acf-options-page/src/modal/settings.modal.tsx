@@ -47,7 +47,7 @@ const SettingsModal = () => {
   };
 
   return (
-    <Modal show={visible} onHide={handleClose} size='lg' onShow={onShow} data-testid="settings-modal">
+    <Modal show={visible} onHide={handleClose} size='lg' onShow={onShow} data-testid='settings-modal'>
       <Form>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>

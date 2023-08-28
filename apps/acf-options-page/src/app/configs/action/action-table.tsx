@@ -15,8 +15,7 @@ import { Action } from '@dhruv-techapps/acf-common';
 import { defaultColumn } from './editable-cell';
 import { actionSelector } from '@apps/acf-options-page/src/store/config/action/action.slice';
 
-
-type ActionMeta = { dataType: string; list: string; pattern: string; required: boolean; width?: string } 
+type ActionMeta = { dataType: string; list: string; pattern: string; required: boolean; width?: string };
 const ActionTable = () => {
   const { t } = useTranslation();
   const { actions } = useAppSelector(selectedConfigSelector);
@@ -34,13 +33,13 @@ const ActionTable = () => {
     result && dispatch(removeAction(Number(rowIndex)));
   };
 
-  const columns = useMemo<ColumnDef<Action,ActionMeta>[]>(
+  const columns = useMemo<ColumnDef<Action, ActionMeta>[]>(
     () => [
       {
         header: t('action.initWait'),
         accessorKey: 'initWait',
         size: 100,
-        maxSize:100,
+        maxSize: 100,
         meta: {
           width: '100px',
           dataType: 'number',
@@ -50,7 +49,7 @@ const ActionTable = () => {
       },
       {
         header: t('action.name'),
-        minSize:100,
+        minSize: 100,
         size: 150,
         maxSize: 200,
         accessorKey: 'name',
@@ -61,8 +60,8 @@ const ActionTable = () => {
             {t('action.elementFinder')} <small className='text-danger'>*</small> <ElementFinderPopover />
           </>
         ),
-        minSize:400,
-        maxSize:1000,
+        minSize: 400,
+        maxSize: 1000,
         accessorKey: 'elementFinder',
         meta: {
           list: 'elementFinder',
@@ -75,8 +74,8 @@ const ActionTable = () => {
             {t('action.value')} <ValuePopover />
           </>
         ),
-        minSize:400,
-        maxSize:1000,
+        minSize: 400,
+        maxSize: 1000,
         accessorKey: 'value',
         meta: {
           list: 'value',

@@ -29,6 +29,13 @@ export const actionActions = {
     const { configs, selectedConfigIndex } = state;
     const { name, value, index } = action.payload;
     configs[selectedConfigIndex].actions[index][name] = value;
+    const { error } = configs[selectedConfigIndex].actions[index];
+    if (error) {
+      const index = error.indexOf(name);
+      if (index > -1) {
+        error.splice(index, 1);
+      }
+    }
   },
   removeAction: (state: ConfigStore, action: PayloadAction<number>) => {
     const { configs, selectedConfigIndex } = state;

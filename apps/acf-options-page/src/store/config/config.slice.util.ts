@@ -3,11 +3,11 @@ import { blogCheckAPI } from '../blog';
 
 export const getConfigName = (url?: string) => {
   if (url && url.match('://.*') !== null) {
-    const domainNames = url.split('/')[2].split(".")
-    if(domainNames.length > 2){
-      return domainNames.slice(-2).join(".")
+    const domainNames = url.split('/')[2].split('.');
+    if (domainNames.length > 2) {
+      return domainNames.slice(-2).join('.');
     }
-    return domainNames.join(".");
+    return domainNames.join('.');
   }
   return url;
 };

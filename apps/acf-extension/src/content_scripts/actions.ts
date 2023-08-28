@@ -19,7 +19,7 @@ const Actions = (() => {
 
   const checkStatement = async (actions: Array<Action>, action: Action) => {
     const actionStatus = actions.map((_action) => _action.status);
-    const result = await Statement.check(actionStatus, action.statement );
+    const result = await Statement.check(actionStatus, action.statement);
     return result;
   };
 

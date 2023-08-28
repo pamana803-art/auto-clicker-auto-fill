@@ -63,7 +63,7 @@ const ConfigProcessor = (() => {
     }
   };
 
-  const schedule = async (config:Configuration) => {
+  const schedule = async (config: Configuration) => {
     Logger.colorDebug('Schedule', { startTime: config.startTime });
     const rDate = new Date();
     rDate.setHours(Number(config.startTime.split(':')[0]));

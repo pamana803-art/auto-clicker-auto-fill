@@ -78,7 +78,7 @@ export default class GoogleSheets {
     }, {});
   }
 
-  async getValues(config: Configuration):Promise<Sheets> {
+  async getValues(config: Configuration): Promise<Sheets> {
     if (config.spreadsheetId) {
       const batchHighestRepeat = config.batch.repeat;
       const { sheets, sessionCount } = this.getSheets(config, batchHighestRepeat);

@@ -8,12 +8,11 @@ export const defaultColumn: Partial<ColumnDef<Action>> = {
   cell: Cell,
 };
 
-function Cell( {  getValue,  row: { index, original },  column: { id, columnDef },  table,}) {
-    const { meta } = columnDef;
+function Cell({ getValue, row: { index, original }, column: { id, columnDef }, table }) {
+  const { meta } = columnDef;
   const initialValue = getValue();
-
   const [value, setValue] = useState(initialValue);
-  const [isInvalid, setIsInvalid] = useState(original.error?.includes(id))
+  const [isInvalid, setIsInvalid] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onBlur = () => {
@@ -23,14 +22,15 @@ function Cell( {  getValue,  row: { index, original },  column: { id, columnDef 
   };
 
   const onChange = ({ currentTarget: { value: changeValue } }) => {
-    setIsInvalid(false)
+    setIsInvalid(false);
     setValue(changeValue);
   };
 
   // If the initialValue is changed external, sync it up with our state
   useEffect(() => {
+    setIsInvalid(original.error?.includes(id));
     setValue(initialValue);
-  }, [initialValue]);
+  }, [initialValue, id, original.error]);
 
   return (
     <Form.Control

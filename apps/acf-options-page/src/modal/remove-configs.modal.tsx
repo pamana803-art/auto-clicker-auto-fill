@@ -72,10 +72,10 @@ const RemoveConfigsModal = () => {
           </ListGroup>
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='button' variant='outline-primary px-5' onClick={handleClose} data-testid="configurations-remove-close">
+          <Button type='button' variant='outline-primary px-5' onClick={handleClose} data-testid='configurations-remove-close'>
             {t('common.close')}
           </Button>
-          <Button type='submit' variant='danger px-5' className='ml-3' id='remove-configs-button' data-testid="configurations-remove-save">
+          <Button type='submit' variant='danger px-5' className='ml-3' id='remove-configs-button' data-testid='configurations-remove-save'>
             {t('configuration.removeConfigs')}
           </Button>
         </Modal.Footer>

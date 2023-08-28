@@ -75,11 +75,11 @@ export type Action = {
   addon?: Addon;
   statement?: ActionStatement;
   settings?: ActionSettings;
-  status?:string;
+  status?: string;
   error?: string[];
 };
 
 export const defaultAction: Action = {
   elementFinder: '',
-  error:['elementFinder']
+  error: ['elementFinder'],
 };
