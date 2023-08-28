@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { ConfigStore } from '../../config.slice';
-import { ACTION_RUNNING, ActionCondition, defaultActionStatement } from '@dhruv-techapps/acf-common';
+import { ACTION_RUNNING, ActionCondition, ActionStatement, defaultActionCondition, defaultActionStatement } from '@dhruv-techapps/acf-common';
 
 export * from './action-statement.slice';
 
@@ -13,7 +13,13 @@ export const actionStatementActions = {
     const { name, value, index } = action.payload;
     const statement = configs[selectedConfigIndex].actions[selectedActionIndex].statement;
     if (statement) {
-      statement.conditions[index][name] = value;
+      if (statement.conditions) {
+        statement.conditions[index][name] = value;
+      } else {
+        statement.conditions = [{ ...defaultActionCondition, [name]: value, operator: undefined }];
+      }
+    } else {
+      configs[selectedConfigIndex].actions[selectedActionIndex].statement = { ...defaultActionStatement, conditions: [{ ...defaultActionCondition, [name]: value, operator: undefined }] };
     }
   },
   addActionStatementCondition: (state: ConfigStore, action: PayloadAction<ActionCondition>) => {
@@ -22,7 +28,7 @@ export const actionStatementActions = {
     if (statement) {
       statement.conditions.push(action.payload);
     } else {
-      configs[selectedConfigIndex].actions[selectedActionIndex].statement = { ...defaultActionStatement, conditions: [action.payload] };
+      configs[selectedConfigIndex].actions[selectedActionIndex].statement = { ...defaultActionStatement, conditions: [{ ...defaultActionCondition, operator: undefined }, action.payload] };
     }
   },
   removeActionStatementCondition: (state: ConfigStore, action: PayloadAction<number>) => {
@@ -35,8 +41,15 @@ export const actionStatementActions = {
     const statement = configs[selectedConfigIndex].actions[selectedActionIndex].statement;
     if (statement) {
       statement.then = action.payload;
+      if (action.payload === ACTION_RUNNING.GOTO) {
+        statement.goto = 0;
+      }
     } else {
-      configs[selectedConfigIndex].actions[selectedActionIndex].statement = { ...defaultActionStatement, then: action.payload };
+      const request: ActionStatement = { ...defaultActionStatement, then: action.payload };
+      if (action.payload === ACTION_RUNNING.GOTO) {
+        request.goto = 0;
+      }
+      configs[selectedConfigIndex].actions[selectedActionIndex].statement = request;
     }
   },
   updateActionStatementGoto: (state: ConfigStore, action: PayloadAction<number>) => {

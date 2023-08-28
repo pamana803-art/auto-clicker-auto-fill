@@ -187,28 +187,30 @@ const ActionTable = () => {
                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
               ))}
               <td align='center'>
-                {actions[row.id].elementFinder && (
-                  <Dropdown id='acton-dropdown-wrapper'>
-                    <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' aria-label='Action more option'>
-                      <ThreeDots width='24' height='24' />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => showAddon(row)}>{t('action.addon')}</Dropdown.Item>
-                      {index !== 0 && <Dropdown.Item onClick={() => showCondition(row)}>{t('modal.actionCondition.title')}</Dropdown.Item>}
-                      <Dropdown.Item onClick={() => showSettings(row)}>{t('action.settings')}</Dropdown.Item>
-                      <Dropdown.Divider />
-                      <Dropdown.Item
-                        onClick={() => {
-                          removeActionConfirm(row.id);
-                        }}
-                        className={actions.length === 1 ? '' : 'text-danger'}
-                        disabled={actions.length === 1}
-                      >
-                        {t('action.remove')}
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                )}
+                <Dropdown id='acton-dropdown-wrapper'>
+                  <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' aria-label='Action more option'>
+                    <ThreeDots width='24' height='24' />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {actions[row.id].elementFinder && (
+                      <>
+                        <Dropdown.Item onClick={() => showAddon(row)}>{t('action.addon')}</Dropdown.Item>
+                        <Dropdown.Item onClick={() => showSettings(row)}>{t('action.settings')}</Dropdown.Item>
+                        {index !== 0 && <Dropdown.Item onClick={() => showCondition(row)}>{t('modal.actionCondition.title')}</Dropdown.Item>}
+                        <Dropdown.Divider />
+                      </>
+                    )}
+                    <Dropdown.Item
+                      onClick={() => {
+                        removeActionConfirm(row.id);
+                      }}
+                      className={actions.length === 1 ? '' : 'text-danger'}
+                      disabled={actions.length === 1}
+                    >
+                      {t('action.remove')}
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </td>
             </tr>
           ))}

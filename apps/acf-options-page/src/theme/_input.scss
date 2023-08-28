@@ -11,7 +11,9 @@ form {
         top: 0.75rem;
       }
 
-      input + .form-label {
+      input + .form-label,
+      select + .form-label,
+      .input-group + .form-label {
         position: absolute;
         left: 0.5rem;
         top: -0.25rem;

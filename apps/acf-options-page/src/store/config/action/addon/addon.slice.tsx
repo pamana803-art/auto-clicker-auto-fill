@@ -20,7 +20,7 @@ const slice = createSlice({
       state.message = action.payload;
       state.error = undefined;
     },
-    setActionAddonError: (state, action: PayloadAction<string>) => {
+    setActionAddonError: (state, action: PayloadAction<string | undefined>) => {
       state.error = action.payload;
       state.message = undefined;
     },

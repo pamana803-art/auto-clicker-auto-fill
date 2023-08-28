@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { ColumnDef } from '@tanstack/react-table';
 import { Action } from '@dhruv-techapps/acf-common';
-import { IN_VALID_CLASS } from '@apps/acf-options-page/src/util';
+import { getFieldNameValue } from '@apps/acf-options-page/src/util/element';
 
 export const defaultColumn: Partial<ColumnDef<Action>> = {
   cell: Cell,
@@ -15,9 +15,10 @@ function Cell({ getValue, row: { index, original }, column: { id, columnDef }, t
   const [isInvalid, setIsInvalid] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const onBlur = () => {
-    if (!inputRef.current?.classList.contains(IN_VALID_CLASS)) {
-      table.options.meta?.updateData(index, id, value);
+  const onBlur = (e) => {
+    const update = getFieldNameValue(e, { [id]: initialValue });
+    if (update) {
+      table.options.meta?.updateData(index, update.name, update.value);
     }
   };
 

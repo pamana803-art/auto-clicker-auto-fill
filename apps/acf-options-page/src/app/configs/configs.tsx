@@ -26,7 +26,7 @@ function Configs() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScroll(window.pageYOffset >= 50);
+      setScroll(window.scrollY >= 50);
     };
 
     window.addEventListener('scroll', handleScroll);

@@ -13,7 +13,7 @@ type Props = {
 };
 
 function ActionStatementCondition({ condition = { ...defaultActionCondition }, conditionIndex }: Props) {
-  const { actionIndex, status, operator } = condition;
+  const { actionIndex, status, operator = ACTION_CONDITION_OPR.AND } = condition;
   const { actions } = useAppSelector(selectedConfigSelector);
 
   const dispatch = useAppDispatch();
@@ -27,7 +27,7 @@ function ActionStatementCondition({ condition = { ...defaultActionCondition }, c
   };
 
   const onUpdate = (e: ChangeEvent<HTMLSelectElement>) => {
-    const update = getFieldNameValue(e, actions[conditionIndex]);
+    const update = getFieldNameValue(e);
     if (update) {
       dispatch(updateActionStatementCondition({ ...update, index: conditionIndex }));
     }

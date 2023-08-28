@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NUMBER_FIELDS, IN_VALID_CLASS } from './validation';
 
-const getFieldNameValue = <T = any>(e, data): { name: string; value: T } | null => {
+const getFieldNameValue = <T = any>(e, data?): { name: string; value: T } | null => {
   if (e.target.classList.contains(IN_VALID_CLASS)) {
     return null;
   }
@@ -13,7 +13,6 @@ const getFieldNameValue = <T = any>(e, data): { name: string; value: T } | null 
   } else if (NUMBER_FIELDS.includes(name) && value.indexOf('e') === -1) {
     value = Number(value);
   }
-
   if (data && data[name] === value) {
     return null;
   }

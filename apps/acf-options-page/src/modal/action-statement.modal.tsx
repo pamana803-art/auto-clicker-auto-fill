@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect } from 'react';
 
 import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ACTION_RUNNING, defaultActionCondition } from '@dhruv-techapps/acf-common';
+import { ACTION_RUNNING, ActionStatement, defaultActionCondition, defaultActionStatement } from '@dhruv-techapps/acf-common';
 import { ActionStatementCondition } from './action-statement/action-statement-condition';
 import { Plus } from '../util/svg';
 import { selectedActionSelector } from '../store/config';
@@ -17,7 +17,8 @@ const FORM_ID = 'actionCondition';
 const ActionStatementModal = () => {
   const { t } = useTranslation();
   const { message, visible } = useAppSelector(actionStatementSelector);
-  const { statement } = useAppSelector(selectedActionSelector);
+  const action = useAppSelector(selectedActionSelector);
+  const statement: ActionStatement = action.statement || defaultActionStatement;
   const { actions } = useAppSelector(selectedConfigSelector);
   const { selectedActionIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
@@ -77,7 +78,7 @@ const ActionStatementModal = () => {
             </tr>
           </thead>
           <tbody>
-            {statement?.conditions.map((condition, index) => (
+            {statement.conditions.map((condition, index) => (
               <ActionStatementCondition key={index} conditionIndex={index} condition={condition} />
             ))}
           </tbody>
@@ -88,7 +89,7 @@ const ActionStatementModal = () => {
             <Col>
               <Form.Check
                 type='radio'
-                checked={statement?.then === ACTION_RUNNING.SKIP}
+                checked={statement.then === ACTION_RUNNING.SKIP}
                 value={ACTION_RUNNING.SKIP}
                 onChange={() => onUpdateThen(ACTION_RUNNING.SKIP)}
                 name='then'
@@ -98,7 +99,7 @@ const ActionStatementModal = () => {
             <Col>
               <Form.Check
                 type='radio'
-                checked={statement?.then === ACTION_RUNNING.PROCEED}
+                checked={statement.then === ACTION_RUNNING.PROCEED}
                 value={ACTION_RUNNING.PROCEED}
                 onChange={() => onUpdateThen(ACTION_RUNNING.PROCEED)}
                 name='then'
@@ -108,7 +109,7 @@ const ActionStatementModal = () => {
             <Col>
               <Form.Check
                 type='radio'
-                checked={statement?.then === ACTION_RUNNING.GOTO}
+                checked={statement.then === ACTION_RUNNING.GOTO}
                 value={ACTION_RUNNING.GOTO}
                 onChange={() => onUpdateThen(ACTION_RUNNING.GOTO)}
                 name='then'
@@ -117,10 +118,10 @@ const ActionStatementModal = () => {
             </Col>
           </Row>
         </Form>
-        {statement?.then === ACTION_RUNNING.GOTO && (
+        {statement.then === ACTION_RUNNING.GOTO && (
           <Row>
             <Col xs={{ span: 4, offset: 8 }}>
-              <Form.Select value={statement?.goto} onChange={onUpdateGoto} name='goto' required>
+              <Form.Select value={statement.goto} onChange={onUpdateGoto} name='goto' required>
                 {actions.map((_action, index) => (
                   <option key={index} value={index} disabled={index === Number(selectedActionIndex)}>
                     {index + 1} . {_action.name || _action.elementFinder}

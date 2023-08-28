@@ -8,7 +8,7 @@ import { getFieldNameValue } from '../util/element';
 import { AddonValueExtractorFlags } from './addon/value-extractor-flags';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { actionAddonSelector, setActionAddonMessage, switchActionAddonModal } from '../store/config/action/addon/addon.slice';
-import { updateActionAddon } from '../store/config';
+import { resetActionAddon, updateActionAddon } from '../store/config';
 import { selectedActionAddonSelector } from '../store/config';
 import { ErrorAlert } from '../components';
 import { useTimeout } from '../_hooks/message.hooks';
@@ -37,6 +37,7 @@ const AddonModal = () => {
   };
 
   const onReset = () => {
+    dispatch(resetActionAddon());
     handleClose();
   };
 

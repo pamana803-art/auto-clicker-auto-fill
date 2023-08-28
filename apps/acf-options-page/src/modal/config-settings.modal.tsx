@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
-import { LOAD_TYPES, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common';
+import { LOAD_TYPES, START_TYPES, defaultConfig, defaultHotkey } from '@dhruv-techapps/acf-common';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { HotkeyPopover } from '../popover';
@@ -107,7 +107,7 @@ const ConfigSettingsModal = () => {
               <Row>
                 <Col md={12} sm={12} hidden={config.startType === START_TYPES.AUTO}>
                   <Form.Group controlId='hotkey'>
-                    <FormControl placeholder={defaultConfig.hotkey} onKeyDown={onKeyDown} defaultValue={config.hotkey} name='hotkey' onBlur={onUpdate} pattern='HOT_KEY' />
+                    <FormControl placeholder={defaultConfig.hotkey} onKeyDown={onKeyDown} defaultValue={config.hotkey || defaultHotkey} name='hotkey' onBlur={onUpdate} pattern='HOT_KEY' />
                     <Form.Label>{t('modal.configSettings.hotkey')}</Form.Label>
                     <HotkeyPopover />
                   </Form.Group>

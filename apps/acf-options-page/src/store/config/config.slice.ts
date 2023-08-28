@@ -1,6 +1,6 @@
 import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { Configuration, defaultConfig } from '@dhruv-techapps/acf-common';
+import { Configuration, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common';
 import { configGetAllAPI } from './config.api';
 import { actionActions } from './action';
 import { batchActions } from './batch';
@@ -51,6 +51,9 @@ const slice = createSlice({
       const { name, value } = action.payload;
       const { configs, selectedConfigIndex } = state;
       configs[selectedConfigIndex][name] = value;
+      if (name === 'startType' && value === START_TYPES.AUTO) {
+        delete configs[selectedConfigIndex].hotkey;
+      }
     },
     removeConfig: (state) => {
       const { configs, selectedConfigIndex } = state;

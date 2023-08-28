@@ -10,12 +10,12 @@ type AddonRequest = { name: string; value: any };
 export const actionAddonActions = {
   updateActionAddon: (state: ConfigStore, action: PayloadAction<AddonRequest>) => {
     const { configs, selectedActionIndex, selectedConfigIndex } = state;
-    const { name, value } = action.payload;
+    const { name, value: addonValue } = action.payload;
     const { addon } = configs[selectedConfigIndex].actions[selectedActionIndex];
     if (addon) {
-      addon[name] = value;
+      addon[name] = addonValue;
     } else {
-      configs[selectedConfigIndex].actions[selectedActionIndex].addon = { ...defaultAddon, [name]: value };
+      configs[selectedConfigIndex].actions[selectedActionIndex].addon = { ...defaultAddon, [name]: addonValue };
     }
   },
   resetActionAddon: (state: ConfigStore) => {

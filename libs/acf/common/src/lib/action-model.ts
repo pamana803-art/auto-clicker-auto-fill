@@ -22,7 +22,7 @@ export enum ACTION_CONDITION_OPR {
 export type ActionCondition = {
   actionIndex: number;
   status: ACTION_STATUS;
-  operator: ACTION_CONDITION_OPR;
+  operator?: ACTION_CONDITION_OPR;
 };
 
 export const defaultActionCondition = {
@@ -40,7 +40,7 @@ export type ActionStatement = {
 };
 
 export const defaultActionStatement = {
-  conditions: [{ ...defaultActionCondition }],
+  conditions: [{ ...defaultActionCondition, operator: undefined }],
   then: ACTION_RUNNING.PROCEED,
 };
 

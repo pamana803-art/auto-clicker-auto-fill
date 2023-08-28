@@ -17,7 +17,7 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (/(DEV|BETA)/.test(process.env.NX_VARIANT || '')) {
+    if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
       window.document.title = `${APP_NAME} [${process.env.NX_VARIANT}]`;
     } else {
       window.document.title = APP_NAME;
