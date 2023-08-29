@@ -1,6 +1,6 @@
 /*global chrome*/
 
-import { AUTO_BACKUP, GOOGLE_SCOPES, GOOGLE_SCOPES_KEY, LOCAL_STORAGE_KEY, defaultConfig, defaultSettings } from '@dhruv-techapps/acf-common';
+import { AUTO_BACKUP, GOOGLE_SCOPES, LOCAL_STORAGE_KEY, defaultConfig, defaultSettings } from '@dhruv-techapps/acf-common';
 import GoogleOauth2 from './google-oauth2';
 import { NotificationHandler } from './notifications';
 
@@ -14,7 +14,8 @@ const MINUTES_IN_DAY = 1440;
 const NOTIFICATIONS_TITLE = 'Google Drive Backup';
 const NOTIFICATIONS_ID = 'sheets';
 
-export default class GoogleBackup {
+export default class GoogleBackup extends GoogleOauth2 {
+  scopes = [GOOGLE_SCOPES.DRIVE, GOOGLE_SCOPES.PROFILE];
   async setAlarm(autoBackup) {
     const alarmInfo: chrome.alarms.AlarmCreateInfo = { when: Date.now() + 500 };
     await chrome.alarms.clear(BACKUP_ALARM);
@@ -40,7 +41,7 @@ export default class GoogleBackup {
 
   async checkInvalidCredentials(message) {
     if (message === 'Invalid Credentials' || message.includes('invalid authentication credentials')) {
-      await GoogleOauth2.removeCachedAuthToken();
+      await this.removeCachedAuthToken();
       NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Token expired reauthenticate!');
       return true;
     }
@@ -114,7 +115,7 @@ export default class GoogleBackup {
     form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
     form.append('file', new Blob([JSON.stringify(data)], { type: 'plain/text' }));
 
-    const headers = await GoogleOauth2.getHeaders();
+    const headers = await this.getHeaders(this.scopes);
     const options = {
       headers,
       method: fileId ? 'PATCH' : 'POST',
@@ -133,8 +134,7 @@ export default class GoogleBackup {
   }
 
   async list() {
-    await GoogleOauth2.addScope(GOOGLE_SCOPES[GOOGLE_SCOPES_KEY.DRIVE]);
-    const headers = await GoogleOauth2.getHeaders();
+    const headers = await this.getHeaders(this.scopes);
     const response = await fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&fields=files(id%2C%20name)&pageSize=10', { headers });
     if (response.status === 401) {
       const { error } = await response.json();
@@ -145,7 +145,7 @@ export default class GoogleBackup {
   }
 
   async get(fileId) {
-    const headers = await GoogleOauth2.getHeaders();
+    const headers = await this.getHeaders(this.scopes);
     const result = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, { headers });
     const file = await result.json();
     return file;

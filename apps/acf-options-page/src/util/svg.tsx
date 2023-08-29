@@ -26,3 +26,4 @@ export { ReactComponent as BellFill } from 'bootstrap-icons/icons/bell-fill.svg'
 export { ReactComponent as ArrowRepeat } from 'bootstrap-icons/icons/arrow-repeat.svg';
 export { ReactComponent as FileSpreadsheet } from 'bootstrap-icons/icons/file-spreadsheet.svg';
 export { ReactComponent as Youtube } from 'bootstrap-icons/icons/youtube.svg';
+export { ReactComponent as FileSpreadsheetFill } from 'bootstrap-icons/icons/file-spreadsheet-fill.svg';

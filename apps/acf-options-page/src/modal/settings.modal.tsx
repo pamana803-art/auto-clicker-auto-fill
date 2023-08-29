@@ -5,22 +5,25 @@ import { getFieldNameValue } from '../util/element';
 import { SettingNotifications } from './settings/notifications';
 import { SettingRetry } from './settings/retry';
 import { SettingMessage } from './settings/message';
-import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill } from '../util';
-import { SettingsBackup } from './settings/backup';
-import { SettingGoogleSheets } from './settings/google-sheets';
+import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill, FileSpreadsheetFill } from '../util';
+import { SettingsGoogleBackup } from './settings/google-backup';
 import { ErrorAlert } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
-import { settingsGetAPI } from '../store/settings/settings.api';
+import { googleGetAPI, settingsGetAPI } from '../store/settings/settings.api';
+import { SettingGoogleSheets } from './settings/google-sheets';
+import { themeSelector } from '../store/theme.slice';
 
 enum SETTINGS_PAGE {
-  NOTIFICATION = 'notification',
-  RETRY = 'retry',
-  BACKUP = 'backup',
+  NOTIFICATION = 'Show Notification',
+  RETRY = 'Retry',
+  BACKUP = 'Backup',
+  SHEETS = 'Google Sheets',
 }
 
-const SettingsModal = () => {
+export const SettingsModal = () => {
   const { t } = useTranslation();
+  const theme = useAppSelector(themeSelector);
   const [page, setPage] = useState<SETTINGS_PAGE>();
   const { error, settings, visible } = useAppSelector(settingsSelector);
   const dispatch = useAppDispatch();
@@ -32,6 +35,7 @@ const SettingsModal = () => {
   useEffect(() => {
     if (chrome.runtime) {
       dispatch(settingsGetAPI());
+      dispatch(googleGetAPI());
     }
   }, [dispatch]);
 
@@ -51,12 +55,13 @@ const SettingsModal = () => {
       <Form>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>
-            {page && (
+            {page ? (
               <Button onClick={() => setPage(undefined)} data-testid='settings-back-button' variant='link' className='me-2 p-0 d-inline-flex align-items-center'>
                 <ChevronLeft width='24' height='24' />
               </Button>
+            ) : (
+              <>{t('modal.settings.title')}</>
             )}
-            {t('modal.settings.title')}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -64,7 +69,7 @@ const SettingsModal = () => {
           {!page && (
             <ol className='list-group'>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} variant='light' className='d-flex justify-content-between w-100' data-testid='settings-notification'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-notification'>
                   <div className='fw-bold'>
                     <BellFill width='24' height='24' className='me-2' />
                     {t('modal.settings.notification.title')}
@@ -73,7 +78,7 @@ const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} variant='light' className='d-flex justify-content-between w-100' data-testid='settings-retry'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-retry'>
                   <div className='fw-bold'>
                     <ArrowRepeat width='24' height='24' className='me-2' />
                     {t('modal.settings.retry.title')}
@@ -82,7 +87,7 @@ const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} variant='light' className='d-flex justify-content-between w-100' data-testid='settings-backup'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-backup'>
                   <div className='fw-bold'>
                     <CloudArrowUpFill width='24' height='24' className='me-2' /> Backup
                   </div>
@@ -90,7 +95,12 @@ const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <SettingGoogleSheets />
+                <Button onClick={() => setPage(SETTINGS_PAGE.SHEETS)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-backup'>
+                  <div className='fw-bold'>
+                    <FileSpreadsheetFill width='24' height='24' className='me-2' /> Google Sheets
+                  </div>
+                  <ChevronRight width='24' height='24' />
+                </Button>
               </li>
               <li className='list-group-item d-flex justify-content-between align-items-center'>
                 <Form.Label className='ms-2 me-auto' htmlFor='settings-checkiFrames'>
@@ -103,18 +113,11 @@ const SettingsModal = () => {
           )}
           {page === SETTINGS_PAGE.NOTIFICATION && <SettingNotifications />}
           {page === SETTINGS_PAGE.RETRY && <SettingRetry />}
-          {page === SETTINGS_PAGE.BACKUP && <SettingsBackup />}
+          {page === SETTINGS_PAGE.BACKUP && <SettingsGoogleBackup />}
+          {page === SETTINGS_PAGE.SHEETS && <SettingGoogleSheets />}
         </Modal.Body>
         <SettingMessage />
       </Form>
     </Modal>
   );
 };
-SettingsModal.defaultProps = {};
-
-SettingsModal.propTypes = {
-  // confirmRef: PropTypes.shape({ current: PropTypes.shape({ confirm: PropTypes.func.isRequired }) }).isRequired,
-};
-
-SettingsModal.displayName = 'SettingsModal';
-export { SettingsModal };

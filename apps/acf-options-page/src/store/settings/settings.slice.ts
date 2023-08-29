@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { AUTO_BACKUP, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
-import { settingsGetAPI } from './settings.api';
+import { AUTO_BACKUP, GOOGLE_SCOPES, RESPONSE_CODE, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
+import { googleGetAPI, googleLoginAPI, settingsGetAPI } from './settings.api';
 
 type SettingsStore = {
   visible: boolean;
@@ -9,6 +9,8 @@ type SettingsStore = {
   error?: string;
   settings: Settings;
   message?: string;
+  google?: any;
+  googleScopes: Array<GOOGLE_SCOPES>;
 };
 
 type SettingsAction = {
@@ -16,7 +18,7 @@ type SettingsAction = {
   value: boolean;
 };
 
-const initialState: SettingsStore = { visible: false, loading: true, settings: defaultSettings };
+const initialState: SettingsStore = { visible: false, loading: true, settings: defaultSettings, googleScopes: [] };
 
 const slice = createSlice({
   name: 'settings',
@@ -64,6 +66,19 @@ const slice = createSlice({
     builder.addCase(settingsGetAPI.rejected, (state, action) => {
       state.error = action.error.message;
       state.loading = false;
+    });
+    builder.addCase(googleGetAPI.fulfilled, (state, action) => {
+      state.google = action.payload.google;
+      state.googleScopes = action.payload.googleScopes || [];
+    });
+    builder.addCase(googleLoginAPI.fulfilled, (state, action) => {
+      if (action.payload !== RESPONSE_CODE.ERROR) {
+        state.google = action.payload.google;
+        state.googleScopes = action.payload.googleScopes;
+      }
+    });
+    builder.addCase(googleLoginAPI.rejected, (state, action) => {
+      state.error = action.error.message;
     });
   },
 });

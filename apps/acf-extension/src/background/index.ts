@@ -13,6 +13,7 @@ import { Blog } from './check-blog';
 import { ACTION_POPUP } from '../common/constant';
 import { OPTIONS_PAGE_URL, UNINSTALL_URL } from '../common/environments';
 import GoogleOauth2 from './google-oauth2';
+import DiscordMessaging from './discord-messaging';
 
 try {
   /**
@@ -80,6 +81,7 @@ try {
    */
   const onMessageListener = {
     [RUNTIME_MESSAGE_ACF.DISCORD_OAUTH2]: new DiscordOauth2(),
+    [RUNTIME_MESSAGE_ACF.DISCORD_MESSAGING]: new DiscordMessaging(),
     [RUNTIME_MESSAGE_ACF.GOOGLE_OAUTH2]: new GoogleOauth2(),
     [RUNTIME_MESSAGE_ACF.GOOGLE_BACKUP]: new GoogleBackup(),
     [RUNTIME_MESSAGE_ACF.GOOGLE_SHEETS]: new GoogleSheets(),

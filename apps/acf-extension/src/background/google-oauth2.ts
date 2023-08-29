@@ -1,29 +1,28 @@
-import { GOOGLE_SCOPES, GOOGLE_SCOPES_KEY, LOCAL_STORAGE_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
+import { GOOGLE_SCOPES, LOCAL_STORAGE_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
 import { NotificationHandler } from './notifications';
 
 const NOTIFICATIONS_TITLE = 'Google OAuth';
 const NOTIFICATIONS_ID = 'authentication';
 
 export default class GoogleOauth2 {
-  static async removeCachedAuthToken() {
+  async removeCachedAuthToken() {
     const { token } = await chrome.identity.getAuthToken({ interactive: false });
     await chrome.identity.removeCachedAuthToken({ token });
     return true;
   }
 
-  async login(scope: GOOGLE_SCOPES_KEY) {
+  async login(scope: GOOGLE_SCOPES) {
+    if (!scope) {
+      throw new Error('Scopes not defined');
+    }
     try {
-      await GoogleOauth2.addScope(GOOGLE_SCOPES[GOOGLE_SCOPES_KEY.PROFILE]);
-      if (scope) {
-        await GoogleOauth2.addScope(GOOGLE_SCOPES[scope]);
-      } else {
-        await GoogleOauth2.addScope(GOOGLE_SCOPES[GOOGLE_SCOPES_KEY.SHEETS]);
-      }
-      const headers = await GoogleOauth2.getHeaders();
-      return await this.getCurrentUser(headers);
+      const headers = await this.getHeaders([GOOGLE_SCOPES.PROFILE, scope]);
+      const google = await this.getCurrentUser(headers);
+      const googleScopes = await this.#getScopes();
+      return { googleScopes, google };
     } catch (error) {
       NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
-      await GoogleOauth2.removeCachedAuthToken();
+      await this.removeCachedAuthToken();
       return RESPONSE_CODE.ERROR;
     }
   }
@@ -35,34 +34,49 @@ export default class GoogleOauth2 {
     return response;
   }
 
-  async remove() {
-    await GoogleOauth2.removeCachedAuthToken();
-    await chrome.storage.local.remove(LOCAL_STORAGE_KEY.GOOGLE);
+  async remove(scope: GOOGLE_SCOPES) {
+    const scopes = await this.#removeScope(scope);
+    if (scopes.length === 1) {
+      await chrome.storage.local.remove(LOCAL_STORAGE_KEY.GOOGLE);
+      await this.removeCachedAuthToken();
+    }
     return RESPONSE_CODE.REMOVED;
   }
 
-  static async getAuthToken() {
-    const { [LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.GOOGLE_SCOPES);
-    if (!scopes) {
-      throw new Error('Scopes not defined');
-    }
+  async getAuthToken(scopes: Array<GOOGLE_SCOPES>) {
     const { token } = await chrome.identity.getAuthToken({ interactive: true, scopes });
+    for (const scope of scopes) {
+      await this.#addScope(scope);
+    }
     return token;
   }
 
-  static async getHeaders() {
-    const token = await GoogleOauth2.getAuthToken();
+  async getHeaders(scopes: Array<GOOGLE_SCOPES>) {
+    const token = await this.getAuthToken(scopes);
     return new Headers({ Authorization: `Bearer ${token}` });
   }
 
-  static async addScope(scope: GOOGLE_SCOPES) {
-    if (!scope) {
-      throw new Error('Scope is null | undefined');
-    }
+  async #addScope(scope: GOOGLE_SCOPES) {
     const { [LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes = [] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.GOOGLE_SCOPES);
     if (!scopes.includes(scope)) {
       scopes.push(scope);
       await chrome.storage.local.set({ [LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes });
     }
+    return scopes;
+  }
+
+  async #getScopes() {
+    const { [LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes = [] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.GOOGLE_SCOPES);
+    return scopes;
+  }
+
+  async #removeScope(scope: GOOGLE_SCOPES) {
+    const { [LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes = [] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.GOOGLE_SCOPES);
+    const index = scopes.findIndex(scope);
+    if (index !== -1) {
+      scopes.splice(index, 1);
+      await chrome.storage.local.set({ [LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes });
+    }
+    return scopes;
   }
 }

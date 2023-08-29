@@ -1,11 +1,12 @@
-import { LOCAL_STORAGE_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
+import { GOOGLE_SCOPES, LOCAL_STORAGE_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
 import GoogleOauth2 from './google-oauth2';
 import { NotificationHandler } from './notifications';
 
 const NOTIFICATIONS_TITLE = 'Google Sheets';
 const NOTIFICATIONS_ID = 'sheets';
 
-export default class GoogleSheets {
+export default class GoogleSheets extends GoogleOauth2 {
+  scopes = [GOOGLE_SCOPES.DRIVE, GOOGLE_SCOPES.PROFILE];
   async getSheets({ spreadsheetId, ranges }) {
     let response;
     if (!spreadsheetId || !ranges) {
@@ -29,7 +30,7 @@ export default class GoogleSheets {
       return null;
     }
     try {
-      const headers = await GoogleOauth2.getHeaders();
+      const headers = await this.getHeaders(this.scopes);
       const response = await Promise.all(ranges.map((range) => fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`, { headers }).then((r) => r.json())));
       return response.filter((result) => {
         if (result.error) {
@@ -40,7 +41,7 @@ export default class GoogleSheets {
       });
     } catch (error) {
       NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
-      await GoogleOauth2.removeCachedAuthToken();
+      await this.removeCachedAuthToken();
       return RESPONSE_CODE.ERROR;
     }
   }

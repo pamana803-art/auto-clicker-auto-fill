@@ -1,13 +1,13 @@
 import { ActionService, NotificationsService } from '@dhruv-techapps/core-service';
 import { Logger } from '@dhruv-techapps/core-common';
-import { Configuration, START_TYPES, Settings, SettingsNotifications, defaultConfig, defaultHotkey } from '@dhruv-techapps/acf-common';
+import { Configuration, START_TYPES, Settings, SettingsNotifications, defaultHotkey } from '@dhruv-techapps/acf-common';
 import { wait } from './util';
 import BatchProcessor from './batch';
 import { ConfigError } from './error';
 import { Hotkey } from './hotkey';
 import GoogleSheets from './util/google-sheets';
 import Common from './common';
-import DiscordMessaging from './store/discord-messaging';
+import { DiscordMessagingService } from '@dhruv-techapps/acf-service';
 
 const LOGGER_LETTER = 'Config';
 const ConfigProcessor = (() => {
@@ -32,7 +32,7 @@ const ConfigProcessor = (() => {
       if (onConfig) {
         NotificationsService.create(chrome.runtime.id, { type: 'basic', title: 'Config Completed', message: config.name || config.url, silent: !sound, iconUrl: Common.getNotificationIcon() });
         if (discord) {
-          DiscordMessaging.push({ title: 'Configuration Finished', fields: getFields(config), color: '#198754' }).catch(Logger.colorError);
+          DiscordMessagingService.push(chrome.runtime.id, 'Configuration Finished', getFields(config), '#198754').catch(Logger.colorError);
         }
       }
     } catch (e) {
@@ -44,17 +44,18 @@ const ConfigProcessor = (() => {
         if (onError) {
           NotificationsService.create(chrome.runtime.id, { type: 'basic', ...error, silent: !sound, iconUrl: Common.getNotificationIcon() }, 'error');
           if (discord) {
-            DiscordMessaging.push({
-              title: e.title || 'Configuration Error',
-              fields: [
+            DiscordMessagingService.push(
+              chrome.runtime.id,
+              e.title || 'Configuration Error',
+              [
                 ...getFields(config),
                 ...e.message.split('\n').map((info) => {
                   const [name, value] = info.split(':');
                   return { name, value: value.replace(/'/g, '`') };
                 }),
               ],
-              color: '#dc3545',
-            }).catch(Logger.colorError);
+              '#dc3545'
+            ).catch(Logger.colorError);
           }
         }
       } else {

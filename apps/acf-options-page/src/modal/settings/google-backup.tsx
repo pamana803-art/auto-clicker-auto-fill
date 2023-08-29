@@ -1,28 +1,37 @@
-import { ListGroup, NavDropdown } from 'react-bootstrap';
+import { Button, Image, ListGroup, NavDropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { AUTO_BACKUP, GOOGLE_SCOPES_KEY, RESPONSE_CODE } from '@dhruv-techapps/acf-common';
+import { AUTO_BACKUP, GOOGLE_SCOPES } from '@dhruv-techapps/acf-common';
 import { CloudArrowUpFill } from '../../util';
-import { GoogleBackupService, GoogleOauthService } from '@dhruv-techapps/acf-service';
+import { GoogleBackupService } from '@dhruv-techapps/acf-service';
+import GoogleSignInLight from '../../assets/btn_google_signin_light_normal_web.png';
+import GoogleSignInDark from '../../assets/btn_google_signin_dark_normal_web.png';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { settingsSelector, updateSettingsBackup } from '../../store/settings/settings.slice';
 import { useConfirmationModalContext } from '../../_providers/confirm.provider';
+import { themeSelector } from '../../store/theme.slice';
+import { googleLoginAPI } from '../../store/settings/settings.api';
 
-export function SettingsBackup() {
+export function SettingsGoogleBackup() {
   const { t } = useTranslation();
-
-  const { backup } = useAppSelector(settingsSelector).settings;
+  const theme = useAppSelector(themeSelector);
   const modalContext = useConfirmationModalContext();
+  const { settings, google, googleScopes } = useAppSelector(settingsSelector);
+  const { backup } = settings;
+
+  const scope = GOOGLE_SCOPES.DRIVE;
   const dispatch = useAppDispatch();
+
+  const connect = async () => {
+    dispatch(googleLoginAPI(scope));
+  };
+
   const onBackup = async (autoBackup?: AUTO_BACKUP) => {
-    const response = await GoogleOauthService.loginWithScope(window.EXTENSION_ID, GOOGLE_SCOPES_KEY.DRIVE);
-    if (response !== RESPONSE_CODE.ERROR) {
-      if (autoBackup) {
-        GoogleBackupService.autoBackup(window.EXTENSION_ID, autoBackup).then(() => {
-          dispatch(updateSettingsBackup(autoBackup));
-        });
-      } else {
-        GoogleBackupService.backup(window.EXTENSION_ID);
-      }
+    if (autoBackup) {
+      GoogleBackupService.autoBackup(window.EXTENSION_ID, autoBackup).then(() => {
+        dispatch(updateSettingsBackup(autoBackup));
+      });
+    } else {
+      GoogleBackupService.backup(window.EXTENSION_ID).catch(console.error);
     }
   };
 
@@ -35,8 +44,25 @@ export function SettingsBackup() {
     result && GoogleBackupService.restore(window.EXTENSION_ID);
   };
 
+  if (!google || !googleScopes.includes(scope)) {
+    return (
+      <div className='d-flex flex-column align-items-start'>
+        <b className='mx-3 text-muted'>Connect with Google Drive</b>
+        <Button variant='link' onClick={connect} data-testid='google-backup-connect'>
+          <img src={theme === 'light' ? GoogleSignInLight : GoogleSignInDark} alt='Logo' />
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <>
+      <div>
+        <b className='text-muted d-block mb-2'>Google Drive Backup</b>
+        <Image alt={google.name} className='me-2' title={google.name} src={google.picture} roundedCircle width='30' height='30' />
+        {google.name}
+      </div>
+      <hr />
       <ol className='list-group'>
         {backup?.lastBackup && (
           <ListGroup.Item as='li'>
