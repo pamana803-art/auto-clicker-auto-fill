@@ -1,11 +1,11 @@
 import { Logger } from '@dhruv-techapps/core-common';
 
-export const sleep = async (msec) =>
+export const sleep = async (msec: number) =>
   new Promise((resolve) => {
     setTimeout(resolve, msec);
   });
 
-export const wait = async (time: number, type = '', ...args) => {
+export const wait = async (time?: number, type = '', ...args) => {
   if (time) {
     let waitTime = Number(time) * 1000;
     if (/^\d+(\.\d+)?e\d+(\.\d+)?$/.test(time.toString())) {

@@ -1,11 +1,11 @@
 import { Configuration, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 
 export default class ConfigStorage {
-  async getConfig() {
+  async getConfig(): Promise<Configuration | undefined> {
     const { href } = document.location;
     const storageResult = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
     const configs: Array<Configuration> = storageResult.configs || [];
-    let result = null;
+    let result: Configuration | undefined;
     let fullMatch = false;
     configs
       .filter((config) => config.enable && config.url)

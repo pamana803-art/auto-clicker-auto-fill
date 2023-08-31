@@ -8,30 +8,43 @@ export type Sheets = {
     startRange: string;
     endRange: string;
     sessionCount?: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     values: Array<any>;
   };
+};
+enum Dimension {
+  ROWS,
+  COLUMNS,
+}
+type ValueRange = {
+  range: string;
+  majorDimension: Dimension;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  values: Array<any>;
 };
 
 export default class GoogleSheets {
   getSheets(config: Configuration, batchHighestRepeat: number) {
     const sheets = new Map<string, Set<string>>();
-    let sessionCount: number;
+    let sessionCount: number | undefined;
     config.actions
-      .filter(({ value }) => /^googlesheets::/i.test(value))
+      .filter(({ value }) => value && /^googlesheets::/i.test(value))
       .forEach(({ value }) => {
-        value = value.replace(/googlesheets::/i, '');
-        const [sheetName, range] = value.split('!');
-        const ranges = sheets.get(sheetName) || new Set<string>();
-        if (value.includes('<batchRepeat>')) {
-          ranges.add(range.replace('<batchRepeat>', '1'));
-          ranges.add(range.replace('<batchRepeat>', String(batchHighestRepeat + 1)));
-        } else if (value.includes('<sessionCount>')) {
-          sessionCount = sessionCount || (sessionCount = Session.getCount());
-          ranges.add(range.replace('<sessionCount>', String(sessionCount)));
-        } else {
-          ranges.add(range);
+        if (value) {
+          value = value.replace(/googlesheets::/i, '');
+          const [sheetName, range] = value.split('!');
+          const ranges = sheets.get(sheetName) || new Set<string>();
+          if (value.includes('<batchRepeat>')) {
+            ranges.add(range.replace('<batchRepeat>', '1'));
+            ranges.add(range.replace('<batchRepeat>', String(batchHighestRepeat + 1)));
+          } else if (value.includes('<sessionCount>')) {
+            sessionCount = sessionCount || (sessionCount = Session.getCount());
+            ranges.add(range.replace('<sessionCount>', String(sessionCount)));
+          } else {
+            ranges.add(range);
+          }
+          sheets.set(sheetName, ranges);
         }
-        sheets.set(sheetName, ranges);
       });
     return { sheets, sessionCount };
   }
@@ -44,8 +57,9 @@ export default class GoogleSheets {
       let hightestRow = 1;
       if (ranges instanceof Set) {
         ranges.forEach((range) => {
-          if (/(\D+)(\d+)/.test(range)) {
-            const [, column, row] = /(\D+)(\d+)/.exec(range);
+          const regexResult = /(\D+)(\d+)/.exec(range);
+          if (regexResult) {
+            const [, column, row] = regexResult;
             const rowIndex = Number(row);
             // Highest Range
             if (highestColumn.length < column.length || highestColumn < column) {
@@ -68,8 +82,8 @@ export default class GoogleSheets {
     });
   }
 
-  transformResult(result, sessionCount: number): Sheets {
-    return result.reduce((a, c) => {
+  transformResult(result: Array<ValueRange>, sessionCount?: number): Sheets {
+    return result.reduce((a: Sheets, c: ValueRange) => {
       const { range, values } = c;
       const [sheetName, ranges] = range.split('!');
       const [startRange, endRange] = ranges.split(':');
@@ -78,9 +92,9 @@ export default class GoogleSheets {
     }, {});
   }
 
-  async getValues(config: Configuration): Promise<Sheets> {
+  async getValues(config: Configuration): Promise<Sheets | undefined> {
     if (config.spreadsheetId) {
-      const batchHighestRepeat = config.batch?.repeat;
+      const batchHighestRepeat = config.batch?.repeat || 0;
       const { sheets, sessionCount } = this.getSheets(config, batchHighestRepeat);
       this.transformSheets(sheets);
       let result = await GoogleSheetsService.getSheets(
@@ -92,6 +106,5 @@ export default class GoogleSheets {
       Logger.colorDebug('Google Sheets', result);
       return result;
     }
-    return null;
   }
 }

@@ -12,6 +12,12 @@
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "allowJs": false,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "strict": true
   }
 }

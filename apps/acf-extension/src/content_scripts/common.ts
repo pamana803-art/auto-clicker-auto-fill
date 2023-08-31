@@ -1,9 +1,10 @@
-import { DataStore, Logger } from '@dhruv-techapps/core-common';
-import { ActionSettings, LOCAL_STORAGE_KEY, RETRY_OPTIONS, Settings } from '@dhruv-techapps/acf-common';
+import { Logger } from '@dhruv-techapps/core-common';
+import { ActionSettings, RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { ActionService } from '@dhruv-techapps/core-service';
 import { ConfigError } from './error/config-error';
 import { wait } from './util';
 import Sandbox from './sandbox';
+import SettingsStorage from './store/settings-storage';
 
 const LOGGER_LETTER = 'Common';
 const Common = (() => {
@@ -148,7 +149,7 @@ const Common = (() => {
         throw new ConfigError('elementFinder can not be empty!', 'Element Finder');
       }
       console.groupCollapsed(LOGGER_LETTER);
-      const { retryOption, retryInterval, retry, checkiFrames, iframeFirst } = { ...DataStore.getInst().getItem<Settings>(LOCAL_STORAGE_KEY.SETTINGS), ...settings };
+      const { retryOption, retryInterval, retry, checkiFrames, iframeFirst } = { ...(await new SettingsStorage().getSettings()), ...settings };
       let elements: Element[];
       if (iframeFirst) {
         elements = await checkIframe(elementFinder, retry, retryInterval);
