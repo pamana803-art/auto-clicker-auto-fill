@@ -1,6 +1,6 @@
-import { ChangeEvent, FormEvent, useEffect } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 
-import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
+import { Alert, Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ACTION_RUNNING, defaultActionCondition } from '@dhruv-techapps/acf-common';
 import { ActionStatementCondition } from './action-statement/action-statement-condition';
@@ -8,14 +8,13 @@ import { Plus } from '../util/svg';
 import { actionStatementSelector, setActionStatementMessage, switchActionStatementModal, syncActionStatement } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { addActionStatementCondition, configSelector, selectedConfigSelector, updateActionStatementGoto, updateActionStatementThen } from '../store/config';
-import { updateForm } from '../util/element';
 import { useTimeout } from '../_hooks/message.hooks';
 
 const FORM_ID = 'actionCondition';
 
 const ActionStatementModal = () => {
   const { t } = useTranslation();
-  const { message, visible, statement } = useAppSelector(actionStatementSelector);
+  const { message, visible, statement, error } = useAppSelector(actionStatementSelector);
   const { actions } = useAppSelector(selectedConfigSelector);
   const { selectedActionIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
@@ -32,22 +31,18 @@ const ActionStatementModal = () => {
     dispatch(updateActionStatementGoto(Number(e.currentTarget.value)));
   };
 
-  const handleClose = () => {
-    dispatch(switchActionStatementModal());
-  };
-
   const onReset = () => {
     dispatch(syncActionStatement());
-    handleClose();
+    onHide();
   };
 
   const addCondition = () => {
     dispatch(addActionStatementCondition({ ...defaultActionCondition }));
   };
 
-  useEffect(() => {
-    updateForm(FORM_ID, statement);
-  }, [statement]);
+  const onHide = () => {
+    dispatch(switchActionStatementModal());
+  };
 
   const onShow = () => {
     //:TODO
@@ -61,7 +56,7 @@ const ActionStatementModal = () => {
   };
 
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
+    <Modal show={visible} size='lg' onHide={onHide} onShow={onShow}>
       <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.actionCondition.title')}</Modal.Title>
@@ -84,7 +79,7 @@ const ActionStatementModal = () => {
             </thead>
             <tbody>
               {statement.conditions.map((condition, index) => (
-                <ActionStatementCondition key={index} conditionIndex={index} condition={condition} />
+                <ActionStatementCondition key={index} index={index} condition={condition} />
               ))}
             </tbody>
           </Table>
@@ -133,6 +128,16 @@ const ActionStatementModal = () => {
                 </Form.Select>
               </Col>
             </Row>
+          )}
+          {error && (
+            <Alert className='mt-3' variant='danger'>
+              {error}
+            </Alert>
+          )}
+          {message && (
+            <Alert className='mt-3' variant='success'>
+              {message}
+            </Alert>
           )}
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>

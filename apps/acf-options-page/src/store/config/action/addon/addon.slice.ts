@@ -16,8 +16,8 @@ const slice = createSlice({
   initialState,
   reducers: {
     updateActionAddon: (state, action) => {
-      const { name, value: addonValue } = action.payload;
-      state.addon[name] = addonValue;
+      const { name, value } = action.payload;
+      state.addon[name] = value;
     },
     switchActionAddonModal: (state, action: PayloadAction<Addon | undefined>) => {
       state.addon = action.payload || { ...defaultAddon };

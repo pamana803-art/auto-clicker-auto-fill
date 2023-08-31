@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonGroup, Form } from 'react-bootstrap';
-import { ACTION_CONDITION_OPR, ACTION_STATUS, ActionCondition, defaultActionCondition } from '@dhruv-techapps/acf-common';
+import { ACTION_CONDITION_OPR, ACTION_STATUS, ActionCondition } from '@dhruv-techapps/acf-common';
 import { X } from '../../util';
 import { getFieldNameValue } from '../../util/element';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -9,33 +9,34 @@ import { removeActionStatementCondition, selectedConfigSelector, updateActionSta
 
 type Props = {
   condition: ActionCondition;
-  conditionIndex: number;
+  index: number;
 };
 
-function ActionStatementCondition({ condition = { ...defaultActionCondition }, conditionIndex }: Props) {
+function ActionStatementCondition({ condition, index }: Props) {
   const { actionIndex, status, operator = ACTION_CONDITION_OPR.AND } = condition;
   const { actions } = useAppSelector(selectedConfigSelector);
 
   const dispatch = useAppDispatch();
 
   const changeOpr = (_operator: ACTION_CONDITION_OPR) => {
-    dispatch(updateActionStatementCondition({ name: 'operator', value: _operator, index: conditionIndex }));
+    dispatch(updateActionStatementCondition({ name: 'operator', value: _operator, index }));
   };
 
   const removeCondition = () => {
-    dispatch(removeActionStatementCondition(conditionIndex));
+    dispatch(removeActionStatementCondition(index));
   };
 
   const onUpdate = (e: ChangeEvent<HTMLSelectElement>) => {
     const update = getFieldNameValue(e);
     if (update) {
-      dispatch(updateActionStatementCondition({ ...update, index: conditionIndex }));
+      dispatch(updateActionStatementCondition({ ...update, index }));
     }
   };
+
   return (
     <tr>
       <td className='fw-bold'>
-        {conditionIndex !== 0 && (
+        {index !== 0 && (
           <ButtonGroup>
             <Button type='button' variant='outline-primary' className={operator === ACTION_CONDITION_OPR.OR ? 'active' : ''} onClick={() => changeOpr(ACTION_CONDITION_OPR.OR)}>
               OR
@@ -66,7 +67,7 @@ function ActionStatementCondition({ condition = { ...defaultActionCondition }, c
         </Form.Select>
       </td>
       <td>
-        <Button type='button' variant='link' className='ms-1 mt-2 p-0 text-danger' aria-label='Close' hidden={conditionIndex === 0} onClick={removeCondition}>
+        <Button type='button' variant='link' className='ms-1 mt-2 p-0 text-danger' aria-label='Close' hidden={index === 0} onClick={removeCondition}>
           <X width='30' height='30' />
         </Button>
       </td>
@@ -80,6 +81,6 @@ ActionStatementCondition.propTypes = {
     operator: PropTypes.string,
     status: PropTypes.string,
   }).isRequired,
-  conditionIndex: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
 };
 export { ActionStatementCondition };

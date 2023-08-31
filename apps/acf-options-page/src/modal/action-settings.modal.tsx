@@ -1,6 +1,6 @@
 import { FormEvent, useEffect } from 'react';
 
-import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { useTranslation } from 'react-i18next';
 
@@ -15,8 +15,16 @@ const FORM_ID = 'action-settings';
 
 const ActionSettingsModal = () => {
   const { t } = useTranslation();
-  const { message, visible, settings } = useAppSelector(actionSettingsSelector);
+  const { message, visible, settings, error } = useAppSelector(actionSettingsSelector);
   const dispatch = useAppDispatch();
+
+  useTimeout(() => {
+    dispatch(setActionSettingsMessage());
+  }, message);
+
+  useEffect(() => {
+    updateForm(FORM_ID, settings);
+  }, [settings]);
 
   const onUpdate = (e) => {
     const update = getFieldNameValue(e, settings);
@@ -25,23 +33,14 @@ const ActionSettingsModal = () => {
     }
   };
 
-  useTimeout(() => {
-    dispatch(setActionSettingsMessage());
-  }, message);
-
-  const handleClose = () => {
-    dispatch(switchActionSettingsModal());
-  };
-
-  useEffect(() => {
-    updateForm(FORM_ID, settings);
-  }, [settings]);
-
   const onReset = () => {
     dispatch(syncActionSettings());
-    handleClose();
+    onHide();
   };
 
+  const onHide = () => {
+    dispatch(switchActionSettingsModal());
+  };
   const onShow = () => {
     //:TODO
   };
@@ -50,11 +49,13 @@ const ActionSettingsModal = () => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     form.checkValidity();
-    dispatch(syncActionSettings(settings));
+    if (Object.keys(settings).length !== 0) {
+      dispatch(syncActionSettings(settings));
+    }
   };
 
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
+    <Modal show={visible} size='lg' onHide={onHide} onShow={onShow}>
       <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.actionSettings.title')}</Modal.Title>
@@ -65,7 +66,7 @@ const ActionSettingsModal = () => {
             <Card.Body>
               <Row>
                 <Col md={12} sm={12}>
-                  <Form.Check type='switch' name='iframeFirst' checked={settings?.iframeFirst || false} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
+                  <Form.Check type='switch' name='iframeFirst' checked={settings.iframeFirst || false} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
                   <small className='text-muted'>{t('modal.actionSettings.iframeFirstHint')}</small>
                 </Col>
               </Row>
@@ -76,19 +77,19 @@ const ActionSettingsModal = () => {
               <Row className='mb-2 mb-md-0'>
                 <Col md={6} sm={12}>
                   <Form.Group controlId='retry'>
-                    <FormControl placeholder={t('modal.actionSettings.retry.title')} name='retry' type='number' onBlur={onUpdate} defaultValue={settings?.retry} pattern={REGEX.NUMBER} list='retry' />
+                    <FormControl placeholder={t('modal.actionSettings.retry.title')} name='retry' type='number' onBlur={onUpdate} defaultValue={settings.retry} pattern={REGEX.NUMBER} list='retry' />
                     <Form.Label>{t('modal.actionSettings.retry.title')}</Form.Label>
                     <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={6} sm={12}>
-                  <Form.Group controlId='retry-interval'>
+                  <Form.Group controlId='retryInterval'>
                     <FormControl
                       placeholder={`${t('modal.actionSettings.retry.interval')} (${t('common.sec')})`}
                       list='interval'
                       onBlur={onUpdate}
                       name='retryInterval'
-                      defaultValue={settings?.retryInterval}
+                      defaultValue={settings.retryInterval}
                       pattern={REGEX.INTERVAL}
                     />
                     <Form.Label>
@@ -104,7 +105,7 @@ const ActionSettingsModal = () => {
                   <Form.Check
                     type='radio'
                     value={RETRY_OPTIONS.STOP}
-                    checked={settings?.retryOption === RETRY_OPTIONS.STOP}
+                    checked={settings.retryOption === RETRY_OPTIONS.STOP}
                     onChange={onUpdate}
                     name='retryOption'
                     label={t('modal.actionSettings.retry.stop')}
@@ -112,7 +113,7 @@ const ActionSettingsModal = () => {
                   <Form.Check
                     type='radio'
                     value={RETRY_OPTIONS.SKIP}
-                    checked={settings?.retryOption === RETRY_OPTIONS.SKIP}
+                    checked={settings.retryOption === RETRY_OPTIONS.SKIP}
                     onChange={onUpdate}
                     name='retryOption'
                     label={t('modal.actionSettings.retry.skip')}
@@ -120,7 +121,7 @@ const ActionSettingsModal = () => {
                   <Form.Check
                     type='radio'
                     value={RETRY_OPTIONS.RELOAD}
-                    checked={settings?.retryOption === RETRY_OPTIONS.RELOAD}
+                    checked={settings.retryOption === RETRY_OPTIONS.RELOAD}
                     onChange={onUpdate}
                     name='retryOption'
                     label={t('modal.actionSettings.retry.refresh')}
@@ -129,6 +130,16 @@ const ActionSettingsModal = () => {
               </Row>
             </Card.Body>
           </Card>
+          {error && (
+            <Alert className='mt-3' variant='danger'>
+              {error}
+            </Alert>
+          )}
+          {message && (
+            <Alert className='mt-3' variant='success'>
+              {message}
+            </Alert>
+          )}
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
           <Button type='reset' variant='outline-primary' className='px-5' data-testid='action-settings-reset'>

@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next';
 
 import { ValueExtractorPopover } from '../popover';
 import { AddonRecheck } from './addon/recheck';
-import { getFieldNameValue } from '../util/element';
+import { getFieldNameValue, updateForm } from '../util/element';
 import { AddonValueExtractorFlags } from './addon/value-extractor-flags';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { actionAddonSelector, setActionAddonMessage, switchActionAddonModal, updateActionAddon } from '../store/config';
 import { syncActionAddon } from '../store/config';
 import { useTimeout } from '../_hooks/message.hooks';
-import { FormEvent } from 'react';
+import { FormEvent, useEffect } from 'react';
 
 const FORM_ID = 'addon';
 
@@ -19,6 +19,10 @@ const AddonModal = () => {
   const { visible, message, error, addon } = useAppSelector(actionAddonSelector);
   const dispatch = useAppDispatch();
 
+  useTimeout(() => {
+    dispatch(setActionAddonMessage());
+  }, message);
+
   const onUpdate = (e) => {
     const update = getFieldNameValue(e, addon);
     if (update) {
@@ -26,17 +30,18 @@ const AddonModal = () => {
     }
   };
 
-  useTimeout(() => {
-    dispatch(setActionAddonMessage());
-  }, message);
-
-  const handleClose = () => {
-    dispatch(switchActionAddonModal());
-  };
+  useEffect(() => {
+    console.log(addon);
+    updateForm(FORM_ID, addon);
+  }, [addon]);
 
   const onReset = () => {
     dispatch(syncActionAddon());
-    handleClose();
+    onHide();
+  };
+
+  const onHide = () => {
+    dispatch(switchActionAddonModal());
   };
 
   const onShow = () => {
@@ -51,7 +56,7 @@ const AddonModal = () => {
   };
 
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
+    <Modal show={visible} size='lg' onHide={onHide} onShow={onShow}>
       <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.addon.title')}</Modal.Title>

@@ -24,11 +24,12 @@ const updateForm = (formId: string, data: any) => {
   const form = document.querySelector(`#${formId}`) as HTMLFormElement;
   if (form) {
     Array.from(form.elements).forEach((element) => {
-      const inputElement = element as HTMLInputElement;
-      if (inputElement.type === 'radio') {
-        inputElement.checked = data?.[inputElement.name] === inputElement.value;
-      } else if (inputElement.type !== 'checkbox') {
-        inputElement.value = data?.[inputElement.name] || '';
+      if (element instanceof HTMLInputElement) {
+        if (element.type === 'radio') {
+          element.checked = data?.[element.name] === element.value;
+        } else if (element.type !== 'checkbox') {
+          element.value = data?.[element.name] || '';
+        }
       }
     });
   }

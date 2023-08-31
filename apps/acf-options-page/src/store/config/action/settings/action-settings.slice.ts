@@ -19,7 +19,7 @@ const slice = createSlice({
   reducers: {
     updateActionSettings: (state, action: PayloadAction<ActionSettingsRequest>) => {
       const { name, value } = action.payload;
-      state.settings = { [name]: value };
+      state.settings[name] = value;
     },
     switchActionSettingsModal: (state, action: PayloadAction<ActionSettings | undefined>) => {
       state.settings = action.payload || { ...defaultActionSettings };
