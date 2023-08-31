@@ -5,6 +5,7 @@ import { getFieldNameValue, updateForm } from '../../../util/element';
 import { APP_LINK } from '../../../constants';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { selectedConfigSelector, updateConfig } from '../../../store/config';
+import { REGEX } from '@apps/acf-options-page/src/util';
 
 const FORM_ID = 'config-body';
 
@@ -52,7 +53,7 @@ function ConfigBody() {
           </Col>
           <Col md='6' sm='12'>
             <Form.Group controlId='config-init-wait'>
-              <FormControl name='initWait' pattern='INTERVAL' defaultValue={config.initWait} onBlur={onUpdate} autoComplete='off' list='interval' placeholder='0' />
+              <FormControl name='initWait' pattern={REGEX.INTERVAL} defaultValue={config.initWait} onBlur={onUpdate} autoComplete='off' list='interval' placeholder='0' />
               <Form.Label>
                 {t('configuration.initWait')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
               </Form.Label>

@@ -4,6 +4,7 @@ import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { settingsSelector, updateSettings } from '../../store/settings/settings.slice';
 import { getFieldNameValue } from '../../util/element';
+import { REGEX } from '../../util';
 
 function SettingRetry() {
   const { t } = useTranslation();
@@ -21,7 +22,7 @@ function SettingRetry() {
       <li className='list-group-item'>
         <Form.Group controlId='retry' className='w-100'>
           <Form.Label>{t('modal.settings.retry.title')}</Form.Label>
-          <FormControl placeholder='5' autoComplete='off' name='retry' defaultValue={settings.retry} onBlur={onUpdate} type='number' pattern='NUMBER' list='retry' />
+          <FormControl placeholder='5' autoComplete='off' name='retry' defaultValue={settings.retry} onBlur={onUpdate} type='number' pattern={REGEX.NUMBER} list='retry' />
           <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
         </Form.Group>
       </li>
@@ -30,7 +31,7 @@ function SettingRetry() {
           <Form.Label>
             {t('modal.settings.retry.interval')}&nbsp;<small>({t('common.sec')})</small>
           </Form.Label>
-          <FormControl placeholder='1' autoComplete='off' name='retryInterval' defaultValue={settings.retryInterval} onBlur={onUpdate} pattern='INTERVAL' list='interval' />
+          <FormControl placeholder='1' autoComplete='off' name='retryInterval' defaultValue={settings.retryInterval} onBlur={onUpdate} pattern={REGEX.INTERVAL} list='interval' />
           <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
         </Form.Group>
       </li>

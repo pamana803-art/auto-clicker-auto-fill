@@ -26,11 +26,12 @@ export type Addon = {
   valueExtractorFlags?: ValueExtractorFlags;
   recheck?: number;
   recheckInterval?: number;
-  recheckOption?: RECHECK_OPTIONS;
+  recheckOption: RECHECK_OPTIONS;
 };
 
-export const defaultAddon = {
+export const defaultAddon: Addon = {
   elementFinder: '',
   value: '',
   condition: ADDON_CONDITIONS['~~ Select Condition ~~'],
+  recheckOption: RECHECK_OPTIONS.SKIP,
 };

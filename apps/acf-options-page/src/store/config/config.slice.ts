@@ -4,9 +4,6 @@ import { Configuration, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-c
 import { configGetAllAPI } from './config.api';
 import { actionActions } from './action';
 import { batchActions } from './batch';
-import { actionAddonActions } from './action/addon';
-import { actionSettingsActions } from './action/settings';
-import { actionStatementActions } from './action/statement';
 import { getConfigName } from './config.slice.util';
 
 export type ConfigStore = {
@@ -89,9 +86,6 @@ const slice = createSlice({
       state.selectedActionIndex = action.payload;
     },
     ...actionActions,
-    ...actionAddonActions,
-    ...actionSettingsActions,
-    ...actionStatementActions,
     ...batchActions,
   },
   extraReducers: (builder) => {
@@ -128,16 +122,9 @@ export const {
   reorderActions,
   removeAction,
   updateAction,
-  addActionStatementCondition,
-  updateActionAddon,
-  updateActionSettings,
-  updateActionStatementCondition,
-  updateActionStatementGoto,
-  updateActionStatementThen,
-  removeActionStatementCondition,
-  resetActionAddon,
-  resetActionSetting,
-  resetActionStatement,
+  syncActionAddon,
+  syncActionSettings,
+  syncActionStatement,
 } = slice.actions;
 
 export const configSelector = (state: RootState) => state.configuration;

@@ -1,5 +1,3 @@
-import { REGEX } from './regex';
-
 export const IN_VALID_CLASS = 'is-invalid';
 export const NUMBER_FIELDS = ['retry', 'retryInterval', 'recheck', 'recheckInterval', 'repeat', 'repeatInterval', 'initWait', 'actionIndex'];
 
@@ -8,7 +6,7 @@ document.addEventListener('keyup', (e) => {
   const { value, pattern, required } = ele;
   let isValid = true;
   if (pattern) {
-    if (!REGEX[pattern].test(value)) {
+    if (!new RegExp(pattern).test(value)) {
       isValid = false;
     }
   }

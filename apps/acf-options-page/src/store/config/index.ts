@@ -1,22 +1,23 @@
-import { actionAddonReducer } from './action/addon';
-import { actionSettingsReducer } from './action/settings';
-import { actionStatementReducer } from './action/statement';
+import { actionReducers } from './action';
+import { batchReducer } from './batch';
 import { configReducer } from './config.slice';
 import { configRemoveReducer } from './remove';
 import { configReorderReducer } from './reorder';
 import { configSettingsReducer } from './settings';
 
-export * from './config.slice';
-export * from './config.middleware';
+export * from './action';
+export * from './batch';
 export * from './remove';
 export * from './reorder';
 export * from './settings';
+export * from './config.slice';
+export * from './config.middleware';
+
 export const configReducers = {
-  actionSettings: actionSettingsReducer,
-  actionStatement: actionStatementReducer,
-  actionAddon: actionAddonReducer,
+  configuration: configReducer,
   configRemove: configRemoveReducer,
   configReorder: configReorderReducer,
   configSettings: configSettingsReducer,
-  configuration: configReducer,
+  batch: batchReducer,
+  ...actionReducers,
 };

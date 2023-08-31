@@ -10,6 +10,7 @@ import { StartTimePopover } from '../popover/start-time.popover';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 import { useTimeout } from '../_hooks/message.hooks';
+import { REGEX } from '../util';
 
 const ConfigSettingsModal = () => {
   const { t } = useTranslation();
@@ -107,7 +108,7 @@ const ConfigSettingsModal = () => {
               <Row>
                 <Col md={12} sm={12} hidden={config.startType === START_TYPES.AUTO}>
                   <Form.Group controlId='hotkey'>
-                    <FormControl placeholder={defaultConfig.hotkey} onKeyDown={onKeyDown} defaultValue={config.hotkey || defaultHotkey} name='hotkey' onBlur={onUpdate} pattern='HOT_KEY' />
+                    <FormControl placeholder={defaultConfig.hotkey} onKeyDown={onKeyDown} defaultValue={config.hotkey || defaultHotkey} name='hotkey' onBlur={onUpdate} pattern={REGEX.HOTKEY} />
                     <Form.Label>{t('modal.configSettings.hotkey')}</Form.Label>
                     <HotkeyPopover />
                   </Form.Group>
@@ -169,7 +170,7 @@ const ConfigSettingsModal = () => {
                 <Col md='12' sm='12'>
                   {dev ? (
                     <Form.Group controlId='config-start-time'>
-                      <FormControl name='startTime' pattern='START_TIME' autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
+                      <FormControl name='startTime' pattern={REGEX.START_TIME} autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
                       <Form.Label>{t('configuration.startTime')}&nbsp;</Form.Label>
                       <StartTimePopover />
                       <Form.Control.Feedback type='invalid'>{t('error.startTime')}</Form.Control.Feedback>

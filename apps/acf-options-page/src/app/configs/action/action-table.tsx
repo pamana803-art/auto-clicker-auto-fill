@@ -2,23 +2,31 @@ import { useMemo } from 'react';
 import { Dropdown, Form, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
-import { CaretDown, CaretUp, ThreeDots } from '../../../util';
+import { CaretDown, CaretUp, REGEX, ThreeDots } from '../../../util';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
 import { DropdownToggle } from '../../../components';
 import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
-import { removeAction, reorderActions, selectAction, selectedConfigSelector, updateAction } from '@apps/acf-options-page/src/store/config';
+import {
+  removeAction,
+  reorderActions,
+  selectAction,
+  selectedActionSelector,
+  selectedConfigSelector,
+  switchActionAddonModal,
+  switchActionStatementModal,
+  updateAction,
+  actionSelector,
+  switchActionSettingsModal,
+} from '@apps/acf-options-page/src/store/config';
 import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
-import { switchActionAddonModal } from '@apps/acf-options-page/src/store/config/action/addon';
-import { switchActionStatementModal } from '@apps/acf-options-page/src/store/config/action/statement';
-import { switchActionSettingsModal } from '@apps/acf-options-page/src/store/config/action/settings';
 import { Action } from '@dhruv-techapps/acf-common';
 import { defaultColumn } from './editable-cell';
-import { actionSelector } from '@apps/acf-options-page/src/store/config/action/action.slice';
 
 type ActionMeta = { dataType: string; list: string; pattern: string; required: boolean; width?: string };
 const ActionTable = () => {
   const { t } = useTranslation();
   const { actions } = useAppSelector(selectedConfigSelector);
+  const { addon, statement, settings } = useAppSelector(selectedActionSelector);
   const { columnVisibility } = useAppSelector(actionSelector);
   const dispatch = useAppDispatch();
   const modalContext = useConfirmationModalContext();
@@ -44,7 +52,7 @@ const ActionTable = () => {
           width: '100px',
           dataType: 'number',
           list: 'interval',
-          pattern: 'INTERVAL',
+          pattern: REGEX.INTERVAL,
         },
       },
       {
@@ -89,7 +97,7 @@ const ActionTable = () => {
           dataType: 'number',
           list: 'repeat',
           type: 'number',
-          pattern: 'NUMBER',
+          pattern: REGEX.NUMBER,
         },
       },
       {
@@ -99,7 +107,7 @@ const ActionTable = () => {
         meta: {
           dataType: 'number',
           list: 'interval',
-          pattern: 'INTERVAL',
+          pattern: REGEX.INTERVAL,
         },
       },
     ],
@@ -125,17 +133,17 @@ const ActionTable = () => {
 
   const showAddon = (row) => {
     dispatch(selectAction(Number(row.id)));
-    dispatch(switchActionAddonModal());
+    dispatch(switchActionAddonModal(addon));
   };
 
   const showCondition = (row) => {
     dispatch(selectAction(Number(row.id)));
-    dispatch(switchActionStatementModal());
+    dispatch(switchActionStatementModal(statement));
   };
 
   const showSettings = (row) => {
     dispatch(selectAction(Number(row.id)));
-    dispatch(switchActionSettingsModal());
+    dispatch(switchActionSettingsModal(settings));
   };
 
   const moveUp = (e, rowId) => {

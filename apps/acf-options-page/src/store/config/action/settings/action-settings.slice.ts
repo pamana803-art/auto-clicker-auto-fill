@@ -1,19 +1,28 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../../store';
+import { ActionSettings, defaultActionSettings } from '@dhruv-techapps/acf-common';
 
 type ActionSettingsStore = {
   visible: boolean;
   error?: string;
   message?: string;
+  settings: ActionSettings;
 };
 
-const initialState: ActionSettingsStore = { visible: false };
+type ActionSettingsRequest = { name: string; value: boolean };
+
+const initialState: ActionSettingsStore = { visible: false, settings: { ...defaultActionSettings } };
 
 const slice = createSlice({
   name: 'actionSettings',
   initialState,
   reducers: {
-    switchActionSettingsModal: (state) => {
+    updateActionSettings: (state, action: PayloadAction<ActionSettingsRequest>) => {
+      const { name, value } = action.payload;
+      state.settings = { [name]: value };
+    },
+    switchActionSettingsModal: (state, action: PayloadAction<ActionSettings | undefined>) => {
+      state.settings = action.payload || { ...defaultActionSettings };
       state.visible = !state.visible;
     },
     setActionSettingsMessage: (state, action: PayloadAction<string | undefined>) => {
@@ -27,7 +36,7 @@ const slice = createSlice({
   },
 });
 
-export const { switchActionSettingsModal, setActionSettingsMessage, setActionSettingsError } = slice.actions;
+export const { updateActionSettings, switchActionSettingsModal, setActionSettingsMessage, setActionSettingsError } = slice.actions;
 
 export const actionSettingsSelector = (state: RootState) => state.actionSettings;
 export const actionSettingsReducer = slice.reducer;

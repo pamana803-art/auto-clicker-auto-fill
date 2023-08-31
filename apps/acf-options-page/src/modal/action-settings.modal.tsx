@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { FormEvent, useEffect } from 'react';
 
 import { Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
@@ -6,18 +6,16 @@ import { useTranslation } from 'react-i18next';
 
 import { getFieldNameValue, updateForm } from '../util/element';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { resetActionSetting, updateActionSettings } from '../store/config';
-import { actionSettingsSelector, setActionSettingsMessage, switchActionSettingsModal } from '../store/config/action/settings';
-import { selectedActionSelector } from '../store/config';
+import { syncActionSettings, updateActionSettings } from '../store/config';
+import { actionSettingsSelector, setActionSettingsMessage, switchActionSettingsModal } from '../store/config';
 import { useTimeout } from '../_hooks/message.hooks';
+import { REGEX } from '../util';
 
 const FORM_ID = 'action-settings';
 
 const ActionSettingsModal = () => {
   const { t } = useTranslation();
-  const action = useAppSelector(selectedActionSelector);
-  const { settings } = action;
-  const { message, visible } = useAppSelector(actionSettingsSelector);
+  const { message, visible, settings } = useAppSelector(actionSettingsSelector);
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
@@ -40,7 +38,7 @@ const ActionSettingsModal = () => {
   }, [settings]);
 
   const onReset = () => {
-    dispatch(resetActionSetting());
+    dispatch(syncActionSettings());
     handleClose();
   };
 
@@ -48,9 +46,16 @@ const ActionSettingsModal = () => {
     //:TODO
   };
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    form.checkValidity();
+    dispatch(syncActionSettings(settings));
+  };
+
   return (
     <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
-      <Form id={FORM_ID}>
+      <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.actionSettings.title')}</Modal.Title>
         </Modal.Header>
@@ -71,7 +76,7 @@ const ActionSettingsModal = () => {
               <Row className='mb-2 mb-md-0'>
                 <Col md={6} sm={12}>
                   <Form.Group controlId='retry'>
-                    <FormControl placeholder={t('modal.actionSettings.retry.title')} name='retry' type='number' onBlur={onUpdate} defaultValue={settings?.retry} pattern='NUMBER' list='retry' />
+                    <FormControl placeholder={t('modal.actionSettings.retry.title')} name='retry' type='number' onBlur={onUpdate} defaultValue={settings?.retry} pattern={REGEX.NUMBER} list='retry' />
                     <Form.Label>{t('modal.actionSettings.retry.title')}</Form.Label>
                     <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
                   </Form.Group>
@@ -84,7 +89,7 @@ const ActionSettingsModal = () => {
                       onBlur={onUpdate}
                       name='retryInterval'
                       defaultValue={settings?.retryInterval}
-                      pattern='INTERVAL'
+                      pattern={REGEX.INTERVAL}
                     />
                     <Form.Label>
                       {t('modal.actionSettings.retry.interval')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
@@ -126,10 +131,12 @@ const ActionSettingsModal = () => {
           </Card>
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='reset' variant='outline-primary px-5' onClick={onReset}>
+          <Button type='reset' variant='outline-primary' className='px-5' data-testid='action-settings-reset'>
             {t('common.clear')}
+          </Button>{' '}
+          <Button type='submit' variant='primary' className='px-5' data-testid='action-settings-save'>
+            {t('common.save')}
           </Button>
-          <span className='text-success'>{message}</span>
         </Modal.Footer>
       </Form>
     </Modal>

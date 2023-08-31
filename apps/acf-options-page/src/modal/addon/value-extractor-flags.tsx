@@ -1,8 +1,7 @@
 import React from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectedActionAddonSelector } from '../../store/config';
-import { updateActionAddon } from '../../store/config';
+import { actionAddonSelector, updateActionAddon } from '../../store/config';
 
 const FLAGS = [
   {
@@ -57,10 +56,10 @@ type Flags = {
 };
 
 function AddonValueExtractorFlags() {
-  const addon = useAppSelector(selectedActionAddonSelector);
+  const { addon } = useAppSelector(actionAddonSelector);
   const dispatch = useAppDispatch();
 
-  const flags: Flags = addon?.valueExtractorFlags?.split('').reduce((a, flag) => ({ ...a, [flag]: true }), {}) || {};
+  const flags: Flags = addon.valueExtractorFlags?.split('').reduce((a, flag) => ({ ...a, [flag]: true }), {}) || {};
 
   const title = (label?: string) => {
     const flagTitle = Object.entries(flags)
@@ -78,11 +77,11 @@ function AddonValueExtractorFlags() {
 
     if (flag) {
       flags[flag] = !classList.contains('active');
-      dispatch(updateActionAddon({ name: 'valueExtractorFlags', value: title() }));
+      dispatch(updateActionAddon({ name: 'valueExtractorFlags', value: title() || '' }));
     }
   };
 
-  if (!addon?.valueExtractor || /^@\w+(-\w+)?$/.test(addon?.valueExtractor)) {
+  if (!addon.valueExtractor || /^@\w+(-\w+)?$/.test(addon.valueExtractor)) {
     return null;
   }
 

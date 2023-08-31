@@ -1,4 +1,5 @@
 import { AnyAction, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
+import { getI18n } from 'react-i18next';
 import {
   addConfig,
   duplicateConfig,
@@ -13,14 +14,9 @@ import {
   updateAction,
   reorderActions,
   removeAction,
-  updateActionAddon,
-  updateActionStatementCondition,
-  updateActionStatementGoto,
-  updateActionStatementThen,
-  removeActionStatementCondition,
-  resetActionStatement,
-  resetActionSetting,
-  updateActionSettings,
+  syncActionStatement,
+  syncActionAddon,
+  syncActionSettings,
 } from './config.slice';
 import { RootState } from '../../store';
 import { addToast } from '../toast.slice';
@@ -28,11 +24,16 @@ import { StorageService } from '@dhruv-techapps/core-service';
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 import { setConfigSettingsError, setConfigSettingsMessage } from './settings';
 import { setBatchError, setBatchMessage } from './batch';
-import { getI18n } from 'react-i18next';
-import { setActionError, setActionMessage } from './action/action.slice';
-import { setActionAddonError, setActionAddonMessage } from './action/addon';
-import { setActionStatementError, setActionStatementMessage } from './action/statement';
-import { setActionSettingsError, setActionSettingsMessage } from './action/settings';
+import {
+  setActionAddonError,
+  setActionAddonMessage,
+  setActionError,
+  setActionMessage,
+  setActionSettingsError,
+  setActionSettingsMessage,
+  setActionStatementError,
+  setActionStatementMessage,
+} from './action';
 
 const configsToastListenerMiddleware = createListenerMiddleware();
 configsToastListenerMiddleware.startListening({
@@ -58,20 +59,15 @@ const getMessageFunc = (action: AnyAction, language): { success: any; failure: a
       return { success: setConfigSettingsMessage, failure: setConfigSettingsError, message: language.message?.configSettings };
     case updateBatch.type:
       return { success: setBatchMessage, failure: setBatchError, message: language.message?.batch };
-    case updateActionAddon.type:
-      return { success: setActionAddonMessage, failure: setActionAddonError, message: language.message?.actionAddon };
     case updateAction.type:
     case reorderActions.type:
     case removeAction.type:
       return { success: setActionMessage, failure: setActionError, message: language.message?.action };
-    case updateActionStatementCondition.type:
-    case updateActionStatementGoto.type:
-    case updateActionStatementThen.type:
-    case removeActionStatementCondition.type:
-    case resetActionStatement.type:
+    case syncActionAddon.type:
+      return { success: setActionAddonMessage, failure: setActionAddonError, message: language.message?.actionAddon };
+    case syncActionStatement.type:
       return { success: setActionStatementMessage, failure: setActionStatementError, message: language.message?.actionStatement };
-    case updateActionSettings.type:
-    case resetActionSetting.type:
+    case syncActionSettings.type:
       return { success: setActionSettingsMessage, failure: setActionSettingsError, message: language.message?.actionSettings };
     default:
       return { success: setConfigMessage, failure: setConfigError, message: language.message?.config };
@@ -86,18 +82,16 @@ configsListenerMiddleware.startListening({
     updateConfig,
     updateConfigSettings,
     removeConfig,
+
     updateBatch,
+
     updateAction,
     reorderActions,
     removeAction,
-    updateActionAddon,
-    updateActionStatementCondition,
-    updateActionStatementGoto,
-    updateActionStatementThen,
-    removeActionStatementCondition,
-    resetActionStatement,
-    updateActionSettings,
-    resetActionSetting
+
+    syncActionAddon,
+    syncActionSettings,
+    syncActionStatement
   ),
   effect: async (action, listenerApi) => {
     // Run whatever additional side-effect-y logic you want here

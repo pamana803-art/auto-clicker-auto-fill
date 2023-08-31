@@ -1,14 +1,13 @@
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 
 import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ACTION_RUNNING, ActionStatement, defaultActionCondition, defaultActionStatement } from '@dhruv-techapps/acf-common';
+import { ACTION_RUNNING, defaultActionCondition } from '@dhruv-techapps/acf-common';
 import { ActionStatementCondition } from './action-statement/action-statement-condition';
 import { Plus } from '../util/svg';
-import { selectedActionSelector } from '../store/config';
+import { actionStatementSelector, setActionStatementMessage, switchActionStatementModal, syncActionStatement } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { addActionStatementCondition, configSelector, resetActionStatement, selectedConfigSelector, updateActionStatementGoto, updateActionStatementThen } from '../store/config';
-import { actionStatementSelector, setActionStatementMessage, switchActionStatementModal } from '../store/config/action/statement';
+import { addActionStatementCondition, configSelector, selectedConfigSelector, updateActionStatementGoto, updateActionStatementThen } from '../store/config';
 import { updateForm } from '../util/element';
 import { useTimeout } from '../_hooks/message.hooks';
 
@@ -16,9 +15,7 @@ const FORM_ID = 'actionCondition';
 
 const ActionStatementModal = () => {
   const { t } = useTranslation();
-  const { message, visible } = useAppSelector(actionStatementSelector);
-  const action = useAppSelector(selectedActionSelector);
-  const statement: ActionStatement = action.statement || defaultActionStatement;
+  const { message, visible, statement } = useAppSelector(actionStatementSelector);
   const { actions } = useAppSelector(selectedConfigSelector);
   const { selectedActionIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
@@ -40,7 +37,7 @@ const ActionStatementModal = () => {
   };
 
   const onReset = () => {
-    dispatch(resetActionStatement());
+    dispatch(syncActionStatement());
     handleClose();
   };
 
@@ -56,35 +53,42 @@ const ActionStatementModal = () => {
     //:TODO
   };
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    form.checkValidity();
+    dispatch(syncActionStatement(statement));
+  };
+
   return (
     <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
-      <Modal.Header closeButton>
-        <Modal.Title as='h6'>{t('modal.actionCondition.title')}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p className='text-muted'>{t('modal.actionCondition.info')}</p>
-        <h4 className='text-center mb-3'>IF</h4>
-        <Table role='table' className='mb-0'>
-          <thead>
-            <tr>
-              <th>OPR</th>
-              <th>Action</th>
-              <th>Status</th>
-              <th>
-                <Button type='button' variant='link' className='mt-2 p-0' aria-label='Add' onClick={() => addCondition()}>
-                  <Plus width='30' height='30' />
-                </Button>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {statement.conditions.map((condition, index) => (
-              <ActionStatementCondition key={index} conditionIndex={index} condition={condition} />
-            ))}
-          </tbody>
-        </Table>
-        <h4 className='text-center mt-3'>THEN</h4>
-        <Form id={FORM_ID}>
+      <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
+        <Modal.Header closeButton>
+          <Modal.Title as='h6'>{t('modal.actionCondition.title')}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className='text-muted'>{t('modal.actionCondition.info')}</p>
+          <h4 className='text-center mb-3'>IF</h4>
+          <Table role='table' className='mb-0'>
+            <thead>
+              <tr>
+                <th>OPR</th>
+                <th>Action</th>
+                <th>Status</th>
+                <th>
+                  <Button type='button' variant='link' className='mt-2 p-0' aria-label='Add' onClick={() => addCondition()}>
+                    <Plus width='30' height='30' />
+                  </Button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {statement.conditions.map((condition, index) => (
+                <ActionStatementCondition key={index} conditionIndex={index} condition={condition} />
+              ))}
+            </tbody>
+          </Table>
+          <h4 className='text-center mt-3'>THEN</h4>
           <Row className='mt-3'>
             <Col>
               <Form.Check
@@ -117,27 +121,29 @@ const ActionStatementModal = () => {
               />
             </Col>
           </Row>
-        </Form>
-        {statement.then === ACTION_RUNNING.GOTO && (
-          <Row>
-            <Col xs={{ span: 4, offset: 8 }}>
-              <Form.Select value={statement.goto} onChange={onUpdateGoto} name='goto' required>
-                {actions.map((_action, index) => (
-                  <option key={index} value={index} disabled={index === Number(selectedActionIndex)}>
-                    {index + 1} . {_action.name || _action.elementFinder}
-                  </option>
-                ))}
-              </Form.Select>
-            </Col>
-          </Row>
-        )}
-      </Modal.Body>
-      <Modal.Footer className='justify-content-between'>
-        <Button variant='outline-primary px-5' onClick={onReset}>
-          {t('common.clear')}
-        </Button>
-        <span className='text-success'>{message}</span>
-      </Modal.Footer>
+          {statement.then === ACTION_RUNNING.GOTO && (
+            <Row>
+              <Col xs={{ span: 4, offset: 8 }}>
+                <Form.Select value={statement.goto} onChange={onUpdateGoto} name='goto' required>
+                  {actions.map((_action, index) => (
+                    <option key={index} value={index} disabled={index === Number(selectedActionIndex)}>
+                      {index + 1} . {_action.name || _action.elementFinder}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </Row>
+          )}
+        </Modal.Body>
+        <Modal.Footer className='justify-content-between'>
+          <Button type='reset' variant='outline-primary px-5' data-testid='action-statement-reset'>
+            {t('common.clear')}
+          </Button>{' '}
+          <Button type='submit' variant='primary' className='px-5 ml-3' data-testid='action-statement-save'>
+            {t('common.save')}
+          </Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 };
