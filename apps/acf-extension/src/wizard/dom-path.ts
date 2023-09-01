@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-export const xPath = function (node, optimized) {
+export const xPath = function (node: any, optimized: any) {
   if (node.nodeType === Node.DOCUMENT_NODE) {
     return '/';
   }
@@ -23,7 +23,7 @@ export const xPath = function (node, optimized) {
   return (steps.length && steps[0].optimized ? '' : '/') + steps.join('/');
 };
 
-const xPathValue = function (node, optimized) {
+const xPathValue = function (node: any, optimized: any) {
   let ownValue;
   const ownIndex = xPathIndex(node);
   if (ownIndex === -1) {
@@ -65,12 +65,12 @@ const xPathValue = function (node, optimized) {
   return new Step(ownValue, node.nodeType === Node.DOCUMENT_NODE);
 };
 
-const xPathIndex = function (node) {
+const xPathIndex = function (node: any) {
   /**
    * Returns -1 in case of error, 0 if no siblings matching the same expression,
    * <XPath index among the same expression-matching sibling nodes> otherwise.
    */
-  function areNodesSimilar(left, right) {
+  function areNodesSimilar(left: any, right: any) {
     if (left === right) {
       return true;
     }
@@ -118,7 +118,7 @@ const xPathIndex = function (node) {
 export class Step {
   value: string;
   optimized: boolean;
-  constructor(value, optimized) {
+  constructor(value: any, optimized: any) {
     this.value = value;
     this.optimized = optimized || false;
   }

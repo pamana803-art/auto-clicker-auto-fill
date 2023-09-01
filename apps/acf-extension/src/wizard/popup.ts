@@ -1,13 +1,13 @@
 import { Auto } from './auto';
 import { WizardElementUtil } from './element-util';
-import { ACTION_ACTIONS, store } from './store';
+import { store } from './store';
 import { OPTIONS_PAGE_URL } from '../common/environments';
-import { Configuration } from '@dhruv-techapps/acf-common';
+import { removeWizardAction, updateAllWizardAction } from './store/slice';
 
 export const Popup = (() => {
-  let popupContainer;
+  let popupContainer: HTMLElement;
 
-  const setHover = (xpath, operation: 'add' | 'remove') => {
+  const setHover = (xpath: string, operation: 'add' | 'remove') => {
     xpath = WizardElementUtil.clearXpath(xpath);
     const nodes = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
     if (nodes.snapshotLength !== 0) {
@@ -24,44 +24,47 @@ export const Popup = (() => {
       popupContainer.remove();
     });
 
-    popupContainer.addEventListener('remove', (e) => {
-      store.dispatch({ type: ACTION_ACTIONS.REMOVE, payload: e.detail.index });
-    });
+    popupContainer.addEventListener('remove', ((e: CustomEvent) => {
+      store.dispatch(removeWizardAction(e.detail.index));
+    }) as EventListener);
 
     popupContainer.addEventListener('auto-generate-config', () => {
       Auto.generate();
     });
 
-    popupContainer.addEventListener('enter', ({ detail: { xpath } }) => {
-      setHover(xpath, 'add');
-    });
-    popupContainer.addEventListener('leave', ({ detail: { xpath } }) => {
-      setHover(xpath, 'remove');
-    });
-    popupContainer.addEventListener('element-focus', ({ detail: { xpath } }) => {
-      xpath = WizardElementUtil.clearXpath(xpath);
+    popupContainer.addEventListener('enter', ((e: CustomEvent) => {
+      setHover(e.detail.xpath, 'add');
+    }) as EventListener);
+    popupContainer.addEventListener('leave', ((e: CustomEvent) => {
+      setHover(e.detail.xpath, 'remove');
+    }) as EventListener);
+    popupContainer.addEventListener('element-focus', ((e: CustomEvent) => {
+      const xpath = WizardElementUtil.clearXpath(e.detail.xpath);
       const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
       (<HTMLInputElement>result.singleNodeValue).focus();
-    });
+    }) as EventListener);
   };
 
-  const setSettingsUrl = () => popupContainer.setAttribute('settings', OPTIONS_PAGE_URL);
+  const setSettingsUrl = () => OPTIONS_PAGE_URL && popupContainer.setAttribute('settings', OPTIONS_PAGE_URL);
 
   const storeSubscribe = () => {
     store.subscribe(() => {
-      const { actions } = store.getState();
+      const { actions } = store.getState().wizard;
       popupContainer.setAttribute('actions', JSON.stringify(actions));
     });
   };
 
-  const setup = async ({ name, actions }: Configuration) => {
+  const setup = () => {
     popupContainer = document.createElement('auto-clicker-autofill-popup');
-    await setSettingsUrl();
-    popupContainer.setAttribute('name', name);
+    setSettingsUrl();
+    const config = store.getState().wizard;
+    if (config.name) {
+      popupContainer.setAttribute('name', config.name);
+    }
     document.body.appendChild(popupContainer);
     storeSubscribe();
-    if (actions.length !== 0) {
-      store.dispatch({ type: ACTION_ACTIONS.UPDATE_ALL, payload: actions });
+    if (config.actions.length !== 0) {
+      store.dispatch(updateAllWizardAction(config.actions));
     }
     attachPopupListener();
   };

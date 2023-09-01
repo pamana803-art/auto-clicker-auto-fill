@@ -1,59 +1,56 @@
-import { Action } from '@dhruv-techapps/acf-common';
 import { BUTTON_NODE_NAME, RADIO_CHECKBOX_NODE_NAME } from '../common/constant';
 import { xPath } from './dom-path';
+import { WizardAction } from './type';
 
 type selectType = {
   elementValue?: string;
   optionValue?: string;
 };
 export const WizardElementUtil = (() => {
-  const radioCheckbox = (element) => element.checked;
+  const radioCheckbox = (element: HTMLInputElement): boolean => element.checked;
 
-  const select = (element): selectType => {
+  const select = (element: HTMLSelectElement): selectType | null => {
     const option = element.querySelector('option:checked') as HTMLOptionElement;
     if (option.index === 0) {
-      return {};
+      return null;
     }
     return { elementValue: option.innerText, optionValue: `/option[${option.index + 1}]` };
   };
 
-  const inputListener = async (element) =>
+  const inputListener = async (element: HTMLInputElement | HTMLTextAreaElement | HTMLElement): Promise<string | null> =>
     new Promise((resolve) => {
-      element.addEventListener('blur', (e) => resolve(e.target.value || null), { once: true, passive: true });
+      element.addEventListener('blur', (e) => {
+        const input = e.target;
+        if (input) {
+          resolve((e.target as HTMLInputElement).value), { once: true, passive: true };
+        } else {
+          resolve(input);
+        }
+      });
     });
 
-  const optionListener = async (element) =>
-    new Promise<selectType>((resolve) => {
-      element.addEventListener('blur', (e) => resolve(select(e.target)), { once: true, passive: true });
+  const optionListener = async (element: HTMLSelectElement | HTMLOptionElement) =>
+    new Promise<selectType | null>((resolve) => {
+      element.addEventListener('blur', (e) => resolve(select(e.target as HTMLSelectElement)), { once: true, passive: true });
     });
 
-  const clearXpath = (xpath) => {
+  const clearXpath = (xpath: string): string => {
     if (xpath.includes('/option')) {
       xpath = xpath.replace(/\/option.*/, '');
     }
     return xpath;
   };
 
-  const check = async (element, listener = false) => {
+  const getName = (element: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLButtonElement) => element.name || element.type || element.getAttribute('for') || '';
+
+  const check = async (element: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLElement, listener = false): Promise<WizardAction | undefined> => {
     const elementFinder = xPath(element, true);
-    const { name: elementName, id, placeholder, type } = element;
-    const name = elementName || id || placeholder || type || element.getAttribute('for') || '';
-    const action = { name, elementFinder, elementType: element.type };
 
-    // Textarea && Editable Content
-    if (element.nodeName === 'TEXTAREA' || element.isContentEditable) {
-      const value = listener ? await inputListener(element) : element.value;
-      if (!value) {
-        return { elementFinder: null };
-      }
-      return { ...action, value };
-    }
-
-    // Input Element
-    if (element.nodeName === 'INPUT') {
+    if (element instanceof HTMLInputElement) {
+      // Input Element
       if (RADIO_CHECKBOX_NODE_NAME.test(element.type)) {
         const checked = radioCheckbox(element);
-        return { ...action, elementFinder, checked, elementValue: element.value };
+        return { name: getName(element), elementFinder, checked, elementValue: element.value, elementType: element.type };
       }
 
       let value;
@@ -68,24 +65,31 @@ export const WizardElementUtil = (() => {
       }
 
       if (value !== null && value !== undefined) {
-        return { ...action, elementFinder, value, elementValue };
+        return { name: getName(element), elementFinder, value, elementValue, elementType: element.type };
       }
-      return { elementFinder: null };
-    }
-
-    // Button
-    if (element.nodeName === 'BUTTON' && listener) {
-      return { ...action, elementFinder, value: '', elementValue: element.innerText };
-    }
-
-    // Select Dropdown
-    if (element.nodeName === 'SELECT') {
-      const { elementValue, optionValue } = listener ? await optionListener(element) : select(element);
-      if (optionValue) {
-        return { ...action, xpath: elementFinder, elementFinder: elementFinder + optionValue, value: true, elementValue };
+    } else if (element instanceof HTMLButtonElement && listener) {
+      // Button
+      return { name: getName(element), elementFinder, value: '', elementValue: element.innerText };
+    } else if (element instanceof HTMLSelectElement) {
+      // Select Dropdown
+      const selectType = listener ? await optionListener(element) : select(element);
+      if (selectType) {
+        return { name: getName(element), xpath: elementFinder, elementFinder: elementFinder + selectType.optionValue, value: 'true', elementValue: selectType.elementValue };
+      }
+    } else if (element instanceof HTMLTextAreaElement) {
+      // Textarea && Editable Content
+      const value = listener ? await inputListener(element) : element.value;
+      if (value) {
+        return { name: getName(element), elementFinder, value };
+      }
+    } else if (element.isContentEditable && listener) {
+      //isContentEditable
+      const value = await inputListener(element);
+      if (value) {
+        return { elementFinder, value };
       }
     }
-    return {};
+    return;
   };
 
   return { clearXpath, check };

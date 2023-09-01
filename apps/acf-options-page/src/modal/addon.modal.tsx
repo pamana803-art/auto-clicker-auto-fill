@@ -31,7 +31,6 @@ const AddonModal = () => {
   };
 
   useEffect(() => {
-    console.log(addon);
     updateForm(FORM_ID, addon);
   }, [addon]);
 

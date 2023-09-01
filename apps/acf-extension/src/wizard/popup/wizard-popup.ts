@@ -1,3 +1,5 @@
+import { WizardAction } from '../type';
+
 export class AutoClickerAutoFillPopup extends HTMLElement {
   autoHideCount = 3;
 
@@ -14,7 +16,7 @@ export class AutoClickerAutoFillPopup extends HTMLElement {
   }
 
   attachEventListener() {
-    this.shadowRoot.addEventListener('click', (e) => {
+    this.shadowRoot?.addEventListener('click', (e) => {
       e.stopPropagation();
       const element = e.composedPath()[0] as HTMLElement;
       if (element.nodeName === 'BUTTON') {
@@ -25,51 +27,53 @@ export class AutoClickerAutoFillPopup extends HTMLElement {
     });
 
     // Close modal popup
-    this.shadowRoot.querySelector('[data-bs-dismiss="modal"]').addEventListener('click', () => {
+    this.shadowRoot?.querySelector('[data-bs-dismiss="modal"]')?.addEventListener('click', () => {
       this.dispatchEvent(new CustomEvent('close'));
     });
     this.expandCollapse();
   }
 
-  setHoverEvent(tbody) {
+  setHoverEvent(tbody: HTMLTableSectionElement) {
     tbody.querySelectorAll('tr').forEach((element) => {
       element.addEventListener('mouseenter', (e) => {
         e.stopPropagation();
-        const { title } = e.currentTarget;
+        const { title } = e.currentTarget as HTMLTableRowElement;
         this.dispatchEvent(new CustomEvent('enter', { detail: { xpath: title } }));
       });
       element.addEventListener('mouseleave', (e) => {
         e.stopPropagation();
-        const { title } = e.currentTarget;
+        const { title } = e.currentTarget as HTMLTableRowElement;
         this.dispatchEvent(new CustomEvent('leave', { detail: { xpath: title } }));
       });
       element.addEventListener('click', (e) => {
         e.stopPropagation();
-        const { title } = e.currentTarget;
+        const { title } = e.currentTarget as HTMLTableRowElement;
         this.dispatchEvent(new CustomEvent('element-focus', { detail: { xpath: title } }));
       });
       // Remove button
-      element.querySelector('button').addEventListener('click', (e) => {
-        const index = e.currentTarget.getAttribute('index');
+      element.querySelector('button')?.addEventListener('click', (e) => {
+        const index = (e.currentTarget as HTMLButtonElement)?.getAttribute('index');
         this.dispatchEvent(new CustomEvent('remove', { detail: { index } }));
       });
     });
   }
 
   expandCollapse() {
-    const collapse = this.shadowRoot.querySelector('[aria-label="collapse"]');
-    collapse.addEventListener('click', () => {
+    const collapse = this.shadowRoot?.querySelector('[aria-label="collapse"]');
+    collapse?.addEventListener('click', () => {
       collapse.classList.toggle('expand');
-      this.shadowRoot.querySelectorAll('[id^="collapse"]').forEach((e) => e.classList.toggle('collapse'));
+      this.shadowRoot?.querySelectorAll('[id^="collapse"]').forEach((e) => e.classList.toggle('collapse'));
     });
   }
 
   connectedCallback() {
     const name = this.getAttribute('name');
     const settings = this.getAttribute('settings');
-    this.shadowRoot.querySelector('#settings').setAttribute('href', settings);
-    if (name) {
-      (this.shadowRoot.querySelector('.modal-title') as HTMLHeadingElement).innerText = name;
+    if (settings) {
+      this.shadowRoot?.querySelector('#settings')?.setAttribute('href', settings);
+      if (name) {
+        (this.shadowRoot?.querySelector('.modal-title') as HTMLHeadingElement).innerText = name;
+      }
     }
   }
 
@@ -80,35 +84,38 @@ export class AutoClickerAutoFillPopup extends HTMLElement {
   autoHide() {
     this.autoHideCount -= 1;
     if (this.autoHideCount === 0) {
-      (this.shadowRoot.querySelector('[aria-label="collapse"]') as HTMLButtonElement).click();
+      (this.shadowRoot?.querySelector('[aria-label="collapse"]') as HTMLButtonElement).click();
     }
   }
 
   crateTable() {
-    const actions = JSON.parse(this.getAttribute('actions'));
+    const actionsAttribute = this.getAttribute('actions');
+    const actions: Array<WizardAction> = actionsAttribute && JSON.parse(actionsAttribute);
     if (!actions || actions.length === 0) {
-      (this.shadowRoot.querySelector('slot[name="actions"]') as HTMLSlotElement).hidden = true;
-      (this.shadowRoot.querySelector('slot[name="no-actions"]') as HTMLSlotElement).hidden = false;
+      (this.shadowRoot?.querySelector('slot[name="actions"]') as HTMLSlotElement).hidden = true;
+      (this.shadowRoot?.querySelector('slot[name="no-actions"]') as HTMLSlotElement).hidden = false;
     } else {
       this.autoHide();
-      (this.shadowRoot.querySelector('slot[name="actions"]') as HTMLSlotElement).hidden = false;
-      (this.shadowRoot.querySelector('slot[name="no-actions"]') as HTMLSlotElement).hidden = true;
-      const tbody = this.shadowRoot.querySelector('tbody');
-      tbody.innerHTML = '';
-      actions.forEach(({ name, value, elementFinder, elementValue }, index) => {
-        const tr = (document.getElementById('auto-clicker-autofill-popup-tr') as HTMLTemplateElement).content.cloneNode(true) as HTMLTableRowElement;
-        const tds = tr.querySelectorAll('td div') as NodeListOf<HTMLTableCellElement>;
-        if (elementValue) {
-          tds[0].innerText = `${name}::${elementValue}`;
-        } else {
-          tds[0].innerText = name || elementFinder;
-        }
-        tr.children[0].setAttribute('title', elementFinder);
-        tds[1].innerHTML = value || '<span class="badge text-bg-secondary">Click</span>';
-        tr.querySelector('button').setAttribute('index', index);
-        tbody.appendChild(tr);
-      });
-      this.setHoverEvent(tbody);
+      (this.shadowRoot?.querySelector('slot[name="actions"]') as HTMLSlotElement).hidden = false;
+      (this.shadowRoot?.querySelector('slot[name="no-actions"]') as HTMLSlotElement).hidden = true;
+      const tbody = this.shadowRoot?.querySelector('tbody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        actions.forEach(({ name, value, elementFinder, elementValue }, index) => {
+          const tr = (document.getElementById('auto-clicker-autofill-popup-tr') as HTMLTemplateElement).content.cloneNode(true) as HTMLTableRowElement;
+          const tds = tr.querySelectorAll('td div') as NodeListOf<HTMLTableCellElement>;
+          if (elementValue) {
+            tds[0].innerText = `${name}::${elementValue}`;
+          } else {
+            tds[0].innerText = name || elementFinder;
+          }
+          tr.children[0].setAttribute('title', elementFinder);
+          tds[1].innerHTML = value || '<span class="badge text-bg-secondary">Click</span>';
+          tr.querySelector('button')?.setAttribute('index', String(index));
+          tbody.appendChild(tr);
+        });
+        this.setHoverEvent(tbody);
+      }
     }
   }
 }

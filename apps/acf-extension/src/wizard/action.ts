@@ -1,13 +1,16 @@
-import { ACTION_ACTIONS, store } from './store';
+import { store } from './store';
 import { WizardElementUtil } from './element-util';
+import { updateWizardAction } from './store/slice';
 
 export const Action = (() => {
-  const check = (element) => {
-    WizardElementUtil.check(element, true).then((action) => {
-      if (action.elementFinder) {
-        store.dispatch({ type: ACTION_ACTIONS.UPDATE, payload: action });
-      }
-    });
+  const check = (element: EventTarget | null) => {
+    if (element && element instanceof HTMLElement) {
+      WizardElementUtil.check(element, true).then((action) => {
+        if (action) {
+          store.dispatch(updateWizardAction(action));
+        }
+      });
+    }
   };
 
   const setup = () => {

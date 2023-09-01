@@ -1,15 +1,14 @@
-import { Configuration, LOCAL_STORAGE_KEY, defaultConfig } from '@dhruv-techapps/acf-common';
+import { Configuration, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 import { store } from './store';
+import { updatedConfig } from './store/slice';
 
 export const Config = (() => {
-  let config;
-  const subscribe = (url) => {
+  const subscribe = () => {
     store.subscribe(async () => {
-      const { actions } = store.getState();
-      config.actions = actions;
-
-      const { configs = [] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
-      const index = configs.findIndex((_config) => _config.enable && _config.url === url);
+      const config = store.getState().wizard;
+      const storageResult = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
+      const configs: Array<Configuration> = storageResult.configs || [];
+      const index = configs.findIndex((_config) => _config.enable && _config.url === config.url);
       if (index !== -1) {
         configs[index] = config;
       } else {
@@ -19,36 +18,14 @@ export const Config = (() => {
     });
   };
 
-  const getName = (name) => {
-    if (name.length > 38) {
-      name = `${name.substr(0, 27)}...${name.substr(name.length - 10, name.length)}`;
-    }
-
-    // eslint-disable-next-line no-alert
-    const configName = prompt('Configuration name:', name);
-    if (configName != null) {
-      return configName;
-    }
-    return getName(name);
-  };
-
-  const getNewConfig = (url) => {
-    const { host, pathname } = document.location;
-    const name = host + pathname;
-    config = { ...defaultConfig };
-    config.url = url;
-    config.name = getName(name);
-    config.actions = [];
-    return config;
-  };
-
-  const setup = async (): Promise<Configuration> => {
+  const setup = async () => {
     const { origin, pathname } = document.location;
     const url = origin + pathname;
-    subscribe(url);
-    const { configs = [] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
-    config = configs.find((_config) => _config.enable && _config.url === url);
-    return config || getNewConfig(url);
+    subscribe();
+    const storageResult = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
+    const configs: Array<Configuration> = storageResult.configs || [];
+    const config = configs.find((_config) => _config.enable && _config.url === url);
+    store.dispatch(updatedConfig(config));
   };
 
   return { setup };
