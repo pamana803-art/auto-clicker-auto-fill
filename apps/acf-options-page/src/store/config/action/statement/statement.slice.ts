@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../../store';
 import { ACTION_RUNNING, ActionCondition, ActionStatement, defaultActionStatement } from '@dhruv-techapps/acf-common';
+import { openActionStatementModalAPI } from './statement.api';
 
 type ActionStatementStore = {
   visible: boolean;
@@ -37,8 +38,7 @@ const slice = createSlice({
     updateActionStatementGoto: (state, action: PayloadAction<number>) => {
       state.statement.goto = action.payload;
     },
-    switchActionStatementModal: (state, action: PayloadAction<ActionStatement | undefined>) => {
-      state.statement = action.payload || { ...defaultActionStatement };
+    switchActionStatementModal: (state) => {
       state.visible = !state.visible;
     },
     setActionStatementMessage: (state, action: PayloadAction<string | undefined>) => {
@@ -49,6 +49,12 @@ const slice = createSlice({
       state.error = action.payload;
       state.message = undefined;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(openActionStatementModalAPI.fulfilled, (state, action) => {
+      state.statement = action.payload.statement || { ...defaultActionStatement };
+      state.visible = !state.visible;
+    });
   },
 });
 

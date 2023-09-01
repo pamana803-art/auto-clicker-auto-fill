@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Addon, defaultAddon } from '@dhruv-techapps/acf-common';
 import { RootState } from '@apps/acf-options-page/src/store';
+import { openActionAddonModalAPI } from './addon.api';
 
 type ActionAddonStore = {
   visible: boolean;
@@ -19,8 +20,7 @@ const slice = createSlice({
       const { name, value } = action.payload;
       state.addon[name] = value;
     },
-    switchActionAddonModal: (state, action: PayloadAction<Addon | undefined>) => {
-      state.addon = action.payload || { ...defaultAddon };
+    switchActionAddonModal: (state) => {
       state.visible = !state.visible;
     },
     setActionAddonMessage: (state, action: PayloadAction<string | undefined>) => {
@@ -31,6 +31,12 @@ const slice = createSlice({
       state.error = action.payload;
       state.message = undefined;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(openActionAddonModalAPI.fulfilled, (state, action) => {
+      state.addon = action.payload.addon || { ...defaultAddon };
+      state.visible = !state.visible;
+    });
   },
 });
 

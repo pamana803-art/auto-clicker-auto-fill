@@ -2,7 +2,7 @@ import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { Configuration, START_TYPES, defaultConfig } from '@dhruv-techapps/acf-common';
 import { configGetAllAPI } from './config.api';
-import { actionActions } from './action';
+import { actionActions, openActionAddonModalAPI, openActionSettingsModalAPI, openActionStatementModalAPI } from './action';
 import { batchActions } from './batch';
 import { getConfigName } from './config.slice.util';
 
@@ -82,9 +82,6 @@ const slice = createSlice({
     selectConfig: (state, action: PayloadAction<number>) => {
       state.selectedConfigIndex = action.payload;
     },
-    selectAction: (state, action: PayloadAction<number>) => {
-      state.selectedActionIndex = action.payload;
-    },
     ...actionActions,
     ...batchActions,
   },
@@ -100,6 +97,15 @@ const slice = createSlice({
     builder.addCase(configGetAllAPI.rejected, (state, action) => {
       state.error = action.error.message;
       state.loading = false;
+    });
+    builder.addCase(openActionAddonModalAPI.fulfilled, (state, action) => {
+      state.selectedActionIndex = action.payload.index;
+    });
+    builder.addCase(openActionSettingsModalAPI.fulfilled, (state, action) => {
+      state.selectedActionIndex = action.payload.index;
+    });
+    builder.addCase(openActionStatementModalAPI.fulfilled, (state, action) => {
+      state.selectedActionIndex = action.payload.index;
     });
   },
 });
@@ -117,7 +123,6 @@ export const {
   importAll,
   importConfig,
   updateBatch,
-  selectAction,
   addAction,
   reorderActions,
   removeAction,

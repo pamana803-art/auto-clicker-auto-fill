@@ -9,14 +9,12 @@ import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks
 import {
   removeAction,
   reorderActions,
-  selectAction,
-  selectedActionSelector,
   selectedConfigSelector,
-  switchActionAddonModal,
-  switchActionStatementModal,
   updateAction,
   actionSelector,
-  switchActionSettingsModal,
+  openActionAddonModalAPI,
+  openActionStatementModalAPI,
+  openActionSettingsModalAPI,
 } from '@apps/acf-options-page/src/store/config';
 import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
 import { Action } from '@dhruv-techapps/acf-common';
@@ -26,7 +24,6 @@ type ActionMeta = { dataType: string; list: string; pattern: string; required: b
 const ActionTable = () => {
   const { t } = useTranslation();
   const { actions } = useAppSelector(selectedConfigSelector);
-  const { addon, statement, settings } = useAppSelector(selectedActionSelector);
   const { columnVisibility } = useAppSelector(actionSelector);
   const dispatch = useAppDispatch();
   const modalContext = useConfirmationModalContext();
@@ -132,18 +129,15 @@ const ActionTable = () => {
   });
 
   const showAddon = (row) => {
-    dispatch(selectAction(Number(row.id)));
-    dispatch(switchActionAddonModal(addon));
+    dispatch(openActionAddonModalAPI(Number(row.id)));
   };
 
   const showCondition = (row) => {
-    dispatch(selectAction(Number(row.id)));
-    dispatch(switchActionStatementModal(statement));
+    dispatch(openActionStatementModalAPI(Number(row.id)));
   };
 
   const showSettings = (row) => {
-    dispatch(selectAction(Number(row.id)));
-    dispatch(switchActionSettingsModal(settings));
+    dispatch(openActionSettingsModalAPI(Number(row.id)));
   };
 
   const moveUp = (e, rowId) => {
