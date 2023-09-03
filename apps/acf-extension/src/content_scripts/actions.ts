@@ -48,7 +48,7 @@ const Actions = (() => {
       const statementResult = await checkStatement(actions, action);
       if (statementResult === true) {
         await wait(action.initWait, `${LOGGER_LETTER} initWait`);
-        if (await AddonProcessor.check(action.settings, batchRepeat, action.addon)) {
+        if (await AddonProcessor.check(batchRepeat, action.addon, action.settings)) {
           action.status = await ActionProcessor.start(action, batchRepeat, sheets);
           notify(action);
         } else {

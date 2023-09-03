@@ -1,24 +1,30 @@
-import { ADDON_CONDITIONS, Addon, RECHECK_OPTIONS } from '@dhruv-techapps/acf-common';
+import { ADDON_CONDITIONS, ActionSettings, Addon, RECHECK_OPTIONS, ValueExtractorFlags } from '@dhruv-techapps/acf-common';
 import { ActionService } from '@dhruv-techapps/core-service';
 import { Logger } from '@dhruv-techapps/core-common';
 import { wait } from './util';
 import { ConfigError, SystemError } from './error';
 import Common from './common';
-import { RADIO_CHECKBOX_NODE_NAME, SELECT_TEXTAREA_NODE_NAME } from '../common/constant';
+import { RADIO_CHECKBOX_NODE_NAME } from '../common/constant';
 
 const LOGGER_LETTER = 'Addon';
 
-type AddonType = { nodeValue: string } & Addon;
+type AddonType = { nodeValue: string | boolean } & Addon;
 
 const AddonProcessor = (() => {
-  const recheckFunc = async ({ nodeValue, elementFinder, value, condition, recheck, recheckInterval, recheckOption, valueExtractor, valueExtractorFlags }: AddonType, settings, batchRepeat) => {
-    if (recheck > 0 || recheck < -1) {
-      recheck -= 1;
-      ActionService.setBadgeBackgroundColor(chrome.runtime.id, { color: [13, 202, 240, 1] });
-      ActionService.setBadgeText(chrome.runtime.id, { text: 'Recheck' });
-      await wait(recheckInterval, `${LOGGER_LETTER} Recheck`, recheck, '<interval>');
-      // eslint-disable-next-line no-use-before-define
-      return await start({ elementFinder, value, condition, recheck, recheckInterval, recheckOption, valueExtractor, valueExtractorFlags }, settings, batchRepeat);
+  const recheckFunc = async (
+    { nodeValue, elementFinder, value, condition, recheck, recheckInterval, recheckOption, valueExtractor, valueExtractorFlags }: AddonType,
+    batchRepeat: number,
+    settings?: ActionSettings
+  ): Promise<boolean> => {
+    if (recheck !== undefined) {
+      if (recheck > 0 || recheck < -1) {
+        recheck -= 1;
+        ActionService.setBadgeBackgroundColor(chrome.runtime.id, { color: [13, 202, 240, 1] });
+        ActionService.setBadgeText(chrome.runtime.id, { text: 'Recheck' });
+        await wait(recheckInterval, `${LOGGER_LETTER} Recheck`, recheck, '<interval>');
+        // eslint-disable-next-line no-use-before-define
+        return await start({ elementFinder, value, condition, recheck, recheckInterval, recheckOption, valueExtractor, valueExtractorFlags }, batchRepeat, settings);
+      }
     }
     // eslint-disable-next-line no-console
     console.table([{ elementFinder, value, condition, nodeValue }]);
@@ -37,42 +43,52 @@ const AddonProcessor = (() => {
     return false;
   };
 
-  const extractValue = (element, value, valueExtractor, valueExtractorFlags = '') => {
+  const extractValue = (element: HTMLElement, value: string, valueExtractor?: string, valueExtractorFlags?: ValueExtractorFlags): string => {
     if (!valueExtractor) {
       return value;
     }
     if (/^@\w+(-\w+)?$/.test(valueExtractor)) {
-      return element.getAttribute(valueExtractor.replace('@', ''));
+      return element.getAttribute(valueExtractor.replace('@', '')) || value;
     }
-    const matches = value.match(RegExp(valueExtractor, valueExtractorFlags));
+    const matches = value.match(RegExp(valueExtractor, valueExtractorFlags || ''));
     return (matches && matches.join('')) || value;
   };
 
-  const getNodeValue = (elements, valueExtractor, valueExtractorFlags) => {
+  const getNodeValue = (elements: Array<HTMLElement>, valueExtractor?: string, valueExtractorFlags?: ValueExtractorFlags): string | boolean => {
     const element = elements[0];
-    let value;
-    if (SELECT_TEXTAREA_NODE_NAME.test(element.nodeName)) {
+    let value: string | boolean;
+    if (element instanceof HTMLTextAreaElement || element instanceof HTMLSelectElement) {
       value = element.value;
-    } else if (element.nodeName === 'INPUT') {
+    } else if (element instanceof HTMLInputElement) {
       if (RADIO_CHECKBOX_NODE_NAME.test(element.type)) {
         value = element.checked;
       } else {
         value = element.value;
       }
-    } else if (element.nodeName === 'DIV' && element.isContentEditable) {
-      value = element.textContent;
+    } else if (element.isContentEditable) {
+      value = element.textContent || element.innerText;
     } else {
       value = element.innerText;
     }
-    value = extractValue(element, value, valueExtractor, valueExtractorFlags);
+    if (typeof value === 'string') {
+      value = extractValue(element, value, valueExtractor, valueExtractorFlags);
+    }
     Logger.colorDebug('GetNodeValue', value);
     return value;
   };
 
-  const compare = (nodeValue, condition, value) => {
+  const compare = (nodeValue: string | boolean, condition: ADDON_CONDITIONS, value: string) => {
     Logger.colorDebug('Compare', { nodeValue, condition, value });
     if (/than/gi.test(condition) && (Number.isNaN(Number(nodeValue)) || Number.isNaN(Number(value)))) {
       throw new ConfigError(`Greater || Less can only compare number '${nodeValue}' '${value}'`, 'Wrong Comparison');
+    }
+    if (typeof nodeValue === 'boolean') {
+      if (nodeValue && condition === ADDON_CONDITIONS['✓ Is Checked ']) {
+        return true;
+      } else if (!nodeValue && condition === ADDON_CONDITIONS['✕ Is Not Checked ']) {
+        return true;
+      }
+      return false;
     }
     switch (condition) {
       case ADDON_CONDITIONS['= Equals']:
@@ -96,23 +112,25 @@ const AddonProcessor = (() => {
     }
   };
 
-  const start = async ({ elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }: Addon, settings, batchRepeat) => {
+  const start = async ({ elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }: Addon, batchRepeat: number, settings?: ActionSettings) => {
     try {
       Logger.colorDebug('Start', { elementFinder, value, condition, valueExtractor, valueExtractorFlags });
       let nodeValue;
       if (/^Func::/gi.test(elementFinder)) {
         nodeValue = await Common.sandboxEval(elementFinder.replace(/^Func::/gi, ''));
       } else {
-        elementFinder = elementFinder.replaceAll('<batchRepeat>', batchRepeat);
+        elementFinder = elementFinder.replaceAll('<batchRepeat>', String(batchRepeat));
         const elements = await Common.start(elementFinder, settings);
         if (elements) {
           nodeValue = getNodeValue(elements, valueExtractor, valueExtractorFlags);
         }
       }
       if (nodeValue !== undefined) {
-        value = value.replaceAll('<batchRepeat>', batchRepeat);
-        const result =
-          compare(nodeValue, condition, value) || (await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, settings, batchRepeat));
+        value = value.replaceAll('<batchRepeat>', String(batchRepeat));
+        let result = compare(nodeValue, condition, value);
+        if (!result) {
+          result = await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, batchRepeat, settings);
+        }
         Logger.colorDebug('Compare Result', result);
         console.groupEnd();
         return result;
@@ -124,20 +142,18 @@ const AddonProcessor = (() => {
       throw error;
     }
   };
-
-  //TODO
-  const check = async (actionSettings, batchRepeat: number, addon?: Addon) => {
+  const check = async (batchRepeat: number, addon?: Addon, actionSettings?: ActionSettings) => {
     if (addon) {
       const { elementFinder, value, condition, ...props } = addon;
       if (elementFinder && value && condition) {
         console.groupCollapsed(LOGGER_LETTER);
-        return await start({ elementFinder, value, condition, ...props }, actionSettings, batchRepeat);
+        return await start({ elementFinder, value, condition, ...props }, batchRepeat, actionSettings);
       }
     }
     return true;
   };
 
-  return { check, extractValue };
+  return { check };
 })();
 
 export default AddonProcessor;

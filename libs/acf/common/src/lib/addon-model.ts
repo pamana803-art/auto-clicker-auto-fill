@@ -8,6 +8,8 @@ export enum ADDON_CONDITIONS {
   '< Less Than' = 'LessThan',
   '>= Greater Than Equals' = 'GreaterThanEquals',
   '<= Less Than Equals' = 'LessThanEquals',
+  '✓ Is Checked ' = 'IsChecked',
+  '✕ Is Not Checked ' = 'IsNotChecked',
 }
 
 export enum RECHECK_OPTIONS {
@@ -16,7 +18,7 @@ export enum RECHECK_OPTIONS {
   RELOAD = 'reload',
 }
 
-export type ValueExtractorFlags = 'g' | 'm' | 'i' | 'x' | 's';
+export type ValueExtractorFlags = string;
 
 export type Addon = {
   elementFinder: string;

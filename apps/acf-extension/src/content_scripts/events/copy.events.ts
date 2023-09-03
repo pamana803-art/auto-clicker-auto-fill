@@ -17,14 +17,13 @@ export const CopyEvents = (() => {
   };
 
   const getValue = (element: HTMLElement) => {
-    let text;
-    if (element instanceof HTMLDivElement) {
-      text = element.textContent;
-    }
     if (element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || (element instanceof HTMLInputElement && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
-      text = element.value;
+      return element.value;
     }
-    return text || element.innerText || element.innerHTML;
+    if (element.isContentEditable) {
+      return element.textContent || element.innerText;
+    }
+    return element.innerText || element.innerHTML;
   };
 
   const start = (elements: Array<HTMLElement>, value: string) => {

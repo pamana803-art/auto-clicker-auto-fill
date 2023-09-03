@@ -33,14 +33,15 @@ export const FormEvents = (() => {
             element instanceof HTMLFieldSetElement ||
             element instanceof HTMLOutputElement
           ) {
-            //ts-ignore
             element.form?.submit();
           } else {
             throw new ConfigError(`elementFinder: ${element}`, 'Invalid Element for submit');
           }
           break;
         case 'select':
-          //element.select()
+          if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) {
+            element.select();
+          }
           break;
         case 'remove':
           element.remove();
@@ -53,7 +54,7 @@ export const FormEvents = (() => {
           }
           break;
         default:
-          throw new SystemError(`Unhandled Event  "${event}"`);
+          throw new SystemError(`Unhandled Event  "${event}"`, 'Form Events');
       }
     });
   };

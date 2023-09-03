@@ -10,13 +10,13 @@ export const PlainEvents = (() => {
   const checkEmptyValue = (value: string) => (value === '::empty' ? '' : value);
 
   const dispatchEvent = (element: HTMLElement, value: string) => {
-    if (element instanceof HTMLDivElement) {
-      element.textContent = value;
-    } else if (element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || (element instanceof HTMLInputElement && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
+    if (element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || (element instanceof HTMLInputElement && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
       element.value = value;
       element.dispatchEvent(CommonEvents.getFillEvent());
     } else if (element instanceof HTMLOptionElement) {
       element.selected = true;
+    } else if (element.isContentEditable) {
+      element.textContent = value;
     } else {
       DEFAULT_EVENT.forEach((event) => {
         element.dispatchEvent(new MouseEvent(event, CommonEvents.getMouseEventProperties()));

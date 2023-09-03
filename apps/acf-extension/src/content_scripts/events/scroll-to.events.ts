@@ -1,5 +1,6 @@
 import { Logger } from '@dhruv-techapps/core-common';
 import CommonEvents from './common.events';
+import { ConfigError } from '../error';
 
 const SCROLL_COORDINATES = ['Top', 'Bottom', 'Left', 'Right', 'TopLeft', 'BottomLeft', 'BottomRight', 'TopRight', 'XPath'];
 
@@ -29,6 +30,8 @@ export const ScrollToEvents = (() => {
       const scrollCoordinates = CommonEvents.getVerifiedEvents(SCROLL_COORDINATES, value)[0];
       if (typeof scrollCoordinates === 'string') {
         scrollToCoordinates(scrollCoordinates);
+      } else {
+        throw new ConfigError('Unknown Scroll Coordinates', value);
       }
     }
   };

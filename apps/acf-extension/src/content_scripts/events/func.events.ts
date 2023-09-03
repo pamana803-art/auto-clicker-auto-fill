@@ -2,19 +2,20 @@ import { Logger } from '@dhruv-techapps/core-common';
 import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 import Common from '../common';
 import { RADIO_CHECKBOX_NODE_NAME } from '../../common/constant';
+import { SystemError } from '../error';
 
 const LOGGER_LETTER = 'FuncEvents';
 const CHANGE_EVENT = ['input', 'change'];
 
 export const FuncEvents = (() => {
   const checkNode = (element: HTMLElement, value: string) => {
-    if (element instanceof HTMLDivElement) {
-      element.textContent = value;
-    } else if (element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || (element instanceof HTMLInputElement && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
+    if (element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || (element instanceof HTMLInputElement && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
       element.value = value;
       element.dispatchEvent(CommonEvents.getFillEvent());
+    } else if (element.isContentEditable) {
+      element.textContent = value;
     } else {
-      console.error(UNKNOWN_ELEMENT_TYPE_ERROR);
+      throw new SystemError(UNKNOWN_ELEMENT_TYPE_ERROR, 'Append Events');
     }
     CHANGE_EVENT.forEach((event) => {
       element.dispatchEvent(new MouseEvent(event, CommonEvents.getMouseEventProperties()));

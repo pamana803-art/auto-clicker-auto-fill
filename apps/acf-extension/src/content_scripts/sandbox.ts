@@ -1,7 +1,12 @@
 import { SANDBOX_INITIALIZED } from '../common/constant';
 
+type SandboxReqType = {
+  command: string;
+  name: string;
+  context: string;
+};
 const Sandbox = (() => {
-  let sandbox;
+  let sandbox: HTMLIFrameElement;
 
   const add = () => {
     sandbox = document.createElement('iframe');
@@ -15,16 +20,16 @@ const Sandbox = (() => {
     document.body.removeChild(sandbox);
   };
 
-  const sendMessage = async (message) => {
+  const sendMessage = async (message: SandboxReqType): Promise<string> => {
     add();
     return new Promise((resolve, reject) => {
-      const listener = (event) => {
+      const listener = (event: MessageEvent) => {
         const { result, error, name, type } = event.data;
         if (event.isTrusted === false) {
           return;
         }
         if (type === SANDBOX_INITIALIZED) {
-          sandbox.contentWindow.postMessage(message, '*');
+          sandbox.contentWindow?.postMessage(message, '*');
           return;
         }
         if (name === message.name) {

@@ -20,7 +20,7 @@ const Common = (() => {
     return false;
   };
 
-  const sandboxEval = async (code: string, context?: any) => {
+  const sandboxEval = async (code: string, context?: any): Promise<string> => {
     if (!code) {
       return context;
     }

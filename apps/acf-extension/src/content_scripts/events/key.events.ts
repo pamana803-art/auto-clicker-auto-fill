@@ -1,7 +1,7 @@
 import { Logger } from '@dhruv-techapps/core-common';
 import { ConfigError, SystemError } from '../error';
 import { wait } from '../util';
-import CommonEvents from './common.events';
+import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 
 // KeyEvents::{value:'Example text',delay:300}
 // KeyEvents::Example text
@@ -48,13 +48,15 @@ export const KeyEvents = (() => {
     if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
       // eslint-disable-next-line no-restricted-syntax
       for (const event of events) {
-        element.dispatchEvent(new KeyboardEvent(KEYBOARD_EVENT_KEYDOWN, { ...CommonEvents.getKeyboardEventProperties(event) }));
+        element.dispatchEvent(new KeyboardEvent(KEYBOARD_EVENT_KEYDOWN, event));
         element.value += event.key;
-        element.dispatchEvent(new KeyboardEvent(KEYBOARD_EVENT_KEYUP, { ...CommonEvents.getKeyboardEventProperties(event) }));
+        element.dispatchEvent(new KeyboardEvent(KEYBOARD_EVENT_KEYUP, event));
         if (event.delay) {
           await wait(event.delay, 'Key Event');
         }
       }
+    } else {
+      throw new SystemError(UNKNOWN_ELEMENT_TYPE_ERROR, 'Key Events');
     }
   };
 

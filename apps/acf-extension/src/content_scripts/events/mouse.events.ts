@@ -17,7 +17,7 @@ export const MouseEvents = (() => {
     });
   };
 
-  const getVerifiedEvents = (events: string) => {
+  const getVerifiedEvents = (events: string): Array<string | CustomMouseEvent> => {
     Logger.colorDebug('GetVerifiedEvents', events);
     if (!events) {
       throw new SystemError('Event is blank!', 'Event cant be blank | null | undefined');

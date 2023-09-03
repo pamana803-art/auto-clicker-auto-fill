@@ -1,4 +1,4 @@
-import { ACTION_CONDITION_OPR, ACTION_RUNNING, ActionCondition, ActionStatement, defaultActionStatement } from '@dhruv-techapps/acf-common';
+import { ACTION_CONDITION_OPR, ACTION_RUNNING, ActionCondition, ActionStatement } from '@dhruv-techapps/acf-common';
 import { Logger } from '@dhruv-techapps/core-common';
 
 const Statement = (() => {
@@ -11,7 +11,7 @@ const Statement = (() => {
           return currentValue.status;
         }
         return currentValue.operator === ACTION_CONDITION_OPR.AND ? accumulator && currentValue.status : accumulator || currentValue.status;
-      }, undefined);
+      }, false);
   };
 
   const checkThen = (condition: boolean | { status: boolean; operator: ACTION_CONDITION_OPR }, then: ACTION_RUNNING, goto?: number) => {
