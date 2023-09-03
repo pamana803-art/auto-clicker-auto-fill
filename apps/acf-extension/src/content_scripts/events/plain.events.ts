@@ -1,6 +1,6 @@
 import { Logger } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '../../common/constant';
-import CommonEvents, { ElementType } from './common.events';
+import CommonEvents from './common.events';
 
 const DEFAULT_EVENT = ['mouseover', 'mousedown', 'mouseup', 'click'];
 const CHANGE_EVENT = ['input', 'change'];
@@ -9,10 +9,10 @@ const LOGGER_LETTER = 'Plain Events';
 export const PlainEvents = (() => {
   const checkEmptyValue = (value: string) => (value === '::empty' ? '' : value);
 
-  const dispatchEvent = (element: ElementType, value: string) => {
+  const dispatchEvent = (element: HTMLElement, value: string) => {
     if (element instanceof HTMLDivElement) {
       element.textContent = value;
-    } else if (element instanceof HTMLSelectElement || element.nodeName === 'TEXTAREA' || (element.nodeName === 'INPUT' && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
+    } else if (element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || (element instanceof HTMLInputElement && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
       element.value = value;
       element.dispatchEvent(CommonEvents.getFillEvent());
     } else if (element instanceof HTMLOptionElement) {
@@ -28,7 +28,7 @@ export const PlainEvents = (() => {
     element.focus();
   };
 
-  const start = (elements: Array<ElementType>, value: string) => {
+  const start = (elements: Array<HTMLElement>, value: string) => {
     Logger.colorDebug(LOGGER_LETTER, value);
     value = checkEmptyValue(value);
     CommonEvents.loopElements(elements, value, dispatchEvent);

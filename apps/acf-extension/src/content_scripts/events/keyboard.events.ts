@@ -2,14 +2,12 @@ import { Logger } from '@dhruv-techapps/core-common';
 import { SystemError } from '../error';
 import CommonEvents from './common.events';
 
-import KEYBOARD_KEY_CODES from './keyboard-keycode.json';
-
 const KEYBOARD_EVENT_KEYDOWN = 'keydown';
 const KEYBOARD_EVENT_KEYUP = 'keyup';
 const KEYBOARD_EVENT_KEYPRESS = 'keypress';
 
 export const KeyboardEvents = (() => {
-  const getVerifiedEvents = (events) => {
+  const getVerifiedEvents = (events: string): KeyboardEventInit => {
     Logger.colorDebug(`getVerifiedEvents`, events);
     if (!events) {
       throw new SystemError('Event is blank!', 'Event cant be blank | null | undefined');
@@ -21,7 +19,7 @@ export const KeyboardEvents = (() => {
     try {
       result = JSON.parse(events);
     } catch (error) {
-      result = events.split('+').reduce((a, c) => {
+      result = events.split('+').reduce((a: KeyboardEventInit, c) => {
         switch (true) {
           case /shift/i.test(c):
             a.shiftKey = true;
@@ -39,9 +37,6 @@ export const KeyboardEvents = (() => {
             a.key = c;
             a.code = c;
             c = c.toLowerCase();
-            a.charCode = KEYBOARD_KEY_CODES[c];
-            a.keyCode = KEYBOARD_KEY_CODES[c];
-            a.which = KEYBOARD_KEY_CODES[c];
         }
         return a;
       }, {});
@@ -49,13 +44,13 @@ export const KeyboardEvents = (() => {
     return result;
   };
 
-  const dispatchEvent = async (element, events) => {
+  const dispatchEvent = async (element: HTMLElement, events: KeyboardEventInit) => {
     element.dispatchEvent(new KeyboardEvent(KEYBOARD_EVENT_KEYDOWN, { ...CommonEvents.getKeyboardEventProperties(events), charCode: 0 }));
     element.dispatchEvent(new KeyboardEvent(KEYBOARD_EVENT_KEYPRESS, { ...CommonEvents.getKeyboardEventProperties(events) }));
     element.dispatchEvent(new KeyboardEvent(KEYBOARD_EVENT_KEYUP, { ...CommonEvents.getKeyboardEventProperties(events), charCode: 0 }));
   };
 
-  const start = (elements: Array<HTMLInputElement>, event) => {
+  const start = (elements: Array<HTMLElement>, event: string) => {
     const events = getVerifiedEvents(event);
     Logger.colorDebug(`Keyboard Events`, events);
     CommonEvents.loopElements(elements, events, dispatchEvent);

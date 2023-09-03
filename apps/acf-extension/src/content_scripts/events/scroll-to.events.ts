@@ -27,7 +27,9 @@ export const ScrollToEvents = (() => {
       scrollToElement(elements);
     } else {
       const scrollCoordinates = CommonEvents.getVerifiedEvents(SCROLL_COORDINATES, value)[0];
-      scrollToCoordinates(scrollCoordinates);
+      if (typeof scrollCoordinates === 'string') {
+        scrollToCoordinates(scrollCoordinates);
+      }
     }
   };
 

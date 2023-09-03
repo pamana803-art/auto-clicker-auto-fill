@@ -1,15 +1,17 @@
 import { Logger } from '@dhruv-techapps/core-common';
 
-export default function registerNotifications(optionsPageUrl: string) {
-  chrome.notifications.onClicked.addListener((notificationId) => {
-    if (notificationId === 'error') {
-      chrome.tabs.create({ url: optionsPageUrl });
-    }
-  });
+export default function registerNotifications(optionsPageUrl?: string) {
+  if (optionsPageUrl) {
+    chrome.notifications.onClicked.addListener((notificationId) => {
+      if (notificationId === 'error') {
+        chrome.tabs.create({ url: optionsPageUrl });
+      }
+    });
 
-  chrome.notifications.onClosed.addListener((notificationId, byUser) => {
-    Logger.colorInfo('Notification onClosed', notificationId, byUser);
-  });
+    chrome.notifications.onClosed.addListener((notificationId, byUser) => {
+      Logger.colorInfo('Notification onClosed', notificationId, byUser);
+    });
+  }
 }
 
 export class NotificationHandler {

@@ -1,6 +1,7 @@
 import { Logger } from '@dhruv-techapps/core-common';
 import { ConfigError } from '../error';
 import Common from '../common';
+import { Sheets } from './google-sheets';
 
 export const VALUE_MATCHER = {
   GOOGLE_SHEETS: /^GoogleSheets::/i,
@@ -19,8 +20,8 @@ const SPECIAL_CHAR = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
 const NUM = '0123456789';
 
 const Value = (() => {
-  const getRandomValue = (value) =>
-    value.replace(VALUE_MATCHER.RANDOM, (match, range, _, start = 6, end = undefined) => {
+  const getRandomValue = (value: string) =>
+    value.replace(VALUE_MATCHER.RANDOM, (_, range, __, start = 6, end = undefined) => {
       let characters;
       switch (range) {
         case '[A-Z]':
@@ -66,13 +67,13 @@ const Value = (() => {
       return result;
     });
 
-  const getBatchRepeat = (value, batchRepeat) => {
-    value = value.replaceAll('<batchRepeat>', batchRepeat);
+  const getBatchRepeat = (value: string, batchRepeat: number) => {
+    value = value.replaceAll('<batchRepeat>', String(batchRepeat));
     Logger.colorDebug('GetBatchRepeat', value);
     return value;
   };
 
-  const getSheetValue = (value, batchRepeat, sheets) => {
+  const getSheetValue = (value: string, batchRepeat: number, sheets: Sheets) => {
     const [sheetName, range] = value.split('::')[1].split('!');
     if (!sheets || !sheets[sheetName]) {
       throw new ConfigError(`Sheet: "${sheetName}" not found!`, 'Sheet not found');
@@ -81,39 +82,46 @@ const Value = (() => {
     if (!values) {
       throw new ConfigError(`Sheet "${sheetName}" do not have value in ${startRange}`, 'Sheet values not found');
     }
-    const currentRange = range.replaceAll('<batchRepeat>', batchRepeat + 1).replaceAll('<sessionCount>', sessionCount);
+    const currentRange = range.replaceAll('<batchRepeat>', String(batchRepeat + 1)).replaceAll('<sessionCount>', String(sessionCount));
     if (!/(\D+)(\d+)/.test(currentRange)) {
       throw new ConfigError(`Sheet range is not valid${range}`, 'Sheet range invalid');
     }
-    const [, column, row] = /(\D+)(\d+)/.exec(currentRange);
-    const [, columnStart, rowStart] = /(\D+)(\d+)/.exec(startRange);
-    const colIndex = column.split('').reduce((a, c, i) => a + c.charCodeAt(0) - columnStart.charCodeAt(0) + i * 26, 0);
-    const rowIndex = Number(row) - Number(rowStart);
-    if (!values[rowIndex] || !values[rowIndex][colIndex]) {
-      console.warn(`Sheet "${sheetName}" do not have value in ${column}${row}`, 'Sheet cell not found');
-      return '::empty';
+    const currentRangeRegExp = /(\D+)(\d+)/.exec(currentRange);
+    if (currentRangeRegExp) {
+      const [, column, row] = currentRangeRegExp;
+      const startRangeRegExp = /(\D+)(\d+)/.exec(startRange);
+      if (startRangeRegExp) {
+        const [, columnStart, rowStart] = startRangeRegExp;
+        const colIndex = column.split('').reduce((a, c, i) => a + c.charCodeAt(0) - columnStart.charCodeAt(0) + i * 26, 0);
+        const rowIndex = Number(row) - Number(rowStart);
+        if (!values[rowIndex] || !values[rowIndex][colIndex]) {
+          console.warn(`Sheet "${sheetName}" do not have value in ${column}${row}`, 'Sheet cell not found');
+          return '::empty';
+        }
+        value = values[rowIndex][colIndex];
+        Logger.colorDebug('Google Sheet Value', value);
+        return value;
+      }
     }
-    value = values[rowIndex][colIndex];
-    Logger.colorDebug('Google Sheet Value', value);
     return value;
   };
 
-  const getQueryParam = (value) => {
+  const getQueryParam = (value: string) => {
     const [, key] = value.split('::');
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.has(key)) {
-      value = searchParams.get(key);
+      value = searchParams.get(key) || key;
     }
     Logger.colorDebug('GetQueryParam', value);
     return value;
   };
 
-  const getFuncValue = async (value) => {
+  const getFuncValue = async (value: string) => {
     const result = await Common.sandboxEval(value.replace(/^Func::/gi, ''));
     return result;
   };
 
-  const getValue = (value, batchRepeat, sheets) => {
+  const getValue = async (value: string, batchRepeat: number, sheets?: Sheets): Promise<string> => {
     /// For select box value is boolean true
     if (typeof value !== 'string') {
       Logger.colorDebug('Value', value);
@@ -122,7 +130,7 @@ const Value = (() => {
 
     switch (true) {
       case VALUE_MATCHER.GOOGLE_SHEETS.test(value):
-        return getSheetValue(value, batchRepeat, sheets);
+        return sheets ? getSheetValue(value, batchRepeat, sheets) : value;
       case VALUE_MATCHER.QUERY_PARAM.test(value):
         return getQueryParam(value);
       case VALUE_MATCHER.BATCH_REPEAT.test(value):
@@ -130,7 +138,7 @@ const Value = (() => {
       case VALUE_MATCHER.RANDOM.test(value):
         return getRandomValue(value);
       case VALUE_MATCHER.FUNC.test(value):
-        return getFuncValue(value);
+        return await getFuncValue(value);
       default:
         return value;
     }

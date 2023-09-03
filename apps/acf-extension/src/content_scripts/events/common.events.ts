@@ -1,10 +1,10 @@
 import { Logger } from '@dhruv-techapps/core-common';
 import { ConfigError, SystemError } from '../error';
 
-export type ElementType = HTMLDivElement | HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
 export const UNKNOWN_ELEMENT_TYPE_ERROR = 'Unknown element type';
+
 const CommonEvents = (() => {
-  const getVerifiedEvents = (verifiedEvents: Array<string>, events: string): Array<string> => {
+  const getVerifiedEvents = (verifiedEvents: Array<string>, events: string): Array<string | Event> => {
     Logger.colorDebug('getVerifiedEvents', { verifiedEvents, events });
     if (!events) {
       throw new SystemError('Event is blank!', 'Event cant be blank | null | undefined');
@@ -13,7 +13,7 @@ const CommonEvents = (() => {
     events = events.split('::')[1];
     let result;
     try {
-      const eventObject = JSON.parse(events);
+      const eventObject: Event | Array<Event> = JSON.parse(events);
       if (Array.isArray(eventObject)) {
         result = eventObject.filter((event) => verifiedEvents.indexOf(typeof event === 'string' ? event : event.type) !== -1);
       } else if (verifiedEvents.indexOf(eventObject.type) !== -1) {
@@ -32,7 +32,7 @@ const CommonEvents = (() => {
     throw new ConfigError(`value: ${events}`, 'Invalid Events');
   };
 
-  const loopElements = <E = Element, T = string>(elements: Array<E>, events: T, trigger: (element: E, events: T) => void): void => {
+  const loopElements = <E = Element, T = string | Event>(elements: Array<E>, events: T, trigger: (element: E, events: T) => void): void => {
     elements.forEach((element) => {
       trigger(element, events);
     });

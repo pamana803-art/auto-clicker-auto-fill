@@ -5,7 +5,7 @@ import CommonEvents from './common.events';
 const LOCATION_COMMANDS = ['reload', 'href', 'replace', 'open', 'close', 'focus', 'blur', 'print', 'stop', 'moveBy', 'moveTo'];
 
 export const LocationCommandEvents = (() => {
-  const execCommand = (commands, value) => {
+  const execCommand = (commands: Array<string | Event>, value: string) => {
     commands.forEach((command) => {
       switch (command) {
         case 'reload':
@@ -33,12 +33,12 @@ export const LocationCommandEvents = (() => {
         case 'moveBy':
           // eslint-disable-next-line no-case-declarations
           const [x, y] = value.split('::')[2].split(',');
-          window.moveBy(x, y);
+          window.moveBy(Number(x), Number(y));
           break;
         case 'moveTo':
           // eslint-disable-next-line no-case-declarations
           const [xAxis, yAxis] = value.split('::')[2].split(',');
-          window.moveTo(xAxis, yAxis);
+          window.moveTo(Number(xAxis), Number(yAxis));
           break;
         case 'open':
           try {
@@ -52,12 +52,15 @@ export const LocationCommandEvents = (() => {
           window.close();
           break;
         default:
+          if (command instanceof Event) {
+            throw new SystemError('Unhandled Event', JSON.stringify(command));
+          }
           throw new SystemError('Unhandled Event', command);
       }
     });
   };
 
-  const start = (value) => {
+  const start = (value: string) => {
     const commands = CommonEvents.getVerifiedEvents(LOCATION_COMMANDS, value);
     Logger.colorDebug('LocationCommandEvents', { commands, value });
     execCommand(commands, value);

@@ -14,9 +14,16 @@ const MINUTES_IN_DAY = 1440;
 const NOTIFICATIONS_TITLE = 'Google Drive Backup';
 const NOTIFICATIONS_ID = 'sheets';
 
+type GoogleDriveFile = {
+  nextPageToken: string;
+  kind: string;
+  incompleteSearch: boolean;
+  files: Array<{ id: string; name: string; [index: string]: any }>;
+};
+
 export default class GoogleBackup extends GoogleOauth2 {
   scopes = [GOOGLE_SCOPES.DRIVE, GOOGLE_SCOPES.PROFILE];
-  async setAlarm(autoBackup) {
+  async setAlarm(autoBackup: AUTO_BACKUP) {
     const alarmInfo: chrome.alarms.AlarmCreateInfo = { when: Date.now() + 500 };
     await chrome.alarms.clear(BACKUP_ALARM);
     switch (autoBackup) {
@@ -39,7 +46,7 @@ export default class GoogleBackup extends GoogleOauth2 {
     chrome.alarms.create(BACKUP_ALARM, alarmInfo);
   }
 
-  async checkInvalidCredentials(message) {
+  async checkInvalidCredentials(message: string) {
     if (message === 'Invalid Credentials' || message.includes('invalid authentication credentials')) {
       await this.removeCachedAuthToken();
       NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Token expired reauthenticate!');
@@ -55,9 +62,8 @@ export default class GoogleBackup extends GoogleOauth2 {
       if (configs) {
         const { settings = { ...defaultSettings } } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.SETTINGS);
         const { files } = await this.list();
-        const fileIds = files.reduce((a, file) => ({ ...a, [file.name]: file.id }), {});
-        await this.createOrUpdate(BACKUP_FILE_NAMES.CONFIGS, configs, fileIds[BACKUP_FILE_NAMES.CONFIGS]);
-        await this.createOrUpdate(BACKUP_FILE_NAMES.SETTINGS, settings, fileIds[BACKUP_FILE_NAMES.SETTINGS]);
+        await this.createOrUpdate(BACKUP_FILE_NAMES.CONFIGS, configs, files.find((file) => file.name === BACKUP_FILE_NAMES.CONFIGS)?.id);
+        await this.createOrUpdate(BACKUP_FILE_NAMES.SETTINGS, settings, files.find((file) => file.name === BACKUP_FILE_NAMES.SETTINGS)?.id);
         if (!settings.backup) {
           settings.backup = {};
         }
@@ -69,10 +75,12 @@ export default class GoogleBackup extends GoogleOauth2 {
         }
         return lastBackup;
       }
-    } catch ({ message }) {
-      const retry = await this.checkInvalidCredentials(message);
-      if (retry) {
-        this.backup(now);
+    } catch (error) {
+      if (error instanceof Error) {
+        const retry = await this.checkInvalidCredentials(error.message);
+        if (retry) {
+          this.backup(now);
+        }
       }
     }
   }
@@ -96,15 +104,17 @@ export default class GoogleBackup extends GoogleOauth2 {
           }
         });
       }
-    } catch ({ message }) {
-      const retry = await this.checkInvalidCredentials(message);
-      if (retry) {
-        this.restore();
+    } catch (error) {
+      if (error instanceof Error) {
+        const retry = await this.checkInvalidCredentials(error.message);
+        if (retry) {
+          this.restore();
+        }
       }
     }
   }
 
-  async createOrUpdate(name, data, fileId) {
+  async createOrUpdate(name: string, data: string, fileId?: string) {
     const metadata = {
       name,
       mimeType: 'plain/text',
@@ -133,7 +143,7 @@ export default class GoogleBackup extends GoogleOauth2 {
     return config;
   }
 
-  async list() {
+  async list(): Promise<GoogleDriveFile> {
     const headers = await this.getHeaders(this.scopes);
     const response = await fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&fields=files(id%2C%20name)&pageSize=10', { headers });
     if (response.status === 401) {
@@ -144,7 +154,7 @@ export default class GoogleBackup extends GoogleOauth2 {
     return result;
   }
 
-  async get(fileId) {
+  async get(fileId: string) {
     const headers = await this.getHeaders(this.scopes);
     const result = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, { headers });
     const file = await result.json();

@@ -8,17 +8,19 @@ import SettingsStorage from './store/settings-storage';
 
 const LOGGER_LETTER = 'Common';
 const Common = (() => {
-  const retryFunc = async (retry, retryInterval) => {
-    if (retry > 0 || retry < -1) {
-      ActionService.setBadgeBackgroundColor(chrome.runtime.id, { color: [102, 16, 242, 1] });
-      ActionService.setBadgeText(chrome.runtime.id, { text: 'Retry' });
-      await wait(retryInterval, 'Retry', retry, '<interval>');
-      return true;
+  const retryFunc = async (retry?: number, retryInterval?: number) => {
+    if (retry !== undefined) {
+      if (retry > 0 || retry < -1) {
+        ActionService.setBadgeBackgroundColor(chrome.runtime.id, { color: [102, 16, 242, 1] });
+        ActionService.setBadgeText(chrome.runtime.id, { text: 'Retry' });
+        await wait(retryInterval, 'Retry', retry, '<interval>');
+        return true;
+      }
     }
     return false;
   };
 
-  const sandboxEval = async (code, context?) => {
+  const sandboxEval = async (code: string, context?: any) => {
     if (!code) {
       return context;
     }
@@ -26,64 +28,33 @@ const Common = (() => {
     try {
       return await Sandbox.sendMessage({ command: 'eval', name, context: context ? `'${context}'.${code}` : code });
     } catch (error) {
-      throw new ConfigError(error.message, `Invalid ${code}`);
+      if (error instanceof Error) {
+        throw new ConfigError(error.message, `Invalid ${code}`);
+      }
+      throw new ConfigError(JSON.stringify(error), `Invalid ${code}`);
     }
   };
 
-  // eslint-disable-next-line no-eval
-  /**
-   * @deprecated since 31/10/2020
-   * @param {*} stringFunc
-   * @param {*} parent
-   * @returns
-   */
-  const stringFunction = (stringFunc, parent: any = window) => {
-    if (!stringFunc) {
-      return parent;
-    }
-    const functions = stringFunc.replace(/^func::/gi, '').split('.');
-    if (functions[0].includes('new')) {
-      const newFunc = functions.shift();
-      if (newFunc === 'new Date()') {
-        parent = new Date();
-      } else {
-        throw new ConfigError(`${newFunc} is not available contact extension developer`, 'Invalid Addon Func');
-      }
-    }
-    return functions.reduce((acc, current) => {
-      if (current.includes('(')) {
-        const values = current
-          .split('(')[1]
-          .replace(')', '')
-          .replace(/(["'].+?['"])/g, (group) => group.replace(',', '&sbquo;'))
-          .split(',')
-          .map((value) => value.replace('&sbquo;', ',').trim().replace(/["']/g, ''));
-        return acc[current.replace(/\(.*\)/, '')](...values);
-      }
-      return acc[current];
-    }, parent);
-  };
-
-  const getElements = async (document: Document, elementFinder: string, retry: number, retryInterval: number) => {
+  const getElements = async (document: Document, elementFinder: string, retry: number, retryInterval: number): Promise<Array<HTMLElement> | undefined> => {
     Logger.colorDebug('GetElements', elementFinder);
-    let elements: Element[];
+    let elements: HTMLElement[] | undefined;
     if (/^(id::|#)/gi.test(elementFinder)) {
       const element = document.getElementById(elementFinder.replace(/^(id::|#)/gi, ''));
       elements = element ? [element] : undefined;
     } else if (/^Selector::/gi.test(elementFinder)) {
-      const element = document.querySelector(elementFinder.replace(/^Selector::/gi, ''));
+      const element = document.querySelector<HTMLElement>(elementFinder.replace(/^Selector::/gi, ''));
       elements = element ? [element] : undefined;
     } else if (/^ClassName::/gi.test(elementFinder)) {
-      const classElements = document.getElementsByClassName(elementFinder.replace(/^ClassName::/gi, ''));
+      const classElements = document.getElementsByClassName(elementFinder.replace(/^ClassName::/gi, '')) as HTMLCollectionOf<HTMLElement>;
       elements = classElements.length !== 0 ? Array.from(classElements) : undefined;
     } else if (/^Name::/gi.test(elementFinder)) {
       const nameElements = document.getElementsByName(elementFinder.replace(/^Name::/gi, ''));
       elements = nameElements.length !== 0 ? Array.from(nameElements) : undefined;
     } else if (/^TagName::/gi.test(elementFinder)) {
-      const tagElements = document.getElementsByTagName(elementFinder.replace(/^TagName::/gi, ''));
+      const tagElements = document.getElementsByTagName(elementFinder.replace(/^TagName::/gi, '')) as HTMLCollectionOf<HTMLElement>;
       elements = tagElements.length !== 0 ? Array.from(tagElements) : undefined;
     } else if (/^SelectorAll::/gi.test(elementFinder)) {
-      const querySelectAll = document.querySelectorAll(elementFinder.replace(/^SelectorAll::/gi, ''));
+      const querySelectAll = document.querySelectorAll<HTMLElement>(elementFinder.replace(/^SelectorAll::/gi, ''));
       elements = querySelectAll.length !== 0 ? Array.from(querySelectAll) : undefined;
     } else {
       try {
@@ -92,12 +63,15 @@ const Common = (() => {
           elements = [];
           let i = 0;
           while (i < nodes.snapshotLength) {
-            elements.push(nodes.snapshotItem(i) as Element);
+            elements.push(nodes.snapshotItem(i) as HTMLElement);
             i += 1;
           }
         }
       } catch (e) {
-        throw new ConfigError(`elementFinder: ${e.message.split(':')[1]}`, 'Invalid Xpath');
+        if (e instanceof Error) {
+          throw new ConfigError(`elementFinder: ${e.message.split(':')[1]}`, 'Invalid Xpath');
+        }
+        throw new ConfigError(`elementFinder: ${JSON.stringify(e)}`, 'Invalid Xpath');
       }
     }
     if (!elements) {
@@ -129,7 +103,7 @@ const Common = (() => {
     return elements;
   };
 
-  const checkRetryOption = (retryOption, elementFinder) => {
+  const checkRetryOption = (retryOption: RETRY_OPTIONS, elementFinder: string) => {
     if (retryOption === RETRY_OPTIONS.RELOAD) {
       if (document.readyState === 'complete') {
         window.location.reload();
@@ -143,14 +117,14 @@ const Common = (() => {
     Logger.colorInfo('RetryOption', retryOption);
   };
 
-  const start = async (elementFinder: string, settings: ActionSettings) => {
+  const start = async (elementFinder: string, settings?: ActionSettings) => {
     try {
       if (!elementFinder) {
         throw new ConfigError('elementFinder can not be empty!', 'Element Finder');
       }
       console.groupCollapsed(LOGGER_LETTER);
       const { retryOption, retryInterval, retry, checkiFrames, iframeFirst } = { ...(await new SettingsStorage().getSettings()), ...settings };
-      let elements: Element[];
+      let elements: HTMLElement[] | undefined;
       if (iframeFirst) {
         elements = await checkIframe(elementFinder, retry, retryInterval);
       } else {
@@ -176,7 +150,7 @@ const Common = (() => {
 
   const getNotificationIcon = () => chrome.runtime.getManifest().action.default_icon;
 
-  return { start, stringFunction, getElements, sandboxEval, getNotificationIcon };
+  return { start, getElements, sandboxEval, getNotificationIcon };
 })();
 
 export default Common;

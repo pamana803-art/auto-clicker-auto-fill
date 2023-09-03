@@ -24,7 +24,7 @@ const Actions = (() => {
     return result;
   };
 
-  const notify = async (action) => {
+  const notify = async (action: Action) => {
     const settings = await new SettingsStorage().getSettings();
     if (settings.notifications?.onAction) {
       NotificationsService.create(chrome.runtime.id, {

@@ -1,5 +1,5 @@
 import { Logger } from '@dhruv-techapps/core-common';
-import CommonEvents, { ElementType, UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
+import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 import Common from '../common';
 import { RADIO_CHECKBOX_NODE_NAME } from '../../common/constant';
 
@@ -7,7 +7,7 @@ const LOGGER_LETTER = 'FuncEvents';
 const CHANGE_EVENT = ['input', 'change'];
 
 export const FuncEvents = (() => {
-  const checkNode = (element: ElementType, value: string) => {
+  const checkNode = (element: HTMLElement, value: string) => {
     if (element instanceof HTMLDivElement) {
       element.textContent = value;
     } else if (element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || (element instanceof HTMLInputElement && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
@@ -22,7 +22,7 @@ export const FuncEvents = (() => {
     element.focus();
   };
 
-  const start = async (elements: Array<ElementType>, value: string) => {
+  const start = async (elements: Array<HTMLElement>, value: string) => {
     try {
       console.groupCollapsed(LOGGER_LETTER);
       value = value.replace(/func::/i, '');

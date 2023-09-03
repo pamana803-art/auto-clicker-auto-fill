@@ -1,12 +1,11 @@
 import { Logger } from '@dhruv-techapps/core-common';
-import { FORM_CLEAR_ELEMENT_NODE_NAME, FORM_ELEMENT_NODE_NAME } from '../../common/constant';
 import { ConfigError, SystemError } from '../error';
 import CommonEvents from './common.events';
 
 const FORM_EVENTS = ['blur', 'click', 'focus', 'select', 'submit', 'remove', 'clear', 'reset', 'search'];
 
 export const FormEvents = (() => {
-  const dispatchEvent = (element, events) => {
+  const dispatchEvent = (element: HTMLElement, events: Array<string | Event>) => {
     if (!(element instanceof HTMLElement)) {
       throw new ConfigError(`elementFinder: ${element}`, 'Not HTMLElement');
     }
@@ -35,7 +34,7 @@ export const FormEvents = (() => {
             element instanceof HTMLOutputElement
           ) {
             //ts-ignore
-            element.form.submit();
+            element.form?.submit();
           } else {
             throw new ConfigError(`elementFinder: ${element}`, 'Invalid Element for submit');
           }
@@ -59,7 +58,7 @@ export const FormEvents = (() => {
     });
   };
 
-  const start = (elements, action) => {
+  const start = (elements: Array<HTMLElement>, action: string) => {
     const events = CommonEvents.getVerifiedEvents(FORM_EVENTS, action);
     Logger.colorDebug(`FormEvents`, events);
     CommonEvents.loopElements(elements, events, dispatchEvent);

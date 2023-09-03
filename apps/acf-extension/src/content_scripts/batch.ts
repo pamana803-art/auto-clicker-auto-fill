@@ -25,7 +25,7 @@ const BatchProcessor = (() => {
         for (let i = 0; i < batch.repeat; i += 1) {
           console.group(`${LOGGER_LETTER} #${i + 1}`);
           if (batch?.repeatInterval) {
-            await wait(batch?.repeatInterval, `${LOGGER_LETTER} Repeat`, batch?.repeat, '<interval>');
+            await wait(batch?.repeatInterval, `${LOGGER_LETTER} Repeat`, batch.repeat, '<interval>');
           }
           await Actions.start(actions, i + 1, sheets);
           const { notifications } = await new SettingsStorage().getSettings();
@@ -57,7 +57,6 @@ const BatchProcessor = (() => {
   const start = async (actions: Array<Action>, batch?: Batch, sheets?: Sheets) => {
     try {
       console.group(`${LOGGER_LETTER} #0`);
-
       await Actions.start(actions, 0, sheets);
       console.groupEnd();
       if (batch) {

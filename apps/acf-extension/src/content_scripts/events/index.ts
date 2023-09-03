@@ -21,7 +21,7 @@ import { KeyboardEvents } from './keyboard.events';
 const DEFAULT_EVENT = ['mouseover', 'mousedown', 'mouseup', 'click'];
 
 const Events = (() => {
-  const check = async (value, elements) => {
+  const check = async (elements: Array<HTMLElement>, value?: string) => {
     if (value) {
       const eventRegexArray = /^(\w+)::/.exec(value);
       let event;

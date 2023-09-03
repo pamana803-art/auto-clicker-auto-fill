@@ -3,7 +3,7 @@ import { ConfigError, SystemError } from '../error';
 import CommonEvents from './common.events';
 
 export const TouchEvents = (() => {
-  const dispatchEvent = (element, events) => {
+  const dispatchEvent = (element: HTMLElement, events: Array<string | Event>) => {
     events.forEach((event) => {
       if (typeof event === 'string') {
         element.dispatchEvent(new TouchEvent(event, CommonEvents.getTouchEventProperties(element)));
@@ -13,7 +13,7 @@ export const TouchEvents = (() => {
     });
   };
 
-  const getVerifiedEvents = (events) => {
+  const getVerifiedEvents = (events: string) => {
     Logger.colorDebug('GetVerifiedEvents', events);
     if (!events) {
       throw new SystemError('Event is blank!', 'Event cant be blank | null | undefined');
@@ -40,7 +40,7 @@ export const TouchEvents = (() => {
     throw new ConfigError(`value: ${events}`, 'Invalid Events');
   };
 
-  const start = (elements, event) => {
+  const start = (elements: Array<HTMLElement>, event: string) => {
     const events = getVerifiedEvents(event);
     Logger.colorDebug(`TouchEvents`, events);
     CommonEvents.loopElements(elements, events, dispatchEvent);

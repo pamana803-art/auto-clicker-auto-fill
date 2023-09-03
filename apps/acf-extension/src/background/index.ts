@@ -26,7 +26,7 @@ try {
    * Browser Action set to open option page / configuration page
    */
   chrome.action.onClicked.addListener(async (tab) => {
-    chrome.tabs.sendMessage(tab.id, { action: ACTION_POPUP });
+    tab.id && chrome.tabs.sendMessage(tab.id, { action: ACTION_POPUP });
   });
 
   /**
@@ -89,6 +89,10 @@ try {
   Runtime.onMessageExternal(onMessageListener);
   Runtime.onMessage(onMessageListener);
 } catch (error) {
-  Logger.colorError(error);
+  if (error instanceof Error) {
+    Logger.colorError(error.message);
+  } else {
+    Logger.colorError(JSON.stringify(error));
+  }
   // GoogleAnalytics.error({ error }, () => {})
 }

@@ -5,26 +5,11 @@ import CommonEvents from './common.events';
 const WINDOW_COMMANDS = ['copy', 'cut', 'delete', 'paste', 'selectAll', 'open', 'close', 'focus', 'blur', 'print', 'stop', 'moveBy', 'moveTo'];
 
 export const WindowCommandEvents = (() => {
-  const execCommand = (commands, value) => {
+  const execCommand = (commands: Array<string | Event>, value: string) => {
     commands.forEach((command) => {
       switch (command) {
         case 'close':
           window.close();
-          break;
-        case 'cut':
-          document.execCommand('cut');
-          break;
-        case 'copy':
-          document.execCommand('copy');
-          break;
-        case 'delete':
-          document.execCommand('delete');
-          break;
-        case 'paste':
-          document.execCommand('paste');
-          break;
-        case 'selectAll':
-          document.execCommand('selectAll');
           break;
         case 'focus':
           window.focus();
@@ -41,12 +26,12 @@ export const WindowCommandEvents = (() => {
         case 'moveBy':
           // eslint-disable-next-line no-case-declarations
           const [x, y] = value.split('::')[2].split(',');
-          window.moveBy(x, y);
+          window.moveBy(Number(x), Number(y));
           break;
         case 'moveTo':
           // eslint-disable-next-line no-case-declarations
           const [xAxis, yAxis] = value.split('::')[2].split(',');
-          window.moveTo(xAxis, yAxis);
+          window.moveTo(Number(xAxis), Number(yAxis));
           break;
         case 'open':
           try {
@@ -57,11 +42,14 @@ export const WindowCommandEvents = (() => {
           }
           break;
         default:
+          if (command instanceof Event) {
+            throw new SystemError('Unhandled Event', JSON.stringify(command));
+          }
           throw new SystemError('Unhandled Event', command);
       }
     });
   };
-  const start = (value) => {
+  const start = (value: string) => {
     const commands = CommonEvents.getVerifiedEvents(WINDOW_COMMANDS, value);
     Logger.colorDebug('WindowCommandEvents', commands);
     execCommand(commands, value);

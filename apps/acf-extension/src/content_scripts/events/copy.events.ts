@@ -4,7 +4,6 @@ import { RADIO_CHECKBOX_NODE_NAME } from '../../common/constant';
 const LOCAL_STORAGE_COPY = 'auto-clicker-copy';
 const LOGGER_LETTER = 'CopyEvents';
 
-type ElementType = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement | HTMLDivElement;
 export const CopyEvents = (() => {
   const applyFilter = (text: string, value: string) => {
     Logger.colorDebug('applyFilter', { text, value });
@@ -17,17 +16,18 @@ export const CopyEvents = (() => {
     return text;
   };
 
-  const getValue = (element: ElementType) => {
+  const getValue = (element: HTMLElement) => {
+    let text;
     if (element instanceof HTMLDivElement) {
-      return element.textContent;
+      text = element.textContent;
     }
-    if (element.nodeName === 'SELECT' || element.nodeName === 'TEXTAREA' || (element.nodeName === 'INPUT' && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
-      return element.value;
+    if (element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || (element instanceof HTMLInputElement && !RADIO_CHECKBOX_NODE_NAME.test(element.type))) {
+      text = element.value;
     }
-    return element.innerText || element.innerHTML;
+    return text || element.innerText || element.innerHTML;
   };
 
-  const start = (elements: Array<ElementType>, value: string) => {
+  const start = (elements: Array<HTMLElement>, value: string) => {
     try {
       console.groupCollapsed(LOGGER_LETTER);
       Logger.colorDebug('Start', value);
