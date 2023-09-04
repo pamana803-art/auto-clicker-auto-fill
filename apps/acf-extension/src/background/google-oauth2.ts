@@ -7,7 +7,9 @@ const NOTIFICATIONS_ID = 'authentication';
 export default class GoogleOauth2 {
   async removeCachedAuthToken() {
     const { token } = await chrome.identity.getAuthToken({ interactive: false });
-    await chrome.identity.removeCachedAuthToken({ token });
+    if (token) {
+      await chrome.identity.removeCachedAuthToken({ token });
+    }
     return true;
   }
 
@@ -21,13 +23,15 @@ export default class GoogleOauth2 {
       const googleScopes = await this.#getScopes();
       return { googleScopes, google };
     } catch (error) {
-      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
+      if (error instanceof Error) {
+        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
+      }
       await this.removeCachedAuthToken();
       return RESPONSE_CODE.ERROR;
     }
   }
 
-  async getCurrentUser(headers) {
+  async getCurrentUser(headers: HeadersInit) {
     let response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo`, { headers });
     response = await response.json();
     chrome.storage.local.set({ [LOCAL_STORAGE_KEY.GOOGLE]: response });

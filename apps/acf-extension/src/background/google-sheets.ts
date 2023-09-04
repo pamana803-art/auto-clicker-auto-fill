@@ -5,9 +5,14 @@ import { NotificationHandler } from './notifications';
 const NOTIFICATIONS_TITLE = 'Google Sheets';
 const NOTIFICATIONS_ID = 'sheets';
 
+type GoogleSheetsType = {
+  spreadsheetId: string;
+  ranges: Array<string>;
+};
+
 export default class GoogleSheets extends GoogleOauth2 {
   scopes = [GOOGLE_SCOPES.DRIVE, GOOGLE_SCOPES.PROFILE];
-  async getSheets({ spreadsheetId, ranges }) {
+  async getSheets({ spreadsheetId, ranges }: GoogleSheetsType) {
     let response;
     if (!spreadsheetId || !ranges) {
       NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'spreadsheetId or ranges is not defined');
@@ -23,7 +28,7 @@ export default class GoogleSheets extends GoogleOauth2 {
     return user;
   }
 
-  async getValues({ spreadsheetId, ranges }) {
+  async getValues({ spreadsheetId, ranges }: GoogleSheetsType) {
     const user = await this.checkUser();
     if (!user) {
       NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Login into Google Sheets from Global Settings');
@@ -40,7 +45,9 @@ export default class GoogleSheets extends GoogleOauth2 {
         return true;
       });
     } catch (error) {
-      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
+      if (error instanceof Error) {
+        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
+      }
       await this.removeCachedAuthToken();
       return RESPONSE_CODE.ERROR;
     }

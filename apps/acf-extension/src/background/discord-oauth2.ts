@@ -25,18 +25,25 @@ export default class DiscordOauth2 {
       url += `&scope=${encodeURIComponent(scopes.join(' '))}`;
       url += `&nonce=${encodeURIComponent(getRandomValues())}`;
       const responseUrl = await chrome.identity.launchWebAuthFlow({ url, interactive: true });
-      if (chrome.runtime.lastError || responseUrl.includes('access_denied')) {
-        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, chrome.runtime.lastError.message || responseUrl);
-        return RESPONSE_CODE.ERROR;
+      if (responseUrl) {
+        if (chrome.runtime.lastError || responseUrl.includes('access_denied')) {
+          NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, chrome.runtime.lastError?.message || responseUrl);
+          return RESPONSE_CODE.ERROR;
+        }
+        const responseUrlRegExpMatchArray = responseUrl.match(/token=(.+?)&/);
+        if (responseUrlRegExpMatchArray) {
+          return await this.getCurrentUser(responseUrlRegExpMatchArray[1]);
+        }
       }
-      return await this.getCurrentUser(responseUrl.match(/token=(.+?)&/)[1]);
     } catch (error) {
-      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
+      if (error instanceof Error) {
+        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
+      }
       return RESPONSE_CODE.ERROR;
     }
   }
 
-  async getCurrentUser(token) {
+  async getCurrentUser(token: string) {
     let response = await fetch('https://discord.com/api/users/@me', {
       headers: {
         Authorization: `Bearer ${token}`,

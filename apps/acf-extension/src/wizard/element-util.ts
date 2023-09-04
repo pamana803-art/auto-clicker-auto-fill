@@ -1,4 +1,4 @@
-import { BUTTON_NODE_NAME, RADIO_CHECKBOX_NODE_NAME } from '../common/constant';
+import { BUTTON_FILE_SUBMIT_NODE_NAME, RADIO_CHECKBOX_NODE_NAME } from '../common/constant';
 import { xPath } from './dom-path';
 import { WizardAction } from './type';
 
@@ -55,7 +55,7 @@ export const WizardElementUtil = (() => {
 
       let value;
       let elementValue;
-      if (BUTTON_NODE_NAME.test(element.type)) {
+      if (element instanceof HTMLButtonElement || (element instanceof HTMLInputElement && BUTTON_FILE_SUBMIT_NODE_NAME.test(element.type))) {
         if (listener) {
           value = '';
         }
