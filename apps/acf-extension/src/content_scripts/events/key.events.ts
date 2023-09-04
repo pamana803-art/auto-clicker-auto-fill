@@ -56,7 +56,7 @@ export const KeyEvents = (() => {
         }
       }
     } else {
-      throw new SystemError(UNKNOWN_ELEMENT_TYPE_ERROR, 'Key Events');
+      throw new ConfigError(UNKNOWN_ELEMENT_TYPE_ERROR, 'Key Events');
     }
   };
 

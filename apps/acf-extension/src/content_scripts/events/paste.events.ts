@@ -2,7 +2,7 @@ import { Logger } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '../../common/constant';
 import Common from '../common';
 import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
-import { SystemError } from '../error';
+import { ConfigError } from '../error';
 
 const LOCAL_STORAGE_COPY = 'auto-clicker-copy';
 const CHANGE_EVENT = ['input', 'change'];
@@ -17,7 +17,7 @@ export const PasteEvents = (() => {
     } else if (element.isContentEditable) {
       element.textContent = value;
     } else {
-      throw new SystemError(UNKNOWN_ELEMENT_TYPE_ERROR, 'PasteEvents');
+      throw new ConfigError(UNKNOWN_ELEMENT_TYPE_ERROR, 'PasteEvents');
     }
     CHANGE_EVENT.forEach((event) => {
       element.dispatchEvent(new MouseEvent(event, CommonEvents.getMouseEventProperties()));

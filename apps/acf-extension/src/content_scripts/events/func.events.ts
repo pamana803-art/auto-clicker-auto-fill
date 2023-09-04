@@ -2,7 +2,7 @@ import { Logger } from '@dhruv-techapps/core-common';
 import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 import Common from '../common';
 import { RADIO_CHECKBOX_NODE_NAME } from '../../common/constant';
-import { SystemError } from '../error';
+import { ConfigError } from '../error';
 
 const LOGGER_LETTER = 'FuncEvents';
 const CHANGE_EVENT = ['input', 'change'];
@@ -15,7 +15,7 @@ export const FuncEvents = (() => {
     } else if (element.isContentEditable) {
       element.textContent = value;
     } else {
-      throw new SystemError(UNKNOWN_ELEMENT_TYPE_ERROR, 'Append Events');
+      throw new ConfigError(UNKNOWN_ELEMENT_TYPE_ERROR, 'Append Events');
     }
     CHANGE_EVENT.forEach((event) => {
       element.dispatchEvent(new MouseEvent(event, CommonEvents.getMouseEventProperties()));

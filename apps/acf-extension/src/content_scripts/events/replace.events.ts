@@ -1,7 +1,7 @@
 import { Logger } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '../../common/constant';
 import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
-import { SystemError } from '../error';
+import { ConfigError } from '../error';
 
 const CHANGE_EVENT = ['input', 'change'];
 
@@ -14,7 +14,7 @@ export const ReplaceEvents = (() => {
     } else if (element.isContentEditable) {
       element.textContent = element.textContent?.replace(new RegExp(target, 'g'), string) || null;
     } else {
-      throw new SystemError(UNKNOWN_ELEMENT_TYPE_ERROR, 'ReplaceEvents');
+      throw new ConfigError(UNKNOWN_ELEMENT_TYPE_ERROR, 'ReplaceEvents');
     }
     CHANGE_EVENT.forEach((event) => {
       element.dispatchEvent(new MouseEvent(event, CommonEvents.getMouseEventProperties()));
