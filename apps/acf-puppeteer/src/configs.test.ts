@@ -114,9 +114,9 @@ describe('Configs', () => {
         await delay(1000);
         const modal = await browser.evaluate(() => document.querySelector('#remove-configs') !== null);
         const configs: Array<Configuration> = await worker.getConfigs();
+        const optionsLength = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).options.length);
         expect(modal).toBeFalsy();
         expect(configs.length).toEqual(1);
-        const optionsLength = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).options.length);
         expect(optionsLength).toEqual(1);
       });
     });

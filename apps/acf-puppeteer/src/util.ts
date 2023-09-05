@@ -53,3 +53,5 @@ export class TestWorker {
 export function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+export const containsInvalidClass = (el) => el.classList.contains('is-invalid');

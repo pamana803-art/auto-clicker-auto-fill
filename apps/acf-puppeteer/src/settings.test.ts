@@ -1,5 +1,5 @@
 import { Settings, defaultSettings } from '@dhruv-techapps/acf-common';
-import { TestBrowser, TestWorker } from './util';
+import { TestBrowser, TestWorker, containsInvalidClass } from './util';
 
 describe('Settings', () => {
   let worker;
@@ -28,7 +28,7 @@ describe('Settings', () => {
       test('toggle', async () => {
         await browser.click('[data-testid="settings-notification"]');
         for (const element of notificationCheckbox) {
-          const checked = await browser.getPage().$eval(`[name="${element}"]`, (el) => el.checked);
+          const checked = await browser.$eval(`[name="${element}"]`, (el) => el.checked);
           expect(checked).toBeFalsy();
         }
       });
@@ -40,14 +40,13 @@ describe('Settings', () => {
       });
       test('back', async () => {
         for (const element of notificationCheckbox) {
-          const checked = await browser.getPage().$eval(`[name="${element}"]`, (el) => el.checked);
+          const checked = await browser.$eval(`[name="${element}"]`, (el) => el.checked);
           expect(checked).toBeTruthy();
         }
         await browser.click('[data-testid="settings-back-button"]');
       });
     });
     describe('retry', () => {
-      const containsInvalidClass = (el) => el.classList.contains('is-invalid');
       test('toggle', async () => {
         await browser.click('[data-testid="settings-retry"]');
         const settings: Settings = await worker.getSettings();
@@ -62,42 +61,42 @@ describe('Settings', () => {
         });
         test('-2', async () => {
           await browser.type('input[id=retry]', '-2');
-          const isInvalid = await browser.getPage().$eval(`input[id=retry]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retry]`, containsInvalidClass);
           expect(isInvalid).toBeFalsy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retry).toEqual(-2);
         });
         test('0', async () => {
           await browser.type('input[id=retry]', '0');
-          const isInvalid = await browser.getPage().$eval(`input[id=retry]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retry]`, containsInvalidClass);
           expect(isInvalid).toBeFalsy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retry).toEqual(0);
         });
         test('0.25', async () => {
           await browser.type('input[id=retry]', '0.25');
-          const isInvalid = await browser.getPage().$eval(`input[id=retry]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retry]`, containsInvalidClass);
           expect(isInvalid).toBeTruthy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retry).toEqual(0);
         });
         test('e', async () => {
           await browser.type('input[id=retry]', 'e');
-          const isInvalid = await browser.getPage().$eval(`input[id=retry]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retry]`, containsInvalidClass);
           expect(isInvalid).toBeTruthy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retry).toEqual(0);
         });
         test('a', async () => {
           await browser.type('input[id=retry]', 'a');
-          const isInvalid = await browser.getPage().$eval(`input[id=retry]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retry]`, containsInvalidClass);
           expect(isInvalid).toBeTruthy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retry).toEqual(0);
         });
         test('1', async () => {
           await browser.type('input[id=retry]', '1');
-          const isInvalid = await browser.getPage().$eval(`input[id=retry]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retry]`, containsInvalidClass);
           expect(isInvalid).toBeFalsy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retry).toEqual(1);
@@ -110,28 +109,28 @@ describe('Settings', () => {
         });
         test('-1', async () => {
           await browser.type('input[id=retryInterval]', '-1');
-          const isInvalid = await browser.getPage().$eval(`input[id=retryInterval]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retryInterval]`, containsInvalidClass);
           expect(isInvalid).toBeTruthy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retryInterval).toEqual(defaultSettings.retryInterval);
         });
         test('0', async () => {
           await browser.type('input[id=retryInterval]', '0');
-          const isInvalid = await browser.getPage().$eval(`input[id=retryInterval]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retryInterval]`, containsInvalidClass);
           expect(isInvalid).toBeFalsy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retryInterval).toEqual(0);
         });
         test('2', async () => {
           await browser.type('input[id=retryInterval]', '2');
-          const isInvalid = await browser.getPage().$eval(`input[id=retryInterval]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retryInterval]`, containsInvalidClass);
           expect(isInvalid).toBeFalsy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retryInterval).toEqual(2);
         });
         test('a', async () => {
           await browser.type('input[id=retryInterval]', 'a');
-          const isInvalid = await browser.getPage().$eval(`input[id=retryInterval]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retryInterval]`, containsInvalidClass);
           expect(isInvalid).toBeTruthy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retryInterval).toEqual(2);
@@ -139,7 +138,7 @@ describe('Settings', () => {
 
         test('0.25', async () => {
           await browser.type('input[id=retryInterval]', '0.25');
-          const isInvalid = await browser.getPage().$eval(`input[id=retryInterval]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retryInterval]`, containsInvalidClass);
           expect(isInvalid).toBeFalsy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retryInterval).toEqual(0.25);
@@ -147,7 +146,7 @@ describe('Settings', () => {
         });
         test('0.25e1.25', async () => {
           await browser.type('input[id=retryInterval]', '0.25e1.25');
-          const isInvalid = await browser.getPage().$eval(`input[id=retryInterval]`, containsInvalidClass);
+          const isInvalid = await browser.$eval(`input[id=retryInterval]`, containsInvalidClass);
           expect(isInvalid).toBeFalsy();
           const settings: Settings = await worker.getSettings();
           expect(settings.retryInterval).toEqual('0.25e1.25');

@@ -1,5 +1,5 @@
 import { Configuration, LOAD_TYPES, START_TYPES } from '@dhruv-techapps/acf-common';
-import { TestBrowser, TestWorker } from './util';
+import { TestBrowser, TestWorker, containsInvalidClass } from './util';
 
 describe('Config', () => {
   let worker;
@@ -32,11 +32,15 @@ describe('Config', () => {
       test('error', async () => {
         await browser.type('input[name=initWait]', 'init wait');
         const configs: Array<Configuration> = await worker.getConfigs();
+        const isInvalid = await browser.$eval(`input[name=initWait]`, containsInvalidClass);
+        expect(isInvalid).toBeTruthy();
         expect(configs[0].initWait).not.toBeDefined();
       });
       test('success', async () => {
         await browser.type('input[name=initWait]', '1.2e1.3');
         const configs: Array<Configuration> = await worker.getConfigs();
+        const isInvalid = await browser.$eval(`input[name=initWait]`, containsInvalidClass);
+        expect(isInvalid).toBeFalsy();
         expect(configs[0].initWait).toEqual('1.2e1.3');
       });
     });
