@@ -15,9 +15,13 @@ export class TestBrowser {
       return page.url() === 'http://localhost:3000/';
     });
   };
+  select = async (querySelector, value) => {
+    await this.page.select(querySelector, value);
+  };
   click = async (querySelector, options) => {
     await this.page.click(querySelector, options);
   };
+  $eval = async (querySelector, func) => await this.page.$eval(querySelector, func);
   evaluate = async (callback) => await this.page.evaluate(callback);
   type = async (querySelector, value) => {
     await this.click(querySelector, { clickCount: 3 });
