@@ -39,8 +39,8 @@ const Actions = (() => {
   const start = async (actions: Array<Action>, batchRepeat: number, sheets?: Sheets) => {
     let i = 0;
     while (i < actions.length) {
-      console.group(`${LOGGER_LETTER} #${i}`);
       const action = actions[i];
+      console.group(`${LOGGER_LETTER} #${action.name || i}`);
       if (!action.elementFinder) {
         throw new ConfigError('Element Finder is blank', 'Configuration Action');
       }

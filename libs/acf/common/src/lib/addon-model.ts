@@ -27,7 +27,7 @@ export type Addon = {
   valueExtractor?: string;
   valueExtractorFlags?: ValueExtractorFlags;
   recheck?: number;
-  recheckInterval?: number;
+  recheckInterval?: number | string;
   recheckOption: RECHECK_OPTIONS;
 };
 

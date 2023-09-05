@@ -48,7 +48,7 @@ export const defaultActionStatement = {
 export type ActionSettings = {
   iframeFirst?: boolean;
   retry?: number;
-  retryInterval?: number;
+  retryInterval?: number | string;
   retryOption?: RETRY_OPTIONS;
 };
 
@@ -61,7 +61,7 @@ export type Action = {
   initWait?: number;
   value?: string;
   repeat?: number;
-  repeatInterval?: number;
+  repeatInterval?: number | string;
   addon?: Addon;
   statement?: ActionStatement;
   settings?: ActionSettings;

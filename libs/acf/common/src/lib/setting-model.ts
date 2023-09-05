@@ -40,7 +40,7 @@ export const defaultSettingsBackup = {
 
 export type Settings = {
   retry: number;
-  retryInterval: number;
+  retryInterval: number | string;
   retryOption: RETRY_OPTIONS;
   checkiFrames: boolean;
   backup?: SettingsBackup;

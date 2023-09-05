@@ -1,6 +1,6 @@
 import { TestBrowser, delay } from './util';
 
-describe('Settings', () => {
+describe('Configs', () => {
   let browser;
 
   beforeAll(async () => {
@@ -8,13 +8,11 @@ describe('Settings', () => {
     await browser.setPage();
   });
 
-  describe('Configs', () => {
-    test('Add Configuration', async () => {
-      const beforeOptionsLength = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).options.length);
-      await browser.click('#add-configuration');
-      const optionsLength = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).options.length);
-      expect(optionsLength).toEqual(beforeOptionsLength + 1);
-    });
+  test('Add Configuration', async () => {
+    const beforeOptionsLength = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).options.length);
+    await browser.click('#add-configuration');
+    const optionsLength = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).options.length);
+    expect(optionsLength).toEqual(beforeOptionsLength + 1);
   });
 
   describe('Bulk Reorder Configuration', () => {

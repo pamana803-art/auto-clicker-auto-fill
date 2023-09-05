@@ -1,6 +1,6 @@
 /// <reference types="chrome"/>
 
-import { Settings } from '@dhruv-techapps/acf-common';
+import { Configuration, Settings } from '@dhruv-techapps/acf-common';
 
 export class TestBrowser {
   page;
@@ -35,6 +35,14 @@ export class TestWorker {
       return result.settings;
     });
     return settings;
+  };
+  getConfigs = async () => {
+    await delay(500);
+    const configs: Array<Configuration> = await globalThis.__BROWSER_GLOBAL__.worker.evaluate(async () => {
+      const result = await chrome.storage.local.get('configs');
+      return result.configs;
+    });
+    return configs;
   };
 }
 
