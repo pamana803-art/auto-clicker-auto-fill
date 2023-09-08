@@ -8,7 +8,7 @@ import { Sheets } from './util/google-sheets';
 const LOGGER_LETTER = 'Action';
 
 const ActionProcessor = (() => {
-  const repeatFunc = async (elements: Array<HTMLElement>, repeat?: number, repeatInterval?: number, value?: string): Promise<ACTION_STATUS> => {
+  const repeatFunc = async (elements: Array<HTMLElement>, repeat?: number, repeatInterval?: number | string, value?: string): Promise<ACTION_STATUS> => {
     if (repeat !== undefined) {
       if (repeat > 0 || repeat < -1) {
         await wait(repeatInterval, `${LOGGER_LETTER} Repeat`, repeat, '<interval>');

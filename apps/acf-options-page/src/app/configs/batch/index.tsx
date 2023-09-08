@@ -15,7 +15,7 @@ function Batch() {
   }, message);
 
   return (
-    <Accordion>
+    <Accordion aria-label='batch'>
       <Accordion.Item eventKey='0'>
         <Accordion.Header>
           {t('batch.title')}

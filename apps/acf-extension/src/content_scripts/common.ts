@@ -8,7 +8,7 @@ import SettingsStorage from './store/settings-storage';
 
 const LOGGER_LETTER = 'Common';
 const Common = (() => {
-  const retryFunc = async (retry?: number, retryInterval?: number) => {
+  const retryFunc = async (retry?: number, retryInterval?: number | string) => {
     if (retry !== undefined) {
       if (retry > 0 || retry < -1) {
         ActionService.setBadgeBackgroundColor(chrome.runtime.id, { color: [102, 16, 242, 1] });
@@ -35,7 +35,7 @@ const Common = (() => {
     }
   };
 
-  const getElements = async (document: Document, elementFinder: string, retry: number, retryInterval: number): Promise<Array<HTMLElement> | undefined> => {
+  const getElements = async (document: Document, elementFinder: string, retry: number, retryInterval: number | string): Promise<Array<HTMLElement> | undefined> => {
     Logger.colorDebug('GetElements', elementFinder);
     let elements: HTMLElement[] | undefined;
     if (/^(id::|#)/gi.test(elementFinder)) {
@@ -83,9 +83,9 @@ const Common = (() => {
     return elements;
   };
 
-  const main = async (elementFinder: string, retry: number, retryInterval: number) => await getElements(document, elementFinder, retry, retryInterval);
+  const main = async (elementFinder: string, retry: number, retryInterval: number | string) => await getElements(document, elementFinder, retry, retryInterval);
 
-  const checkIframe = async (elementFinder: string, retry: number, retryInterval: number) => {
+  const checkIframe = async (elementFinder: string, retry: number, retryInterval: number | string) => {
     Logger.colorDebug('CheckIframe');
     const iFrames = document.getElementsByTagName('iframe');
     let elements;

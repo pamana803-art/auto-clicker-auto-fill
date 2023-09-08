@@ -1,52 +1,49 @@
 /// <reference types="chrome"/>
 
 import { Configuration, Settings } from '@dhruv-techapps/acf-common';
+import { Page, WebWorker } from 'puppeteer';
 
-export class TestBrowser {
-  page;
-  browser;
-  constructor() {
-    this.browser = globalThis.__BROWSER_GLOBAL__.browser;
+type Util = {
+  page: Page;
+  testPage: TestPage;
+  worker: WebWorker;
+};
+
+export const getPageAndWorker = async (url?: string): Promise<Util> => {
+  await delay(1000);
+  const pages: Array<Page> = await globalThis.__BROWSER_GLOBAL__.browser.pages();
+  const page: Page = pages.find((page) => {
+    return page.url() === (url || 'http://localhost:3000/');
+  });
+  page.setViewport({ width: 1920, height: 955 });
+  await page.waitForNetworkIdle();
+  await page.reload();
+  const worker: WebWorker = globalThis.__BROWSER_GLOBAL__.worker;
+  await worker.evaluate(async () => await chrome.storage.local.clear());
+  const testPage = new TestPage(page);
+  return { page, worker, testPage };
+};
+
+export class TestPage {
+  page: Page;
+  constructor(page: Page) {
+    this.page = page;
   }
-  setPage = async () => {
-    await delay(1000);
-    const pages = await this.browser.pages();
-    this.page = pages.find((page) => {
-      return page.url() === 'http://localhost:3000/';
-    });
-  };
-  select = async (querySelector, value) => {
-    await this.page.select(querySelector, value);
-  };
-  click = async (querySelector, options) => {
-    await this.page.click(querySelector, options);
-  };
-  $eval = async (querySelector, func) => await this.page.$eval(querySelector, func);
-  evaluate = async (callback) => await this.page.evaluate(callback);
-  type = async (querySelector, value) => {
-    await this.click(querySelector, { clickCount: 3 });
+  fill = async (querySelector, value) => {
+    await this.page.click(querySelector, { clickCount: 3 });
     await this.page.type(querySelector, value);
     await this.page.$eval(querySelector, (e) => e.blur());
   };
-  getPage = () => this.page;
 }
 
 export class TestWorker {
-  getSettings = async () => {
-    await delay(500);
-    const settings: Settings = await globalThis.__BROWSER_GLOBAL__.worker.evaluate(async () => {
-      const result = await chrome.storage.local.get('settings');
-      return result.settings;
-    });
-    return settings;
+  static getSettings = async (): Promise<Settings> => {
+    const result = await chrome.storage.local.get('settings');
+    return result.settings;
   };
-  getConfigs = async () => {
-    await delay(500);
-    const configs: Array<Configuration> = await globalThis.__BROWSER_GLOBAL__.worker.evaluate(async () => {
-      const result = await chrome.storage.local.get('configs');
-      return result.configs;
-    });
-    return configs;
+  static getConfigs = async (): Promise<Array<Configuration>> => {
+    const result = await chrome.storage.local.get('configs');
+    return result.configs;
   };
 }
 

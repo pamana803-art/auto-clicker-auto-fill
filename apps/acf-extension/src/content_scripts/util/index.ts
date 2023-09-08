@@ -5,17 +5,23 @@ export const sleep = async (msec: number) =>
     setTimeout(resolve, msec);
   });
 
-export const wait = async (time?: number, type = '', ...args: Array<string | number>) => {
+export const wait = async (time?: number | string, type = '', ...args: Array<string | number>) => {
   if (time) {
-    let waitTime = Number(time) * 1000;
-    if (/^\d+(\.\d+)?e\d+(\.\d+)?$/.test(time.toString())) {
-      const [start, end] = time
-        .toString()
-        .split('e')
-        .map((n) => Number(n));
-      waitTime = (Math.floor(Math.random() * (end - start)) + start) * 1000;
+    let waitTime;
+    if (typeof time === 'string') {
+      if (/^\d+(\.\d+)?e\d+(\.\d+)?$/.test(time)) {
+        const [start, end] = time
+          .toString()
+          .split('e')
+          .map((n) => Number(n));
+        waitTime = (Math.floor(Math.random() * (end - start)) + start) * 1000;
+      }
+    } else {
+      waitTime = Number(time) * 1000;
     }
-    Logger.colorDebug(type, ...args, `${waitTime / 1000} sec`);
-    await sleep(waitTime);
+    if (waitTime) {
+      Logger.colorDebug(type, ...args, `${waitTime / 1000} sec`);
+      await sleep(waitTime);
+    }
   }
 };

@@ -61,7 +61,7 @@ const ConfigSettingsModal = () => {
   };
 
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow}>
+    <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow} data-testid='config-settings-modal'>
       <Form>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.configSettings.title')}</Modal.Title>

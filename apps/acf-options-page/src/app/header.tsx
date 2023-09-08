@@ -49,7 +49,7 @@ function Header() {
 
               {!error && (
                 <>
-                  <Nav.Link onClick={() => dispatch(switchSettingsModal())} className='px-4 py-3' data-testid='switch-settings'>
+                  <Nav.Link onClick={() => dispatch(switchSettingsModal())} className='px-4 py-3' data-testid='open-settings'>
                     <GearFill width='24' height='24' title={t('header.settings')} />
                   </Nav.Link>
                   <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase px-2 py-2 fw-bolder' data-testid='switch-language'>

@@ -1,5 +1,5 @@
-import { Configuration } from '@dhruv-techapps/acf-common';
-import { TestBrowser, TestWorker, delay } from './util';
+import { TestPage, TestWorker, delay, getPageAndWorker } from './util';
+import { Page, WebWorker } from 'puppeteer';
 
 const config1 = {
   url: 'https://developer.mozilla.org/',
@@ -11,111 +11,119 @@ const config2 = {
   name: 'getautoclicker.com',
 };
 
-describe('Configs', () => {
-  let browser;
-  let worker;
+let worker: WebWorker;
+let page: Page;
+let testPage: TestPage;
 
-  beforeAll(async () => {
-    browser = new TestBrowser();
-    worker = new TestWorker();
-    await browser.setPage();
-  });
+beforeAll(async () => {
+  ({ page, worker, testPage } = await getPageAndWorker());
+});
 
-  test('No Configs', async () => {
-    const configs: Array<Configuration> = await worker.getConfigs();
-    expect(configs).toBeUndefined();
-  });
+test('No Configs', async () => {
+  const configs = await worker.evaluate(TestWorker.getConfigs);
+  expect(configs).toBeUndefined();
+});
 
+const CONFIGURATION_LIST = '#configuration-list';
+
+describe('Configurations', () => {
   test('updated Config 1', async () => {
-    await browser.type('input[name=url]', config1.url);
-    const configs: Array<Configuration> = await worker.getConfigs();
+    const selector = 'input[name=url]';
+    await testPage.fill(selector, config1.url);
+    const configs = await worker.evaluate(TestWorker.getConfigs);
     expect(configs.length).toEqual(1);
     expect(configs[0].url).toEqual(config1.url);
     expect(configs[0].name).toEqual(config1.name);
   });
 
   test('Add Configuration', async () => {
-    const beforeOptionsLength = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).options.length);
-    await browser.click('#add-configuration');
+    const beforeOptionsLength = await page.$eval(CONFIGURATION_LIST, (e) => (e as HTMLSelectElement).options.length);
+    await page.click('#add-configuration');
     //Frontend
-    const optionsLength = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).options.length);
-    const selected = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).value);
+    const optionsLength = await page.$eval(CONFIGURATION_LIST, (e) => (e as HTMLSelectElement).options.length);
+    const selected = await page.$eval(CONFIGURATION_LIST, (e) => (e as HTMLSelectElement).value);
     expect(optionsLength).toEqual(beforeOptionsLength + 1);
     expect(selected).toEqual('0');
     //Backend
-    const configs: Array<Configuration> = await worker.getConfigs();
+    const configs = await worker.evaluate(TestWorker.getConfigs);
     expect(configs.length).toEqual(1);
   });
 
+  const URL_SELECTOR = 'input[name=url]';
+  const NAME_SELECTOR = 'input[name=name]';
+  const CONFIGS_MORE_OPTIONS = '[data-testid="configurations-more-option"]';
+
   test('updated Config 2', async () => {
-    await browser.type('input[name=url]', config2.url);
-    const configs: Array<Configuration> = await worker.getConfigs();
+    await testPage.fill(URL_SELECTOR, config2.url);
+    const configs = await worker.evaluate(TestWorker.getConfigs);
     expect(configs.length).toEqual(2);
     expect(configs[0].url).toEqual(config2.url);
     expect(configs[0].name).toEqual(config2.name);
   });
 
   test('beforeSwitch', async () => {
-    const url = await browser.$eval('input[name=url]', (el) => el.value);
-    const name = await browser.$eval('input[name=name]', (el) => el.value);
+    const url = await page.$eval(URL_SELECTOR, (el) => el.value);
+    const name = await page.$eval(NAME_SELECTOR, (el) => el.value);
     expect(url).toEqual(config2.url);
     expect(name).toEqual(config2.name);
   });
 
   test('switch Config', async () => {
-    await browser.select('#configuration-list', '1');
-    const afterSelected = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).value);
+    await page.select(CONFIGURATION_LIST, '1');
+    const afterSelected = await page.$eval(CONFIGURATION_LIST, (e) => (e as HTMLSelectElement).value);
     expect(afterSelected).toEqual('1');
   });
 
   test('afterSwitch', async () => {
-    const url = await browser.$eval('input[name=url]', (el) => el.value);
-    const name = await browser.$eval('input[name=name]', (el) => el.value);
+    const url = await page.$eval(URL_SELECTOR, (el) => el.value);
+    const name = await page.$eval(NAME_SELECTOR, (el) => el.value);
     expect(url).toEqual(config1.url);
     expect(name).toEqual(config1.name);
   });
 
   describe('Bulk Reorder Configuration', () => {
+    const REORDER_CONFIGS = '#reorder-configs';
     test('open', async () => {
-      await browser.click('[data-testid="configurations-more-option"]');
-      await browser.click('[data-testid="configurations-reorder-config"]');
-      const modal = await browser.evaluate(() => document.querySelector('#reorder-configs') !== null);
-      expect(modal).toBeTruthy();
+      await page.click(CONFIGS_MORE_OPTIONS);
+      await page.click('[data-testid="configurations-reorder-config"]');
+      const modal = await page.$(REORDER_CONFIGS);
+      expect(modal).not.toBeNull();
     });
     test('check No of configs', async () => {
-      const configs = await browser.evaluate(() => document.querySelector('#reorder-configs').querySelectorAll('.list-group-item').length);
+      const configs = await page.$eval(REORDER_CONFIGS, (e) => e.querySelectorAll('.list-group-item').length);
       expect(configs).toBeDefined();
       expect(configs).toEqual(2);
     });
     test('close', async () => {
-      await browser.click('[data-testid="configurations-reorder-close"]');
+      await page.click('[data-testid="configurations-reorder-close"]');
       await delay(1000);
-      const modal = await browser.evaluate(() => document.querySelector('#reorder-configs') !== null);
-      expect(modal).toBeFalsy();
+      const modal = await page.$(REORDER_CONFIGS);
+      expect(modal).toBeNull();
     });
   });
 
   describe('Bulk Remove Configuration', () => {
+    const REMOVE_CONFIGS = '#remove-configs';
     test('open', async () => {
-      await browser.click('[data-testid="configurations-more-option"]');
-      await browser.click('[data-testid="configurations-remove-config"]');
-      const modal = await browser.evaluate(() => document.querySelector('#remove-configs') !== null);
-      expect(modal).toBeTruthy();
+      await page.click(CONFIGS_MORE_OPTIONS);
+      await page.click('[data-testid="configurations-remove-config"]');
+      const modal = await page.$(REMOVE_CONFIGS);
+      expect(modal).not.toBeNull();
     });
     describe('select', () => {
       test('check No of configs', async () => {
-        const configs = await browser.evaluate(() => document.querySelector('#remove-configs').querySelectorAll('.list-group-item').length);
+        const configs = await page.$eval(REMOVE_CONFIGS, (e) => e.querySelectorAll('.list-group-item').length);
         expect(configs).toBeDefined();
         expect(configs).toEqual(2);
       });
       test('remove config', async () => {
-        await browser.click('.list-group-item input');
-        await browser.click('[data-testid="configurations-remove-save"]');
+        await page.click('.list-group-item input');
+        await page.click('[data-testid="configurations-remove-save"]');
         await delay(1000);
-        const modal = await browser.evaluate(() => document.querySelector('#remove-configs') !== null);
-        const configs: Array<Configuration> = await worker.getConfigs();
-        const optionsLength = await browser.evaluate(() => (document.getElementById('configuration-list') as HTMLSelectElement).options.length);
-        expect(modal).toBeFalsy();
+        const modal = await page.$(REMOVE_CONFIGS);
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        const optionsLength = await page.$eval(CONFIGURATION_LIST, (e) => (e as HTMLSelectElement).options.length);
+        expect(modal).toBeNull();
         expect(configs.length).toEqual(1);
         expect(optionsLength).toEqual(1);
       });
