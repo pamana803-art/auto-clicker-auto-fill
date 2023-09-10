@@ -75,8 +75,8 @@ const slice = createSlice({
     duplicateConfig: (state) => {
       const { configs, selectedConfigIndex } = state;
       const config = configs[selectedConfigIndex];
-      config.name = '(Duplicate) ' + (config.name || config.url || 'Configuration');
-      state.configs.push(configs[selectedConfigIndex]);
+      const name = '(Duplicate) ' + (config.name || config.url || 'Configuration');
+      state.configs.push({ ...configs[selectedConfigIndex], name });
       state.selectedConfigIndex = state.configs.length - 1;
     },
     selectConfig: (state, action: PayloadAction<number>) => {

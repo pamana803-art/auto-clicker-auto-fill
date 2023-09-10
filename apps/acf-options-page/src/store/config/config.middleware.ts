@@ -82,6 +82,7 @@ configsListenerMiddleware.startListening({
     updateConfig,
     updateConfigSettings,
     removeConfig,
+    duplicateConfig,
 
     updateBatch,
 
