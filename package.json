@@ -69,6 +69,7 @@
     "jest-environment-jsdom": "^29.6.1",
     "jest-environment-node": "^29.4.1",
     "nx": "16.5.5",
+    "nx-cloud": "^16.4.0",
     "prettier": "^2.6.2",
     "puppeteer": "^21.1.0",
     "react-refresh": "^0.10.0",
