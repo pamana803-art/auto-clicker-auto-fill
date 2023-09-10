@@ -63,24 +63,122 @@ describe('Action Addon', () => {
   describe('Form Recheck', () => {
     const recheckSelector = '#addon [name=recheck]';
     const recheckIntervalSelector = '#addon [name=recheckInterval]';
-
-    test('recheck', async () => {
-      await testPage.fill(recheckSelector, '1');
-      const isInvalid = await page.$eval(recheckSelector, containsInvalidClass);
-      expect(isInvalid).toBeFalsy();
+    const recheckOptionsSelector = '#addon [name=recheckOptions]';
+    describe('recheck', () => {
+      test('-2', async () => {
+        await testPage.fill(recheckSelector, '-2');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckSelector, containsInvalidClass);
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(isInvalid).toBeFalsy();
+        expect(configs[0].actions[0].addon.recheck).toEqual(-2);
+      });
+      test('0', async () => {
+        await testPage.fill(recheckSelector, '0');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckSelector, containsInvalidClass);
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(isInvalid).toBeFalsy();
+        expect(configs[0].actions[0].addon.recheck).toEqual(0);
+      });
+      test('0.25', async () => {
+        await testPage.fill(recheckSelector, '0.25');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckSelector, containsInvalidClass);
+        expect(isInvalid).toBeTruthy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheck).toEqual(0);
+      });
+      test('e', async () => {
+        await testPage.fill(recheckSelector, 'e');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckSelector, containsInvalidClass);
+        expect(isInvalid).toBeTruthy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheck).toEqual(0);
+      });
+      test('a', async () => {
+        await testPage.fill(recheckSelector, 'a');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckSelector, containsInvalidClass);
+        expect(isInvalid).toBeTruthy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheck).toEqual(0);
+      });
+      test('1', async () => {
+        await testPage.fill(recheckSelector, '1');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckSelector, containsInvalidClass);
+        expect(isInvalid).toBeFalsy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheck).toEqual(1);
+      });
     });
+    describe('recheckInterval', () => {
+      test('-1', async () => {
+        await testPage.fill(recheckIntervalSelector, '-1');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckIntervalSelector, containsInvalidClass);
+        expect(isInvalid).toBeTruthy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheckInterval).toBeUndefined;
+      });
+      test('0', async () => {
+        await testPage.fill(recheckIntervalSelector, '0');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckIntervalSelector, containsInvalidClass);
+        expect(isInvalid).toBeFalsy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheckInterval).toEqual(0);
+      });
+      test('2', async () => {
+        await testPage.fill(recheckIntervalSelector, '2');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckIntervalSelector, containsInvalidClass);
+        expect(isInvalid).toBeFalsy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheckInterval).toEqual(2);
+      });
+      test('a', async () => {
+        await testPage.fill(recheckIntervalSelector, 'a');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckIntervalSelector, containsInvalidClass);
+        expect(isInvalid).toBeTruthy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheckInterval).toEqual(2);
+      });
 
-    test('recheckInterval', async () => {
-      await testPage.fill(recheckIntervalSelector, '1.25e2.25');
-      const isInvalid = await page.$eval(recheckIntervalSelector, containsInvalidClass);
-      expect(isInvalid).toBeFalsy();
+      test('0.25', async () => {
+        await testPage.fill(recheckIntervalSelector, '0.25');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckIntervalSelector, containsInvalidClass);
+        expect(isInvalid).toBeFalsy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheckInterval).toEqual(0.25);
+        expect(typeof configs[0].actions[0].addon.recheckInterval).toEqual('number');
+      });
+      test('0.25e1.25', async () => {
+        await testPage.fill(recheckIntervalSelector, '0.25e1.25');
+        await page.click('[data-testid=action-addon-save]');
+        const isInvalid = await page.$eval(recheckIntervalSelector, containsInvalidClass);
+        expect(isInvalid).toBeFalsy();
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheckInterval).toEqual('0.25e1.25');
+        expect(typeof configs[0].actions[0].addon.recheckInterval).toEqual('string');
+      });
     });
-    test('save', async () => {
-      await page.click('[data-testid=action-addon-save]');
-      const configs = await worker.evaluate(TestWorker.getConfigs);
-      expect(configs[0].actions[0].addon.recheck).toEqual(1);
-      expect(configs[0].actions[0].addon.recheckInterval).toEqual('1.25e2.25');
-      expect(configs[0].actions[0].addon.recheckOption).toEqual(RECHECK_OPTIONS.SKIP);
+    describe('retryOption', () => {
+      const retryOptions = ['stop', 'skip', 'reload'];
+      test('default', async () => {
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheckOption).toEqual(RECHECK_OPTIONS.SKIP);
+      });
+      test.each(retryOptions)('%s', async (retryOption) => {
+        await page.click(`#addon [name=recheckOption][value=${retryOption}]`);
+        await page.click('[data-testid=action-addon-save]');
+        const configs = await worker.evaluate(TestWorker.getConfigs);
+        expect(configs[0].actions[0].addon.recheckOption).toEqual(retryOption);
+      });
     });
   });
   test('clear', async () => {
