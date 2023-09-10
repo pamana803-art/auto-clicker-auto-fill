@@ -36,7 +36,7 @@ const RemoveConfigsModal = () => {
   };
 
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow}>
+    <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow} data-testid='remove-configs-modal'>
       <Form onSubmit={onSubmit} id='remove-configs'>
         <Modal.Header>
           <Modal.Title as='h6'>{t('configuration.removeConfigs')}</Modal.Title>

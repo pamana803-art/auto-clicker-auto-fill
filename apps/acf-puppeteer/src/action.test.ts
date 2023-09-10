@@ -11,12 +11,12 @@ beforeAll(async () => {
 
 describe('Action', () => {
   const actions = [
-    ['initWait', 0],
+    ['initWait', 1],
     ['name', 'name'],
     ['elementFinder', 'elementFinder'],
     ['value', 'value'],
-    ['repeat', 0],
-    ['repeatInterval', 0],
+    ['repeat', 1],
+    ['repeatInterval', 1],
   ];
 
   const elementFinderSelector = '#actions input[name=elementFinder]';

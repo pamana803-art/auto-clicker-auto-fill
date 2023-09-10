@@ -55,7 +55,7 @@ const AddonModal = () => {
   };
 
   return (
-    <Modal show={visible} size='lg' onHide={onHide} onShow={onShow}>
+    <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='addon-modal'>
       <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.addon.title')}</Modal.Title>
@@ -112,7 +112,7 @@ const AddonModal = () => {
                   </Form.Group>
                 </Col>
               </Row>
-              <div hidden={!(addon.elementFinder && addon.condition && addon.value)}>
+              <div hidden={!(addon.elementFinder && addon.condition && addon.value)} data-testid='addon-recheck'>
                 <hr />
                 <AddonRecheck />
               </div>

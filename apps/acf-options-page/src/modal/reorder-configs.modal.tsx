@@ -27,7 +27,7 @@ const ReorderConfigsModal = () => {
     //:TODO
   };
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow}>
+    <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow} data-testid='reorder-configs-modal'>
       <Form onSubmit={onSubmit} id='reorder-configs'>
         <Modal.Header>
           <Modal.Title as='h6'>{t('modal.reorder.title')}</Modal.Title>

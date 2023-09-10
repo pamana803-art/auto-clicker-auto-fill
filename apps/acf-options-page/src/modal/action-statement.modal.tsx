@@ -56,7 +56,7 @@ const ActionStatementModal = () => {
   };
 
   return (
-    <Modal show={visible} size='lg' onHide={onHide} onShow={onShow}>
+    <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='action-statement-modal'>
       <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.actionCondition.title')}</Modal.Title>

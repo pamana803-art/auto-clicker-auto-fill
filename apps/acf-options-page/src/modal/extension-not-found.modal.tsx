@@ -33,7 +33,7 @@ const ExtensionNotFoundModal = () => {
   };
 
   return (
-    <Modal show={extensionNotFound} size='lg' centered backdrop='static' keyboard={false} onShow={onShow} onHide={onHide}>
+    <Modal show={extensionNotFound} size='lg' centered backdrop='static' keyboard={false} onShow={onShow} onHide={onHide} data-testid='extension-not-found-modal'>
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.extensionNotFound.title')}</Modal.Title>
       </Modal.Header>

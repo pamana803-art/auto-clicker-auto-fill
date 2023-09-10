@@ -86,7 +86,7 @@ function AddonValueExtractorFlags() {
   }
 
   return (
-    <DropdownButton variant='outline-secondary' title={title('flags')} id='input-group-dropdown-2' align='end'>
+    <DropdownButton variant='outline-secondary' title={title('flags')} data-testid='value-extractor-flags' id='value-extractor-flags' align='end'>
       {FLAGS.map(({ value, label, sub }) => (
         <Dropdown.Item href='#' key={value} active={flags[value]} onClick={onFlagsClick} data-flag={value}>
           {label()} <br />

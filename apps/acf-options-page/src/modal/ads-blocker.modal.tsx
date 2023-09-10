@@ -30,7 +30,7 @@ const AdsBlockerModal = () => {
   };
 
   return (
-    <Modal show={adsBlocker} centered backdrop='static' keyboard={false} id='ads-blocker'>
+    <Modal show={adsBlocker} centered backdrop='static' keyboard={false} id='ads-blocker' data-testid='ads-blocker-modal'>
       <Modal.Header className='justify-content-center'>
         <Modal.Title as='h6'>Please allow ads on our site</Modal.Title>
       </Modal.Header>

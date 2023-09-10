@@ -18,8 +18,7 @@ describe('Batch', () => {
     const beforeExpand = await page.$eval('[aria-label=batch] .accordion-collapse', (e) => e.classList.contains('show'));
     expect(beforeExpand).toBeFalsy();
     await page.click('[aria-label=batch] button');
-    const afterExpand = await page.$eval('[aria-label=batch] .accordion-collapse', (e) => e.classList.contains('show'));
-    expect(afterExpand).toBeTruthy();
+    await page.waitForSelector('[aria-label=batch] .accordion-collapse.show');
   });
   describe('repeat', () => {
     const repeatSelector = 'input[name=repeat]';

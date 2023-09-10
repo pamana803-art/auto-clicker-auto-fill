@@ -14,7 +14,7 @@ const BlogModal = () => {
   };
 
   return (
-    <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow}>
+    <Modal show={visible} size='lg' onHide={handleClose} scrollable onShow={onShow} data-testid='blog-modal'>
       <Modal.Header>
         <Modal.Title as='h3'>{title}</Modal.Title>
       </Modal.Header>
