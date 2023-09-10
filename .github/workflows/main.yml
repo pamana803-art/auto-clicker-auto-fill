@@ -45,7 +45,7 @@ jobs:
     with:
       artifacts-path: 'dist'
       number-of-agents: 3
-      environment-variables: variant="${{vars.VARIANT}}" oauth="${{secrets.OAUTH_CLIENT_ID}}" name="${{vars.NAME}}"
+      environment-variables: variant="${{vars.VARIANT}}" oauth="${{vars.OAUTH_CLIENT_ID}}" name="${{vars.NAME}}"
       parallel-commands: |
         npx nx-cloud record -- npx nx format:check
       parallel-commands-on-agents: |
