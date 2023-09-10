@@ -17,7 +17,6 @@ jobs:
     name: Nx Cloud - Main Job
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
     with:
-      environment: development
       number-of-agents: 3
       parallel-commands: |
         npx nx-cloud record -- npx nx format:check
