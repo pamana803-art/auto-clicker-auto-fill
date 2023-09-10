@@ -16,7 +16,26 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  UNINSTALL_URL: ${{vars.UNINSTALL_URL}}
+  TRACKING_ID: ${{vars.TRACKING_ID}}
+  OPTIONS_PAGE_URL: ${{vars.OPTIONS_PAGE_URL}}
+  FUNCTION_URL: ${{vars.FUNCTION_URL}}
+  VARIANT: ${{vars.VARIANT}}
+  DISCORD_CLIENT_ID: ${{vars.DISCORD_CLIENT_ID}}
+  NAME: ${{vars.NAME}}
+
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    environment:
+      name: Development
+    steps:
+      - run: |
+          echo "NAME=${NAME//[^[:alnum:]]/_}" >>${GITHUB_ENV}
+          echo "${NAME}"
+      - id: package
+        uses: martinbeentjes/npm-get-version-action@main
   main:
     name: Nx Cloud - Main Job
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
@@ -24,7 +43,9 @@ jobs:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
       NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
     with:
+      artifacts-path: 'dist'
       number-of-agents: 3
+      environment-variables: variant="${{vars.VARIANT}}" oauth="${{secrets.OAUTH_CLIENT_ID}}" name="${{vars.NAME}}"
       parallel-commands: |
         npx nx-cloud record -- npx nx format:check
       parallel-commands-on-agents: |
