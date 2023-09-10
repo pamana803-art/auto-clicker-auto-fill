@@ -86,7 +86,8 @@ describe('Config', () => {
   test('Duplicate', async () => {
     const beforeOptionsLength = await await page.$eval('#configuration-list', (e) => (e as HTMLSelectElement).options.length);
     await page.click('#config-dropdown');
-    await page.click('::-p-text(Duplicate Configuration)');
+
+    await page.click('[data-testid=duplicate-configuration]');
     const text = await page.$eval('input[name=name]', (el) => el.value);
     const afterOptionsLength = await await page.$eval('#configuration-list', (e) => (e as HTMLSelectElement).options.length);
     expect(text).toMatch('(Duplicate)');
@@ -96,9 +97,8 @@ describe('Config', () => {
     test('no', async () => {
       const beforeOptionsLength = await page.$eval('#configuration-list', (e) => (e as HTMLSelectElement).options.length);
       await page.click('#config-dropdown');
-      await page.click('::-p-text(Remove Configuration)');
-      const modal = await page.evaluate(() => document.querySelector('[data-testid=confirm-modal]') !== null);
-      expect(modal).toBeTruthy();
+      await page.click('[data-testid=remove-configuration]');
+      await page.waitForSelector('[data-testid=confirm-modal]');
       await page.click('[data-testid=confirm-modal-no]');
       const text = await page.$eval('input[name=name]', (el) => el.value);
       const afterOptionsLength = await page.$eval('#configuration-list', (e) => (e as HTMLSelectElement).options.length);
@@ -108,9 +108,8 @@ describe('Config', () => {
     test('yes', async () => {
       const beforeOptionsLength = await page.$eval('#configuration-list', (e) => (e as HTMLSelectElement).options.length);
       await page.click('#config-dropdown');
-      await page.click('::-p-text(Remove Configuration)');
-      const modal = await page.evaluate(() => document.querySelector('[data-testid=confirm-modal]') !== null);
-      expect(modal).toBeTruthy();
+      await page.click('[data-testid=remove-configuration]');
+      await page.waitForSelector('[data-testid=confirm-modal]');
       await page.click('[data-testid=confirm-modal-yes]');
       const text = await page.$eval('input[name=name]', (el) => el.value);
       const afterOptionsLength = await page.$eval('#configuration-list', (e) => (e as HTMLSelectElement).options.length);

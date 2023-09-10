@@ -13,7 +13,7 @@ beforeAll(async () => {
 describe('Config:Settings', () => {
   test('open', async () => {
     await page.click('#config-dropdown');
-    await page.click('::-p-text(Configuration Settings)');
+    await page.click('[data-testid=configuration-settings]');
     await page.waitForSelector('[data-testid="config-settings-modal"]');
     const startType = await page.$eval('input[name=startType]:checked', (e) => e.value);
     const loadType = await page.$eval('input[name=loadType]:checked', (e) => e.value);

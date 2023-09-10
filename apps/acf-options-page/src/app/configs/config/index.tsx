@@ -113,16 +113,24 @@ function Config() {
                 <ThreeDots width='24' height='24' />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={onExportConfig}>{t('configuration.export')}</Dropdown.Item>
-                <Dropdown.Item onClick={() => importFiled.current?.click()}>{t('configuration.import')}</Dropdown.Item>
+                <Dropdown.Item onClick={onExportConfig} data-testid='export-configuration'>
+                  {t('configuration.export')}
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => importFiled.current?.click()} data-testid='import-configuration'>
+                  {t('configuration.import')}
+                </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={onDuplicateConfig}>{t('configuration.duplicate')}</Dropdown.Item>
+                <Dropdown.Item onClick={onDuplicateConfig} data-testid='duplicate-configuration'>
+                  {t('configuration.duplicate')}
+                </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={onRemoveConfigConfirm} className={lastConfig ? '' : 'text-danger'} disabled={lastConfig}>
+                <Dropdown.Item onClick={onRemoveConfigConfirm} className={lastConfig ? '' : 'text-danger'} disabled={lastConfig} data-testid='remove-configuration'>
                   {t('configuration.remove')}
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={showSettings}>{t('configuration.settings')}</Dropdown.Item>
+                <Dropdown.Item onClick={showSettings} data-testid='configuration-settings'>
+                  {t('configuration.settings')}
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <div className='custom-file d-none'>

@@ -1,5 +1,5 @@
 import { Page, WebWorker } from 'puppeteer';
-import { TestPage, TestWorker, containsDisabledClass, getPageAndWorker } from './util';
+import { TestPage, TestWorker, containsDisabledClass, delay, getPageAndWorker } from './util';
 
 let worker: WebWorker;
 let page: Page;
@@ -37,6 +37,7 @@ describe('Action Remove', () => {
       expect(actions.length).toEqual(2);
     });
     test('yes', async () => {
+      await delay(1000);
       await page.click('#action-dropdown');
       await page.waitForSelector(removeAction);
       await page.click(removeAction);
