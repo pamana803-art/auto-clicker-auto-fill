@@ -1,5 +1,12 @@
 name: NX
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment of release'
+        type: environment
+        default: Development
+        required: true
   push:
     branches:
       - main
