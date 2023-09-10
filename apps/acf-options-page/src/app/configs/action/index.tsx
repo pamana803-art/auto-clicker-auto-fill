@@ -42,7 +42,7 @@ function Action() {
                 {t('action.add')}
               </Button>
               <Dropdown className='ml-2' id='acton-column-filter'>
-                <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' className='pe-0' aria-label='Filter Action Column'>
+                <Dropdown.Toggle as={DropdownToggle} id='column-dropdown' className='pe-0' aria-label='Filter Action Column'>
                   <Filter width='28' height='28' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>

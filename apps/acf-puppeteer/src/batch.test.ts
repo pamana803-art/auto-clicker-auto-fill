@@ -1,5 +1,5 @@
 import { Page, WebWorker } from 'puppeteer';
-import { TestPage, TestWorker, containsInvalidClass, delay, getPageAndWorker } from './util';
+import { TestPage, TestWorker, containsInvalidClass, getPageAndWorker } from './util';
 
 let worker: WebWorker;
 let page: Page;
@@ -18,7 +18,6 @@ describe('Batch', () => {
     const beforeExpand = await page.$eval('[aria-label=batch] .accordion-collapse', (e) => e.classList.contains('show'));
     expect(beforeExpand).toBeFalsy();
     await page.click('[aria-label=batch] button');
-    await delay(1000);
     const afterExpand = await page.$eval('[aria-label=batch] .accordion-collapse', (e) => e.classList.contains('show'));
     expect(afterExpand).toBeTruthy();
   });

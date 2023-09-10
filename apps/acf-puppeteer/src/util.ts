@@ -51,4 +51,5 @@ export function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export const containsInvalidClass = (el) => el.classList.contains('is-invalid');
+export const containsInvalidClass = (e) => e.classList.contains('is-invalid');
+export const containsDisabledClass = (e) => e.classList.contains('disabled');

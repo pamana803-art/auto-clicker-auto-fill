@@ -196,13 +196,22 @@ const ActionTable = () => {
                   <Dropdown.Menu>
                     {actions[row.id].elementFinder && (
                       <>
-                        <Dropdown.Item onClick={() => showAddon(row)}>{t('action.addon')}</Dropdown.Item>
-                        <Dropdown.Item onClick={() => showSettings(row)}>{t('action.settings')}</Dropdown.Item>
-                        {index !== 0 && <Dropdown.Item onClick={() => showCondition(row)}>{t('modal.actionCondition.title')}</Dropdown.Item>}
+                        <Dropdown.Item data-testid='action-addon' onClick={() => showAddon(row)}>
+                          {t('action.addon')}
+                        </Dropdown.Item>
+                        <Dropdown.Item data-testid='action-settings' onClick={() => showSettings(row)}>
+                          {t('action.settings')}
+                        </Dropdown.Item>
+                        {index !== 0 && (
+                          <Dropdown.Item data-testid='action-statement' onClick={() => showCondition(row)}>
+                            {t('modal.actionCondition.title')}
+                          </Dropdown.Item>
+                        )}
                         <Dropdown.Divider />
                       </>
                     )}
                     <Dropdown.Item
+                      data-testid='action-remove'
                       onClick={() => {
                         removeActionConfirm(row.id);
                       }}
