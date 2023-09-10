@@ -4,7 +4,6 @@
   "sourceRoot": "apps/acf-options-page/src",
   "projectType": "application",
   "tags": ["scope:acf"],
-  "implicitDependencies": ["acf-i18n"],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
