@@ -26,16 +26,6 @@ env:
   NAME: ${{vars.NAME}}
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    environment:
-      name: Development
-    steps:
-      - run: |
-          echo "NAME=${NAME//[^[:alnum:]]/_}" >>${GITHUB_ENV}
-          echo "${NAME}"
-      - id: package
-        uses: martinbeentjes/npm-get-version-action@main
   main:
     name: Nx Cloud - Main Job
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
@@ -45,11 +35,13 @@ jobs:
     with:
       artifacts-path: 'dist'
       number-of-agents: 3
-      environment-variables: variant=${{vars.VARIANT}} oauth=${{vars.OAUTH_CLIENT_ID}} name=TEST
+      environment-variables: OPTIONS_PAGE_URL="${{vars.OPTIONS_PAGE_URL}}" VARIANT=${{vars.VARIANT}} FUNCTION_URL=${{vars.FUNCTION_URL}} UNINSTALL_URL=${{vars.UNINSTALL_URL}} TRACKING_ID=${{TRACKING_ID}}
       parallel-commands: |
         npx nx-cloud record -- npx nx format:check
       parallel-commands-on-agents: |
-        npx nx affected -t lint --parallel=3 & npx nx affected -t test --parallel=3 --configuration=ci & npx nx affected -t build --parallel=3
+        npx nx affected -t lint --parallel=3 
+        npx nx affected -t test --parallel=3 --configuration=ci 
+        npx nx affected -t build --parallel=3 --variant="${{vars.VARIANT}}"" --oauth="${{vars.OAUTH_CLIENT_ID}}"" --name="${{vars.NAME}}"
 
   agents:
     name: Nx Cloud - Agents
@@ -60,3 +52,15 @@ jobs:
     with:
       environment-variables: variant="${{vars.VARIANT}}" oauth="${{vars.OAUTH_CLIENT_ID}}" name="${{vars.NAME}}"
       number-of-agents: 3
+
+  setup:
+    needs: main
+    runs-on: ubuntu-latest
+    environment:
+      name: Development
+    steps:
+      - run: |
+          echo "NAME=${NAME//[^[:alnum:]]/_}" >>${GITHUB_ENV}
+          echo "${NAME}"
+      - id: package
+        uses: martinbeentjes/npm-get-version-action@main
