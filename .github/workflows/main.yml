@@ -67,7 +67,7 @@ jobs:
           npx nx affected -t test --parallel=3 & 
           pids+=($!)
 
-          npx nx affected -t build --parallel=3 --name="${{vars.NAME}}" --devtool="${{vars.DEV_TOOL}}" --variant="${{vars.VARIANT}}" --oauth="${{secrets.OAUTH_CLIENT_ID}}" & 
+          npx nx affected -t build --parallel=3 --name=${{vars.NAME}} & 
           pids+=($!)
 
           # run all commands in parallel and bail if one of them fails
