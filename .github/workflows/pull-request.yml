@@ -1,4 +1,4 @@
-name: Auto Clicker Auto Fill [mono-repo]
+name: mono-repo
 
 on:
   workflow_dispatch:
@@ -23,28 +23,36 @@ jobs:
     runs-on: ubuntu-latest
     environment: Development
     steps:
-      name: Nx Cloud - Main Job
-      uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
-      secrets:
-        NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-        NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
-      with:
-        parallel-commands: |
-          npx nx-cloud record -- npx nx format:check
-        artifacts-path: 'dist/apps/*'
-        environment-variables: |
-          UNINSTALL_URL=${{vars.UNINSTALL_URL}}
-          TRACKING_ID=${{vars.TRACKING_ID}}
-          OPTIONS_PAGE_URL=${{vars.OPTIONS_PAGE_URL}}
-          FUNCTION_URL=${{vars.FUNCTION_URL}}
-          VARIANT=${{vars.VARIANT}}
-          DISCORD_CLIENT_ID=${{vars.DISCORD_CLIENT_ID}}
-          NAME=${{vars.NAME}}
-          TEST=true
-        parallel-commands-on-agents: |
-          npx nx affected --target=lint --parallel=3
-          npx nx affected --target=test --parallel=3 --ci --code-coverage
-          npx nx affected --target=build --parallel=3
+      - name: Use variables
+        run: |
+          echo "repository variable : $REPOSITORY_VAR"
+          echo "variable from shell environment : $UNINSTALL_URL"
+        env:
+          REPOSITORY_VAR: ${{ vars.DISCORD_CLIENT_ID }}
+          OVERRIDE_VAR: ${{ vars.VARIANT }}
+
+      - name: Nx Cloud - Main Job
+        uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
+        secrets:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+          NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
+        with:
+          parallel-commands: |
+            npx nx-cloud record -- npx nx format:check
+          artifacts-path: 'dist/apps/*'
+          environment-variables: |
+            UNINSTALL_URL=${{vars.UNINSTALL_URL}}
+            TRACKING_ID=${{vars.TRACKING_ID}}
+            OPTIONS_PAGE_URL=${{vars.OPTIONS_PAGE_URL}}
+            FUNCTION_URL=${{vars.FUNCTION_URL}}
+            VARIANT=${{vars.VARIANT}}
+            DISCORD_CLIENT_ID=${{vars.DISCORD_CLIENT_ID}}
+            NAME=${{vars.NAME}}
+            TEST=true
+          parallel-commands-on-agents: |
+            npx nx affected --target=lint --parallel=3
+            npx nx affected --target=test --parallel=3 --ci --code-coverage
+            npx nx affected --target=build --parallel=3
 
   agents:
     name: Nx Cloud - Agents
