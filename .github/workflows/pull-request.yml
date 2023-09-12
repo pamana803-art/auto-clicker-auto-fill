@@ -22,6 +22,7 @@ jobs:
   EnvSetup:
     name: Setup Dynamic Environment Variables
     runs-on: ubuntu-latest
+    environment: Development
     outputs:
       build-and-verify: ${{ steps.set-output-defaults.outputs.build-and-verify }}
     steps:
