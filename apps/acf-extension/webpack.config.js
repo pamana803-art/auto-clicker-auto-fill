@@ -1,16 +1,17 @@
-const { composePlugins, withNx, withWeb } = require('@nx/webpack');
+const { composePlugins, withNx } = require('@nx/webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const PACKAGE = require('../../package.json');
 const path = require('path');
-function modify(buffer, name, oauth, version, { KEY }) {
+function modify(buffer, version, { KEY, NAME, OAUTH }) {
   // copy-webpack-plugin passes a buffer
   const manifest = JSON.parse(buffer.toString());
 
   // make any modifications you like, such as
   manifest.version = version;
-  manifest.name = name;
-  if (oauth) {
-    manifest.oauth2.client_id = oauth;
+  manifest.name = NAME;
+  if (OAUTH) {
+    manifest.oauth2.client_id = OAUTH;
   }
   if (KEY) {
     manifest.key = KEY;
@@ -22,7 +23,6 @@ function modify(buffer, name, oauth, version, { KEY }) {
 // Nx plugins for webpack.
 module.exports = composePlugins(withNx(), (config, ctx) => {
   // Update the webpack config as needed here.
-  const { variant = 'DEV', oauth = '1068181857899-u8kurrhqoph1ht9d4psotb25ivvjhhft.apps.googleusercontent.com', name = 'Auto Clicker - AutoFill [LOCAL]' } = ctx.options;
   config.entry.styles = ctx.options.styles;
   config.module.rules.push({
     test: /\.scss$/i,
@@ -38,7 +38,7 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
   config.plugins[1] = new CopyPlugin({
     patterns: [
       { from: `**/messages.json`, to: './_locales', context: `${ctx.options.root}/apps/acf-i18n/src/locales` },
-      { from: path.join(__dirname, 'assets', variant), to: './assets' },
+      { from: path.join(__dirname, 'assets', process.env.VARIANT || 'DEV'), to: './assets' },
       { from: `./*.html`, to: './html', context: 'src/wizard/popup' },
       { from: `./*.html`, to: './html', context: 'src/sandbox' },
       { from: path.join(ctx.options.root, './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js'), to: './node_modules' },
@@ -46,7 +46,7 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
         from: './src/manifest.json',
         to: './manifest.json',
         transform(content) {
-          return modify(content, name, oauth, '0.0.0', process.env);
+          return modify(content, PACKAGE.version, process.env);
         },
       },
     ],
