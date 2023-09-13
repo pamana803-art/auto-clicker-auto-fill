@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/acf-puppeteer/src",
   "projectType": "application",
+  "tags": ["puppeteer"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -21,6 +22,5 @@
         }
       }
     }
-  },
-  "tags": []
+  }
 }
