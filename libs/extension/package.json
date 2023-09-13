@@ -2,8 +2,14 @@
   "name": "@dhruv-techapps/extension",
   "version": "0.0.1",
   "dependencies": {
-    "@nx/devkit": "16.8.1",
-    "tslib": "^2.3.0"
+    "web-ext": "^6.8.0"
+  },
+  "peerDependencies": {
+    "nx": "^16.2.2",
+    "typescript": ">= 4.8.2 < 6",
+    "rxjs": ">= 6.6.3 < 8",
+    "@nx/devkit": "^16.2.2",
+    "@nx/linter": "^16.2.2"
   },
   "type": "commonjs",
   "main": "./src/index.js",
