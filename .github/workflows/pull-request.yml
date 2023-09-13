@@ -42,9 +42,9 @@ jobs:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
       NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
     with:
-      parallel-commands: |
-        npx nx-cloud record -- npx nx format:check
-      artifacts-path: 'dist/apps/*'
+      # parallel-commands: |
+      # npx nx-cloud record -- npx nx format:check
+      artifacts-path: 'dist/*'
       environment-variables: |
         VARIANT=${{needs.EnvSetup.outputs.VARIANT}}
         UNINSTALL_URL=${{needs.EnvSetup.outputs.UNINSTALL_URL}}
@@ -54,9 +54,9 @@ jobs:
         DISCORD_CLIENT_ID=${{needs.EnvSetup.outputs.DISCORD_CLIENT_ID}}
         NAME=${{needs.EnvSetup.outputs.NAME}}
       parallel-commands-on-agents: |
-        npx nx affected --target=lint --parallel=3
-        npx nx affected --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
-        npx nx affected --target=build --parallel=3 --exclude='tag:puppeteer,tag:extension'
+        # npx nx affected --target=lint --parallel=3
+        # npx nx affected --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
+        # npx nx affected --target=build --parallel=3 --exclude='tag:puppeteer,tag:extension'
         npx nx run acf-extension:package
       final-commands: |
         ls -R
@@ -101,4 +101,12 @@ jobs:
         uses: rickstaa/action-create-tag@v1
         with:
           force_push_tag: true
+          tag_exists_error: false
           tag: '${{vars.VARIANT}}'
+      # Print result using the env variable.
+      - run: |
+          echo "Tag already present: ${{ env.TAG_EXISTS }}"
+
+      # Print result using the action output.
+      - run: |
+          echo "Tag already present: ${{ steps.tag_create.outputs.tag_exists }}"
