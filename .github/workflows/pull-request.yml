@@ -79,6 +79,7 @@ jobs:
 
   extension:
     needs: [agents, main]
+    runs-on: ubuntu-latest
     name: Extension
     steps:
       - uses: actions/download-artifact@v3
