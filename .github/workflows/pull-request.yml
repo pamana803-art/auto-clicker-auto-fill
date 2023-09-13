@@ -15,24 +15,48 @@ jobs:
     runs-on: ubuntu-latest
     environment: Development
     outputs:
+      #Name
+      NX_NAME: ${{ steps.set-output-defaults.outputs.NX_NAME}}
+      #Variant
+      NX_VARIANT: ${{ steps.set-output-defaults.outputs.NX_VARIANT}}
+      #Chrome Extension
+      NX_CHROME_EXTENSION_ID: ${{ steps.set-output-defaults.outputs.NX_CHROME_EXTENSION_ID}}
+      #Edge Extension
+      NX_EDGE_EXTENSION_ID: ${{ steps.set-output-defaults.outputs.NX_EDGE_EXTENSION_ID}}
+      #i18n
+      NX_I18N: ${{steps.set-output-defaults.outputs.NX_I18N}}
+      #Azure
+      NX_AZURE_APP_CLIENT_ID: ${{steps.set-output-defaults.outputs.NX_AZURE_APP_CLIENT_ID}}
+      #Google Analytics
+      NX_GOOGLE_ANALYTICS_ID: ${{steps.set-output-defaults.outputs.NX_GOOGLE_ANALYTICS_ID}}
+      #Google Adsense
+      NX_GOOGLE_ADS_SLOT: ${{steps.set-output-defaults.outputs.NX_GOOGLE_ADS_SLOT}}
+      NX_GOOGLE_ADS_CLIENT: ${{steps.set-output-defaults.outputs.NX_GOOGLE_ADS_CLIENT}}
+      # Public URL
+      PUBLIC_URL: ${{ steps.set-output-defaults.outputs.PUBLIC_URL}}
+      # Extension
       UNINSTALL_URL: ${{ steps.set-output-defaults.outputs.UNINSTALL_URL}}
       TRACKING_ID: ${{ steps.set-output-defaults.outputs.TRACKING_ID}}
-      OPTIONS_PAGE_URL: ${{ steps.set-output-defaults.outputs.OPTIONS_PAGE_URL}}
       FUNCTION_URL: ${{ steps.set-output-defaults.outputs.FUNCTION_URL}}
-      VARIANT: ${{ steps.set-output-defaults.outputs.VARIANT}}
       DISCORD_CLIENT_ID: ${{ steps.set-output-defaults.outputs.DISCORD_CLIENT_ID}}
-      NAME: ${{ steps.set-output-defaults.outputs.NAME}}
     steps:
       - name: set outputs with default values
         id: set-output-defaults
         run: |
-          echo "VARIANT=${{ vars.VARIANT }}" >> $GITHUB_OUTPUT
+          echo "NX_NAME=${{ vars.NX_NAME }}" >> $GITHUB_OUTPUT
+          echo "NX_VARIANT=${{ vars.NX_VARIANT }}" >> $GITHUB_OUTPUT
+          echo "NX_CHROME_EXTENSION_ID=${{ vars.NX_CHROME_EXTENSION_ID }}" >> $GITHUB_OUTPUT
+          echo "NX_EDGE_EXTENSION_ID=${{ vars.NX_EDGE_EXTENSION_ID }}" >> $GITHUB_OUTPUT
+          echo "NX_I18N=${{ vars.NX_I18N }}" >> $GITHUB_OUTPUT
+          echo "NX_AZURE_APP_CLIENT_ID=${{ secrets.NX_AZURE_APP_CLIENT_ID }}" >> $GITHUB_OUTPUT
+          echo "NX_GOOGLE_ANALYTICS_ID=${{ vars.NX_GOOGLE_ANALYTICS_ID }}" >> $GITHUB_OUTPUT
+          echo "NX_GOOGLE_ADS_SLOT=${{ vars.NX_GOOGLE_ADS_SLOT }}" >> $GITHUB_OUTPUT
+          echo "NX_GOOGLE_ADS_CLIENT=${{ secrets.NX_GOOGLE_ADS_CLIENT }}" >> $GITHUB_OUTPUT
           echo "UNINSTALL_URL=${{ vars.UNINSTALL_URL }}" >> $GITHUB_OUTPUT
           echo "TRACKING_ID=${{ vars.TRACKING_ID }}" >> $GITHUB_OUTPUT
-          echo "OPTIONS_PAGE_URL=${{ vars.OPTIONS_PAGE_URL }}" >> $GITHUB_OUTPUT
           echo "FUNCTION_URL=${{ vars.FUNCTION_URL }}" >> $GITHUB_OUTPUT
           echo "DISCORD_CLIENT_ID=${{ vars.DISCORD_CLIENT_ID }}" >> $GITHUB_OUTPUT
-          echo "NAME=${{ vars.NAME }}" >> $GITHUB_OUTPUT
+          echo "PUBLIC_URL=${{ vars.PUBLIC_URL }}" >> $GITHUB_OUTPUT
 
   main:
     needs: [EnvSetup]
@@ -46,17 +70,25 @@ jobs:
       # npx nx-cloud record -- npx nx format:check
       artifacts-path: 'dist/*'
       environment-variables: |
-        VARIANT=${{needs.EnvSetup.outputs.VARIANT}}
+        NX_NAME=${{needs.EnvSetup.outputs.NX_NAME}}
+        NX_VARIANT=${{needs.EnvSetup.outputs.NX_VARIANT}}
+        NX_CHROME_EXTENSION_ID=${{needs.EnvSetup.outputs.NX_CHROME_EXTENSION_ID}}
+        NX_EDGE_EXTENSION_ID=${{needs.EnvSetup.outputs.NX_EDGE_EXTENSION_ID}}
+        NX_I18N: ${{needs.EnvSetup.outputs.NX_I18N}}
+        NX_AZURE_APP_CLIENT_ID: ${{needs.EnvSetup.outputs.NX_AZURE_APP_CLIENT_ID}}  
+        NX_GOOGLE_ANALYTICS_ID: ${{needs.EnvSetup.outputs.NX_GOOGLE_ANALYTICS_ID}}
+        NX_GOOGLE_ADS_SLOT: ${{needs.EnvSetup.outputs.NX_GOOGLE_ADS_SLOT}}
+        NX_GOOGLE_ADS_CLIENT: ${{needs.EnvSetup.outputs.NX_GOOGLE_ADS_CLIENT}}
         UNINSTALL_URL=${{needs.EnvSetup.outputs.UNINSTALL_URL}}
         TRACKING_ID=${{needs.EnvSetup.outputs.TRACKING_ID}}
-        OPTIONS_PAGE_URL=${{needs.EnvSetup.outputs.OPTIONS_PAGE_URL}}
         FUNCTION_URL=${{needs.EnvSetup.outputs.FUNCTION_URL}}
         DISCORD_CLIENT_ID=${{needs.EnvSetup.outputs.DISCORD_CLIENT_ID}}
-        NAME=${{needs.EnvSetup.outputs.NAME}}
+        PUBLIC_URL=${{needs.EnvSetup.outputs.PUBLIC_URL}}
       parallel-commands-on-agents: |
         # npx nx affected --target=lint --parallel=3
         # npx nx affected --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
         # npx nx affected --target=build --parallel=3 --exclude='tag:puppeteer,tag:extension'
+        npx nx run acf-options-page:build:production
         npx nx run acf-extension:package
       final-commands: |
         ls -R
@@ -71,13 +103,20 @@ jobs:
     with:
       number-of-agents: 3
       environment-variables: |
-        VARIANT=${{needs.EnvSetup.outputs.VARIANT}}
+        NX_NAME=${{needs.EnvSetup.outputs.NX_NAME}}
+        NX_VARIANT=${{needs.EnvSetup.outputs.NX_VARIANT}}
+        NX_CHROME_EXTENSION_ID=${{needs.EnvSetup.outputs.NX_CHROME_EXTENSION_ID}}
+        NX_EDGE_EXTENSION_ID=${{needs.EnvSetup.outputs.NX_EDGE_EXTENSION_ID}}
+        NX_I18N: ${{needs.EnvSetup.outputs.NX_I18N}}
+        NX_AZURE_APP_CLIENT_ID: ${{needs.EnvSetup.outputs.NX_AZURE_APP_CLIENT_ID}}  
+        NX_GOOGLE_ANALYTICS_ID: ${{needs.EnvSetup.outputs.NX_GOOGLE_ANALYTICS_ID}}
+        NX_GOOGLE_ADS_SLOT: ${{needs.EnvSetup.outputs.NX_GOOGLE_ADS_SLOT}}
+        NX_GOOGLE_ADS_CLIENT: ${{needs.EnvSetup.outputs.NX_GOOGLE_ADS_CLIENT}}
         UNINSTALL_URL=${{needs.EnvSetup.outputs.UNINSTALL_URL}}
         TRACKING_ID=${{needs.EnvSetup.outputs.TRACKING_ID}}
-        OPTIONS_PAGE_URL=${{needs.EnvSetup.outputs.OPTIONS_PAGE_URL}}
         FUNCTION_URL=${{needs.EnvSetup.outputs.FUNCTION_URL}}
         DISCORD_CLIENT_ID=${{needs.EnvSetup.outputs.DISCORD_CLIENT_ID}}
-        NAME=${{needs.EnvSetup.outputs.NAME}}
+        PUBLIC_URL=${{needs.EnvSetup.outputs.PUBLIC_URL}}
 
   extension:
     needs: [agents, main]
@@ -91,18 +130,44 @@ jobs:
         run: ls -R
         working-directory: .
 
+  configuration:
+    needs: [agents, main]
+    runs-on: ubuntu-latest
+    environment:
+      name: Development
+      url: ${{vars.PUBLIC_URL}}
+    name: Configuration Page
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: nx-main-artifacts
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: 'upload'
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: '/' # App source code path
+          api_location: '' # Api source code path - optional
+          skip_app_build: true
+          output_location: 'dist/apps/acf-options-page' # Built app content directory - optional
+          ###### End of Repository/Build Configurations ######
+
   tag:
-    needs: extension
+    needs: [extension, configuration]
     runs-on: ubuntu-latest
     environment:
       name: Development
     steps:
-      - name: Set ${{vars.VARIANT}} Tag
+      - name: Set ${{vars.NX_VARIANT}} Tag
         uses: rickstaa/action-create-tag@v1
         with:
           force_push_tag: true
           tag_exists_error: false
-          tag: '${{vars.VARIANT}}'
+          tag: '${{vars.NX_VARIANT}}'
       # Print result using the env variable.
       - run: |
           echo "Tag already present: ${{ env.TAG_EXISTS }}"
