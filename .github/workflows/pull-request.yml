@@ -46,7 +46,7 @@ jobs:
           echo "NX_NAME=${{ vars.NX_NAME }}" >> $GITHUB_OUTPUT
           echo "NX_VARIANT=${{ vars.NX_VARIANT }}" >> $GITHUB_OUTPUT
           echo "NX_CHROME_EXTENSION_ID=${{ vars.NX_CHROME_EXTENSION_ID }}" >> $GITHUB_OUTPUT
-          echo "NX_EDGE_EXTENSION_ID=${{ vars.NX_EDGE_EXTENSION_ID }}" >> $GITHUB_OUTPUT
+          echo "NX_EDGE_EXTENSION_ID=${{ vars.NX_EDGE_EXTENSION_ID || '' }}" >> $GITHUB_OUTPUT
           echo "NX_I18N=${{ vars.NX_I18N }}" >> $GITHUB_OUTPUT
           echo "NX_AZURE_APP_CLIENT_ID=${{ secrets.NX_AZURE_APP_CLIENT_ID }}" >> $GITHUB_OUTPUT
           echo "NX_GOOGLE_ANALYTICS_ID=${{ vars.NX_GOOGLE_ANALYTICS_ID }}" >> $GITHUB_OUTPUT
