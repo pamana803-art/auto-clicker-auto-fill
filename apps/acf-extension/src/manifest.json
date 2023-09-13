@@ -41,7 +41,7 @@
   },
   "oauth2": {
     "client_id": "",
-    "scopes": ["https://www.googleapis.com/auth/drive.appdata"]
+    "scopes": [""]
   },
   "sandbox": {
     "pages": ["html/sandbox.html"]

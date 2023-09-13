@@ -15,7 +15,7 @@ export default class DiscordOauth2 {
   async login() {
     try {
       const redirectURL = chrome.identity.getRedirectURL();
-      const clientID = DISCORD_CLIENT_ID;
+      const clientID = String(DISCORD_CLIENT_ID);
       const scopes = ['identify'];
 
       let url = 'https://discord.com/api/oauth2/authorize';

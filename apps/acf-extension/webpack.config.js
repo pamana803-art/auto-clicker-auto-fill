@@ -3,15 +3,15 @@ const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const PACKAGE = require('../../package.json');
 const path = require('path');
-function modify(buffer, version, { KEY, NX_NAME, OAUTH }) {
+function modify(buffer, version, { KEY, NX_NAME, OAUTH_CLIENT_ID }) {
   // copy-webpack-plugin passes a buffer
   const manifest = JSON.parse(buffer.toString());
 
   // make any modifications you like, such as
   manifest.version = version;
   manifest.name = NX_NAME;
-  if (OAUTH) {
-    manifest.oauth2.client_id = OAUTH;
+  if (OAUTH_CLIENT_ID) {
+    manifest.oauth2.client_id = OAUTH_CLIENT_ID;
   }
   if (KEY) {
     manifest.key = KEY;
