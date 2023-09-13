@@ -127,7 +127,7 @@
       "dependsOn": ["build"],
       "options": {
         "sourceDir": "dist/apps/acf-extension",
-        "artifactsDir": "./"
+        "artifactsDir": "{workspaceRoot}/dist/apps"
       }
     }
   },

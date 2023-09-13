@@ -21,7 +21,7 @@
       "@dhruv-techapps/core-common": ["libs/core/common/src/index.ts"],
       "@dhruv-techapps/core-extension": ["libs/core/extension/src/index.ts"],
       "@dhruv-techapps/core-service": ["libs/core/service/src/index.ts"],
-      "@dhruv-techapps/extension": ["libs/extension/src/index.ts"]
+      "@dhruv-techapps/extension": ["packages/extension/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
