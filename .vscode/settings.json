@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["checki"]
+  "cSpell.words": ["checki"],
+  "eslint.validate": ["json"]
 }

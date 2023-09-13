@@ -52,6 +52,7 @@
         }
       }
     },
+
     "serve": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
@@ -120,7 +121,15 @@
           "codeCoverage": true
         }
       }
+    },
+    "package": {
+      "executor": "@dhruv-techapps/extension:package",
+      "dependsOn": ["build"],
+      "options": {
+        "sourceDir": "dist/apps/acf-extension",
+        "artifactsDir": "dist/apps"
+      }
     }
   },
-  "tags": []
+  "tags": ["extension"]
 }
