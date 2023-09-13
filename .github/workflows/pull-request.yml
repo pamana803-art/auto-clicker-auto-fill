@@ -57,7 +57,7 @@ jobs:
         npx nx affected --target=lint --parallel=3
         npx nx affected --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
         npx nx affected --target=build --parallel=3 --exclude='tag:puppeteer,tag:extension'
-        npx nx run acf-extension:build:production
+        npx nx run acf-extension:package
 
   agents:
     needs: [EnvSetup]
@@ -76,3 +76,26 @@ jobs:
         FUNCTION_URL=${{needs.EnvSetup.outputs.FUNCTION_URL}}
         DISCORD_CLIENT_ID=${{needs.EnvSetup.outputs.DISCORD_CLIENT_ID}}
         NAME=${{needs.EnvSetup.outputs.NAME}}
+
+  extension:
+    needs: [agents, main]
+    name: Extension
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: nx-main-artifacts
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: .
+  
+   tag:
+    needs: extension
+    runs-on: ubuntu-latest
+    environment:
+      name: Development
+    steps:
+      - name: Set ${{vars.VARIANT}} Tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          force_push_tag: true
+          tag: '${{vars.VARIANT}}'
