@@ -89,7 +89,7 @@ jobs:
         # npx nx affected --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
         # npx nx affected --target=build --parallel=3 --exclude='tag:puppeteer,tag:extension'
         npx nx run acf-options-page:build:production
-        npx nx run acf-extension:package
+        npx nx run acf-extension:package --skip-nx-cache=true
       final-commands: |
         ls -R
 

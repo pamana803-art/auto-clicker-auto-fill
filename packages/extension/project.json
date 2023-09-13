@@ -1,35 +1,35 @@
 {
   "name": "extension",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/extension/src",
+  "sourceRoot": "packages/extension/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/extension",
-        "main": "libs/extension/src/index.ts",
-        "tsConfig": "libs/extension/tsconfig.lib.json",
+        "outputPath": "dist/packages/extension",
+        "main": "packages/extension/src/index.ts",
+        "tsConfig": "packages/extension/tsconfig.lib.json",
         "assets": [
-          "libs/extension/*.md",
+          "packages/extension/*.md",
           {
-            "input": "./libs/extension/src",
+            "input": "./packages/extension/src",
             "glob": "**/!(*.ts)",
             "output": "./src"
           },
           {
-            "input": "./libs/extension/src",
+            "input": "./packages/extension/src",
             "glob": "**/*.d.ts",
             "output": "./src"
           },
           {
-            "input": "./libs/extension",
+            "input": "./packages/extension",
             "glob": "generators.json",
             "output": "."
           },
           {
-            "input": "./libs/extension",
+            "input": "./packages/extension",
             "glob": "executors.json",
             "output": "."
           }
@@ -40,14 +40,14 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/extension/**/*.ts", "libs/extension/package.json", "libs/extension/executors.json"]
+        "lintFilePatterns": ["packages/extension/**/*.ts", "packages/extension/package.json", "packages/extension/executors.json"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/extension/jest.config.ts",
+        "jestConfig": "packages/extension/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
