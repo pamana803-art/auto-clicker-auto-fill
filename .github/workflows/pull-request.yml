@@ -58,6 +58,8 @@ jobs:
         npx nx affected --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
         npx nx affected --target=build --parallel=3 --exclude='tag:puppeteer,tag:extension'
         npx nx run acf-extension:package
+      final-commands: |
+        ls -R
 
   agents:
     needs: [EnvSetup]
