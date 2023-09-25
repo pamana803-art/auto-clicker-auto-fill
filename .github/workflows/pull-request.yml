@@ -123,7 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Development
-      url: ${{steps.extension-release.outputs.upload_url }}
+      url: ${{steps.extension-release.outputs.url }}
     permissions:
       contents: write
     name: Extension
