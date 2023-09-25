@@ -15,9 +15,9 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     fallbackLng: 'en',
-    ns: 'web',
+    ns: 'web-new',
     debug: false,
-    defaultNS: 'web',
+    defaultNS: 'web-new',
     lng: window.localStorage.getItem('language'),
     backend: {
       loadPath: `${process.env.NX_I18N}/{{lng}}/{{ns}}.json`,

@@ -41,7 +41,7 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
       { from: path.join(__dirname, 'assets', process.env.NX_VARIANT || 'DEV'), to: './assets' },
       { from: `./*.html`, to: './html', context: 'src/wizard/popup' },
       { from: `./*.html`, to: './html', context: 'src/sandbox' },
-      { from: path.join(ctx.options.root, './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js'), to: './node_modules' },
+      { from: path.join(ctx.options.root, './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js'), to: './webcomponents' },
       {
         from: './src/manifest.json',
         to: './manifest.json',

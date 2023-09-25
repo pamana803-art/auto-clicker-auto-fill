@@ -25,8 +25,6 @@ jobs:
       NX_EDGE_EXTENSION_ID: ${{ steps.set-output-defaults.outputs.NX_EDGE_EXTENSION_ID}}
       #i18n
       NX_I18N: ${{steps.set-output-defaults.outputs.NX_I18N}}
-      #Azure
-      NX_AZURE_APP_CLIENT_ID: ${{steps.set-output-defaults.outputs.NX_AZURE_APP_CLIENT_ID}}
       #Google Analytics
       NX_GOOGLE_ANALYTICS_ID: ${{steps.set-output-defaults.outputs.NX_GOOGLE_ANALYTICS_ID}}
       #Google Adsense
@@ -47,15 +45,15 @@ jobs:
           echo "NX_NAME=${{ vars.NX_NAME }}" >> $GITHUB_OUTPUT
           echo "NX_VARIANT=${{ vars.NX_VARIANT }}" >> $GITHUB_OUTPUT
           echo "NX_CHROME_EXTENSION_ID=${{ vars.NX_CHROME_EXTENSION_ID }}" >> $GITHUB_OUTPUT
-          echo "NX_EDGE_EXTENSION_ID=${{ vars.NX_EDGE_EXTENSION_ID || '' }}" >> $GITHUB_OUTPUT
+          echo "NX_EDGE_EXTENSION_ID=${{ vars.NX_EDGE_EXTENSION_ID || 'DEV' }}" >> $GITHUB_OUTPUT
           echo "NX_I18N=${{ vars.NX_I18N }}" >> $GITHUB_OUTPUT
           echo "NX_GOOGLE_ANALYTICS_ID=${{ vars.NX_GOOGLE_ANALYTICS_ID }}" >> $GITHUB_OUTPUT
           echo "NX_GOOGLE_ADS_SLOT=${{ vars.NX_GOOGLE_ADS_SLOT }}" >> $GITHUB_OUTPUT
-          echo "NX_GOOGLE_ADS_CLIENT=${{ secrets.NX_GOOGLE_ADS_CLIENT }}" >> $GITHUB_OUTPUT
+          echo "NX_GOOGLE_ADS_CLIENT=${{ vars.NX_GOOGLE_ADS_CLIENT }}" >> $GITHUB_OUTPUT
           echo "UNINSTALL_URL=${{ vars.UNINSTALL_URL }}" >> $GITHUB_OUTPUT
           echo "TRACKING_ID=${{ vars.TRACKING_ID }}" >> $GITHUB_OUTPUT
           echo "FUNCTION_URL=${{ vars.FUNCTION_URL }}" >> $GITHUB_OUTPUT
-          echo "DISCORD_CLIENT_ID=${{ vars.DISCORD_CLIENT_ID }}" >> $GITHUB_OUTPUT
+          echo "DISCORD_CLIENT_ID='${{ vars.DISCORD_CLIENT_ID }}'" >> $GITHUB_OUTPUT
           echo "OAUTH_CLIENT_ID=${{ vars.OAUTH_CLIENT_ID }}" >> $GITHUB_OUTPUT
           echo "PUBLIC_URL=${{ vars.PUBLIC_URL }}" >> $GITHUB_OUTPUT
   main:
@@ -75,7 +73,6 @@ jobs:
         NX_CHROME_EXTENSION_ID=${{needs.EnvSetup.outputs.NX_CHROME_EXTENSION_ID}}
         NX_EDGE_EXTENSION_ID=${{needs.EnvSetup.outputs.NX_EDGE_EXTENSION_ID}}
         NX_I18N=${{needs.EnvSetup.outputs.NX_I18N}}
-        NX_AZURE_APP_CLIENT_ID=${{needs.EnvSetup.outputs.NX_AZURE_APP_CLIENT_ID}}
         NX_GOOGLE_ANALYTICS_ID=${{needs.EnvSetup.outputs.NX_GOOGLE_ANALYTICS_ID}}
         NX_GOOGLE_ADS_SLOT=${{needs.EnvSetup.outputs.NX_GOOGLE_ADS_SLOT}}
         NX_GOOGLE_ADS_CLIENT=${{needs.EnvSetup.outputs.NX_GOOGLE_ADS_CLIENT}}
@@ -85,12 +82,21 @@ jobs:
         DISCORD_CLIENT_ID=${{needs.EnvSetup.outputs.DISCORD_CLIENT_ID}}
         OAUTH_CLIENT_ID=${{needs.EnvSetup.outputs.OAUTH_CLIENT_ID}}
         PUBLIC_URL=${{needs.EnvSetup.outputs.PUBLIC_URL}}
+      init-commands: |
+        ls
       parallel-commands-on-agents: |
         npx nx affected --target=lint --parallel=3
         npx nx affected --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
         npx nx affected --target=build --parallel=3 --exclude='tag:puppeteer'
       final-commands: |
-        npx web-ext build --sourceDir="./dist/apps/acf-extension" --artifactsDir="./dist/apps"
+        TARGET_FILE="./dist/apps/acf-extension/manifest.json"
+        # Use an if-else statement to check if the file exists.
+        if [ -f "$TARGET_FILE" ]
+        then
+            npx web-ext build --sourceDir="./dist/apps/acf-extension" --artifactsDir="./dist/apps"
+        else
+            echo "$TARGET_FILE does not exist."
+        fi
 
   agents:
     needs: [EnvSetup]
@@ -100,14 +106,13 @@ jobs:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
       NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
     with:
-      number-of-agents: 1
+      number-of-agents: 3
       environment-variables: |
         NX_NAME=${{needs.EnvSetup.outputs.NX_NAME}}
         NX_VARIANT=${{needs.EnvSetup.outputs.NX_VARIANT}}
         NX_CHROME_EXTENSION_ID=${{needs.EnvSetup.outputs.NX_CHROME_EXTENSION_ID}}
         NX_EDGE_EXTENSION_ID=${{needs.EnvSetup.outputs.NX_EDGE_EXTENSION_ID}}
         NX_I18N=${{needs.EnvSetup.outputs.NX_I18N}}
-        NX_AZURE_APP_CLIENT_ID=${{needs.EnvSetup.outputs.NX_AZURE_APP_CLIENT_ID}}
         NX_GOOGLE_ANALYTICS_ID=${{needs.EnvSetup.outputs.NX_GOOGLE_ANALYTICS_ID}}
         NX_GOOGLE_ADS_SLOT=${{needs.EnvSetup.outputs.NX_GOOGLE_ADS_SLOT}}
         NX_GOOGLE_ADS_CLIENT=${{needs.EnvSetup.outputs.NX_GOOGLE_ADS_CLIENT}}
@@ -132,6 +137,7 @@ jobs:
         with:
           name: nx-main-artifacts
       - uses: softprops/action-gh-release@v1
+        if: ${{ hashFiles('auto_clicker_-_autofill*.zip') }}
         id: extension-release
         with:
           prerelease: true
@@ -151,10 +157,8 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: nx-main-artifacts
-      - name: check
-        run: |
-          ls
       - name: Build And Deploy
+        if: ${{ hashFiles('acf-options-page/') != '' }}
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -171,7 +175,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
 
   tag:
-    needs: [extension, configuration]
+    needs: [extension]
     runs-on: ubuntu-latest
     permissions:
       contents: write
