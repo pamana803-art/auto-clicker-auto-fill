@@ -148,7 +148,7 @@ jobs:
 
   configuration:
     needs: [agents, main]
-    permission:
+    permissions:
       contents: read
       pull-requests: write
     runs-on: ubuntu-latest
