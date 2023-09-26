@@ -42,7 +42,7 @@ configsToastListenerMiddleware.startListening({
     const [type, method] = action.type.split('/');
     const i18n = getI18n();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const language: any = i18n.getDataByLanguage(i18n.language)?.web;
+    const language: any = i18n.getDataByLanguage(i18n.language)?.['web-new'];
 
     const header = language.toast[type][method]?.header?.replace('{{name}}', type);
     const body = language.toast[type][method]?.body?.replace('{{name}}', type);
@@ -99,7 +99,7 @@ configsListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     const i18n = getI18n();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const language: any = i18n.getDataByLanguage(i18n.language)?.web;
+    const language: any = i18n.getDataByLanguage(i18n.language)?.['web-new'];
     const { success, failure, message } = getMessageFunc(action, language);
 
     StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.CONFIGS]: state.configuration.configs })
