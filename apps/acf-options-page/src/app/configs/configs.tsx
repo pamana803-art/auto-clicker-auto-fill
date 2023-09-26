@@ -1,9 +1,9 @@
 import { createRef, useEffect, useState } from 'react';
 
-import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Config from './config';
-import { ThreeDots } from '../../util';
+import { ExclamationTriangleFill, ThreeDots } from '../../util';
 import { Ads, DropdownToggle, Sponsors } from '../../components';
 import { ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal } from '../../modal';
 import { download } from '../../_helpers';
@@ -100,6 +100,15 @@ function Configs() {
       )}
       <div id='configs' className={`${scroll ? 'shadow bg-body-tertiary' : ' mb-4 mt-3'} sticky-top`}>
         <Container>
+          {process.env.NX_VARIANT === 'DEV' && (
+            <Alert variant='warning'>
+              <ExclamationTriangleFill className='me-2' />
+              We&apos;re introducing a new version in our DEV environment, which may contain breaking changes. To minimize disruptions, we&apos;ve already deployed this version in BETA. Please use
+              the&nbsp;
+              <Alert.Link href='https://beta.getautoclicker.com/'>BETA</Alert.Link> version for now. Your feedback in identifying any issues is appreciated as we transition to the new version. Thank
+              you for your cooperation!
+            </Alert>
+          )}
           <Row className={`rounded-pill ${!scroll && 'border'}`}>
             <Col>
               <Form>
