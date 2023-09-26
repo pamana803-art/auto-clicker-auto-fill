@@ -13,7 +13,7 @@ settingsListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     const i18n = getI18n();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const language: any = i18n.getDataByLanguage(i18n.language)?.web;
+    const language: any = i18n.getDataByLanguage(i18n.language)?.['web-new'];
     await StorageService.set(window.EXTENSION_ID, { [LOCAL_STORAGE_KEY.SETTINGS]: state.settings.settings }).then(
       () => listenerApi.dispatch(setSettingsMessage(language.modal.settings.saveMessage)),
       (error) => listenerApi.dispatch(setSettingsError(error))
