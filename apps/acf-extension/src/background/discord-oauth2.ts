@@ -14,8 +14,14 @@ export default class DiscordOauth2 {
 
   async login() {
     try {
+      const regexResult = /\d+/.exec(DISCORD_CLIENT_ID || '');
+      if (!regexResult) {
+        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Discord Client ID Missing');
+        return;
+      }
+
       const redirectURL = chrome.identity.getRedirectURL();
-      const clientID = String(DISCORD_CLIENT_ID);
+      const clientID = regexResult[0];
       const scopes = ['identify'];
 
       let url = 'https://discord.com/api/oauth2/authorize';
