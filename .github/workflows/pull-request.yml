@@ -87,9 +87,9 @@ jobs:
       init-commands: |
         ls
       parallel-commands-on-agents: |
-        npx nx affected --target=lint --parallel=3
-        npx nx affected --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
-        npx nx affected --target=build --parallel=3 --exclude='tag:puppeteer'
+        npx nx run-many --target=lint --parallel=3
+        npx nx run-many --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
+        npx nx run-many --target=build --parallel=3 --exclude='tag:puppeteer'
       final-commands: |
         TARGET_FILE="./dist/apps/acf-extension/manifest.json"
         # Use an if-else statement to check if the file exists.
