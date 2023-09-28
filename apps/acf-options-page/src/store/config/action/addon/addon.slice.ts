@@ -20,6 +20,9 @@ const slice = createSlice({
       const { name, value } = action.payload;
       state.addon[name] = value;
     },
+    updateActionAddonGoto: (state, action: PayloadAction<number>) => {
+      state.addon.recheckGoto = action.payload;
+    },
     switchActionAddonModal: (state) => {
       state.visible = !state.visible;
     },
@@ -40,7 +43,7 @@ const slice = createSlice({
   },
 });
 
-export const { setActionAddonError, setActionAddonMessage, switchActionAddonModal, updateActionAddon } = slice.actions;
+export const { setActionAddonError, setActionAddonMessage, switchActionAddonModal, updateActionAddon, updateActionAddonGoto } = slice.actions;
 
 export const actionAddonSelector = (state: RootState) => state.actionAddon;
 export const actionAddonReducer = slice.reducer;

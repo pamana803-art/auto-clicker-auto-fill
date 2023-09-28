@@ -50,6 +50,7 @@ export type ActionSettings = {
   retry?: number;
   retryInterval?: number | string;
   retryOption?: RETRY_OPTIONS;
+  retryGoto?: number;
 };
 
 export const defaultActionSettings = {};

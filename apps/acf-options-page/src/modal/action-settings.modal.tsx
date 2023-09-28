@@ -1,4 +1,4 @@
-import { FormEvent, useEffect } from 'react';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 
 import { Alert, Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { getFieldNameValue, updateForm } from '../util/element';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { syncActionSettings, updateActionSettings } from '../store/config';
+import { configSelector, selectedConfigSelector, syncActionSettings, updateActionSettings, updateActionSettingsGoto } from '../store/config';
 import { actionSettingsSelector, setActionSettingsMessage, switchActionSettingsModal } from '../store/config';
 import { useTimeout } from '../_hooks/message.hooks';
 import { REGEX } from '../util';
@@ -16,6 +16,8 @@ const FORM_ID = 'action-settings';
 const ActionSettingsModal = () => {
   const { t } = useTranslation();
   const { message, visible, settings, error } = useAppSelector(actionSettingsSelector);
+  const { actions } = useAppSelector(selectedConfigSelector);
+  const { selectedActionIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
 
   useTimeout(() => {
@@ -41,8 +43,13 @@ const ActionSettingsModal = () => {
   const onHide = () => {
     dispatch(switchActionSettingsModal());
   };
+
   const onShow = () => {
     //:TODO
+  };
+
+  const onUpdateGoto = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(updateActionSettingsGoto(Number(e.currentTarget.value)));
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -101,7 +108,7 @@ const ActionSettingsModal = () => {
                 <Col xs={12} className='mb-2'>
                   <Form.Text className='text-muted'>{t('modal.actionSettings.retry.hint')}</Form.Text>
                 </Col>
-                <Col xs={12} className='d-flex justify-content-between'>
+                <Col>
                   <Form.Check
                     type='radio'
                     value={RETRY_OPTIONS.STOP}
@@ -110,6 +117,8 @@ const ActionSettingsModal = () => {
                     name='retryOption'
                     label={t('modal.actionSettings.retry.stop')}
                   />
+                </Col>
+                <Col>
                   <Form.Check
                     type='radio'
                     value={RETRY_OPTIONS.SKIP}
@@ -118,6 +127,8 @@ const ActionSettingsModal = () => {
                     name='retryOption'
                     label={t('modal.actionSettings.retry.skip')}
                   />
+                </Col>
+                <Col>
                   <Form.Check
                     type='radio'
                     value={RETRY_OPTIONS.RELOAD}
@@ -127,6 +138,27 @@ const ActionSettingsModal = () => {
                     label={t('modal.actionSettings.retry.refresh')}
                   />
                 </Col>
+                <Col>
+                  <Form.Check
+                    type='radio'
+                    value={RETRY_OPTIONS.GOTO}
+                    checked={settings.retryOption === RETRY_OPTIONS.GOTO}
+                    onChange={onUpdate}
+                    name='retryOption'
+                    label={t('modal.actionSettings.retry.goto')}
+                  />
+                </Col>
+                {settings.retryOption === RETRY_OPTIONS.GOTO && (
+                  <Col xs={{ span: 3, offset: 9 }}>
+                    <Form.Select value={settings.retryGoto} onChange={onUpdateGoto} name='goto' required>
+                      {actions.map((_action, index) => (
+                        <option key={index} value={index} disabled={index === Number(selectedActionIndex)}>
+                          {index + 1} . {_action.name || _action.elementFinder}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Col>
+                )}
               </Row>
             </Card.Body>
           </Card>

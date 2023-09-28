@@ -25,6 +25,8 @@ const ActionProcessor = (() => {
     const elements = await Common.start(elementFinder, action.settings);
     if (!elements) {
       return ACTION_STATUS.SKIPPED;
+    } else if (typeof elements === 'number') {
+      return elements;
     }
     const value = action.value ? await Value.getValue(action.value, batchRepeat, sheets) : action.value;
     await Events.check(elements, value);

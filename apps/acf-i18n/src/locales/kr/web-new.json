@@ -4,9 +4,21 @@
       "light": "라이트 테마로 전환하십시오",
       "dark": "어두운 테마로 전환하십시오"
     },
+    "google-group": "구글 그룹",
     "login": "로그인",
     "logout": "로그 아웃",
-    "settings": "전역 설정"
+    "settings": "전역 설정",
+    "backup": {
+      "last-backup": "마지막 백업:",
+      "backup": "클라우드에 백업",
+      "restore": "클라우드에서 복원",
+      "now": "백업 지금",
+      "auto-backup": "자동 백업",
+      "daily": "일일",
+      "weekly": "주간",
+      "monthly": "월간 간행물",
+      "off": "끄다"
+    }
   },
   "footer": {
     "resources": "자원",
@@ -20,8 +32,9 @@
     "chat": "채팅",
     "privacy": "개인 정보 정책",
     "social": "사회의",
-    "instagram": "Instagram",
     "discord": "Discord",
+    "youtube": "Youtube",
+    "instagram": "Instagram",
     "twitter": "Twitter",
     "github": "Github"
   },
@@ -41,11 +54,11 @@
       },
       "exportAll": {
         "header": "대량 내보내기",
-        "body": "Configurations exported successfully"
+        "body": "구성을 성공적으로 내보냈습니다."
       },
       "importAll": {
         "header": "대량 가져오기",
-        "body": "Configurations imported successfully"
+        "body": "구성이 성공적으로 가져옵니다"
       },
       "importError": {
         "header": "가져 오기 오류"
@@ -71,6 +84,12 @@
       "remove": {
         "title": "구성을 제거하십시오",
         "message": "당신은 확실히 제거 할 것입니다 {{name}} 구성?"
+      }
+    },
+    "backup": {
+      "restore": {
+        "title": "클라우드에서 구성을 복원하십시오",
+        "message": "클라우드에서 구성을 복원해야합니까?모든 구성을 대체 하며이 프로세스는 가역적이지 않습니다."
       }
     },
     "action": {
@@ -144,6 +163,7 @@
         "interval": "재시도 간격",
         "stop": "중지",
         "skip": "건너 뛰지 않아",
+        "goto": "GOTO 액션",
         "refresh": "새로 고치다"
       }
     },
@@ -153,6 +173,7 @@
       "title": "동작 조건",
       "info": "동작 조건은 이전 동작 상태와 관련된 조건을 추가하는 데 사용됩니다.",
       "skip": "건너 뛰다",
+      "goto": "GOTO 액션",
       "proceed": "진행하다"
     },
     "ads": {
@@ -172,7 +193,8 @@
         "interval": "회계 간격",
         "stop": "중지",
         "skip": "건너 뛰지 않아",
-        "refresh": "새로 고치다"
+        "refresh": "새로 고치다",
+        "goto": "GOTO 액션"
       }
     }
   },
@@ -181,8 +203,8 @@
     "configSettings": "Config 환경 저장 완료!",
     "batch": "Batch 저장 완료!",
     "action": "Action 저장 완료!",
-    "reorderActions": "Action reordered successfully!",
-    "removeAction": "Action removed successfully!",
+    "reorderActions": "액션은 성공적으로 재정렬되었습니다!",
+    "removeAction": "행동이 성공적으로 제거되었습니다!",
     "actionAddon": "Addon 저장 완료!",
     "actionStatement": "작업 조건이 성공적으로 저장되었습니다!",
     "actionSettings": "Action 환경 저장 완료!"

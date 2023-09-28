@@ -16,6 +16,7 @@ export enum RECHECK_OPTIONS {
   STOP = 'stop',
   SKIP = 'skip',
   RELOAD = 'reload',
+  GOTO = 'goto',
 }
 
 export type ValueExtractorFlags = string;
@@ -29,6 +30,7 @@ export type Addon = {
   recheck?: number;
   recheckInterval?: number | string;
   recheckOption: RECHECK_OPTIONS;
+  recheckGoto?: number;
 };
 
 export const defaultAddon: Addon = {

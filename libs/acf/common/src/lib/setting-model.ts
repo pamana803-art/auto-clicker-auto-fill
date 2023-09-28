@@ -2,6 +2,7 @@ export enum RETRY_OPTIONS {
   STOP = 'stop',
   SKIP = 'skip',
   RELOAD = 'reload',
+  GOTO = 'goto',
 }
 
 export enum AUTO_BACKUP {

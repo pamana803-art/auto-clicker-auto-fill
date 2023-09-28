@@ -8,6 +8,7 @@ import Common from './common';
 import { Sheets } from './util/google-sheets';
 import { ConfigError } from './error';
 import SettingsStorage from './store/settings-storage';
+import { Logger } from '@dhruv-techapps/core-common';
 
 const LOGGER_LETTER = 'Action';
 
@@ -48,9 +49,19 @@ const Actions = (() => {
       const statementResult = await checkStatement(actions, action);
       if (statementResult === true) {
         await wait(action.initWait, `${LOGGER_LETTER} initWait`);
-        if (await AddonProcessor.check(batchRepeat, action.addon, action.settings)) {
-          action.status = await ActionProcessor.start(action, batchRepeat, sheets);
-          notify(action);
+        const addonResult = await AddonProcessor.check(batchRepeat, action.addon, action.settings);
+        if (typeof addonResult === 'number') {
+          i = Number(addonResult) - 1;
+          Logger.colorInfo('Goto', Number(addonResult) + 1);
+        } else if (addonResult) {
+          const status = await ActionProcessor.start(action, batchRepeat, sheets);
+          if (typeof status === 'number') {
+            i = Number(status) - 1;
+            Logger.colorInfo('Goto', Number(status) + 1);
+          } else {
+            action.status = status;
+            notify(action);
+          }
         } else {
           action.status = ACTION_STATUS.SKIPPED;
         }
@@ -58,6 +69,7 @@ const Actions = (() => {
         action.status = ACTION_STATUS.SKIPPED;
         if (typeof statementResult !== 'boolean') {
           i = Number(statementResult) - 1;
+          Logger.colorInfo('Goto', Number(statementResult) + 1);
         }
       }
       console.groupEnd();

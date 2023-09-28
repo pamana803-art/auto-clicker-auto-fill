@@ -12,10 +12,10 @@ type AddonType = { nodeValue: string | boolean } & Addon;
 
 const AddonProcessor = (() => {
   const recheckFunc = async (
-    { nodeValue, elementFinder, value, condition, recheck, recheckInterval, recheckOption, valueExtractor, valueExtractorFlags }: AddonType,
+    { nodeValue, elementFinder, value, condition, recheck, recheckInterval, recheckOption, recheckGoto, valueExtractor, valueExtractorFlags }: AddonType,
     batchRepeat: number,
     settings?: ActionSettings
-  ): Promise<boolean> => {
+  ): Promise<number | boolean> => {
     if (recheck !== undefined) {
       if (recheck > 0 || recheck < -1) {
         recheck -= 1;
@@ -38,6 +38,8 @@ const AddonProcessor = (() => {
       }
     } else if (recheckOption === RECHECK_OPTIONS.STOP) {
       throw new ConfigError(`'${nodeValue}' ${condition} '${value}'`, "Addon didn't matched");
+    } else if (recheckOption === RECHECK_OPTIONS.GOTO && recheckGoto) {
+      return recheckGoto;
     }
     Logger.colorInfo('RecheckOption', recheckOption);
     return false;
@@ -121,13 +123,16 @@ const AddonProcessor = (() => {
       } else {
         elementFinder = elementFinder.replaceAll('<batchRepeat>', String(batchRepeat));
         const elements = await Common.start(elementFinder, settings);
+        if (typeof elements === 'number') {
+          return elements;
+        }
         if (elements) {
           nodeValue = getNodeValue(elements, valueExtractor, valueExtractorFlags);
         }
       }
       if (nodeValue !== undefined) {
         value = value.replaceAll('<batchRepeat>', String(batchRepeat));
-        let result = compare(nodeValue, condition, value);
+        let result: boolean | number = compare(nodeValue, condition, value);
         if (!result) {
           result = await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, batchRepeat, settings);
         }

@@ -103,7 +103,7 @@ const Common = (() => {
     return elements;
   };
 
-  const checkRetryOption = (retryOption: RETRY_OPTIONS, elementFinder: string) => {
+  const checkRetryOption = (retryOption: RETRY_OPTIONS, elementFinder: string, retryGoto?: number) => {
     if (retryOption === RETRY_OPTIONS.RELOAD) {
       if (document.readyState === 'complete') {
         window.location.reload();
@@ -113,6 +113,9 @@ const Common = (() => {
       throw new ConfigError(`elementFinder: ${elementFinder}`, 'Not Found - RELOAD');
     } else if (retryOption === RETRY_OPTIONS.STOP) {
       throw new ConfigError(`elementFinder: ${elementFinder}`, 'Not Found - STOP');
+    } else if (retryOption === RETRY_OPTIONS.GOTO) {
+      console.groupEnd();
+      return retryGoto;
     }
     Logger.colorInfo('RetryOption', retryOption);
   };
@@ -123,7 +126,7 @@ const Common = (() => {
         throw new ConfigError('elementFinder can not be empty!', 'Element Finder');
       }
       console.groupCollapsed(LOGGER_LETTER);
-      const { retryOption, retryInterval, retry, checkiFrames, iframeFirst } = { ...(await new SettingsStorage().getSettings()), ...settings };
+      const { retryOption, retryInterval, retry, checkiFrames, iframeFirst, retryGoto } = { ...(await new SettingsStorage().getSettings()), ...settings };
       let elements: HTMLElement[] | undefined;
       if (iframeFirst) {
         elements = await checkIframe(elementFinder, retry, retryInterval);
@@ -138,7 +141,7 @@ const Common = (() => {
         }
       }
       if (!elements || elements.length === 0) {
-        checkRetryOption(retryOption, elementFinder);
+        return checkRetryOption(retryOption, elementFinder, retryGoto);
       }
       console.groupEnd();
       return elements;

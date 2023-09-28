@@ -162,7 +162,8 @@
         "hint": "* Below are action which can be performed if xpath is not found by extension after retry",
         "interval": "Retry Interval",
         "stop": "Stop",
-        "skip": "Skip Not Found",
+        "skip": "Skip Action",
+        "goto": "Goto Action",
         "refresh": "Refresh"
       }
     },
@@ -171,9 +172,9 @@
       "status": "Status",
       "title": "Action Condition",
       "info": "Action condition are used to add condition with relates to previous action status",
-      "skip": "Skip",
-      "goto": "Goto",
-      "proceed": "Proceed"
+      "skip": "Skip Action",
+      "goto": "Goto Action",
+      "proceed": "Proceed Action"
     },
     "ads": {
       "title": "Please allow ads on our site",
@@ -192,7 +193,8 @@
         "interval": "Recheck Interval",
         "stop": "Stop",
         "skip": "Skip Action",
-        "refresh": "Refresh"
+        "refresh": "Refresh",
+        "goto": "Goto Action"
       }
     }
   },

@@ -3,12 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { RECHECK_OPTIONS } from '@dhruv-techapps/acf-common';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getFieldNameValue } from '../../util/element';
-import { actionAddonSelector, updateActionAddon } from '../../store/config';
+import { actionAddonSelector, configSelector, selectedConfigSelector, updateActionAddon, updateActionAddonGoto } from '../../store/config';
 import { REGEX } from '../../util';
+import { ChangeEvent } from 'react';
 
 function AddonRecheck() {
   const { t } = useTranslation();
   const { addon } = useAppSelector(actionAddonSelector);
+  const { actions } = useAppSelector(selectedConfigSelector);
+  const { selectedActionIndex } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
@@ -16,6 +19,10 @@ function AddonRecheck() {
     if (update) {
       dispatch(updateActionAddon(update));
     }
+  };
+
+  const onUpdateGoto = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(updateActionAddonGoto(Number(e.currentTarget.value)));
   };
 
   return (
@@ -39,7 +46,7 @@ function AddonRecheck() {
       <Col xs={12} className='mb-2'>
         <Form.Text className='text-muted'>{t('modal.addon.recheck.hint')}</Form.Text>
       </Col>
-      <Col xs={12} className='d-flex justify-content-between'>
+      <Col>
         <Form.Check
           type='radio'
           defaultChecked={addon.recheckOption === RECHECK_OPTIONS.STOP}
@@ -48,6 +55,8 @@ function AddonRecheck() {
           name='recheckOption'
           label={t('modal.addon.recheck.stop')}
         />
+      </Col>
+      <Col>
         <Form.Check
           type='radio'
           defaultChecked={addon.recheckOption === RECHECK_OPTIONS.SKIP}
@@ -56,6 +65,8 @@ function AddonRecheck() {
           name='recheckOption'
           label={t('modal.addon.recheck.skip')}
         />
+      </Col>
+      <Col>
         <Form.Check
           type='radio'
           defaultChecked={addon.recheckOption === RECHECK_OPTIONS.RELOAD}
@@ -63,8 +74,29 @@ function AddonRecheck() {
           value={RECHECK_OPTIONS.RELOAD}
           name='recheckOption'
           label={t('modal.addon.recheck.refresh')}
+        />{' '}
+      </Col>
+      <Col>
+        <Form.Check
+          type='radio'
+          defaultChecked={addon.recheckOption === RECHECK_OPTIONS.GOTO}
+          onChange={onUpdate}
+          value={RECHECK_OPTIONS.GOTO}
+          name='recheckOption'
+          label={t('modal.addon.recheck.goto')}
         />
       </Col>
+      {addon.recheckOption === RECHECK_OPTIONS.GOTO && (
+        <Col xs={{ span: 3, offset: 9 }}>
+          <Form.Select value={addon.recheckGoto} onChange={onUpdateGoto} name='goto' required>
+            {actions.map((_action, index) => (
+              <option key={index} value={index} disabled={index === Number(selectedActionIndex)}>
+                {index + 1} . {_action.name || _action.elementFinder}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
+      )}
     </Row>
   );
 }
