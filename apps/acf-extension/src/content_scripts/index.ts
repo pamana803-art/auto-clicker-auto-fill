@@ -3,6 +3,14 @@ import { Logger, LoggerColor } from '@dhruv-techapps/core-common';
 import ConfigProcessor from './config';
 import Session from './util/session';
 import ConfigStorage from './store/config-storage';
+import { Sheets } from './util/google-sheets';
+
+declare global {
+  interface Window {
+    __batchRepeat: number;
+    __sheets?: Sheets;
+  }
+}
 
 async function loadConfig(loadType: LOAD_TYPES) {
   try {

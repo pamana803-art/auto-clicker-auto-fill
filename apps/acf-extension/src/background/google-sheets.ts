@@ -11,7 +11,7 @@ type GoogleSheetsType = {
 };
 
 export default class GoogleSheets extends GoogleOauth2 {
-  scopes = [GOOGLE_SCOPES.DRIVE, GOOGLE_SCOPES.PROFILE];
+  scopes = [GOOGLE_SCOPES.SHEETS, GOOGLE_SCOPES.PROFILE];
   async getSheets({ spreadsheetId, ranges }: GoogleSheetsType) {
     let response;
     if (!spreadsheetId || !ranges) {

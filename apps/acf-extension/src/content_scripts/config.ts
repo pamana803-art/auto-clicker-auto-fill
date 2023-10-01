@@ -33,9 +33,9 @@ const ConfigProcessor = (() => {
 
   const start = async (config: Configuration) => {
     Logger.colorDebug('Config Start');
-    const sheets = await new GoogleSheets().getValues(config);
+    await new GoogleSheets().getValues(config);
     try {
-      await BatchProcessor.start(config.actions, config.batch, sheets);
+      await BatchProcessor.start(config.actions, config.batch);
       setBadgeDone();
       const { notifications } = await new SettingsStorage().getSettings();
       if (notifications) {

@@ -3,7 +3,6 @@ import Common from './common';
 import Value from './util/value';
 import Events from './events';
 import { wait } from './util';
-import { Sheets } from './util/google-sheets';
 
 const LOGGER_LETTER = 'Action';
 
@@ -20,15 +19,15 @@ const ActionProcessor = (() => {
     return ACTION_STATUS.DONE;
   };
 
-  const start = async (action: Action, batchRepeat: number, sheets?: Sheets) => {
-    const elementFinder = action.elementFinder.replaceAll('<batchRepeat>', String(batchRepeat));
+  const start = async (action: Action) => {
+    const elementFinder = await Value.getValue(action.elementFinder);
     const elements = await Common.start(elementFinder, action.settings);
     if (!elements) {
       return ACTION_STATUS.SKIPPED;
     } else if (typeof elements === 'number') {
       return elements;
     }
-    const value = action.value ? await Value.getValue(action.value, batchRepeat, sheets) : action.value;
+    const value = action.value ? await Value.getValue(action.value) : action.value;
     await Events.check(elements, value);
     return await repeatFunc(elements, action.repeat, action.repeatInterval, value);
   };

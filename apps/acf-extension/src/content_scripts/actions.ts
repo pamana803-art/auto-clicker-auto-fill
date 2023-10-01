@@ -5,7 +5,6 @@ import Statement from './statement';
 import { wait } from './util';
 import AddonProcessor from './addon';
 import Common from './common';
-import { Sheets } from './util/google-sheets';
 import { ConfigError } from './error';
 import SettingsStorage from './store/settings-storage';
 import { Logger } from '@dhruv-techapps/core-common';
@@ -13,10 +12,10 @@ import { Logger } from '@dhruv-techapps/core-common';
 const LOGGER_LETTER = 'Action';
 
 const Actions = (() => {
-  const setBadge = (batchRepeat: number, i: number) => {
+  const setBadge = (i: number) => {
     ActionService.setBadgeBackgroundColor(chrome.runtime.id, { color: [25, 135, 84, 1] });
-    ActionService.setBadgeText(chrome.runtime.id, { text: `${batchRepeat}-${i}` });
-    ActionService.setTitle(chrome.runtime.id, { title: `Batch:${batchRepeat} Action:${i}` });
+    ActionService.setBadgeText(chrome.runtime.id, { text: `${window.__batchRepeat}-${i}` });
+    ActionService.setTitle(chrome.runtime.id, { title: `Batch:${window.__batchRepeat} Action:${i}` });
   };
 
   const checkStatement = async (actions: Array<Action>, action: Action) => {
@@ -37,7 +36,8 @@ const Actions = (() => {
       });
     }
   };
-  const start = async (actions: Array<Action>, batchRepeat: number, sheets?: Sheets) => {
+  const start = async (actions: Array<Action>, batchRepeat: number) => {
+    window.__batchRepeat = batchRepeat;
     let i = 0;
     while (i < actions.length) {
       const action = actions[i];
@@ -45,16 +45,16 @@ const Actions = (() => {
       if (!action.elementFinder) {
         throw new ConfigError('Element Finder is blank', 'Configuration Action');
       }
-      setBadge(batchRepeat, i);
+      setBadge(i);
       const statementResult = await checkStatement(actions, action);
       if (statementResult === true) {
         await wait(action.initWait, `${LOGGER_LETTER} initWait`);
-        const addonResult = await AddonProcessor.check(batchRepeat, action.addon, action.settings);
+        const addonResult = await AddonProcessor.check(action.addon, action.settings);
         if (typeof addonResult === 'number') {
           i = Number(addonResult) - 1;
           Logger.colorInfo('Goto', Number(addonResult) + 1);
         } else if (addonResult) {
-          const status = await ActionProcessor.start(action, batchRepeat, sheets);
+          const status = await ActionProcessor.start(action);
           if (typeof status === 'number') {
             i = Number(status) - 1;
             Logger.colorInfo('Goto', Number(status) + 1);

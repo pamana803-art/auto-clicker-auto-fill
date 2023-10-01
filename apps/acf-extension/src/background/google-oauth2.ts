@@ -21,7 +21,7 @@ export default class GoogleOauth2 {
       const headers = await this.getHeaders([GOOGLE_SCOPES.PROFILE, scope]);
       const google = await this.getCurrentUser(headers);
       const googleScopes = await this.#getScopes();
-      return { googleScopes, google };
+      return { [LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: googleScopes, [LOCAL_STORAGE_KEY.GOOGLE]: google };
     } catch (error) {
       if (error instanceof Error) {
         NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);

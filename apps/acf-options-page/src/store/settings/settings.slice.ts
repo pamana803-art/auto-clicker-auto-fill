@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { AUTO_BACKUP, GOOGLE_SCOPES, RESPONSE_CODE, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
+import { AUTO_BACKUP, GOOGLE_SCOPES, LOCAL_STORAGE_KEY, RESPONSE_CODE, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
 import { googleGetAPI, googleLoginAPI, settingsGetAPI } from './settings.api';
 
 type SettingsStore = {
@@ -68,13 +68,13 @@ const slice = createSlice({
       state.loading = false;
     });
     builder.addCase(googleGetAPI.fulfilled, (state, action) => {
-      state.google = action.payload.google;
-      state.googleScopes = action.payload.googleScopes || [];
+      state.google = action.payload[LOCAL_STORAGE_KEY.GOOGLE];
+      state.googleScopes = action.payload[LOCAL_STORAGE_KEY.GOOGLE_SCOPES] || [];
     });
     builder.addCase(googleLoginAPI.fulfilled, (state, action) => {
       if (action.payload !== RESPONSE_CODE.ERROR) {
-        state.google = action.payload.google;
-        state.googleScopes = action.payload.googleScopes;
+        state.google = action.payload[LOCAL_STORAGE_KEY.GOOGLE];
+        state.googleScopes = action.payload[LOCAL_STORAGE_KEY.GOOGLE_SCOPES];
       }
     });
     builder.addCase(googleLoginAPI.rejected, (state, action) => {

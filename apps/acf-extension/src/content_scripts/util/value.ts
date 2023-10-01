@@ -1,7 +1,6 @@
 import { Logger } from '@dhruv-techapps/core-common';
 import { ConfigError } from '../error';
 import Common from '../common';
-import { Sheets } from './google-sheets';
 
 export const VALUE_MATCHER = {
   GOOGLE_SHEETS: /^GoogleSheets::/i,
@@ -67,13 +66,17 @@ const Value = (() => {
       return result;
     });
 
-  const getBatchRepeat = (value: string, batchRepeat: number) => {
-    value = value.replaceAll('<batchRepeat>', String(batchRepeat));
+  const getBatchRepeat = (value: string) => {
+    value = value.replaceAll('<batchRepeat>', String(window.__batchRepeat));
     Logger.colorDebug('GetBatchRepeat', value);
     return value;
   };
 
-  const getSheetValue = (value: string, batchRepeat: number, sheets: Sheets) => {
+  const getSheetValue = (value: string) => {
+    const sheets = window.__sheets;
+    if (!sheets) {
+      return value;
+    }
     const [sheetName, range] = value.split('::')[1].split('!');
     if (!sheets || !sheets[sheetName]) {
       throw new ConfigError(`Sheet: "${sheetName}" not found!`, 'Sheet not found');
@@ -82,7 +85,7 @@ const Value = (() => {
     if (!values) {
       throw new ConfigError(`Sheet "${sheetName}" do not have value in ${startRange}`, 'Sheet values not found');
     }
-    const currentRange = range.replaceAll('<batchRepeat>', String(batchRepeat + 1)).replaceAll('<sessionCount>', String(sessionCount));
+    const currentRange = range.replaceAll('<batchRepeat>', String(window.__batchRepeat + 1)).replaceAll('<sessionCount>', String(sessionCount));
     if (!/(\D+)(\d+)/.test(currentRange)) {
       throw new ConfigError(`Sheet range is not valid${range}`, 'Sheet range invalid');
     }
@@ -121,7 +124,7 @@ const Value = (() => {
     return result;
   };
 
-  const getValue = async (value: string, batchRepeat: number, sheets?: Sheets): Promise<string> => {
+  const getValue = async (value: string): Promise<string> => {
     /// For select box value is boolean true
     if (typeof value !== 'string') {
       Logger.colorDebug('Value', value);
@@ -130,11 +133,11 @@ const Value = (() => {
 
     switch (true) {
       case VALUE_MATCHER.GOOGLE_SHEETS.test(value):
-        return sheets ? getSheetValue(value, batchRepeat, sheets) : value;
+        return getSheetValue(value);
       case VALUE_MATCHER.QUERY_PARAM.test(value):
         return getQueryParam(value);
       case VALUE_MATCHER.BATCH_REPEAT.test(value):
-        return getBatchRepeat(value, batchRepeat);
+        return getBatchRepeat(value);
       case VALUE_MATCHER.RANDOM.test(value):
         return getRandomValue(value);
       case VALUE_MATCHER.FUNC.test(value):
