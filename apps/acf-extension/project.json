@@ -52,7 +52,6 @@
         }
       }
     },
-
     "serve": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
