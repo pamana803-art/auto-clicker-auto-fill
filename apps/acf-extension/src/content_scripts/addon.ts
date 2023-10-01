@@ -5,25 +5,22 @@ import { wait } from './util';
 import { ConfigError, SystemError } from './error';
 import Common from './common';
 import { RADIO_CHECKBOX_NODE_NAME } from '../common/constant';
+import Value from './util/value';
 
 const LOGGER_LETTER = 'Addon';
 
 type AddonType = { nodeValue: string | boolean } & Addon;
 
 const AddonProcessor = (() => {
-  const recheckFunc = async (
-    { nodeValue, elementFinder, value, condition, recheck, recheckInterval, recheckOption, recheckGoto, valueExtractor, valueExtractorFlags }: AddonType,
-    batchRepeat: number,
-    settings?: ActionSettings
-  ): Promise<number | boolean> => {
+  const recheckFunc = async ({ nodeValue, elementFinder, value, condition, recheck, recheckOption, ...props }: AddonType, settings?: ActionSettings): Promise<number | boolean> => {
     if (recheck !== undefined) {
       if (recheck > 0 || recheck < -1) {
         recheck -= 1;
         ActionService.setBadgeBackgroundColor(chrome.runtime.id, { color: [13, 202, 240, 1] });
         ActionService.setBadgeText(chrome.runtime.id, { text: 'Recheck' });
-        await wait(recheckInterval, `${LOGGER_LETTER} Recheck`, recheck, '<interval>');
+        await wait(props.recheckInterval, `${LOGGER_LETTER} Recheck`, recheck, '<interval>');
         // eslint-disable-next-line no-use-before-define
-        return await start({ elementFinder, value, condition, recheck, recheckInterval, recheckOption, valueExtractor, valueExtractorFlags }, batchRepeat, settings);
+        return await start({ elementFinder, value, condition, recheck, recheckOption, ...props }, settings);
       }
     }
     // eslint-disable-next-line no-console
@@ -38,8 +35,8 @@ const AddonProcessor = (() => {
       }
     } else if (recheckOption === RECHECK_OPTIONS.STOP) {
       throw new ConfigError(`'${nodeValue}' ${condition} '${value}'`, "Addon didn't matched");
-    } else if (recheckOption === RECHECK_OPTIONS.GOTO && recheckGoto) {
-      return recheckGoto;
+    } else if (recheckOption === RECHECK_OPTIONS.GOTO && props.recheckGoto) {
+      return props.recheckGoto;
     }
     Logger.colorInfo('RecheckOption', recheckOption);
     return false;
@@ -114,14 +111,14 @@ const AddonProcessor = (() => {
     }
   };
 
-  const start = async ({ elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }: Addon, batchRepeat: number, settings?: ActionSettings) => {
+  const start = async ({ elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }: Addon, settings?: ActionSettings) => {
     try {
       Logger.colorDebug('Start', { elementFinder, value, condition, valueExtractor, valueExtractorFlags });
       let nodeValue;
       if (/^Func::/gi.test(elementFinder)) {
         nodeValue = await Common.sandboxEval(elementFinder.replace(/^Func::/gi, ''));
       } else {
-        elementFinder = elementFinder.replaceAll('<batchRepeat>', String(batchRepeat));
+        elementFinder = await Value.getValue(elementFinder);
         const elements = await Common.start(elementFinder, settings);
         if (typeof elements === 'number') {
           return elements;
@@ -131,10 +128,9 @@ const AddonProcessor = (() => {
         }
       }
       if (nodeValue !== undefined) {
-        value = value.replaceAll('<batchRepeat>', String(batchRepeat));
         let result: boolean | number = compare(nodeValue, condition, value);
         if (!result) {
-          result = await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, batchRepeat, settings);
+          result = await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, settings);
         }
         Logger.colorDebug('Compare Result', result);
         console.groupEnd();
@@ -147,12 +143,15 @@ const AddonProcessor = (() => {
       throw error;
     }
   };
-  const check = async (batchRepeat: number, addon?: Addon, actionSettings?: ActionSettings) => {
+  const check = async (addon?: Addon, actionSettings?: ActionSettings) => {
     if (addon) {
-      const { elementFinder, value, condition, ...props } = addon;
+      let { value } = addon;
+      const { elementFinder, condition, ...props } = addon;
       if (elementFinder && value && condition) {
         console.groupCollapsed(LOGGER_LETTER);
-        return await start({ elementFinder, value, condition, ...props }, batchRepeat, actionSettings);
+
+        value = await Value.getValue(value);
+        return await start({ ...props, elementFinder, value, condition }, actionSettings);
       }
     }
     return true;

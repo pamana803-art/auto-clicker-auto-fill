@@ -3,7 +3,6 @@ import { NotificationsService } from '@dhruv-techapps/core-service';
 import Actions from './actions';
 import { wait } from './util';
 import Common from './common';
-import { Sheets } from './util/google-sheets';
 import SettingsStorage from './store/settings-storage';
 
 const LOGGER_LETTER = 'Batch';
@@ -19,7 +18,7 @@ const BatchProcessor = (() => {
     }
   };
 
-  const checkRepeat = async (actions: Array<Action>, batch: Batch, sheets?: Sheets) => {
+  const checkRepeat = async (actions: Array<Action>, batch: Batch) => {
     if (batch.repeat) {
       if (batch.repeat > 0) {
         for (let i = 0; i < batch.repeat; i += 1) {
@@ -27,7 +26,7 @@ const BatchProcessor = (() => {
           if (batch?.repeatInterval) {
             await wait(batch?.repeatInterval, `${LOGGER_LETTER} Repeat`, batch.repeat, '<interval>');
           }
-          await Actions.start(actions, i + 1, sheets);
+          await Actions.start(actions, i + 1);
           const { notifications } = await new SettingsStorage().getSettings();
           if (notifications?.onBatch) {
             NotificationsService.create(chrome.runtime.id, {
@@ -47,23 +46,23 @@ const BatchProcessor = (() => {
           if (batch?.repeatInterval) {
             await wait(batch?.repeatInterval, `${LOGGER_LETTER} Repeat`, '∞', '<interval>');
           }
-          await Actions.start(actions, i, sheets);
+          await Actions.start(actions, i);
           i += 1;
         }
       }
     }
   };
 
-  const start = async (actions: Array<Action>, batch?: Batch, sheets?: Sheets) => {
+  const start = async (actions: Array<Action>, batch?: Batch) => {
     try {
       console.group(`${LOGGER_LETTER} #0`);
-      await Actions.start(actions, 0, sheets);
+      await Actions.start(actions, 0);
       console.groupEnd();
       if (batch) {
         if (batch.refresh) {
           refresh();
         } else {
-          await checkRepeat(actions, batch, sheets);
+          await checkRepeat(actions, batch);
         }
       }
     } catch (error) {

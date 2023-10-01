@@ -1,4 +1,4 @@
-import { Configuration } from '@dhruv-techapps/acf-common';
+import { Configuration, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 import { Logger } from '@dhruv-techapps/core-common';
 import Session from './session';
 import { GoogleSheetsService } from '@dhruv-techapps/acf-service';
@@ -23,15 +23,34 @@ type ValueRange = {
   values: Array<any>;
 };
 
+const GOOGLE_SHEETS_REGEX = /^googlesheets::/i;
+
 export default class GoogleSheets {
   getSheets(config: Configuration, batchHighestRepeat: number) {
     const sheets = new Map<string, Set<string>>();
     let sessionCount: number | undefined;
     config.actions
-      .filter(({ value }) => value && /^googlesheets::/i.test(value))
-      .forEach(({ value }) => {
-        if (value) {
-          value = value.replace(/googlesheets::/i, '');
+      .map(({ elementFinder, value, addon }) => {
+        const result = [];
+        if (value && GOOGLE_SHEETS_REGEX.test(value)) {
+          result.push(value.replace(GOOGLE_SHEETS_REGEX, ''));
+        }
+        if (GOOGLE_SHEETS_REGEX.test(elementFinder)) {
+          result.push(elementFinder.replace(GOOGLE_SHEETS_REGEX, ''));
+        }
+        if (addon) {
+          if (GOOGLE_SHEETS_REGEX.test(addon.value)) {
+            result.push(addon.value.replace(GOOGLE_SHEETS_REGEX, ''));
+          }
+          if (GOOGLE_SHEETS_REGEX.test(addon.elementFinder)) {
+            result.push(addon.elementFinder.replace(GOOGLE_SHEETS_REGEX, ''));
+          }
+        }
+        return result;
+      })
+      .filter((googleSheets) => googleSheets.length)
+      .forEach((googleSheets) => {
+        googleSheets.forEach((value) => {
           const [sheetName, range] = value.split('!');
           const ranges = sheets.get(sheetName) || new Set<string>();
           if (value.includes('<batchRepeat>')) {
@@ -44,7 +63,7 @@ export default class GoogleSheets {
             ranges.add(range);
           }
           sheets.set(sheetName, ranges);
-        }
+        });
       });
     return { sheets, sessionCount };
   }
@@ -103,6 +122,7 @@ export default class GoogleSheets {
         Array.from(sheets, ([sheetName, range]) => `${sheetName}!${range}`)
       );
       result = this.transformResult(result, sessionCount);
+      window.__sheets = result;
       Logger.colorDebug('Google Sheets', result);
       return result;
     }
