@@ -85,7 +85,7 @@ jobs:
         OAUTH_CLIENT_ID=${{needs.EnvSetup.outputs.OAUTH_CLIENT_ID}}
         PUBLIC_URL=${{needs.EnvSetup.outputs.PUBLIC_URL}}
       parallel-commands-on-agents: |
-        npx nx run-many --target=build --parallel=3 --exclude='tag:puppeteer'  --args="--version=${{github.ref}}"
+        npx nx run-many --target=build --parallel=3 --exclude='tag:puppeteer'  --args="--version=${{github.ref#refs/*/}}"
       final-commands: |
         TARGET_FILE="./dist/apps/acf-extension/manifest.json"
         # Use an if-else statement to check if the file exists.
