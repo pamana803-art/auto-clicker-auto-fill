@@ -1,4 +1,4 @@
-name: mono-repo
+name: mono-repo [push]
 
 on:
   workflow_dispatch:
