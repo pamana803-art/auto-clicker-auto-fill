@@ -2,12 +2,12 @@ const { composePlugins, withNx } = require('@nx/webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
-function modify(buffer, version, { KEY, NX_NAME, OAUTH_CLIENT_ID }) {
+function modify(buffer, { KEY, NX_NAME, OAUTH_CLIENT_ID, RELEASE_VERSION }) {
   // copy-webpack-plugin passes a buffer
   const manifest = JSON.parse(buffer.toString());
 
   // make any modifications you like, such as
-  manifest.version = version;
+  manifest.version = RELEASE_VERSION;
   manifest.name = NX_NAME;
   if (OAUTH_CLIENT_ID) {
     manifest.oauth2.client_id = OAUTH_CLIENT_ID;
@@ -45,7 +45,7 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
         from: './src/manifest.json',
         to: './manifest.json',
         transform(content) {
-          return modify(content, ctx.options.args.split('=')[1], process.env);
+          return modify(content, process.env);
         },
       },
     ],

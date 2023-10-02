@@ -40,6 +40,8 @@ jobs:
       FUNCTION_URL: ${{ steps.set-output-defaults.outputs.FUNCTION_URL}}
       DISCORD_CLIENT_ID: ${{ steps.set-output-defaults.outputs.DISCORD_CLIENT_ID}}
       OAUTH_CLIENT_ID: ${{ steps.set-output-defaults.outputs.OAUTH_CLIENT_ID}}
+      #version
+      RELEASE_VERSION: ${{ steps.set-output-defaults.outputs.RELEASE_VERSION}}
     steps:
       - name: set outputs with default values
         id: set-output-defaults
@@ -58,6 +60,7 @@ jobs:
           echo "DISCORD_CLIENT_ID='${{ vars.DISCORD_CLIENT_ID }}'" >> $GITHUB_OUTPUT
           echo "OAUTH_CLIENT_ID=${{ vars.OAUTH_CLIENT_ID }}" >> $GITHUB_OUTPUT
           echo "PUBLIC_URL=${{ vars.PUBLIC_URL }}" >> $GITHUB_OUTPUT
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
   main:
     needs: [EnvSetup]
     name: Nx Cloud - Main Job
@@ -84,8 +87,9 @@ jobs:
         DISCORD_CLIENT_ID=${{needs.EnvSetup.outputs.DISCORD_CLIENT_ID}}
         OAUTH_CLIENT_ID=${{needs.EnvSetup.outputs.OAUTH_CLIENT_ID}}
         PUBLIC_URL=${{needs.EnvSetup.outputs.PUBLIC_URL}}
+        RELEASE_VERSION=${{needs.EnvSetup.outputs.RELEASE_VERSION}}
       parallel-commands-on-agents: |
-        npx nx run-many --target=build --parallel=3 --exclude='tag:puppeteer'  --args="--version=${{github.ref#refs/*/}}"
+        npx nx run-many --target=build --parallel=3 --exclude='tag:puppeteer'
       final-commands: |
         TARGET_FILE="./dist/apps/acf-extension/manifest.json"
         # Use an if-else statement to check if the file exists.
@@ -120,7 +124,7 @@ jobs:
         DISCORD_CLIENT_ID=${{needs.EnvSetup.outputs.DISCORD_CLIENT_ID}}
         OAUTH_CLIENT_ID=${{needs.EnvSetup.outputs.OAUTH_CLIENT_ID}}
         PUBLIC_URL=${{needs.EnvSetup.outputs.PUBLIC_URL}}
-
+        RELEASE_VERSION=${{needs.EnvSetup.outputs.RELEASE_VERSION}}
   extension:
     needs: [agents, main]
     runs-on: ubuntu-latest
