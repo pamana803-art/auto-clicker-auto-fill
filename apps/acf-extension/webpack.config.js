@@ -1,7 +1,6 @@
 const { composePlugins, withNx } = require('@nx/webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
-const PACKAGE = require('../../package.json');
 const path = require('path');
 function modify(buffer, version, { KEY, NX_NAME, OAUTH_CLIENT_ID }) {
   // copy-webpack-plugin passes a buffer
@@ -46,7 +45,7 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
         from: './src/manifest.json',
         to: './manifest.json',
         transform(content) {
-          return modify(content, PACKAGE.version, process.env);
+          return modify(content, ctx.options.args.split('=')[1], process.env);
         },
       },
     ],
