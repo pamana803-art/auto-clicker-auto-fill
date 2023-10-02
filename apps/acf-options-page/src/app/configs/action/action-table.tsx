@@ -111,8 +111,6 @@ const ActionTable = () => {
     [t]
   );
 
-  console.log(actions);
-
   const table = useReactTable<Action>({
     columns: columns,
     data: actions,

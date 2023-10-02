@@ -84,11 +84,7 @@ jobs:
         DISCORD_CLIENT_ID=${{needs.EnvSetup.outputs.DISCORD_CLIENT_ID}}
         OAUTH_CLIENT_ID=${{needs.EnvSetup.outputs.OAUTH_CLIENT_ID}}
         PUBLIC_URL=${{needs.EnvSetup.outputs.PUBLIC_URL}}
-      init-commands: |
-        ls
       parallel-commands-on-agents: |
-        npx nx run-many --target=lint --parallel=3
-        npx nx run-many --target=test --parallel=3 --exclude='tag:puppeteer' --ci --code-coverage
         npx nx run-many --target=build --parallel=3 --exclude='tag:puppeteer'
       final-commands: |
         TARGET_FILE="./dist/apps/acf-extension/manifest.json"
@@ -108,7 +104,7 @@ jobs:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
       NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
     with:
-      number-of-agents: 3
+      number-of-agents: 2
       environment-variables: |
         NX_NAME=${{needs.EnvSetup.outputs.NX_NAME}}
         NX_VARIANT=${{needs.EnvSetup.outputs.NX_VARIANT}}

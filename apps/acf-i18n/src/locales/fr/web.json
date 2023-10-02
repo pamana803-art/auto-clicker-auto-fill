@@ -46,7 +46,7 @@
       },
       "importSuccess": {
         "header": "Configuration",
-        "body":"{{name}} importé avec succès"
+        "body": "{{name}} importé avec succès"
       }
     },
     "action": {
@@ -75,7 +75,7 @@
       "title": "Paramètres globaux",
       "checkIFrames": "Vérifiez les iframes",
       "checkIFramesHint": "Cet élément de contrôle dans les iframes",
-      "advance":"Avance",
+      "advance": "Avance",
       "advanceHint": "Activer le mode avancé pour plus de fonctionnalités",
       "notification": {
         "title": "Montrer les notifications",
@@ -243,7 +243,7 @@
     "clear": "Dégager",
     "close": "proche",
     "download": "Télécharger",
-    "disabled":"Désactivé",
+    "disabled": "Désactivé",
     "sec": "seconde",
     "no": "Non",
     "yes": "Oui",

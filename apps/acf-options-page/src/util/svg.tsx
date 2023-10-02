@@ -28,3 +28,5 @@ export { ReactComponent as FileSpreadsheet } from 'bootstrap-icons/icons/file-sp
 export { ReactComponent as Youtube } from 'bootstrap-icons/icons/youtube.svg';
 export { ReactComponent as FileSpreadsheetFill } from 'bootstrap-icons/icons/file-spreadsheet-fill.svg';
 export { ReactComponent as ExclamationTriangleFill } from 'bootstrap-icons/icons/exclamation-triangle-fill.svg';
+export { ReactComponent as ArrowUp } from 'bootstrap-icons/icons/arrow-up.svg';
+export { ReactComponent as ArrowDown } from 'bootstrap-icons/icons/arrow-down.svg';

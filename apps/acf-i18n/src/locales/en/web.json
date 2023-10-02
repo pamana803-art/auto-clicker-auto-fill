@@ -4,12 +4,12 @@
       "light": "Switch to the light theme",
       "dark": "Switch to the dark theme"
     },
-    "google-group":"Google Group",
+    "google-group": "Google Group",
     "login": "Login",
     "logout": "Logout",
     "settings": "Global Settings",
     "backup": {
-      "last-backup":"Last Backup:",
+      "last-backup": "Last Backup:",
       "backup": "Backup to Cloud",
       "restore": "Restore from Cloud",
       "now": "Backup Now",
