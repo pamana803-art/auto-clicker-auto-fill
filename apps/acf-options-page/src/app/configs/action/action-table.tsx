@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Dropdown, Form, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
 import { CaretDown, CaretUp, REGEX, ThreeDots } from '../../../util';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
 import { DropdownToggle } from '../../../components';
@@ -111,6 +111,8 @@ const ActionTable = () => {
     [t]
   );
 
+  console.log(actions);
+
   const table = useReactTable<Action>({
     columns: columns,
     data: actions,
@@ -118,7 +120,6 @@ const ActionTable = () => {
     state: { columnVisibility },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     // Provide our updateData function to our table meta
     meta: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
