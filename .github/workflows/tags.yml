@@ -60,7 +60,7 @@ jobs:
           echo "DISCORD_CLIENT_ID='${{ vars.DISCORD_CLIENT_ID }}'" >> $GITHUB_OUTPUT
           echo "OAUTH_CLIENT_ID=${{ vars.OAUTH_CLIENT_ID }}" >> $GITHUB_OUTPUT
           echo "PUBLIC_URL=${{ vars.PUBLIC_URL }}" >> $GITHUB_OUTPUT
-          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=${{GITHUB_REF#refs/*/}}" >> $GITHUB_OUTPUT
   main:
     needs: [EnvSetup]
     name: Nx Cloud - Main Job
