@@ -1,13 +1,15 @@
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import { Badge, Button, Form, ListGroup, Modal } from 'react-bootstrap';
 import Reorder, { reorder } from 'react-reorder';
 import { useTranslation } from 'react-i18next';
 import { ErrorAlert } from '../components';
 import { configReorderSelector, configReorderUpdateAPI, switchConfigReorderModal, updateConfigReorder } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../hooks';
+import { ArrowDown, ArrowUp } from '../util';
 
 const ReorderConfigsModal = () => {
   const { visible, configs, error } = useAppSelector(configReorderSelector);
+  const [sort, setSort] = useState<boolean>();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -23,6 +25,21 @@ const ReorderConfigsModal = () => {
     dispatch(updateConfigReorder(reorder(configs, previousIndex, nextIndex)));
   };
 
+  const sortActions = () => {
+    setSort(!sort);
+    if (configs) {
+      dispatch(
+        updateConfigReorder(
+          [...configs].sort((a, b) => {
+            const first = sort ? a.name || a.url : b.name || b.url;
+            const second = sort ? b.name || b.url : a.name || a.url;
+            return first.localeCompare(second);
+          })
+        )
+      );
+    }
+  };
+
   const onShow = () => {
     //:TODO
   };
@@ -35,6 +52,9 @@ const ReorderConfigsModal = () => {
         <Modal.Body style={{ overflow: 'auto', height: 'calc(100vh - 200px)' }}>
           <ErrorAlert error={error} />
           <p className='text-muted'>{t('modal.reorder.hint')}</p>
+          <Button onClick={sortActions} className='mb-3'>
+            Reorder {sort !== undefined && <span>{sort ? <ArrowUp /> : <ArrowDown />}</span>}
+          </Button>
           <div className='list-group'>
             <Reorder reorderId='configurations' draggedClassName='active' placeholderClassName='list-group' onReorder={onReorder}>
               {configs?.map((config, index) => (
