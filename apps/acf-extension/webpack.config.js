@@ -5,6 +5,7 @@ const path = require('path');
 function modify(buffer, { KEY, NX_NAME, OAUTH_CLIENT_ID, RELEASE_VERSION }) {
   // copy-webpack-plugin passes a buffer
   const manifest = JSON.parse(buffer.toString());
+  console.log(typeof RELEASE_VERSION, RELEASE_VERSION);
 
   // make any modifications you like, such as
   manifest.version = RELEASE_VERSION;
