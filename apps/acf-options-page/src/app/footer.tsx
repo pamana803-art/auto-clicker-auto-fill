@@ -27,7 +27,10 @@ function Footer() {
               </h6>
               <div className='text-muted'>
                 <small>© 2017 - 2023</small>
-                <small className='ms-2'>v{manifest?.version}</small>
+                <br />
+                <small>☘ v{manifest?.version}</small>
+                <br />
+                <small>☯ {process.env.NX_RELEASE_VERSION}</small>
               </div>
             </div>
           </Col>

@@ -43,14 +43,13 @@ const ConfigProcessor = (() => {
         if (onConfig) {
           NotificationsService.create(chrome.runtime.id, { type: 'basic', title: 'Config Completed', message: config.name || config.url, silent: !sound, iconUrl: Common.getNotificationIcon() });
           if (discord) {
-            DiscordMessagingService.success(chrome.runtime.id, 'Configuration Finished', getFields(config)).catch(Logger.colorError);
+            DiscordMessagingService.success(chrome.runtime.id, 'Configuration Finished', getFields(config));
           }
         }
       }
     } catch (e) {
       if (e instanceof ConfigError) {
         const error = { title: e.title, message: `url : ${config.url}\n${e.message}` };
-        Logger.colorError(e.title, e.message);
         setBadgeError();
         const { notifications } = await new SettingsStorage().getSettings();
         if (notifications) {
@@ -64,9 +63,11 @@ const ConfigProcessor = (() => {
                   const [name, value] = info.split(':');
                   return { name, value: value.replace(/'/g, '`') };
                 }),
-              ]).catch(Logger.colorError);
+              ]);
             }
           }
+        } else {
+          console.error(error.title, '\n', error.message);
         }
       } else {
         throw e;
@@ -101,7 +102,7 @@ const ConfigProcessor = (() => {
       Logger.colorDebug('Config Start Manually');
       ActionService.setBadgeText(chrome.runtime.id, { text: 'Manual' });
       ActionService.setTitle(chrome.runtime.id, { title: 'Start Manually' });
-      Hotkey.setup(config.hotkey, start.bind(this, config));
+      Hotkey.setup(start.bind(this, config), config.hotkey);
     } else {
       Logger.colorDebug('Config Start Automatically');
       ActionService.setBadgeText(chrome.runtime.id, { text: 'Auto' });
