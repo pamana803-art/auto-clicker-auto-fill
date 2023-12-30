@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/browser';
 
 type DiscordMessagingType = {
   title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fields: Array<{ name: string; value: any }>;
   color: string;
 };

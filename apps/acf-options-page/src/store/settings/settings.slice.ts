@@ -9,6 +9,7 @@ type SettingsStore = {
   error?: string;
   settings: Settings;
   message?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   google?: any;
   googleScopes: Array<GOOGLE_SCOPES>;
 };

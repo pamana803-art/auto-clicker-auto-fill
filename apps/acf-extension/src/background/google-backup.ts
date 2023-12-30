@@ -18,6 +18,7 @@ type GoogleDriveFile = {
   nextPageToken: string;
   kind: string;
   incompleteSearch: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   files: Array<{ id: string; name: string; [index: string]: any }>;
 };
 

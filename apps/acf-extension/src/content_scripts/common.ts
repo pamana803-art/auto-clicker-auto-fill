@@ -20,6 +20,7 @@ const Common = (() => {
     return false;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sandboxEval = async (code: string, context?: any): Promise<string> => {
     if (!code) {
       return context;
