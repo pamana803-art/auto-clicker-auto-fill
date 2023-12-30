@@ -12,14 +12,7 @@
         "jestConfig": "apps/acf-puppeteer/jest.config.ts",
         "bail": false,
         "runInBand": true,
-        "testTimeout": 60000,
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "testTimeout": 60000
       }
     }
   }

@@ -26,7 +26,7 @@ const BatchProcessor = (() => {
           if (batch?.repeatInterval) {
             await wait(batch?.repeatInterval, `${LOGGER_LETTER} Repeat`, batch.repeat, '<interval>');
           }
-          await Actions.start(actions, i + 1);
+          await Actions.start(actions, i + 2);
           const { notifications } = await new SettingsStorage().getSettings();
           if (notifications?.onBatch) {
             NotificationsService.create(chrome.runtime.id, {
@@ -56,7 +56,7 @@ const BatchProcessor = (() => {
   const start = async (actions: Array<Action>, batch?: Batch) => {
     try {
       console.group(`${LOGGER_LETTER} #1`);
-      await Actions.start(actions, 0);
+      await Actions.start(actions, 1);
       console.groupEnd();
       if (batch) {
         if (batch.refresh) {

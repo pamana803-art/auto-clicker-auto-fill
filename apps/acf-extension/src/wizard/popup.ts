@@ -3,6 +3,7 @@ import { WizardElementUtil } from './element-util';
 import { store } from './store';
 import { OPTIONS_PAGE_URL } from '../common/environments';
 import { removeWizardAction, updateAllWizardAction } from './store/slice';
+import { NotificationsService } from '@dhruv-techapps/core-service';
 
 export const Popup = (() => {
   let popupContainer: HTMLElement;
@@ -44,7 +45,11 @@ export const Popup = (() => {
       const xpath = WizardElementUtil.clearXpath(e.detail.xpath);
       if (xpath) {
         const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        (<HTMLInputElement>result.singleNodeValue).focus();
+        if (result.singleNodeValue) {
+          (<HTMLInputElement>result.singleNodeValue).focus();
+        } else {
+          NotificationsService.create(chrome.runtime.id, { type: 'basic', title: 'Element not found', message: xpath, silent: false, iconUrl: chrome.runtime.getManifest().action.default_icon });
+        }
       }
     }) as EventListener);
   };

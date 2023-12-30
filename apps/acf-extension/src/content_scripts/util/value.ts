@@ -7,6 +7,7 @@ export const VALUE_MATCHER = {
   QUERY_PARAM: /^Query::/i,
   FUNC: /^Func::/i,
   RANDOM: /<random(\[.+?\])?(\{(\d+),?(\d+)?\})?>/gi,
+  CHOICE: /<choice(\[.+?\])?(\{(\d+),?(\d+)?\})?>/gi,
   BATCH_REPEAT: /<batchRepeat>/,
 };
 
