@@ -4,6 +4,11 @@ export class CoreService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static messageChrome<T = any>(extensionId: string, message: RuntimeMessageRequest): Promise<T> {
     return new Promise<T>((resolve, reject) => {
+      if (!chrome.runtime || !chrome.runtime.sendMessage) {
+        reject('Extension context invalidated');
+        return;
+      }
+
       chrome.runtime.sendMessage(extensionId, message, (response) => {
         if (chrome.runtime.lastError || response?.error) {
           reject(chrome.runtime.lastError?.message || response?.error);

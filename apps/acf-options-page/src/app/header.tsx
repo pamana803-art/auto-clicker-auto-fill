@@ -26,7 +26,7 @@ function Header() {
   let imageURL = 'https://getautoclicker.com/favicons/favicon32.png';
   let appName = APP_NAME;
 
-  if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
+  if (/(DEV|BETA)/.test(process.env.NX_VARIANT || '')) {
     imageURL = `https://getautoclicker.com/favicons/${process.env.NX_VARIANT}/icon32.png`;
     appName += ` [${process.env.NX_VARIANT}]`;
   }

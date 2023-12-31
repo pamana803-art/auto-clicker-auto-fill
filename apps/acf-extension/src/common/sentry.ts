@@ -4,6 +4,19 @@ import { NX_RELEASE_VERSION, VARIANT } from './environments';
 export const sentryInit = (page: string) => {
   Sentry.init({
     dsn: 'https://23ec1ed44876c4cbe18082f514cc5901@o4506036997455872.ingest.sentry.io/4506037629943808',
+    // This sets the sample rate to be 10%. You may want this to be 100% while
+    // in development and sample at a lower rate in production
+    replaysSessionSampleRate: 0.1,
+
+    // If the entire session is not sampled, use the below sample rate to sample
+    // sessions when an error occurs.
+    replaysOnErrorSampleRate: 1.0,
+    integrations: [
+      new Sentry.Replay({
+        maskAllText: true,
+        blockAllMedia: true,
+      }),
+    ],
     environment: VARIANT,
     ignoreErrors: [
       // Random plugins/extensions
@@ -13,6 +26,7 @@ export const sentryInit = (page: string) => {
       'canvas.contentDocument',
       'MyApp_RemoveAllHighlights',
       'http://tt.epicplay.com',
+      'Extension context invalidated.',
       "Can't find variable: ZiteReader",
       'jigsaw is not defined',
       'ComboSearch is not defined',

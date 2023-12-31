@@ -60,9 +60,10 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
     sentryWebpackPlugin({
       org: 'dhruv-techapps',
       project: 'acf-extension',
+      telemetry: false,
       authToken: process.env.SENTRY_AUTH_TOKEN,
       release: {
-        name: process.env.NX_RELEASE_VERSION,
+        name: process.env.NX_RELEASE_VERSION?.replace('v', ''),
       },
     })
   );
