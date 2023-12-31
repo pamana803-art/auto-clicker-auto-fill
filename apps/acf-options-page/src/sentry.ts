@@ -5,6 +5,7 @@ export const sentryInit = () => {
   Sentry.init({
     dsn: 'https://aacf1f88c133d2c9b4823c4c0b485ecc@o4506036997455872.ingest.sentry.io/4506037000994816',
     release,
+    ignoreErrors: ['NetFunnel is not defined', 'adsbygoogle.push() error: No slot size for availableWidth=0'],
     environment: process.env.NX_VARIANT,
     // This sets the sample rate to be 10%. You may want this to be 100% while
     // in development and sample at a lower rate in production
@@ -17,8 +18,9 @@ export const sentryInit = () => {
       new Sentry.BrowserProfilingIntegration(),
       new Sentry.BrowserTracing(),
       new Sentry.Replay({
-        maskAllText: true,
-        blockAllMedia: true,
+        maskAllInputs: true,
+        maskAllText: false,
+        blockAllMedia: false,
       }),
     ],
     // Set tracesSampleRate to 1.0 to capture 100%

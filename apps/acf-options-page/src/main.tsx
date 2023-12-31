@@ -1,6 +1,5 @@
 import * as ReactDOM from 'react-dom/client';
 import './index.scss';
-import { disableContextMenu } from './util';
 import App from './App';
 import './i18n';
 import { BROWSER } from './_helpers';
@@ -17,7 +16,3 @@ root.render(
     <App />
   </Provider>
 );
-
-if (process.env.NODE_ENV !== 'development') {
-  disableContextMenu();
-}

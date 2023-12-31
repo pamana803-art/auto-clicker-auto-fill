@@ -44,6 +44,8 @@ export const sentryInit = (page: string) => {
       'EBCallBackMessageReceived',
       // See http://toolbar.conduit.com/Developer/HtmlAndGadget/Methods/JSInjection.aspx
       'conduitPage',
+      'Could not establish connection. Receiving end does not exist.',
+      'Non-Error promise rejection captured',
     ],
     denyUrls: [
       // Facebook flakiness
