@@ -134,9 +134,6 @@ jobs:
   extension:
     needs: [agents, main]
     runs-on: ubuntu-latest
-    environment:
-      name: ${{inputs.environment}}
-      url: ${{steps.extension-release.outputs.url }}
     permissions:
       contents: write
     name: Extension
@@ -148,7 +145,8 @@ jobs:
         if: ${{ hashFiles('auto_clicker_-_autofill*.zip') }}
         id: extension-release
         with:
-          prerelease: true
+          draft: ${{needs.EnvSetup.outputs.NX_VARIANT === "DEV"}}
+          prerelease: ${{needs.EnvSetup.outputs.NX_VARIANT === "BETA"}}
           generate_release_notes: true
           files: 'auto_clicker_-_autofill*.zip'
           fail_on_unmatched_files: true
@@ -185,16 +183,14 @@ jobs:
           ###### End of Repository/Build Configurations ######
 
   tag:
-    needs: [extension, configuration]
+    needs: [EnvSetup, extension, configuration]
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    environment:
-      name: ${{inputs.environment}}
     steps:
       - uses: actions/checkout@v3
-      - name: Set ${{vars.NX_VARIANT}} Tag
+      - name: Set ${{needs.EnvSetup.outputs.NX_VARIANT}} Tag
         uses: rickstaa/action-create-tag@v1
         with:
           force_push_tag: true
-          tag: '${{vars.NX_VARIANT}}'
+          tag: '${{needs.EnvSetup.outputs.NX_VARIANT}}'
