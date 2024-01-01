@@ -8,10 +8,6 @@ on:
         type: environment
         default: Development
         required: true
-  push:
-    # Pattern matched against refs/tags
-    tags:
-      - 'v[1-9].[0-9]+.[0-9]+'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -78,8 +74,6 @@ jobs:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
       NX_CLOUD_AUTH_TOKEN: ${{ secrets.NX_CLOUD_AUTH_TOKEN }}
     with:
-      # parallel-commands: |
-      # npx nx-cloud record -- npx nx format:check
       artifacts-path: 'dist/apps/*'
       environment-variables: |
         NX_NAME=${{needs.EnvSetup.outputs.NX_NAME}}
@@ -99,7 +93,7 @@ jobs:
         NX_RELEASE_VERSION=${{needs.EnvSetup.outputs.NX_RELEASE_VERSION}}
         SENTRY_AUTH_TOKEN=${{needs.EnvSetup.outputs.SENTRY_AUTH_TOKEN}}
       parallel-commands-on-agents: |
-        npx nx affected --target=build --parallel=3 --exclude='tag:puppeteer'
+        npx nx run-many --target=build --parallel=3 --exclude='tag:puppeteer' --skip-nx-cache
       final-commands: |
         EXTENSION_TARGET_FILE="./dist/apps/acf-extension/manifest.json"
         # Use an if-else statement to check if the file exists.
