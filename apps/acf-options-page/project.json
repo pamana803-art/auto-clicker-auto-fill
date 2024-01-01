@@ -16,7 +16,7 @@
         "baseHref": "/",
         "main": "apps/acf-options-page/src/main.tsx",
         "tsConfig": "apps/acf-options-page/tsconfig.app.json",
-        "assets": ["apps/acf-options-page/src/favicon.ico", "apps/acf-options-page/src/manifest.json", "apps/acf-options-page/src/assets"],
+        "assets": ["apps/acf-options-page/src/favicon.ico", "apps/acf-options-page/src/manifest.json", "apps/acf-options-page/src/assets", "apps/acf-options-page/src/staticwebapp.config.json"],
         "styles": ["apps/acf-options-page/src/styles.scss"],
         "scripts": [],
         "isolatedConfig": true,
