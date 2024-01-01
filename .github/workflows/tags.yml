@@ -2,6 +2,12 @@ name: mono-repo [tags]
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment of release'
+        type: environment
+        default: Development
+        required: true
   push:
     # Pattern matched against refs/tags
     tags:
@@ -15,7 +21,7 @@ jobs:
   EnvSetup:
     name: Setup
     runs-on: ubuntu-latest
-    environment: Development
+    environment: ${{inputs.environment}}
     outputs:
       #Name
       NX_NAME: ${{ steps.set-output-defaults.outputs.NX_NAME}}
@@ -135,7 +141,7 @@ jobs:
     needs: [agents, main]
     runs-on: ubuntu-latest
     environment:
-      name: Development
+      name: ${{inputs.environment}}
       url: ${{steps.extension-release.outputs.url }}
     permissions:
       contents: write
@@ -160,7 +166,7 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     environment:
-      name: Development
+      name: ${{inputs.environment}}
       url: ${{vars.PUBLIC_URL}}
     name: Configuration
     steps:
@@ -190,7 +196,7 @@ jobs:
     permissions:
       contents: write
     environment:
-      name: Development
+      name: ${{inputs.environment}}
     steps:
       - uses: actions/checkout@v3
       - name: Set ${{vars.NX_VARIANT}} Tag
