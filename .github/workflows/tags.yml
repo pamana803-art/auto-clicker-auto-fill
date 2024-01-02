@@ -145,6 +145,7 @@ jobs:
         if: ${{ hashFiles('auto_clicker_-_autofill*.zip') }}
         id: extension-release
         with:
+          variant: ${{needs.EnvSetup.outputs.NX_VARIANT}}
           draft: ${{needs.EnvSetup.outputs.NX_VARIANT == 'DEV'}}
           prerelease: ${{needs.EnvSetup.outputs.NX_VARIANT == 'BETA'}}
           generate_release_notes: true
