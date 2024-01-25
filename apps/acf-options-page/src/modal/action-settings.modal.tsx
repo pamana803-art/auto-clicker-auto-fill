@@ -16,8 +16,8 @@ const FORM_ID = 'action-settings';
 const ActionSettingsModal = () => {
   const { t } = useTranslation();
   const { message, visible, settings, error } = useAppSelector(actionSettingsSelector);
-  const { actions } = useAppSelector(selectedConfigSelector);
-  const { selectedActionIndex } = useAppSelector(configSelector);
+  const { selectedActionId } = useAppSelector(configSelector);
+  const config = useAppSelector(selectedConfigSelector);
   const dispatch = useAppDispatch();
 
   useTimeout(() => {
@@ -60,6 +60,12 @@ const ActionSettingsModal = () => {
       dispatch(syncActionSettings(settings));
     }
   };
+
+  if (!config || !selectedActionId) {
+    return null;
+  }
+
+  const { actions } = config;
 
   return (
     <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='action-settings-modal'>
@@ -152,7 +158,7 @@ const ActionSettingsModal = () => {
                   <Col xs={{ span: 3, offset: 9 }}>
                     <Form.Select value={settings.retryGoto} onChange={onUpdateGoto} name='goto' required>
                       {actions.map((_action, index) => (
-                        <option key={index} value={index} disabled={index === Number(selectedActionIndex)}>
+                        <option key={_action.id} value={index} disabled={_action.id === selectedActionId}>
                           {index + 1} . {_action.name || _action.elementFinder}
                         </option>
                       ))}
