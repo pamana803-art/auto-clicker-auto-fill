@@ -147,6 +147,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      discussions: write
     name: Release
     outputs:
       release-url: ${{ steps.release.outputs.url }}
