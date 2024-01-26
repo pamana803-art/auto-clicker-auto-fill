@@ -8,6 +8,11 @@ on:
         type: environment
         default: Development
         required: true
+      publish:
+        description: 'Publish extension'
+        type: boolean
+        default: false
+        required: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -136,8 +141,8 @@ jobs:
         MEASUREMENT_ID=${{needs.EnvSetup.outputs.MEASUREMENT_ID}}
         API_SECRET=${{needs.EnvSetup.outputs.API_SECRET}}
 
-  extension:
-    needs: [EnvSetup, agents, main]
+  release:
+    needs: [agents, main]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -152,14 +157,34 @@ jobs:
         with:
           prerelease: ${{ needs.EnvSetup.outputs.NX_VARIANT == 'BETA' || needs.EnvSetup.outputs.NX_VARIANT == 'DEV'}}
           generate_release_notes: true
+          discussion_category_name: 'Release'
           files: |
             auto_clicker_-_autofill*.zip
             acf-i18n.zip
             acf-options-page.zip
           fail_on_unmatched_files: true
 
-  configuration:
-    needs: [agents, main]
+  extension:
+    needs: [release]
+    runs-on: ubuntu-latest
+    environment: ${{inputs.environment}}
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: nx-main-artifacts
+      - name: Upload & release
+        uses: mnao305/chrome-extension-upload@v4.0.1
+        with:
+          file-path: auto_clicker_-_autofill*.zip
+          extension-id: ${{ vars.NX_CHROME_EXTENSION_ID }}
+          client-id: ${{ secrets.CLIENT_ID }}
+          client-secret: ${{ secrets.CLIENT_SECRET }}
+          refresh-token: ${{ secrets.REFRESH_TOKEN }}
+          publish: ${{inputs.publish}}
+          glob: true
+
+  web:
+    needs: [release]
     permissions:
       contents: read
       pull-requests: write
@@ -190,7 +215,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
 
   tag:
-    needs: [EnvSetup, extension, configuration]
+    needs: [extension, web]
     runs-on: ubuntu-latest
     permissions:
       contents: write
