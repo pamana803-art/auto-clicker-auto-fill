@@ -174,7 +174,7 @@ jobs:
     name: Extension
     needs: [release]
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: ${{inputs.environment}}
       url: ${{needs.release.outputs.release-url}}
     steps:
@@ -202,7 +202,6 @@ jobs:
     environment:
       name: ${{inputs.environment}}
       url: ${{vars.PUBLIC_URL}}
-    name: Configuration
     steps:
       - uses: actions/download-artifact@v3
         with:
