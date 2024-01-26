@@ -1,4 +1,5 @@
-name: mono-repo [tags]
+name: mono-repo [release]
+run-name: Deploy to ${{ inputs.environment }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
@@ -142,18 +143,23 @@ jobs:
         API_SECRET=${{needs.EnvSetup.outputs.API_SECRET}}
 
   release:
-    needs: [agents, main]
+    needs: [EnvSetup, agents, main]
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    name: Extension
+    name: Release
+    outputs:
+      release-url: ${{ steps.release.outputs.url }}
+      release-id: ${{ steps.release.outputs.id }}
+      release-upload_url: ${{ steps.release.outputs.upload_url }}
+      release-assets: ${{ steps.release.outputs.assets }}
     steps:
       - uses: actions/download-artifact@v3
         with:
           name: nx-main-artifacts
       - uses: softprops/action-gh-release@v1
         if: ${{ hashFiles('auto_clicker_-_autofill*.zip') }}
-        id: extension-release
+        id: release
         with:
           prerelease: ${{ needs.EnvSetup.outputs.NX_VARIANT == 'BETA' || needs.EnvSetup.outputs.NX_VARIANT == 'DEV'}}
           generate_release_notes: true
@@ -165,9 +171,12 @@ jobs:
           fail_on_unmatched_files: true
 
   extension:
+    name: Extension
     needs: [release]
     runs-on: ubuntu-latest
-    environment: ${{inputs.environment}}
+    environment: 
+      name: ${{inputs.environment}}
+      url: ${{needs.release.outputs.release-url}}
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -184,6 +193,7 @@ jobs:
           glob: true
 
   web:
+    name: Web
     needs: [release]
     permissions:
       contents: read
@@ -215,7 +225,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
 
   tag:
-    needs: [extension, web]
+    needs: [EnvSetup, extension, web]
     runs-on: ubuntu-latest
     permissions:
       contents: write
