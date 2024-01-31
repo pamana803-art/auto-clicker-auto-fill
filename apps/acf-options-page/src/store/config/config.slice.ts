@@ -1,10 +1,10 @@
 import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { Configuration, RANDOM_UUID, START_TYPES, getDefaultConfig } from '@dhruv-techapps/acf-common';
+import { CONFIG_SOURCE, Configuration, RANDOM_UUID, START_TYPES, getDefaultConfig } from '@dhruv-techapps/acf-common';
 import { configGetAllAPI } from './config.api';
 import { actionActions, openActionAddonModalAPI, openActionSettingsModalAPI, openActionStatementModalAPI } from './action';
 import { batchActions } from './batch';
-import { getConfigName, updateConfigIds } from './config.slice.util';
+import { getConfigName, updateConfigId, updateConfigIds } from './config.slice.util';
 import { LocalStorage } from '../../_helpers';
 
 const HIDDEN_DETAIL_KEY = 'config-detail-visibility';
@@ -24,7 +24,7 @@ export type ConfigStore = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ConfigAction = { name: string; value: any };
 
-const config = getDefaultConfig();
+const config = getDefaultConfig(CONFIG_SOURCE.WEB);
 
 const initialState: ConfigStore = {
   loading: true,
@@ -55,7 +55,7 @@ const slice = createSlice({
         state.selectedConfigId = action.payload.id;
       },
       prepare: () => {
-        const config = getDefaultConfig();
+        const config = getDefaultConfig(CONFIG_SOURCE.WEB);
         return { payload: config };
       },
     },
@@ -110,7 +110,7 @@ const slice = createSlice({
       state.selectedConfigId = state.configs[0].id;
     },
     importConfig: (state, action: PayloadAction<Configuration>) => {
-      const config = { ...action.payload, id: crypto.randomUUID() };
+      const config = updateConfigId(action.payload);
       state.configs.push(config);
       state.selectedConfigId = config.id;
     },

@@ -1,4 +1,4 @@
-import { Action, Configuration, RANDOM_UUID, getDefaultAction, getDefaultConfig } from '@dhruv-techapps/acf-common';
+import { Action, CONFIG_SOURCE, Configuration, RANDOM_UUID, getDefaultAction, getDefaultConfig } from '@dhruv-techapps/acf-common';
 import { blogCheckAPI } from '../blog';
 
 /**
@@ -58,7 +58,7 @@ export const checkQueryParams = (configs: Array<Configuration>, thunkAPI): RANDO
         }
         return selectedConfig.id;
       } else {
-        const newConfig = getDefaultConfig();
+        const newConfig = getDefaultConfig(CONFIG_SOURCE.WEB);
         newConfig.url = object.url;
         newConfig.name = getConfigName(object.url);
         newConfig.actions[0].elementFinder = object.elementFinder;
@@ -78,13 +78,7 @@ export const checkQueryParams = (configs: Array<Configuration>, thunkAPI): RANDO
  * @returns The updated array of configurations with updated IDs.
  */
 export const updateConfigIds = (configs: Array<Configuration>) => {
-  const updatedConfigs = configs.map((config) => {
-    if (!config.id) {
-      config.id = crypto.randomUUID();
-    }
-    return config;
-  });
-  return updatedConfigs;
+  return configs.map(updateConfigId);
 };
 
 /**
@@ -96,5 +90,11 @@ export const updateConfigId = (config: Configuration) => {
   if (!config.id) {
     return { ...config, id: crypto.randomUUID() };
   }
+  config.actions.map((action) => {
+    if (!action.id) {
+      action.id = crypto.randomUUID();
+    }
+    return action;
+  });
   return config;
 };
