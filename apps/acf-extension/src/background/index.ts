@@ -9,16 +9,13 @@ import GoogleSheets from './google-sheets';
 import GoogleBackup from './google-backup';
 import { TabsMessenger } from './tab';
 import { ACTION_POPUP } from '../common/constant';
-import { OPTIONS_PAGE_URL, UNINSTALL_URL } from '../common/environments';
+import { OPTIONS_PAGE_URL, UNINSTALL_URL, VARIANT } from '../common/environments';
 import GoogleOauth2 from './google-oauth2';
 import DiscordMessaging from './discord-messaging';
-import { sentryInit } from '../common/sentry';
 import { GoogleAnalytics } from './google-analytics';
 
 let googleAnalytics: GoogleAnalytics | undefined;
 try {
-  sentryInit('background');
-
   /**
    * Browser Action set to open option page / configuration page
    */
@@ -31,10 +28,12 @@ try {
    *  On initial install setup basic configuration
    */
   chrome.runtime.onInstalled.addListener((details) => {
-    if (details.reason === 'update') {
-      TabsMessenger.optionsTab({ url: `${OPTIONS_PAGE_URL}?version=${chrome.runtime.getManifest().version}` });
-    } else if (details.reason === 'install') {
-      TabsMessenger.optionsTab({ url: OPTIONS_PAGE_URL });
+    if (VARIANT !== 'LOCAL') {
+      if (details.reason === 'update') {
+        TabsMessenger.optionsTab({ url: `${OPTIONS_PAGE_URL}?version=${chrome.runtime.getManifest().version}` });
+      } else if (details.reason === 'install') {
+        TabsMessenger.optionsTab({ url: OPTIONS_PAGE_URL });
+      }
     }
   });
 
@@ -55,7 +54,7 @@ try {
     chrome.runtime.setUninstallURL(UNINSTALL_URL);
   }
 
-  googleAnalytics = new GoogleAnalytics();
+  googleAnalytics = new GoogleAnalytics(VARIANT === 'LOCAL');
   /**
    * Setup on Message Listener
    */
@@ -71,8 +70,15 @@ try {
   Runtime.onMessageExternal(onMessageListener);
   Runtime.onMessage(onMessageListener);
 } catch (error) {
-  console.error(error);
   if (error instanceof Error) {
     googleAnalytics?.fireErrorEvent({ name: error.name, error: error.message, additionalParams: { page: 'background' } });
   }
 }
+
+addEventListener('unhandledrejection', async (event) => {
+  if (event.reason instanceof Error) {
+    googleAnalytics?.fireErrorEvent({ error: event.reason.message, additionalParams: { page: 'background' } });
+  } else {
+    googleAnalytics?.fireErrorEvent({ error: JSON.stringify(event.reason), additionalParams: { page: 'background' } });
+  }
+});
