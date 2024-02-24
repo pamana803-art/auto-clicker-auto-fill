@@ -182,7 +182,7 @@ jobs:
           fail_on_unmatched_files: true
 
   extension:
-    if: ${{ !github.event.inputs.skip_extension }}
+    if: ${{ !inputs.skip_extension }}
     name: Extension
     needs: [release]
     runs-on: ubuntu-latest
@@ -205,7 +205,7 @@ jobs:
           glob: true
 
   web:
-    if: ${{ !github.event.inputs.skip_web }}
+    if: ${{ !inputs.skip_web }}
     name: Web
     needs: [release]
     permissions:
