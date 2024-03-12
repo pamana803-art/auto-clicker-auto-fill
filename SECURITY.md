@@ -2,12 +2,12 @@
 
 ## Supported Versions
 
-We currently support 2.2.1 and 3.x
+We currently support 3.4.x
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 3.2.x   | :white_check_mark: |
-| 2.2.1   | :white_check_mark: |
+| 3.4.x   | :white_check_mark: |
+| 3.4.9   | :white_check_mark: |
 | < 2.2   | :x:                |
 
 ## Reporting a Vulnerability
