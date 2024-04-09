@@ -1,6 +1,6 @@
 import { GOOGLE_SCOPES } from '@dhruv-techapps/acf-common';
-import { auth } from './firebase';
 import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import { auth } from './firebase';
 import GoogleOauth2 from './google-oauth2';
 
 export default class FirebaseAuth {

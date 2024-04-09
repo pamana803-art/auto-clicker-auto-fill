@@ -1,8 +1,8 @@
+import { User } from 'firebase/auth';
 import { Firestore, addDoc, collection, getDocs, getFirestore, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { auth } from './firebase';
 import FirebaseAuth from './firebase-auth';
 import { NotificationHandler } from './notifications';
-import { User } from 'firebase/auth';
 
 const NOTIFICATIONS_TITLE = 'Firebase Firestore';
 const NOTIFICATIONS_ID = 'firebase-firestore';

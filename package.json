@@ -12,6 +12,7 @@
   "dependencies": {
     "@invertase/firestore-stripe-payments": "^0.0.7",
     "@nx/devkit": "18.3.4",
+    "@invertase/firestore-stripe-payments": "^0.0.7",
     "@reactour/tour": "^3.6.1",
     "@reduxjs/toolkit": "^2.2.4",
     "@swc/helpers": "0.5.3",
