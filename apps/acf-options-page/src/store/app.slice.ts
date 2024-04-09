@@ -2,6 +2,8 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { ManifestService } from '@dhruv-techapps/core-service';
 import { NO_EXTENSION_ERROR } from '../constants';
+import { User } from 'firebase/auth';
+import { FirebaseOauthService } from '@dhruv-techapps/acf-service';
 
 export const getManifest = createAsyncThunk('app/getManifest', async () => {
   if (window.chrome?.runtime) {
@@ -11,15 +13,35 @@ export const getManifest = createAsyncThunk('app/getManifest', async () => {
   throw new Error(NO_EXTENSION_ERROR[0]);
 });
 
+export const isLogin = createAsyncThunk('firebase/isLogin', async () => {
+  const user = await FirebaseOauthService.isLogin(window.EXTENSION_ID);
+  return user;
+});
+
+export const login = createAsyncThunk('firebase/login', async () => {
+  const user = await FirebaseOauthService.login(window.EXTENSION_ID);
+  return user;
+});
+
+export const logout = createAsyncThunk('firebase/logout', async () => {
+  const result = await FirebaseOauthService.logout(window.EXTENSION_ID);
+  return result;
+});
+
 type AppStore = {
   manifest?: chrome.runtime.Manifest;
   error?: string;
   loading: boolean;
+  user?: User | null;
   extensionNotFound: boolean;
+  loginModal: boolean;
+  isLoginLoading: boolean;
 };
 
 const initialState: AppStore = {
   loading: true,
+  loginModal: false,
+  isLoginLoading: false,
   extensionNotFound: false,
 };
 
@@ -43,6 +65,11 @@ const slice = createSlice({
         state.error = action.payload;
       }
     },
+    switchLogin: (state) => {
+      state.loading = false;
+      window.dataLayer.push({ event: 'modal', name: 'login', visibility: !state.loginModal });
+      state.loginModal = !state.loginModal;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getManifest.fulfilled, (state, action) => {
@@ -60,10 +87,35 @@ const slice = createSlice({
         }
       }
     });
+    builder.addCase(isLogin.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
+    builder.addCase(isLogin.rejected, (state, action) => {
+      state.error = action.error.message;
+    });
+    builder.addCase(login.pending, (state) => {
+      state.isLoginLoading = true;
+    });
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isLoginLoading = false;
+      state.loginModal = false;
+    });
+    builder.addCase(login.rejected, (state, action) => {
+      state.error = action.error.message;
+      state.isLoginLoading = false;
+      state.loginModal = false;
+    });
+    builder.addCase(logout.fulfilled, (state) => {
+      delete state.user;
+    });
+    builder.addCase(logout.rejected, (state, action) => {
+      state.error = action.error.message;
+    });
   },
 });
 
-export const { switchExtensionNotFound, setAppError, setManifest } = slice.actions;
+export const { switchExtensionNotFound, switchLogin, setAppError, setManifest } = slice.actions;
 
 export const appSelector = (state: RootState) => state.app;
 

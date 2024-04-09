@@ -13,6 +13,8 @@ import { OPTIONS_PAGE_URL, UNINSTALL_URL, VARIANT } from '../common/environments
 import GoogleOauth2 from './google-oauth2';
 import DiscordMessaging from './discord-messaging';
 import { GoogleAnalytics } from './google-analytics';
+import FirebaseAuth from './firebase-auth';
+import FirebaseFirestore from './firebase-firestore';
 
 let googleAnalytics: GoogleAnalytics | undefined;
 try {
@@ -66,6 +68,8 @@ try {
     [RUNTIME_MESSAGE_ACF.GOOGLE_SHEETS]: new GoogleSheets(),
     [RUNTIME_MESSAGE_ACF.TABS]: new TabsMessenger(),
     [RUNTIME_MESSAGE_ACF.GOOGLE_ANALYTICS]: googleAnalytics,
+    [RUNTIME_MESSAGE_ACF.FIREBASE_AUTH]: new FirebaseAuth(),
+    [RUNTIME_MESSAGE_ACF.FIREBASE_FIRESTORE]: new FirebaseFirestore(),
   };
   Runtime.onMessageExternal(onMessageListener);
   Runtime.onMessage(onMessageListener);

@@ -29,12 +29,14 @@ export function SettingsGoogleBackup() {
   };
 
   useEffect(() => {
-    setFilesLoading(true);
-    GoogleBackupService.listWithContent(window.EXTENSION_ID).then((files) => {
-      setFiles(files);
-      setFilesLoading(false);
-    });
-  }, []);
+    if (google && googleScopes.includes(scope)) {
+      setFilesLoading(true);
+      GoogleBackupService.listWithContent(window.EXTENSION_ID).then((files) => {
+        setFiles(files);
+        setFilesLoading(false);
+      });
+    }
+  }, [google, googleScopes, scope]);
 
   const onBackup = async (autoBackup?: AUTO_BACKUP) => {
     if (autoBackup) {

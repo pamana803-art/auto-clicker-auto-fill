@@ -4,6 +4,7 @@ import themeReducer from './store/theme.slice';
 import toastReducer from './store/toast.slice';
 import { blogReducer } from './store/blog';
 import { settingsReducer, settingsListenerMiddleware } from './store/settings';
+import { subscribeReducer } from './store/subscribe';
 import { configReducers, configsListenerMiddleware, configsToastListenerMiddleware } from './store/config';
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     settings: settingsReducer,
     toast: toastReducer,
     blog: blogReducer,
+    subscribe: subscribeReducer,
     ...configReducers,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(settingsListenerMiddleware.middleware, configsListenerMiddleware.middleware, configsToastListenerMiddleware.middleware),

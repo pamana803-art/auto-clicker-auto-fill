@@ -4,10 +4,12 @@ import { ToastHandler, DataList, Loading } from './components';
 import { BlogModal, ExtensionNotFoundModal } from './modal';
 import { APP_NAME } from './constants';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { appSelector, getManifest } from './store/app.slice';
+import { appSelector, getManifest, isLogin } from './store/app.slice';
 import ConfirmationModalContextProvider from './_providers/confirm.provider';
 import Configs from './app/configs/configs';
 import * as Sentry from '@sentry/browser';
+import { SubscribeModal } from './modal/subscribe.modal';
+import { LoginModal } from './modal/login.modal';
 
 function App() {
   const { loading, error } = useAppSelector(appSelector);
@@ -16,7 +18,7 @@ function App() {
     dispatch(getManifest());
     Sentry.setTag('theme', window.localStorage.getItem('theme'));
     Sentry.setTag('page_locale', window.localStorage.getItem('language'));
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
@@ -24,6 +26,10 @@ function App() {
     } else {
       window.document.title = APP_NAME;
     }
+  }, []);
+
+  useEffect(() => {
+    dispatch(isLogin());
   }, []);
 
   return (
@@ -34,6 +40,8 @@ function App() {
         <Configs error={error} />
         <ToastHandler />
         <BlogModal />
+        <SubscribeModal />
+        <LoginModal />
         <ExtensionNotFoundModal />
       </ConfirmationModalContextProvider>
       <DataList />

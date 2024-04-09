@@ -7,3 +7,5 @@ export * from './lib/google-backup.service';
 export * from './lib/discord-messaging.service';
 export * from './lib/tabs.service';
 export * from './lib/google-analytics.service';
+export * from './lib/firebase-firestore.service';
+export * from './lib/firebase-oauth.service';

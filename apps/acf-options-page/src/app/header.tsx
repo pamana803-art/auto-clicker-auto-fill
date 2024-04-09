@@ -10,8 +10,10 @@ import { switchSettingsModal } from '../store/settings/settings.slice';
 import { useTour } from '@reactour/tour';
 import { useEffect, useState } from 'react';
 
+import { HeaderGoogle } from './header_google';
+
 function Header() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState<boolean>(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -19,6 +21,7 @@ function Header() {
   const { setIsOpen } = useTour();
   const theme = useAppSelector(themeSelector);
   const { error } = useAppSelector(appSelector);
+
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
 
@@ -30,7 +33,7 @@ function Header() {
         setIsOpen(true);
       }, 1000);
     }
-  });
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = i18n.language;
@@ -105,20 +108,6 @@ function Header() {
             </Nav>
             <hr className='d-lg-none text-white-50'></hr>
             <Nav className='flex-row flex-wrap ms-md-auto' as='ul'>
-              {!error && (
-                <>
-                  <Nav.Item as='li' className='col-6 col-lg-auto'>
-                    <Nav.Link onClick={() => dispatch(switchSettingsModal())} data-testid='open-global-settings'>
-                      <GearFill title={t('header.settings')} />
-                      <small className='d-lg-none ms-2'>{t('header.settings')}</small>
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item as='li' className='py-2 py-lg-1 col-12 col-lg-auto'>
-                    <div className='vr d-none d-lg-flex h-100 mx-lg-2 text-white'></div>
-                    <hr className='d-lg-none my-2 text-white-50'></hr>
-                  </Nav.Item>
-                </>
-              )}
               <Nav.Item as='li' className='col-6 col-lg-auto'>
                 <Nav.Link target='_blank' rel='noopener noreferrer' title='youtube' href={SOCIAL_LINKS.YOUTUBE}>
                   <Youtube />
@@ -135,6 +124,14 @@ function Header() {
                 <div className='vr d-none d-lg-flex h-100 mx-lg-2 text-white'></div>
                 <hr className='d-lg-none my-2 text-white-50'></hr>
               </Nav.Item>
+              {!error && (
+                <Nav.Item as='li' className='col-6 col-lg-auto'>
+                  <Nav.Link onClick={() => dispatch(switchSettingsModal())} data-testid='open-global-settings'>
+                    <GearFill title={t('header.settings')} />
+                    <small className='d-lg-none ms-2'>{t('header.settings')}</small>
+                  </Nav.Link>
+                </Nav.Item>
+              )}
               <Nav.Item as='li' className='col-6 col-lg-auto'>
                 <Nav.Link onClick={toggleTheme} data-testid='switch-theme'>
                   {theme !== 'light' ? <Sun title={t('header.theme.dark')} /> : <Moon title={t('header.theme.light')} />}
@@ -156,6 +153,11 @@ function Header() {
                   </NavDropdown>
                 </Nav.Item>
               )}
+              <Nav.Item as='li' className='py-2 py-lg-1 col-12 col-lg-auto'>
+                <div className='vr d-none d-lg-flex h-100 mx-lg-2 text-white'></div>
+                <hr className='d-lg-none my-2 text-white-50'></hr>
+              </Nav.Item>
+              <HeaderGoogle />
             </Nav>
           </Offcanvas.Body>
         </Offcanvas>

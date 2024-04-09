@@ -7,6 +7,7 @@
   },
   "private": true,
   "dependencies": {
+    "@invertase/firestore-stripe-payments": "^0.0.7",
     "@nx/devkit": "17.2.8",
     "@reactour/tour": "^3.6.1",
     "@reduxjs/toolkit": "^2.0.1",
@@ -19,6 +20,7 @@
     "bootstrap-icons": "^1.11.3",
     "discord.js": "^14.14.1",
     "express": "^4.18.1",
+    "firebase": "^10.8.1",
     "i18next": "^23.9.0",
     "i18next-http-backend": "^2.5.0",
     "randexp": "^0.5.3",
