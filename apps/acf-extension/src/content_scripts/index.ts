@@ -27,8 +27,6 @@ async function loadConfig(loadType: LOAD_TYPES) {
         }
       } else if (manualConfigs.length > 0 && loadType === LOAD_TYPES.DOCUMENT) {
         await ConfigProcessor.checkStartType(manualConfigs);
-      } else {
-        console.info(chrome.runtime.getManifest().name, 'No config found', window.location.href);
       }
     });
   } catch (e) {

@@ -4,11 +4,12 @@ import { FirebaseFirestoreService } from '@dhruv-techapps/acf-service';
 import { Product, Subscription } from '@invertase/firestore-stripe-payments';
 import { logout } from '../app.slice';
 
-type SubscribeStore = { visible: boolean; subscriptions?: Subscription[]; error?: string; products?: Product[]; isSubscribing: boolean };
+type SubscribeStore = { visible: boolean; isPortalLinkLoading: boolean; subscriptions?: Subscription[]; error?: string; products?: Product[]; isSubscribing: boolean };
 
 const initialState: SubscribeStore = {
   visible: false,
   isSubscribing: false,
+  isPortalLinkLoading: false,
 };
 
 export const getProducts = createAsyncThunk('firebase/getProducts', async () => {
@@ -37,6 +38,10 @@ const slice = createSlice({
       window.dataLayer.push({ event: 'modal', name: 'subscribe', visibility: !state.visible });
       state.visible = !state.visible;
     },
+    switchIsPortalLinkLoading: (state) => {
+      window.dataLayer.push({ event: 'modal', name: 'manage-subscribe', visibility: !state.visible });
+      state.isPortalLinkLoading = !state.isPortalLinkLoading;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(logout.fulfilled, (state) => {
@@ -64,7 +69,7 @@ const slice = createSlice({
   },
 });
 
-export const { switchSubscribeModal } = slice.actions;
+export const { switchSubscribeModal, switchIsPortalLinkLoading } = slice.actions;
 
 export const subscribeSelector = (state: RootState) => state.subscribe;
 

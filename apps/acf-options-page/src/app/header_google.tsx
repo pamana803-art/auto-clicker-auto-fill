@@ -1,28 +1,29 @@
-import { Nav, NavDropdown } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { getFunctions, httpsCallable } from 'firebase/functions';
-import { firebase } from '../firebase';
-import { GoogleOauthService } from '@dhruv-techapps/acf-service';
-import { getAuth, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import { GOOGLE_SCOPES } from '@dhruv-techapps/acf-common';
-import { getSubscription, subscribeSelector, switchSubscribeModal } from '../store/subscribe';
-import { useEffect, useState } from 'react';
+import { GoogleOauthService } from '@dhruv-techapps/acf-service';
+import { GoogleAuthProvider, getAuth, signInWithCredential } from 'firebase/auth';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import { useEffect } from 'react';
+import { Nav, NavDropdown } from 'react-bootstrap';
+import { firebase } from '../firebase';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { appSelector, logout, switchLogin } from '../store/app.slice';
+import { getSubscription, subscribeSelector, switchIsPortalLinkLoading, switchSubscribeModal } from '../store/subscribe';
+import { addToast } from '../store/toast.slice';
 
 export const HeaderGoogle = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(appSelector);
-  const { subscriptions } = useAppSelector(subscribeSelector);
-  const [isPortalLinkLoading, setPortalLinkLoading] = useState<boolean>(false);
+  const { subscriptions, isPortalLinkLoading } = useAppSelector(subscribeSelector);
 
   useEffect(() => {
     if (user) {
       dispatch(getSubscription());
     }
-  }, [user]);
+  }, [user, dispatch]);
 
   const onPortalLink = async () => {
-    setPortalLinkLoading(true);
+    dispatch(switchIsPortalLinkLoading());
+    dispatch(addToast({ header: 'Loading Manage Subscription', variant: 'primary' }));
     const token = await GoogleOauthService.getAuthToken(window.EXTENSION_ID, [GOOGLE_SCOPES.PROFILE, GOOGLE_SCOPES.EMAIL]);
 
     if (!token) {
@@ -39,7 +40,7 @@ export const HeaderGoogle = () => {
     if (data?.url) {
       window.location.href = data.url;
     } else {
-      setPortalLinkLoading(false);
+      dispatch(switchIsPortalLinkLoading());
     }
   };
 
@@ -50,21 +51,9 @@ export const HeaderGoogle = () => {
           {user ? (
             <>
               {subscriptions ? (
-                <>
-                  <NavDropdown.Item onClick={onPortalLink} disabled={isPortalLinkLoading}>
-                    Manage Subscription
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item title='Google Sheets' onClick={() => dispatch(switchSubscribeModal())}>
-                    Google Sheets
-                  </NavDropdown.Item>
-                  <NavDropdown.Item title='Google Drive' onClick={() => dispatch(switchSubscribeModal())}>
-                    Google Drive
-                  </NavDropdown.Item>
-                  <NavDropdown.Item title='Discord' onClick={() => dispatch(switchSubscribeModal())}>
-                    Discord
-                  </NavDropdown.Item>
-                </>
+                <NavDropdown.Item onClick={onPortalLink} disabled={isPortalLinkLoading}>
+                  Manage Subscription
+                </NavDropdown.Item>
               ) : (
                 <NavDropdown.Item title='subscribe' onClick={() => dispatch(switchSubscribeModal())}>
                   Subscribe

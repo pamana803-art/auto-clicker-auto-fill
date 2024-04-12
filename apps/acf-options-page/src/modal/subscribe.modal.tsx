@@ -23,17 +23,17 @@ const SubscribeModal = () => {
   };
 
   console.log(products);
+
   return (
     <Modal show={visible} size='lg' onHide={handleClose} data-testid='subscription-modal'>
       <Form>
         <Modal.Header closeButton>
-          <Modal.Title>Subscribe</Modal.Title>
+          <Modal.Title>Subscribe to Advance Features</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
             {products?.map((product) => (
-              <>
-                <h3>{product.name}</h3>
+              <React.Fragment key='products'>
                 {product.prices.map((price) => (
                   <Col key={price.id}>
                     <Card>
@@ -54,16 +54,16 @@ const SubscribeModal = () => {
                         <ul>
                           <li>Google Sheets</li>
                           <li>Google Drive</li>
-                          <li>Discord</li>
+                          <li>Discord Messaging</li>
                           <li>Action Addon</li>
                           <li>Action Settings</li>
-                          <li>Batch</li>
+                          <li>Action Condition</li>
                         </ul>
                       </CardBody>
                     </Card>
                   </Col>
                 ))}
-              </>
+              </React.Fragment>
             ))}
           </Row>
           <stripe-pricing-table pricing-table-id='prctbl_1OuETWC1JFcFykK8FJGEsVbi' publishable-key='pk_test_Z6nlTiNdIFF8Sn7YTiczPahY'></stripe-pricing-table>

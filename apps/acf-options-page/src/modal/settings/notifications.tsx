@@ -5,11 +5,13 @@ import { getFieldNameValue } from '../../util/element';
 import { SettingDiscord } from './discord';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { settingsSelector, updateSettingsNotification } from '../../store/settings/settings.slice';
+import { subscribeSelector } from '../../store/subscribe';
 
 function SettingNotifications() {
   const { t } = useTranslation();
 
   const { notifications } = useAppSelector(settingsSelector).settings;
+  const { subscriptions } = useAppSelector(subscribeSelector);
   const dispatch = useAppDispatch();
   const onUpdate = (e) => {
     const update = getFieldNameValue<boolean>(e, notifications);
@@ -57,9 +59,11 @@ function SettingNotifications() {
           </Form.Label>
           <Form.Check type='switch' onChange={onUpdate} name='sound' checked={notifications?.sound || false} id='notifications.sound' />
         </li>
-        <li className='list-group-item d-flex justify-content-between align-items-center'>
-          <SettingDiscord onChange={onUpdate} checked={notifications?.discord || false} label={t('modal.settings.notification.discord.title')} />
-        </li>
+        {subscriptions && (
+          <li className='list-group-item d-flex justify-content-between align-items-center'>
+            <SettingDiscord onChange={onUpdate} checked={notifications?.discord || false} label={t('modal.settings.notification.discord.title')} />
+          </li>
+        )}
       </ol>
     </>
   );

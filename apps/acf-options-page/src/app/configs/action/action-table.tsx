@@ -10,6 +10,7 @@ import { removeAction, updateAction, actionSelector, openActionAddonModalAPI, op
 import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
 import { Action, RANDOM_UUID } from '@dhruv-techapps/acf-common';
 import { defaultColumn } from './editable-cell';
+import { subscribeSelector } from '@apps/acf-options-page/src/store/subscribe';
 
 type ActionMeta = { dataType: string; list: string; pattern: string; required: boolean; width?: string };
 
@@ -19,6 +20,7 @@ type ActionProps = {
 
 const ActionTable = ({ actions }: ActionProps) => {
   const { t } = useTranslation();
+  const { subscriptions } = useAppSelector(subscribeSelector);
 
   const { columnVisibility } = useAppSelector(actionSelector);
   const dispatch = useAppDispatch();
@@ -145,18 +147,6 @@ const ActionTable = ({ actions }: ActionProps) => {
     dispatch(openActionSettingsModalAPI(row.original.id));
   };
 
-  /*const moveUp = (e, rowId) => {
-    if (e.currentTarget.getAttribute('disabled') === null) {
-      dispatch(reorderActions({ oldIndex: +rowId, newIndex: rowId - 1 }));
-    }
-  };
-
-  const moveDown = (e, rowId) => {
-    if (e.currentTarget.getAttribute('disabled') === null) {
-      dispatch(reorderActions({ oldIndex: +rowId, newIndex: +rowId + 1 }));
-    }
-  };*/
-
   const onDisableClick = (row: Row<Action>, disabled: boolean) => {
     dispatch(updateAction({ selectedActionId: row.original.id, name: 'disabled', value: !disabled }));
   };
@@ -185,12 +175,6 @@ const ActionTable = ({ actions }: ActionProps) => {
         <tbody>
           {table.getRowModel().rows.map((row, index) => (
             <tr key={row.id} className={actions[row.id].disabled ? 'table-secondary' : ''}>
-              {/*<td align='center'>
-                <div className='d-flex flex-column align-items-center text-secondary'>
-                  <CaretUp width='20' height='20' onClick={(e) => moveUp(e, row.id)} />
-                  <CaretDown width='20' height='20' onClick={(e) => moveDown(e, row.id)} />
-                </div>
-          </td>*/}
               <td className='align-middle'>{index + 1}</td>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
@@ -212,18 +196,22 @@ const ActionTable = ({ actions }: ActionProps) => {
                       <ThreeDots width='24' height='24' />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item data-testid='action-addon' onClick={() => showAddon(row)}>
-                        {t('action.addon')}
-                      </Dropdown.Item>
-                      <Dropdown.Item data-testid='action-settings' onClick={() => showSettings(row)}>
-                        {t('action.settings')}
-                      </Dropdown.Item>
-                      {index !== 0 && (
-                        <Dropdown.Item data-testid='action-statement' onClick={() => showCondition(row)}>
-                          {t('modal.actionCondition.title')}
-                        </Dropdown.Item>
+                      {subscriptions && (
+                        <>
+                          <Dropdown.Item data-testid='action-addon' onClick={() => showAddon(row)}>
+                            {t('action.addon')}
+                          </Dropdown.Item>
+                          <Dropdown.Item data-testid='action-settings' onClick={() => showSettings(row)}>
+                            {t('action.settings')}
+                          </Dropdown.Item>
+                          {index !== 0 && (
+                            <Dropdown.Item data-testid='action-statement' onClick={() => showCondition(row)}>
+                              {t('modal.actionCondition.title')}
+                            </Dropdown.Item>
+                          )}
+                          <Dropdown.Divider />
+                        </>
                       )}
-                      <Dropdown.Divider />
                       <Dropdown.Item data-testid='action-add' onClick={() => onAddClick(row, 0)}>
                         <Plus className='me-2' /> {t('action.addBefore')}
                       </Dropdown.Item>

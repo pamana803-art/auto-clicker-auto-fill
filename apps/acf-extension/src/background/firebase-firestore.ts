@@ -42,7 +42,7 @@ export default class FirebaseFirestore extends FirebaseAuth {
     if (!user) {
       return null;
     }
-    const subscriptionsRef = query(collection(this.db, 'customers', user.uid, 'subscriptions'), where('status', 'in', ['trialing']));
+    const subscriptionsRef = query(collection(this.db, 'customers', user.uid, 'subscriptions'), where('status', 'in', ['trialing', 'active']));
     const subscriptionsSnapshot = await getDocs(subscriptionsRef);
     const subscriptions: { id: string }[] = [];
     if (!subscriptionsSnapshot.empty) {

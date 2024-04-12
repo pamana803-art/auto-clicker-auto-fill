@@ -14,6 +14,7 @@ import { googleGetAPI, settingsGetAPI } from '../store/settings/settings.api';
 import { SettingGoogleSheets } from './settings/google-sheets';
 import { themeSelector } from '../store/theme.slice';
 import { STATUS_BAR_LOCATION } from '@dhruv-techapps/acf-common';
+import { subscribeSelector } from '../store/subscribe';
 
 enum SETTINGS_PAGE {
   NOTIFICATION = 'Show Notification',
@@ -27,6 +28,7 @@ export const SettingsModal = () => {
   const theme = useAppSelector(themeSelector);
   const [page, setPage] = useState<SETTINGS_PAGE>();
   const { error, settings, visible } = useAppSelector(settingsSelector);
+  const { subscriptions } = useAppSelector(subscribeSelector);
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
@@ -70,7 +72,7 @@ export const SettingsModal = () => {
           {!page && (
             <ol className='list-group'>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-notification'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-notification'>
                   <div className='fw-bold'>
                     <BellFill className='me-2' />
                     {t('modal.settings.notification.title')}
@@ -79,7 +81,7 @@ export const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-retry'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-retry'>
                   <div className='fw-bold'>
                     <ArrowRepeat className='me-2' />
                     {t('modal.settings.retry.title')}
@@ -87,22 +89,26 @@ export const SettingsModal = () => {
                   <ChevronRight />
                 </Button>
               </li>
-              <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-backup'>
-                  <div className='fw-bold'>
-                    <CloudArrowUpFill className='me-2' /> Backup
-                  </div>
-                  <ChevronRight />
-                </Button>
-              </li>
-              <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.SHEETS)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-backup'>
-                  <div className='fw-bold'>
-                    <FileSpreadsheetFill className='me-2' /> Google Sheets
-                  </div>
-                  <ChevronRight />
-                </Button>
-              </li>
+              {subscriptions && (
+                <>
+                  <li className='list-group-item'>
+                    <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-backup'>
+                      <div className='fw-bold'>
+                        <CloudArrowUpFill className='me-2' /> Backup
+                      </div>
+                      <ChevronRight />
+                    </Button>
+                  </li>
+                  <li className='list-group-item'>
+                    <Button onClick={() => setPage(SETTINGS_PAGE.SHEETS)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-backup'>
+                      <div className='fw-bold'>
+                        <FileSpreadsheetFill className='me-2' /> Google Sheets
+                      </div>
+                      <ChevronRight />
+                    </Button>
+                  </li>
+                </>
+              )}
               <li className='list-group-item d-flex justify-content-between align-items-center'>
                 <Form.Label className='ms-2 me-auto' htmlFor='settings-checkiFrames'>
                   <div className='fw-bold'>{t('modal.settings.checkIFrames')}</div>
