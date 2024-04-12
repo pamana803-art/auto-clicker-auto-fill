@@ -24,6 +24,11 @@ const SubscribeModal = () => {
     dispatch(switchSubscribeModal());
   };
 
+<<<<<<< HEAD
+=======
+  console.log(products);
+
+>>>>>>> aa5df3a (Added condition for subscription)
   return (
     <Modal show={visible} size='lg' onHide={handleClose} data-testid='subscription-modal'>
       <Form>
@@ -126,3 +131,4 @@ const SubscribeModal = () => {
   );
 };
 export { SubscribeModal };
+
