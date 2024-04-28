@@ -11,12 +11,14 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 import { useTimeout } from '../_hooks/message.hooks';
 import { REGEX } from '../util';
+import { subscribeSelector } from '../store/subscribe';
 
 const ConfigSettingsModal = () => {
   const { t } = useTranslation();
 
-  const { visible, message, dev } = useAppSelector(configSettingsSelector);
+  const { visible, message } = useAppSelector(configSettingsSelector);
   const config = useAppSelector(selectedConfigSelector);
+  const { subscriptions } = useAppSelector(subscribeSelector);
   const dispatch = useAppDispatch();
 
   useTimeout(() => {
@@ -153,45 +155,33 @@ const ConfigSettingsModal = () => {
               </Row>
             </Card.Body>
           </Card>
-          <Card className='mb-2'>
-            <Card.Body>
-              <Row>
-                <Col md='12' sm='12'>
-                  <Form.Group controlId='config-google-sheets-id'>
-                    <FormControl name='spreadsheetId' defaultValue={config.spreadsheetId} autoComplete='off' onBlur={onUpdate} placeholder='Google Sheets ID' />
-                    <Form.Label>Google Sheets ID</Form.Label>
-                    <Form.Text className='text-muted'>
-                      https://docs.google.com/spreadsheets/d/<code>1J2OcSNJsnYQCcQmA4K9Fhtv8yqvg0NouB--H4B0jsZA</code>/
-                    </Form.Text>
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-          <Card className='mb-2'>
-            <Card.Body>
-              <Row>
-                <Col md='12' sm='12'>
-                  {dev ? (
-                    <Form.Group controlId='config-start-time'>
-                      <FormControl name='startTime' pattern={REGEX.START_TIME} autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
-                      <Form.Label>{t('configuration.startTime')}&nbsp;</Form.Label>
-                      <StartTimePopover />
-                      <Form.Control.Feedback type='invalid'>{t('error.startTime')}</Form.Control.Feedback>
+          {subscriptions && (
+            <Card className='mb-2'>
+              <Card.Body>
+                <Row>
+                  <Col md='12' sm='12'>
+                    <Form.Group controlId='config-google-sheets-id'>
+                      <FormControl name='spreadsheetId' defaultValue={config.spreadsheetId} autoComplete='off' onBlur={onUpdate} placeholder='Google Sheets ID' />
+                      <Form.Label>Google Sheets ID</Form.Label>
+                      <Form.Text className='text-muted'>
+                        https://docs.google.com/spreadsheets/d/<code>1J2OcSNJsnYQCcQmA4K9Fhtv8yqvg0NouB--H4B0jsZA</code>/
+                      </Form.Text>
                     </Form.Group>
-                  ) : (
-                    <>
-                      <b className='me-2'>Start Time :</b>
-                      <Trans i18nKey='popover.startTime.content'>
-                        Try
-                        <a href='https://scheduleurl.com/docs/1.0/getting-started/download/' target='_blank' rel='noopener noreferrer'>
-                          Schedule URL
-                        </a>
-                        our new browser extension.
-                        <br /> it&apos;s used to schedule webpage / URL at particular day and time.
-                      </Trans>
-                    </>
-                  )}
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          )}
+          <Card className='mb-2'>
+            <Card.Body>
+              <Row>
+                <Col md='12' sm='12'>
+                  <Form.Group controlId='config-start-time'>
+                    <FormControl name='startTime' pattern={REGEX.START_TIME} autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
+                    <Form.Label>{t('configuration.startTime')}&nbsp;</Form.Label>
+                    <StartTimePopover />
+                    <Form.Control.Feedback type='invalid'>{t('error.startTime')}</Form.Control.Feedback>
+                  </Form.Group>
                 </Col>
               </Row>
             </Card.Body>

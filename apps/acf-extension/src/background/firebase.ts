@@ -6,5 +6,6 @@ const firebase = initializeApp({
   apiKey: FIREBASE_API_KEY,
   projectId: FIREBASE_PROJECT_ID,
 });
+firebase.automaticDataCollectionEnabled = false;
 export const auth = getAuth(firebase);
 auth.setPersistence(indexedDBLocalPersistence);

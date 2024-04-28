@@ -1,4 +1,4 @@
-import { Firestore, addDoc, collection, getDocs, getFirestore, onSnapshot, query, where } from 'firebase/firestore';
+import { Firestore, addDoc, collection, getDocs, getFirestore, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { auth } from './firebase';
 import FirebaseAuth from './firebase-auth';
 import { NotificationHandler } from './notifications';
@@ -17,16 +17,16 @@ export default class FirebaseFirestore extends FirebaseAuth {
   }
 
   async getProducts() {
-    const q = query(collection(this.db, 'products'), where('active', '==', true));
+    const productsQuery = query(collection(this.db, 'products'), where('active', '==', true), orderBy('metadata.order'));
 
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(productsQuery);
     const products: { prices: { id: string }[]; id: string }[] = [];
 
     await Promise.all(
       querySnapshot.docs.map(async (doc) => {
         const product = { id: doc.id, ...doc.data(), prices: [] as { id: string }[] };
-        const priceRef = collection(doc.ref, 'prices');
-        const priceSnap = await getDocs(priceRef);
+        const priceQuery = query(collection(doc.ref, 'prices'), where('active', '==', true));
+        const priceSnap = await getDocs(priceQuery);
         priceSnap.docs.forEach((doc) => {
           product.prices.push({ id: doc.id, ...doc.data() });
         });

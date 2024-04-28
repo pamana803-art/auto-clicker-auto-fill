@@ -5,10 +5,9 @@ type ConfigSettingsStore = {
   visible: boolean;
   error?: string;
   message?: string;
-  dev: boolean;
 };
 
-const initialState: ConfigSettingsStore = { visible: false, dev: !!localStorage.getItem('DEV') };
+const initialState: ConfigSettingsStore = { visible: false };
 
 const slice = createSlice({
   name: 'configSettings',

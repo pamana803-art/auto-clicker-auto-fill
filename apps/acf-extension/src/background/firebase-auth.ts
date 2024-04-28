@@ -26,6 +26,8 @@ export default class FirebaseAuth {
   }
 
   async isLogin() {
-    return auth.currentUser;
+    return await auth.authStateReady().then(() => {
+      return auth.currentUser;
+    });
   }
 }
