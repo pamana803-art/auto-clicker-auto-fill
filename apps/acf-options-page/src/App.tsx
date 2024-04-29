@@ -15,7 +15,7 @@ function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getManifest());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
