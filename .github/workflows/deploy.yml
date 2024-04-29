@@ -1,4 +1,4 @@
-name: mono-repo [release]
+name: mono-repo [deploy]
 run-name: Deploy to ${{ inputs.environment }} by @${{ github.actor }}
 
 on:
@@ -27,7 +27,8 @@ on:
 
 jobs:
   main:
-    name: Nx Main Job
+    name: Build & Bundle
+    environment: ${{inputs.environment}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -61,40 +62,44 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{vars.SENTRY_AUTH_TOKEN}}
       - name: bundle
         run: |
-          npx web-ext build --sourceDir="./dist/apps/acf-extension" --artifactsDir="./dist/apps"
+          mkdir bundle
           cd dist/apps
-          zip -r acf-options-page.zip acf-options-page/
-          zip -r acf-i18n.zip acf-i18n/
+          zip -r ../../bundle/acf-options-page.zip acf-options-page/
+          zip -r ../../bundle/acf-i18n.zip acf-i18n/
+          cd acf-extension
+          zip -r ../../../bundle/acf-extension.zip .
       - uses: actions/upload-artifact@v4
         with:
           name: nx-main-artifacts
-          path: dist/apps/*
+          path: bundle/*
 
   release:
+    name: Release
     needs: [main]
+    environment:
+      name: ${{inputs.environment}}
+      url: ${{steps.release.outputs.url}}
     runs-on: ubuntu-latest
     permissions:
       contents: write
       discussions: write
-    name: Release
     outputs:
       release-url: ${{ steps.release.outputs.url }}
       release-id: ${{ steps.release.outputs.id }}
       release-upload_url: ${{ steps.release.outputs.upload_url }}
       release-assets: ${{ steps.release.outputs.assets }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: nx-main-artifacts
-      - uses: softprops/action-gh-release@v1
-        if: ${{ hashFiles('auto_clicker_-_autofill*.zip') }}
+      - uses: softprops/action-gh-release@v2
         id: release
         with:
           prerelease: ${{ vars.NX_VARIANT == 'BETA' || vars.NX_VARIANT == 'DEV'}}
           generate_release_notes: true
           discussion_category_name: 'Release'
           files: |
-            auto_clicker_-_autofill*.zip
+            acf-extension.zip
             acf-i18n.zip
             acf-options-page.zip
           fail_on_unmatched_files: true
@@ -102,19 +107,19 @@ jobs:
   extension:
     if: ${{ inputs.upload_extension }}
     name: Upload Extension
-    needs: [release]
-    runs-on: ubuntu-latest
+    needs: [main, release]
     environment:
       name: ${{inputs.environment}}
       url: ${{needs.release.outputs.release-url}}
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: nx-main-artifacts
       - name: Upload & release
-        uses: mnao305/chrome-extension-upload@v4.0.1
+        uses: mnao305/chrome-extension-upload@v5.0.0
         with:
-          file-path: auto_clicker_-_autofill*.zip
+          file-path: acf-extension.zip
           extension-id: ${{ vars.NX_CHROME_EXTENSION_ID }}
           client-id: ${{ secrets.CLIENT_ID }}
           client-secret: ${{ secrets.CLIENT_SECRET }}
@@ -125,7 +130,7 @@ jobs:
   web:
     if: ${{ inputs.deploy_web }}
     name: Deploy Web
-    needs: [release]
+    needs: [main, release]
     permissions:
       contents: read
       pull-requests: write
@@ -134,7 +139,7 @@ jobs:
       name: ${{inputs.environment}}
       url: ${{vars.PUBLIC_URL}}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: nx-main-artifacts
       - name: Build And Deploy
@@ -158,10 +163,11 @@ jobs:
     needs: [extension, web]
     name: Create release tag
     runs-on: ubuntu-latest
+    environment: ${{inputs.environment}}
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set ${{vars.NX_VARIANT}} Tag
         uses: rickstaa/action-create-tag@v1
         with:
