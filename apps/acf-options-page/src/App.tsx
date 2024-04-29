@@ -1,23 +1,20 @@
 import { Suspense, useEffect } from 'react';
-import Header from './app/header';
-import { ToastHandler, DataList, Loading } from './components';
-import { BlogModal, ExtensionNotFoundModal } from './modal';
-import { APP_NAME } from './constants';
-import { useAppDispatch, useAppSelector } from './hooks';
-import { appSelector, getManifest, isLogin } from './store/app.slice';
 import ConfirmationModalContextProvider from './_providers/confirm.provider';
 import Configs from './app/configs/configs';
-import * as Sentry from '@sentry/browser';
-import { SubscribeModal } from './modal/subscribe.modal';
+import Header from './app/header';
+import { DataList, Loading, ToastHandler } from './components';
+import { APP_NAME } from './constants';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { BlogModal, ExtensionNotFoundModal } from './modal';
 import { LoginModal } from './modal/login.modal';
+import { SubscribeModal } from './modal/subscribe.modal';
+import { appSelector, getManifest, isLogin } from './store/app.slice';
 
 function App() {
   const { loading, error } = useAppSelector(appSelector);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getManifest());
-    Sentry.setTag('theme', window.localStorage.getItem('theme'));
-    Sentry.setTag('page_locale', window.localStorage.getItem('language'));
   }, []);
 
   useEffect(() => {
@@ -26,7 +23,7 @@ function App() {
     } else {
       window.document.title = APP_NAME;
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(isLogin());
