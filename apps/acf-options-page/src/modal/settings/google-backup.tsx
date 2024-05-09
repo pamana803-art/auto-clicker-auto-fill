@@ -1,22 +1,24 @@
+import { GoogleBackupService } from '@dhruv-techapps/acf-service';
+import { AUTO_BACKUP, DriveFile, GoogleDriveService } from '@dhruv-techapps/google-drive';
+import { GOOGLE_SCOPES } from '@dhruv-techapps/google-oauth';
+import { useEffect, useState } from 'react';
 import { Accordion, Button, Card, Image, ListGroup, NavDropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { AUTO_BACKUP, DriveFile, GOOGLE_SCOPES } from '@dhruv-techapps/acf-common';
-import { CloudArrowDownFill, CloudArrowUpFill, Trash } from '../../util';
-import { GoogleBackupService } from '@dhruv-techapps/acf-service';
-import GoogleSignInLight from '../../assets/btn_google_signin_light_normal_web.png';
-import GoogleSignInDark from '../../assets/btn_google_signin_dark_normal_web.png';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { settingsSelector, updateSettingsBackup } from '../../store/settings/settings.slice';
 import { useConfirmationModalContext } from '../../_providers/confirm.provider';
-import { themeSelector } from '../../store/theme.slice';
+import GoogleSignInDark from '../../assets/btn_google_signin_dark_normal_web.png';
+import GoogleSignInLight from '../../assets/btn_google_signin_light_normal_web.png';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { googleLoginAPI } from '../../store/settings/settings.api';
-import { useEffect, useState } from 'react';
+import { settingsSelector, updateSettingsBackup } from '../../store/settings/settings.slice';
+import { themeSelector } from '../../store/theme.slice';
+import { CloudArrowDownFill, CloudArrowUpFill, Trash } from '../../util';
 
 export function SettingsGoogleBackup() {
   const { t } = useTranslation();
   const theme = useAppSelector(themeSelector);
   const modalContext = useConfirmationModalContext();
   const { settings, google, googleScopes } = useAppSelector(settingsSelector);
+  const [loading, setLoading] = useState<boolean>(false);
   const [files, setFiles] = useState<Array<DriveFile>>();
   const [filesLoading, setFilesLoading] = useState<boolean>();
   const { backup } = settings;
@@ -28,23 +30,35 @@ export function SettingsGoogleBackup() {
     dispatch(googleLoginAPI(scope));
   };
 
+  const loadFiles = async () => {
+    setFilesLoading(true);
+    GoogleDriveService.listWithContent(window.EXTENSION_ID).then((files) => {
+      setFiles(files);
+      setFilesLoading(false);
+    });
+  };
+
   useEffect(() => {
     if (google && googleScopes.includes(scope)) {
-      setFilesLoading(true);
-      GoogleBackupService.listWithContent(window.EXTENSION_ID).then((files) => {
-        setFiles(files);
-        setFilesLoading(false);
-      });
+      loadFiles();
     }
   }, [google, googleScopes, scope]);
 
   const onBackup = async (autoBackup?: AUTO_BACKUP) => {
+    setLoading(true);
     if (autoBackup) {
-      GoogleBackupService.autoBackup(window.EXTENSION_ID, autoBackup).then(() => {
-        dispatch(updateSettingsBackup(autoBackup));
-      });
+      GoogleDriveService.autoBackup(window.EXTENSION_ID, autoBackup)
+        .then(() => {
+          dispatch(updateSettingsBackup(autoBackup));
+        })
+        .finally(() => setLoading(false));
     } else {
-      GoogleBackupService.backup(window.EXTENSION_ID).catch(console.error);
+      GoogleBackupService.backup(window.EXTENSION_ID)
+        .then(() => {
+          loadFiles();
+        })
+        .catch(console.error)
+        .finally(() => setLoading(false));
     }
   };
 
@@ -58,7 +72,7 @@ export function SettingsGoogleBackup() {
   };
 
   const deleteFile = async (id: string, name: string) => {
-    GoogleBackupService.delete(window.EXTENSION_ID, id, name)
+    GoogleDriveService.delete(window.EXTENSION_ID, id, name)
       .then(() => {
         setFiles(files?.filter((file) => file.id !== id));
       })
@@ -79,14 +93,24 @@ export function SettingsGoogleBackup() {
   return (
     <>
       <div>
-        <b className='text-muted d-block mb-2'>Google Drive Backup</b>
-        <Image alt={google.name} className='me-2' title={google.name} src={google.picture} roundedCircle width='30' height='30' />
+        <b className='text-muted d-block mb-2'>
+          {loading && (
+            <span className='me-2'>
+              <span className='spinner-border spinner-border-sm' aria-hidden='true'></span>
+              <span className='visually-hidden' role='status'>
+                Loading...
+              </span>
+            </span>
+          )}
+          Google Drive Backup
+        </b>
+        <Image alt={google.name} className='me-2' title={google.name} src={google.picture} roundedCircle width='30' height='30' referrerPolicy='no-referrer' />
         {google.name}
       </div>
       <hr />
       <ol className='list-group'>
         <ListGroup.Item as='li'>
-          <NavDropdown.Item href='#backup-now' title={t('header.backup.now')} onClick={() => onBackup()}>
+          <NavDropdown.Item href='#backup-now' disabled={loading} title={t('header.backup.now')} onClick={() => onBackup()}>
             <CloudArrowUpFill className='me-2' />
             {t('header.backup.now')}
           </NavDropdown.Item>

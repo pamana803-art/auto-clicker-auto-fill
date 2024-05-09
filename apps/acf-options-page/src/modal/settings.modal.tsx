@@ -1,20 +1,20 @@
+import { STATUS_BAR_LOCATION } from '@dhruv-techapps/acf-common';
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { getFieldNameValue } from '../util/element';
-import { SettingNotifications } from './settings/notifications';
-import { SettingRetry } from './settings/retry';
-import { SettingMessage } from './settings/message';
-import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill, FileSpreadsheetFill } from '../util';
-import { SettingsGoogleBackup } from './settings/google-backup';
 import { ErrorAlert } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
 import { googleGetAPI, settingsGetAPI } from '../store/settings/settings.api';
-import { SettingGoogleSheets } from './settings/google-sheets';
-import { themeSelector } from '../store/theme.slice';
-import { STATUS_BAR_LOCATION } from '@dhruv-techapps/acf-common';
+import { settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
 import { subscribeSelector } from '../store/subscribe';
+import { themeSelector } from '../store/theme.slice';
+import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill, FileSpreadsheetFill } from '../util';
+import { getFieldNameValue } from '../util/element';
+import { SettingsGoogleBackup } from './settings/google-backup';
+import { SettingGoogleSheets } from './settings/google-sheets';
+import { SettingMessage } from './settings/message';
+import { SettingNotifications } from './settings/notifications';
+import { SettingRetry } from './settings/retry';
 
 enum SETTINGS_PAGE {
   NOTIFICATION = 'Show Notification',

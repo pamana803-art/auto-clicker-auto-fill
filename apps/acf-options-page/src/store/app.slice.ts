@@ -29,7 +29,7 @@ export const logout = createAsyncThunk('firebase/logout', async () => {
 });
 
 type AppStore = {
-  manifest?: chrome.runtime.Manifest;
+  manifest?: Partial<chrome.runtime.Manifest>;
   error?: string;
   loading: boolean;
   user?: User | null;
