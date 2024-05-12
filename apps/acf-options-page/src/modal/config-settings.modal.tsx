@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { LOAD_TYPES, START_TYPES, defaultHotkey } from '@dhruv-techapps/acf-common';
+import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { HotkeyPopover } from '../popover';
-import { getFieldNameValue } from '../util/element';
-import { StartTimePopover } from '../popover/start-time.popover';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 import { useTimeout } from '../_hooks/message.hooks';
-import { REGEX } from '../util';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { HotkeyPopover } from '../popover';
+import { StartTimePopover } from '../popover/start-time.popover';
+import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 import { subscribeSelector } from '../store/subscribe';
+import { REGEX } from '../util';
+import { getFieldNameValue } from '../util/element';
 
 const ConfigSettingsModal = () => {
   const { t } = useTranslation();
@@ -73,7 +73,7 @@ const ConfigSettingsModal = () => {
           <Modal.Title as='h6'>{t('modal.configSettings.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Card className='mb-3'>
+          <Card className='mb-2'>
             <Card.Body>
               <Row>
                 <Col md={12} sm={12}>
@@ -181,6 +181,24 @@ const ConfigSettingsModal = () => {
                     <Form.Label>{t('configuration.startTime')}&nbsp;</Form.Label>
                     <StartTimePopover />
                     <Form.Control.Feedback type='invalid'>{t('error.startTime')}</Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+          <Card className='mb-2'>
+            <Card.Body>
+              <Row>
+                <Col md='12' sm='12'>
+                  <Form.Group controlId='config-url-match'>
+                    <Form.Select value={config.url_match} onChange={onUpdate} name='url_match' required>
+                      {Object.entries(URL_MATCH).map((condition) => (
+                        <option key={condition[1]} value={condition[1]}>
+                          {condition[0]}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Label>URL Match</Form.Label>
                   </Form.Group>
                 </Col>
               </Row>
