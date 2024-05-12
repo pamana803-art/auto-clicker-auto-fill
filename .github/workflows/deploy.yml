@@ -45,7 +45,8 @@ jobs:
     permissions:
       packages: write
       contents: read
-      actions: 'read'
+      actions: read
+      id-token: write # needed for provenance data generation
     steps:
       - uses: actions/checkout@v4
         with:
@@ -82,12 +83,13 @@ jobs:
           API_SECRET: ${{vars.API_SECRET}}
           MEASUREMENT_ID: ${{vars.MEASUREMENT_ID}}
           SENTRY_AUTH_TOKEN: ${{vars.SENTRY_AUTH_TOKEN}}
+      - name: Print Environment Info
+        run: npx nx report
       - name: Publish Packages
         if: ${{ inputs.publish_packages }}
-        run: |
-          npx nx affected -t=publish --ver=${{github.ref_name}}
+        run: npx nx release publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.REPO_PAT }}
       - name: Bundle Projects
         run: |
           mkdir bundle
