@@ -30,7 +30,7 @@ function Footer() {
                 <br />
                 <small id='extension-version'>☘ v{manifest?.version}</small>
                 <br />
-                <small id='web-version'>☯ {process.env.NX_RELEASE_VERSION}</small>
+                <small id='web-version'>☯ v{process.env.NX_RELEASE_VERSION}</small>
               </div>
             </div>
           </Col>
