@@ -90,7 +90,6 @@ jobs:
         run: npx nx release publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
       - name: Bundle Projects
         run: |
           mkdir bundle
