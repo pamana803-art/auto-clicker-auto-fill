@@ -28,7 +28,7 @@ export const TabsEvents = (() => {
 
   const start = (value: string) => {
     const commands = CommonEvents.getVerifiedEvents(TAB_COMMANDS, value);
-    Logger.colorDebug('TabsEvents', { commands, value });
+    console.debug(`Action #${window.__currentAction}`, commands, value);
     execCommand(commands, value);
   };
   return { start };

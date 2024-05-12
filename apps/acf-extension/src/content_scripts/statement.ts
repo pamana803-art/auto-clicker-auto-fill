@@ -3,7 +3,7 @@ import { Logger } from '@dhruv-techapps/core-common';
 
 const Statement = (() => {
   const conditionResult = (conditions: Array<ActionCondition>, actions: Array<string>) => {
-    Logger.colorDebug('Condition Result', { conditions, actions });
+    console.debug('Condition Result', { conditions, actions });
     return conditions
       .map(({ actionIndex, status, operator }) => ({ status: actions[actionIndex] === status, operator }))
       .reduce((accumulator, currentValue) => {
@@ -15,7 +15,7 @@ const Statement = (() => {
   };
 
   const checkThen = (condition: boolean | { status: boolean; operator: ACTION_CONDITION_OPR }, then: ACTION_RUNNING, goto?: number) => {
-    Logger.colorDebug('Check Then', { condition, then, goto });
+    console.debug('Check Then', { condition, then, goto });
     let result;
     if (condition) {
       if (then === ACTION_RUNNING.GOTO) {
@@ -34,7 +34,7 @@ const Statement = (() => {
       const { conditions, then, goto } = statement;
       if (conditions && then) {
         const result = checkThen(conditionResult(conditions, actions), then, goto);
-        Logger.colorDebug('Statement Result', result);
+        console.debug('Statement Result', result);
         return result;
       }
     }

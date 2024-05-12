@@ -1,4 +1,4 @@
-import { Configuration } from '@dhruv-techapps/acf-common';
+import { BATCH_REPEAT, Configuration, SESSION_COUNT } from '@dhruv-techapps/acf-common';
 const GOOGLE_SHEETS_REGEX = /^googlesheets::/i;
 
 export default class GoogleSheets {
@@ -29,11 +29,11 @@ export default class GoogleSheets {
         googleSheets.forEach((value) => {
           const [sheetName, range] = value.split('!');
           const ranges = sheets.get(sheetName) || new Set<string>();
-          if (value.includes('<batchRepeat>')) {
-            ranges.add(range.replace('<batchRepeat>', '1'));
-            ranges.add(range.replace('<batchRepeat>', String(batchHighestRepeat + 1)));
-          } else if (value.includes('<sessionCount>')) {
-            ranges.add(range.replace('<sessionCount>', String(window.__sessionCount)));
+          if (value.includes(BATCH_REPEAT)) {
+            ranges.add(range.replace(BATCH_REPEAT, '1'));
+            ranges.add(range.replace(BATCH_REPEAT, String(batchHighestRepeat + 1)));
+          } else if (value.includes(SESSION_COUNT)) {
+            ranges.add(range.replace(SESSION_COUNT, String(window.__sessionCount)));
           } else {
             ranges.add(range);
           }

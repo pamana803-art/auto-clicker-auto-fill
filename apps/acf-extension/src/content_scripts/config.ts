@@ -10,13 +10,15 @@ import Common from './common';
 import { Hotkey } from './hotkey';
 import { statusBar } from './status-bar';
 import GoogleSheets from './util/google-sheets';
+import { I18N_COMMON } from './i18n';
+import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
 
-const LOGGER_LETTER = 'Config';
+const CONFIG_I18N = {
+  TITLE: chrome.i18n.getMessage('@CONFIG__TITLE'),
+};
 const ConfigProcessor = (() => {
   const getFields = (config: Configuration) => {
-    Logger.colorDebug('GetFields', { url: config.url, name: config.name });
     const fields = [{ name: 'URL', value: config.url }];
-
     if (config.name) {
       fields.unshift({ name: 'name', value: config.name });
     }
@@ -49,9 +51,15 @@ const ConfigProcessor = (() => {
       if (notifications) {
         const { onConfig, sound, discord } = notifications;
         if (onConfig) {
-          NotificationsService.create(chrome.runtime.id, { type: 'basic', title: 'Config Completed', message: config.name || config.url, silent: !sound, iconUrl: Common.getNotificationIcon() });
+          NotificationsService.create(chrome.runtime.id, {
+            type: 'basic',
+            title: `${CONFIG_I18N.TITLE} ${I18N_COMMON.COMPLETED}`,
+            message: config.name || config.url,
+            silent: !sound,
+            iconUrl: Common.getNotificationIcon(),
+          });
           if (discord) {
-            DiscordMessagingService.success(chrome.runtime.id, 'Configuration Finished', getFields(config));
+            DiscordMessagingService.success(chrome.runtime.id, `${CONFIG_I18N.TITLE} ${I18N_COMMON.COMPLETED}`, getFields(config));
           }
         }
       }
@@ -66,7 +74,7 @@ const ConfigProcessor = (() => {
           const { sound, discord } = notifications;
           NotificationsService.create(chrome.runtime.id, { type: 'basic', ...error, silent: !sound, iconUrl: Common.getNotificationIcon() }, 'error');
           if (discord) {
-            DiscordMessagingService.error(chrome.runtime.id, e.title || 'Configuration Error', [
+            DiscordMessagingService.error(chrome.runtime.id, e.title || `${CONFIG_I18N.TITLE} ${I18N_COMMON.ERROR}`, [
               ...getFields(config),
               ...e.message.split('\n').map((info) => {
                 const [name, value] = info.split(':');
@@ -85,13 +93,13 @@ const ConfigProcessor = (() => {
   };
 
   const schedule = async (startTime: string) => {
-    Logger.colorDebug('Schedule', { startTime: startTime });
+    console.debug(I18N_COMMON.SCHEDULE, { startTime: startTime });
     const rDate = new Date();
     rDate.setHours(Number(startTime.split(':')[0]));
     rDate.setMinutes(Number(startTime.split(':')[1]));
     rDate.setSeconds(Number(startTime.split(':')[2]));
     rDate.setMilliseconds(Number(startTime.split(':')[3]));
-    Logger.colorDebug('Schedule', { date: rDate });
+    console.debug(I18N_COMMON.SCHEDULE, { date: rDate });
     await new Promise((resolve) => {
       setTimeout(resolve, rDate.getTime() - new Date().getTime());
     });
@@ -101,7 +109,7 @@ const ConfigProcessor = (() => {
     if (config.startTime?.match(/^\d{2}:\d{2}:\d{2}:\d{3}$/)) {
       await schedule(config.startTime);
     } else {
-      await statusBar.wait(config.initWait, `${LOGGER_LETTER} wait`);
+      await statusBar.wait(config.initWait, STATUS_BAR_TYPE.CONFIG_WAIT);
     }
   };
 

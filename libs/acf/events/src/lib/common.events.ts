@@ -1,10 +1,9 @@
-import { Logger, ConfigError, SystemError } from '@dhruv-techapps/core-common';
+import { ConfigError, SystemError } from '@dhruv-techapps/core-common';
 
 export const UNKNOWN_ELEMENT_TYPE_ERROR = 'Unknown element type';
 
 const CommonEvents = (() => {
   const getVerifiedEvents = (verifiedEvents: Array<string>, events: string): Array<string | Event> => {
-    Logger.colorDebug('getVerifiedEvents', { verifiedEvents, events });
     if (!events) {
       throw new SystemError('Event is blank!', 'Event cant be blank | null | undefined');
     }

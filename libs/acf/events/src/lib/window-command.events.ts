@@ -1,4 +1,4 @@
-import { Logger, SystemError } from '@dhruv-techapps/core-common';
+import { SystemError } from '@dhruv-techapps/core-common';
 
 import CommonEvents from './common.events';
 
@@ -51,7 +51,7 @@ export const WindowCommandEvents = (() => {
   };
   const start = (value: string) => {
     const commands = CommonEvents.getVerifiedEvents(WINDOW_COMMANDS, value);
-    Logger.colorDebug('WindowCommandEvents', commands);
+    console.debug(`Action #${window.__currentAction}`, commands, value);
     execCommand(commands, value);
   };
   return { start };

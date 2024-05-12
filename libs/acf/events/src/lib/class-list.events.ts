@@ -1,4 +1,3 @@
-import { Logger } from '@dhruv-techapps/core-common';
 import CommonEvents from './common.events';
 
 export const ClassEvents = (() => {
@@ -16,7 +15,7 @@ export const ClassEvents = (() => {
   };
 
   const start = (elements: Array<HTMLElement>, value: string) => {
-    Logger.colorDebug(`ClassEvents`, value);
+    console.debug(`Action #${window.__currentAction}`, elements, value);
     CommonEvents.loopElements(elements, value, execCommand);
   };
   return { start };

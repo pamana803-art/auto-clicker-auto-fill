@@ -4,13 +4,13 @@ import { Value } from '@dhruv-techapps/acf-util';
 import Common from './common';
 import { statusBar } from './status-bar';
 
-const LOGGER_LETTER = 'Action';
+import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
 
 const ActionProcessor = (() => {
   const repeatFunc = async (action: Action, repeat?: number, repeatInterval?: number | string): Promise<ACTION_STATUS | number> => {
     if (repeat !== undefined) {
       if (repeat > 0 || repeat < -1) {
-        await statusBar.wait(repeatInterval, `${LOGGER_LETTER} repeat`, repeat);
+        await statusBar.wait(repeatInterval, STATUS_BAR_TYPE.ACTION_REPEAT, repeat);
         repeat -= 1;
         window.__actionRepeat = window.__actionRepeat + 1;
         const result = await process(action);

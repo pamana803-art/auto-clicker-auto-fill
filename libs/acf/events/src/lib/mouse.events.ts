@@ -1,4 +1,4 @@
-import { Logger, ConfigError, SystemError } from '@dhruv-techapps/core-common';
+import { ConfigError, SystemError } from '@dhruv-techapps/core-common';
 import CommonEvents from './common.events';
 
 type CustomMouseEvent = {
@@ -17,7 +17,6 @@ export const MouseEvents = (() => {
   };
 
   const getVerifiedEvents = (events: string): Array<string | CustomMouseEvent> => {
-    Logger.colorDebug('GetVerifiedEvents', events);
     if (!events) {
       throw new SystemError('Event is blank!', 'Event cant be blank | null | undefined');
     }
@@ -46,7 +45,7 @@ export const MouseEvents = (() => {
 
   const start = (elements: Array<HTMLElement>, event: string) => {
     const events = getVerifiedEvents(event);
-    Logger.colorDebug(`MouseEvents`, events);
+    console.debug(`Action #${window.__currentAction}`, elements, events);
     CommonEvents.loopElements(elements, events, dispatchEvent);
   };
   return { start };

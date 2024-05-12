@@ -46,10 +46,88 @@
   "@CONTEXT_MENU__CONFIG_PAGE": {
     "message": "↗ Open Configuration Page"
   },
-  "@TABS_TITLE": {
+  "@TABS__TITLE": {
     "message": "Tabs"
   },
-  "@TABS_ERROR": {
+  "@TABS__ERROR": {
     "message": "Unable to locate the specified tab or tab ID."
+  },
+  "@ACTION__TITLE": {
+    "message": "Action"
+  },
+  "@ACTION__NO_NAME": {
+    "message": "no-name"
+  },
+  "@ADDON__TITLE": {
+    "message": "Addon"
+  },
+  "@BATCH__TITLE": {
+    "message": "Batch"
+  },
+  "@CONFIG__TITLE": {
+    "message": "Config"
+  },
+  "@ERROR__ELEMENT_FINDER_BLANK": {
+    "message": "Element Finder is blank"
+  },
+  "@ERROR__NO_MATCH": {
+    "message": "Addon condition did not match."
+  },
+  "@ERROR__WRONG_TITLE": {
+    "message": "Incorrect comparison"
+  },
+  "@ERROR__WRONG_DESCRIPTION": {
+    "message": "Greater than or less than operators can only compare numbers"
+  },
+  "@ERROR__ELEMENT_FINDER_TITLE": {
+    "message": "Incorrect element finder or addon condition"
+  },
+  "@ERROR__ELEMENT_FINDER_DESCRIPTION": {
+    "message": "Element Finder should target a checkbox"
+  },
+  "@ERROR__INVALID_ELEMENT_FINDER": {
+    "message": "Invalid element finder"
+  },
+  "@ERROR__NOT_FOUND_STOP": {
+    "message": "Not Found - STOP"
+  },
+  "@ERROR__NOT_FOUND_RELOAD": {
+    "message": "Not Found - RELOAD"
+  },
+  "@ERROR": {
+    "message": "Error"
+  },
+  "@SCHEDULE": {
+    "message": "Schedule"
+  },
+  "@REPEAT": {
+    "message": "repeat"
+  },
+  "@COMPLETED": {
+    "message": "Completed"
+  },
+  "@DEFAULT": {
+    "message": "default"
+  },
+  "@WAIT": {
+    "message": "wait"
+  },
+  "@DISABLED": {
+    "message": "Disabled"
+  },
+  "@RESULT": {
+    "message": "Result"
+  },
+  "@GOTO": {
+    "message": "Goto"
+  },
+  "@RECHECK": {
+    "message": "recheck"
+  },
+  "@COMPARE": {
+    "message": "Compare"
+  },
+  "@RECHECK_OPTION": {
+    "message": "RecheckOption"
   }
 }

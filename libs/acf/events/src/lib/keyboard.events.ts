@@ -1,4 +1,4 @@
-import { Logger, SystemError } from '@dhruv-techapps/core-common';
+import { SystemError } from '@dhruv-techapps/core-common';
 import CommonEvents from './common.events';
 
 const KEYBOARD_EVENT_KEYDOWN = 'keydown';
@@ -7,7 +7,6 @@ const KEYBOARD_EVENT_KEYPRESS = 'keypress';
 
 export const KeyboardEvents = (() => {
   const getVerifiedEvents = (events: string): KeyboardEventInit => {
-    Logger.colorDebug(`getVerifiedEvents`, events);
     if (!events) {
       throw new SystemError('Event is blank!', 'Event cant be blank | null | undefined');
     }
@@ -51,7 +50,7 @@ export const KeyboardEvents = (() => {
 
   const start = (elements: Array<HTMLElement>, event: string) => {
     const events = getVerifiedEvents(event);
-    Logger.colorDebug(`Keyboard Events`, events);
+    console.debug(`Action #${window.__currentAction}`, elements, events);
     CommonEvents.loopElements(elements, events, dispatchEvent);
   };
   return { start };

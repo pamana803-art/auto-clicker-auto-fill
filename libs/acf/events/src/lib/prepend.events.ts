@@ -1,4 +1,4 @@
-import { Logger, ConfigError } from '@dhruv-techapps/core-common';
+import { ConfigError } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
 import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
@@ -24,7 +24,7 @@ export const PrependEvents = (() => {
 
   const start = (elements: Array<HTMLElement>, value: string) => {
     value = value.replace(/^prepend::/i, '');
-    Logger.colorDebug(`PrependEvents`, { value });
+    console.debug(`Action #${window.__currentAction}`, elements, value);
     CommonEvents.loopElements(elements, value, checkNode);
   };
 

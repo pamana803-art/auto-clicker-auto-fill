@@ -38,10 +38,88 @@
   "@CONTEXT_MENU__CONFIG_PAGE": {
     "message": "↗ Page de configuration ouvrir"
   },
-  "@TABS_TITLE": {
+  "@TABS__TITLE": {
     "message": "Onglets"
   },
-  "@TABS_ERROR": {
+  "@TABS__ERROR": {
     "message": "Impossible de localiser l'onglet ou l'id d'onglet spécifié."
+  },
+  "@ACTION__TITLE": {
+    "message": "Action"
+  },
+  "@ACTION__NO_NAME": {
+    "message": "sans nom"
+  },
+  "@ADDON__TITLE": {
+    "message": "Ajouter sur"
+  },
+  "@BATCH__TITLE": {
+    "message": "Lot"
+  },
+  "@CONFIG__TITLE": {
+    "message": "Configurer"
+  },
+  "@ERROR__ELEMENT_FINDER_BLANK": {
+    "message": "Le chercheur d'élément est vide"
+  },
+  "@ERROR__NO_MATCH": {
+    "message": "La condition d'addon ne correspondait pas."
+  },
+  "@ERROR__WRONG_TITLE": {
+    "message": "Comparaison incorrecte"
+  },
+  "@ERROR__WRONG_DESCRIPTION": {
+    "message": "Supérieur ou inférieur aux opérateurs ne peut comparer que les nombres"
+  },
+  "@ERROR__ELEMENT_FINDER_TITLE": {
+    "message": "Finder d'élément incorrect ou condition addon"
+  },
+  "@ERROR__ELEMENT_FINDER_DESCRIPTION": {
+    "message": "Element Finder doit cibler une case à cocher"
+  },
+  "@ERROR__INVALID_ELEMENT_FINDER": {
+    "message": "Finder d'élément non valide"
+  },
+  "@ERROR__NOT_FOUND_STOP": {
+    "message": "Non trouvé - Arrêtez"
+  },
+  "@ERROR__NOT_FOUND_RELOAD": {
+    "message": "Non trouvé - Reload"
+  },
+  "@ERROR": {
+    "message": "Erreur"
+  },
+  "@SCHEDULE": {
+    "message": "Calendrier"
+  },
+  "@REPEAT": {
+    "message": "répéter"
+  },
+  "@COMPLETED": {
+    "message": "Complété"
+  },
+  "@DEFAULT": {
+    "message": "défaut"
+  },
+  "@WAIT": {
+    "message": "attendez"
+  },
+  "@DISABLED": {
+    "message": "Désactivé"
+  },
+  "@RESULT": {
+    "message": "Résultat"
+  },
+  "@GOTO": {
+    "message": "Aller à"
+  },
+  "@RECHECK": {
+    "message": "revérifier"
+  },
+  "@COMPARE": {
+    "message": "Comparer"
+  },
+  "@RECHECK_OPTION": {
+    "message": "Recentrique"
   }
 }

@@ -9,8 +9,8 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 });
 
 const TABS_I18N = {
-  TITLE: chrome.i18n.getMessage('@TABS_TITLE'),
-  ERROR: chrome.i18n.getMessage('@TABS_ERROR'),
+  TITLE: chrome.i18n.getMessage('@TABS__TITLE'),
+  ERROR: chrome.i18n.getMessage('@TABS__ERROR'),
 };
 
 const NOTIFICATIONS_ID = 'Tabs Messenger';

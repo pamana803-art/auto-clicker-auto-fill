@@ -1,5 +1,5 @@
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
-import { Logger, ConfigError } from '@dhruv-techapps/core-common';
+import { ConfigError } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
 import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 import { Sandbox } from '@dhruv-techapps/sandbox';
@@ -9,7 +9,6 @@ const CHANGE_EVENT = ['input', 'change'];
 
 export const ClipboardEvents = (() => {
   const applyFilter = (text: string, value: string) => {
-    Logger.colorDebug('applyFilter', { text, value });
     if (value) {
       const matches = text.match(new RegExp(value));
       if (matches) {
@@ -47,39 +46,29 @@ export const ClipboardEvents = (() => {
   };
 
   const copy = async (elements: Array<HTMLElement>, value: string) => {
-    Logger.colorDebug('Value', value);
     const text = getValue(elements[0]);
-    Logger.colorDebug('Text', text);
     const result = applyFilter(text, value.replace(/copy::/gi, ''));
-    Logger.colorDebug('Result', result);
+    console.debug(`Action #${window.__currentAction}`, elements[0], text, result);
     await navigator.clipboard.writeText(result);
   };
 
   const paste = async (elements: Array<HTMLElement>, value: string) => {
     await navigator.clipboard.readText().then(async (clipText = '') => {
-      Logger.colorDebug('clipText', clipText);
       value = value.replace(/paste::/i, '');
-      Logger.colorDebug('Value', value);
       value = await Sandbox.sandboxEval(value, clipText);
+      console.debug(`Action #${window.__currentAction}`, elements, clipText, value);
       CommonEvents.loopElements(elements, value, checkNode);
     });
   };
 
   const start = async (elements: Array<HTMLElement>, value: string) => {
-    try {
-      console.groupCollapsed(LOGGER_LETTER);
-      value = value.replace(/clipboard::/gi, '');
-      if (/^copy::/gi.test(value)) {
-        await copy(elements, value);
-      } else if (/^paste::/gi.test(value)) {
-        await paste(elements, value);
-      } else {
-        throw new ConfigError('Invalid Clipboard Command', 'ClipboardEvents');
-      }
-      console.groupEnd();
-    } catch (error) {
-      console.groupEnd();
-      throw error;
+    value = value.replace(/clipboard::/gi, '');
+    if (/^copy::/gi.test(value)) {
+      await copy(elements, value);
+    } else if (/^paste::/gi.test(value)) {
+      await paste(elements, value);
+    } else {
+      throw new ConfigError('Invalid Clipboard Command', 'ClipboardEvents');
     }
   };
 

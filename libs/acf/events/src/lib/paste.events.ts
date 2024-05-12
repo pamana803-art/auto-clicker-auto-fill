@@ -1,4 +1,4 @@
-import { Logger, ConfigError } from '@dhruv-techapps/core-common';
+import { ConfigError } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
 import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
@@ -6,8 +6,6 @@ import { Sandbox } from '@dhruv-techapps/sandbox';
 
 const LOCAL_STORAGE_COPY = 'auto-clicker-copy';
 const CHANGE_EVENT = ['input', 'change'];
-
-const LOGGER_LETTER = 'PasteEvents';
 
 export const PasteEvents = (() => {
   const checkNode = (element: HTMLElement, value: string) => {
@@ -27,20 +25,12 @@ export const PasteEvents = (() => {
   };
 
   const start = async (elements: Array<HTMLElement>, value: string) => {
-    try {
-      console.groupCollapsed(LOGGER_LETTER);
-      const copyContent = localStorage.getItem(LOCAL_STORAGE_COPY);
-      Logger.colorDebug('Copy Content', copyContent);
-      value = value.replace(/paste::/i, '');
-      Logger.colorDebug('Value', value);
-      value = await Sandbox.sandboxEval(value, copyContent);
-      CommonEvents.loopElements(elements, value, checkNode);
-      console.groupEnd();
-      return true;
-    } catch (error) {
-      console.groupEnd();
-      throw error;
-    }
+    const copyContent = localStorage.getItem(LOCAL_STORAGE_COPY);
+    value = value.replace(/paste::/i, '');
+    value = await Sandbox.sandboxEval(value, copyContent);
+    console.debug(`Action #${window.__currentAction}`, elements, copyContent, value);
+    CommonEvents.loopElements(elements, value, checkNode);
+    return true;
   };
 
   return { start };

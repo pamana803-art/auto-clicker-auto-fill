@@ -7,8 +7,13 @@ import AddonProcessor from './addon';
 import Common from './common';
 import Statement from './statement';
 import { statusBar } from './status-bar';
+import { I18N_COMMON, I18N_ERROR } from './i18n';
+import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
 
-const LOGGER_LETTER = 'Action';
+const ACTION_I18N = {
+  TITLE: chrome.i18n.getMessage('@ACTION__TITLE'),
+  NO_NAME: chrome.i18n.getMessage('@ACTION__NO_NAME'),
+};
 
 const Actions = (() => {
   const checkStatement = async (actions: Array<Action>, action: Action) => {
@@ -22,7 +27,7 @@ const Actions = (() => {
     if (settings.notifications?.onAction) {
       NotificationsService.create(chrome.runtime.id, {
         type: 'basic',
-        title: 'Action Completed',
+        title: `${ACTION_I18N.TITLE} ${I18N_COMMON.COMPLETED}`,
         message: action.elementFinder,
         silent: !settings.notifications.sound,
         iconUrl: Common.getNotificationIcon(),
@@ -36,26 +41,26 @@ const Actions = (() => {
       const action = actions[i];
       if (action.disabled) {
         i += 1;
-        Logger.color(' Disabled ', 'debug', LoggerColor.BLACK, `${LOGGER_LETTER} #${i + 1} [${action.name || 'no-name'}]`);
+        Logger.color(` ${I18N_COMMON.DISABLED} `, 'debug', LoggerColor.BLACK, `${ACTION_I18N.TITLE} #${i + 1} [${action.name || ACTION_I18N.NO_NAME}]`);
         continue;
       }
       statusBar.actionUpdate(i + 1, action.name);
-      console.group(`${LOGGER_LETTER} #${i + 1} [${action.name || 'no-name'}]`);
+      window.__currentAction = i + 1;
       if (!action.elementFinder) {
-        throw new ConfigError('Element Finder is blank', 'Configuration Action');
+        throw new ConfigError(I18N_ERROR.ELEMENT_FINDER_BLANK, ACTION_I18N.TITLE);
       }
       const statementResult = await checkStatement(actions, action);
       if (statementResult === true) {
-        await statusBar.wait(action.initWait, `${LOGGER_LETTER} wait`);
+        await statusBar.wait(action.initWait, STATUS_BAR_TYPE.ACTION_WAIT);
         const addonResult = await AddonProcessor.check(action.addon, action.settings);
         if (typeof addonResult === 'number') {
           i = Number(addonResult) - 1;
-          Logger.colorInfo('Goto', Number(addonResult) + 1);
+          Logger.colorInfo(I18N_COMMON.GOTO, Number(addonResult) + 1);
         } else if (addonResult) {
           const status = await ActionProcessor.start(action);
           if (typeof status === 'number') {
             i = Number(status) - 1;
-            Logger.colorInfo('Goto', Number(status) + 1);
+            Logger.colorInfo(I18N_COMMON.GOTO, Number(status) + 1);
           } else {
             action.status = status;
             notify(action);
@@ -67,10 +72,9 @@ const Actions = (() => {
         action.status = ACTION_STATUS.SKIPPED;
         if (typeof statementResult !== 'boolean') {
           i = Number(statementResult) - 1;
-          Logger.colorInfo('Goto', Number(statementResult) + 1);
+          Logger.colorInfo(I18N_COMMON.GOTO, Number(statementResult) + 1);
         }
       }
-      console.groupEnd();
       // Increment
       i += 1;
     }

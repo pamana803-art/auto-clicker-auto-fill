@@ -1,5 +1,4 @@
-import { Logger, ConfigError, SystemError } from '@dhruv-techapps/core-common';
-import {} from '@dhruv-techapps/acf-common';
+import { ConfigError, SystemError } from '@dhruv-techapps/core-common';
 import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 import { Timer } from '@dhruv-techapps/shared-util';
 
@@ -16,7 +15,6 @@ type KeyEvent = KeyboardEventInit & {
 
 export const KeyEvents = (() => {
   const getVerifiedEvents = (events: string): Array<KeyEvent> => {
-    Logger.colorDebug(`getVerifiedEvents`, events);
     if (!events) {
       throw new SystemError('Event is blank!', 'Event cant be blank | null | undefined');
     }
@@ -31,11 +29,6 @@ export const KeyEvents = (() => {
         throw new ConfigError(events, 'Invalid Events');
       }
     } catch (error) {
-      if (error instanceof Error) {
-        Logger.colorError(error.message);
-      } else {
-        Logger.colorError(JSON.stringify(error));
-      }
       result = events.split('').map((event) => ({ ...CommonEvents.getKeyboardEventProperties({ key: event }) }));
     }
     if (result) {
@@ -63,7 +56,7 @@ export const KeyEvents = (() => {
 
   const start = (elements: Array<HTMLElement>, event: string) => {
     const events = getVerifiedEvents(event);
-    Logger.colorDebug(`KeyEvents`, events);
+    console.debug(`Action #${window.__currentAction}`, elements, events);
     CommonEvents.loopElements<HTMLElement, Array<KeyEvent>>(elements, events, dispatchEvent);
   };
   return { start };

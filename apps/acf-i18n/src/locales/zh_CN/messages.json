@@ -38,10 +38,88 @@
   "@CONTEXT_MENU__CONFIG_PAGE": {
     "message": "↗ 打开配置页面"
   },
-  "@TABS_TITLE": {
+  "@TABS__TITLE": {
     "message": "选项卡"
   },
-  "@TABS_ERROR": {
+  "@TABS__ERROR": {
     "message": "无法找到指定的选项卡或选项卡ID。"
+  },
+  "@ACTION__TITLE": {
+    "message": "行动"
+  },
+  "@ACTION__NO_NAME": {
+    "message": "无名"
+  },
+  "@ADDON__TITLE": {
+    "message": "添加在"
+  },
+  "@BATCH__TITLE": {
+    "message": "批"
+  },
+  "@CONFIG__TITLE": {
+    "message": "config"
+  },
+  "@ERROR__ELEMENT_FINDER_BLANK": {
+    "message": "元素查找器是空白的"
+  },
+  "@ERROR__NO_MATCH": {
+    "message": "附加条件不匹配。"
+  },
+  "@ERROR__WRONG_TITLE": {
+    "message": "不正确的比较"
+  },
+  "@ERROR__WRONG_DESCRIPTION": {
+    "message": "大于或少于操作员只能比较数字"
+  },
+  "@ERROR__ELEMENT_FINDER_TITLE": {
+    "message": "错误的元素查找器或插件条件"
+  },
+  "@ERROR__ELEMENT_FINDER_DESCRIPTION": {
+    "message": "元素查找器应针对复选框"
+  },
+  "@ERROR__INVALID_ELEMENT_FINDER": {
+    "message": "无效元素查找器"
+  },
+  "@ERROR__NOT_FOUND_STOP": {
+    "message": "找不到 - 停止"
+  },
+  "@ERROR__NOT_FOUND_RELOAD": {
+    "message": "找不到 - 重新加载"
+  },
+  "@ERROR": {
+    "message": "错误"
+  },
+  "@SCHEDULE": {
+    "message": "日程"
+  },
+  "@REPEAT": {
+    "message": "重复"
+  },
+  "@COMPLETED": {
+    "message": "完全的"
+  },
+  "@DEFAULT": {
+    "message": "默认"
+  },
+  "@WAIT": {
+    "message": "等待"
+  },
+  "@DISABLED": {
+    "message": "禁用"
+  },
+  "@RESULT": {
+    "message": "结果"
+  },
+  "@GOTO": {
+    "message": "去"
+  },
+  "@RECHECK": {
+    "message": "重新检查"
+  },
+  "@COMPARE": {
+    "message": "比较"
+  },
+  "@RECHECK_OPTION": {
+    "message": "补偿"
   }
 }
