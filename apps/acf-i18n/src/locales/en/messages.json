@@ -45,5 +45,11 @@
   },
   "@CONTEXT_MENU__CONFIG_PAGE": {
     "message": "↗ Open Configuration Page"
+  },
+  "@TABS_TITLE": {
+    "message": "Tabs"
+  },
+  "@TABS_ERROR": {
+    "message": "Unable to locate the specified tab or tab ID."
   }
 }

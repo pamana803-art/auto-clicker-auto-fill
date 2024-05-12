@@ -37,5 +37,11 @@
   },
   "@CONTEXT_MENU__CONFIG_PAGE": {
     "message": "↗ Page de configuration ouvrir"
+  },
+  "@TABS_TITLE": {
+    "message": "Onglets"
+  },
+  "@TABS_ERROR": {
+    "message": "Impossible de localiser l'onglet ou l'id d'onglet spécifié."
   }
 }
