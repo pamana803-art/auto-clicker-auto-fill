@@ -82,12 +82,14 @@ jobs:
           API_SECRET: ${{vars.API_SECRET}}
           MEASUREMENT_ID: ${{vars.MEASUREMENT_ID}}
           SENTRY_AUTH_TOKEN: ${{vars.SENTRY_AUTH_TOKEN}}
+      - name: Print Environment Info
+        run: npx nx report
       - name: Publish Packages
         if: ${{ inputs.publish_packages }}
-        run: |
-          npx nx affected -t=publish --ver=${{github.ref_name}}
+        run: npx nx release publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
       - name: Bundle Projects
         run: |
           mkdir bundle
