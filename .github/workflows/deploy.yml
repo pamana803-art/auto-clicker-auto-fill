@@ -45,7 +45,8 @@ jobs:
     permissions:
       packages: write
       contents: read
-      actions: 'read'
+      actions: read
+      id-token: write # needed for provenance data generation
     steps:
       - uses: actions/checkout@v4
         with:
