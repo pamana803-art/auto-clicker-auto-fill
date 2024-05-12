@@ -89,7 +89,7 @@ jobs:
         if: ${{ inputs.publish_packages }}
         run: npx nx release publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.REPO_PAT }}
       - name: Bundle Projects
         run: |
           mkdir bundle
