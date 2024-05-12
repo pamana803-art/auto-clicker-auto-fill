@@ -28,5 +28,14 @@
   },
   "@PORT__METHOD_NOT_FOUND": {
     "message": "La méthode de processus n'est pas trouvée"
+  },
+  "@CONTEXT_MENU__FIELD": {
+    "message": "★ Configurer pour ce champ"
+  },
+  "@CONTEXT_MENU__RECORD": {
+    "message": "☉ Clicker automatique (enregistrement)"
+  },
+  "@CONTEXT_MENU__CONFIG_PAGE": {
+    "message": "↗ Page de configuration ouvrir"
   }
 }

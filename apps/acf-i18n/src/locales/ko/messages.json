@@ -28,5 +28,14 @@
   },
   "@PORT__METHOD_NOT_FOUND": {
     "message": "프로세스 방법은 찾을 수 없습니다"
+  },
+  "@CONTEXT_MENU__FIELD": {
+    "message": "★이 필드를 구성합니다"
+  },
+  "@CONTEXT_MENU__RECORD": {
+    "message": "☉ 자동 클릭 커 (레코드)"
+  },
+  "@CONTEXT_MENU__CONFIG_PAGE": {
+    "message": "↗ 구성 페이지 열기"
   }
 }

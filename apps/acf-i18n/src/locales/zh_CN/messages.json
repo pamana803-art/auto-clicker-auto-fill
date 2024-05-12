@@ -28,5 +28,14 @@
   },
   "@PORT__METHOD_NOT_FOUND": {
     "message": "未找到过程方法"
+  },
+  "@CONTEXT_MENU__FIELD": {
+    "message": "★ 为此字段配置"
+  },
+  "@CONTEXT_MENU__RECORD": {
+    "message": "☉ 自动点击器（记录）"
+  },
+  "@CONTEXT_MENU__CONFIG_PAGE": {
+    "message": "↗ 打开配置页面"
   }
 }
