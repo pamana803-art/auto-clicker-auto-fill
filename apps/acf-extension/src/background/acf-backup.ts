@@ -5,8 +5,18 @@ import { BACKUP_ALARM, DriveFile, GoogleDriveBackground } from '@dhruv-techapps/
 import { GOOGLE_SCOPES } from '@dhruv-techapps/google-oauth';
 import { NotificationHandler } from '@dhruv-techapps/notifications';
 
-export const NOTIFICATIONS_TITLE = 'ACF Backup';
-export const NOTIFICATIONS_ID = 'sheets';
+const ID = 'acf-backup';
+
+const ACF_BACKUP_I18N = {
+  NOTIFICATION_TITLE: chrome.i18n.getMessage('@ACF_BACKUP__NOTIFICATION_TITLE'),
+  NOTIFICATION_RESTORE: chrome.i18n.getMessage('@ACF_BACKUP__NOTIFICATION_RESTORE'),
+  ERROR_NO_CONFIG: chrome.i18n.getMessage('@ACF_BACKUP__ERROR_NO_CONFIG'),
+  ERROR_NO_CONTENT: chrome.i18n.getMessage('@ACF_BACKUP__ERROR_NO_CONTENT'),
+};
+
+const ACF_BACKUP_I18N_KEY = {
+  NOTIFICATION_BACKUP: '@ACF_BACKUP__NOTIFICATION_BACKUP',
+};
 
 const BACKUP_FILE_NAMES = {
   CONFIGS: `${LOCAL_STORAGE_KEY.CONFIGS}.txt`,
@@ -31,11 +41,11 @@ export default class AcfBackup extends GoogleDriveBackground {
         settings.backup.lastBackup = lastBackup;
         chrome.storage.local.set({ [LOCAL_STORAGE_KEY.SETTINGS]: settings });
         if (now) {
-          NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, `Configurations are backup on Google Drive at ${settings.backup.lastBackup}`);
+          NotificationHandler.notify(ID, ACF_BACKUP_I18N.NOTIFICATION_TITLE, chrome.i18n.getMessage(ACF_BACKUP_I18N_KEY.NOTIFICATION_BACKUP, settings.backup.lastBackup));
         }
         return lastBackup;
       }
-      throw new Error('No configurations found to backup');
+      throw new Error(ACF_BACKUP_I18N.ERROR_NO_CONFIG);
     } catch (error) {
       if (error instanceof Error) {
         const retry = await this.checkInvalidCredentials(error.message);
@@ -57,10 +67,10 @@ export default class AcfBackup extends GoogleDriveBackground {
         if (file.name === BACKUP_FILE_NAMES.CONFIGS) {
           chrome.storage.local.set({ [LOCAL_STORAGE_KEY.CONFIGS]: fileContent });
         }
-        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Configurations are restored from Google Drive. Refresh configurations page to load content.');
+        NotificationHandler.notify(ID, ACF_BACKUP_I18N.NOTIFICATION_TITLE, ACF_BACKUP_I18N.NOTIFICATION_RESTORE);
         return;
       }
-      throw new Error('No content found in the file');
+      throw new Error(ACF_BACKUP_I18N.ERROR_NO_CONTENT);
     } catch (error) {
       if (error instanceof Error) {
         const retry = await this.checkInvalidCredentials(error.message);

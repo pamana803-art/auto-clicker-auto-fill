@@ -12,7 +12,7 @@ export const APP_LINK = {
   DISCUSSIONS: 'https://github.com/Dhruv-Techapps/acf-docs/discussions',
 };
 // Application Languages
-export const APP_LANGUAGES = ['en', 'ko', 'fr', 'zh-cn'];
+export const APP_LANGUAGES = ['en', 'ko', 'fr', 'zh_CN'];
 
 export const SPONSORS = [
   {

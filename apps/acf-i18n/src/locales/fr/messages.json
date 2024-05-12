@@ -1,71 +1,32 @@
 {
-  "message_action_not_found": {
+  "EXT_NAME": {
+    "message": "Clicker automatique - Autofill"
+  },
+  "EXT_SHORT_NAME": {
+    "message": "Remplissage automatique"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "Champ de saisie automatique ou bouton de clic automatique ou de lien n'importe quoi n'importe où. Vous pouvez configurer et vérifier le test de vitesse de clic"
+  },
+  "@ACF_BACKUP__NOTIFICATION_TITLE": {
+    "message": "Sauvegarde ACF"
+  },
+  "@ACF_BACKUP__NOTIFICATION_BACKUP": {
+    "message": "Les configurations sont sauvegardées sur Google Drive à $1"
+  },
+  "@ACF_BACKUP__NOTIFICATION_RESTORE": {
+    "message": "Les configurations sont restaurées à partir de Google Drive. Actualisez la page des configurations pour charger le contenu."
+  },
+  "@ACF_BACKUP__ERROR_NO_CONFIG": {
+    "message": "Aucune configuration trouvée pour sauvegarder"
+  },
+  "@ACF_BACKUP__ERROR_NO_CONTENT": {
+    "message": "Aucun contenu trouvé dans le fichier"
+  },
+  "@PORT__ACTION_NOT_FOUND": {
     "message": "n'est pas configuré"
   },
-  "@PORT__action_not_found": {
-    "message": "n'est pas configuré"
-  },
-  "@PORT__method_not_found": {
+  "@PORT__METHOD_NOT_FOUND": {
     "message": "La méthode de processus n'est pas trouvée"
-  },
-  "@RATE__title": {
-    "message": "Extension utile"
-  },
-  "@RATE__message": {
-    "message": "Avez-vous trouvé notre extension utile?"
-  },
-  "@RATE__yes_button": {
-    "message": "Oui"
-  },
-  "@RATE__no_button": {
-    "message": "Non"
-  },
-  "@RATE__yes_title": {
-    "message": "Profiter de l'extension?"
-  },
-  "@RATE__yes_message": {
-    "message": "Aidez-nous à devenir une extension 5 étoiles,\nMerci!"
-  },
-  "@RATE__no_title": {
-    "message": "Laissez-nous vous aider"
-  },
-  "@RATE__no_message": {
-    "message": "Connectez-vous avec nous sur la discorde ou créez un problème si vous trouvez"
-  },
-  "@RATE__issue_button": {
-    "message": "☉ Créer un problème"
-  },
-  "@RATE__connect_button": {
-    "message": "★ Connectez-vous avec nous"
-  },
-  "@RATE__rate_button": {
-    "message": "❤ Noter maintenant"
-  },
-  "@RATE__later_button": {
-    "message": "☹ Plus tard"
-  },
-  "@RATE__review_url_missing": {
-    "message": "L'URL d'examen est manquante pour le tarif"
-  },
-  "@NOTIFICATIONS__permission_error": {
-    "message": "La permission de notification n'est pas fournie dans Manifeste.S'il vous plaît mettre à jour la permission manifeste"
-  },
-  "@NOTIFICATIONS__default_icon_missing": {
-    "message": "Default_icon n'est pas défini sous Browser_action dans Manifest.S'il-vous-plait ajoutez {browser_action:{default_icon}}"
-  },
-  "@TAB__options_page_url_missing": {
-    "message": "Page Options non définie dans Manifeste.S'il-vous-plait ajoutez {config{options_page_url}}"
-  },
-  "@IMPORT_DATA___target": {
-    "message": "Cible d'importation non spécifiée"
-  },
-  "@NOTIFICATIONS_config_finish": {
-    "message": "Configuration terminée"
-  },
-  "@CLOUD_MESSAGE_config_error_title": {
-    "message": "Erreur de configuration"
-  },
-  "@CLOUD_MESSAGE_config_finish_title": {
-    "message": "Finition de configuration"
   }
 }

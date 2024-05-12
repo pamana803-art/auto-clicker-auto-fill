@@ -1,5 +1,6 @@
 const fs = require('fs');
 const translate = require('translate-google');
+const { LANGUAGES } = require('./translate.constant');
 
 // Function to recursively translate the values in an object
 async function translateObject(obj, targetLanguage, targetJson) {
@@ -41,16 +42,16 @@ fs.readFile(filePath, 'utf8', async (err, data) => {
 
   // Parse the JSON data
   const englishJson = JSON.parse(data);
-  for (const targetLanguage of ['zh-cn', 'fr', 'ko']) {
-    const translatedFilePath = `locales/${targetLanguage}/web-new.json`;
+  for (const targetLanguage of LANGUAGES) {
+    const translatedFilePath = `locales/${targetLanguage.folder}/web-new.json`;
 
     const data = await fs.promises.readFile(translatedFilePath, 'utf8');
-    console.error('Processing', targetLanguage);
+    console.error('Processing', targetLanguage.lang);
     // Parse the JSON data
     const targetJson = JSON.parse(data);
 
     // Translate the JSON object and log the result
-    const translatedJson = await translateObject(englishJson, targetLanguage, targetJson);
-    await fs.promises.writeFile(`locales/${targetLanguage}/web-new.json`, JSON.stringify(translatedJson, null, 2));
+    const translatedJson = await translateObject(englishJson, targetLanguage.lang, targetJson);
+    await fs.promises.writeFile(`locales/${targetLanguage.folder}/web-new.json`, JSON.stringify(translatedJson, null, 2));
   }
 });

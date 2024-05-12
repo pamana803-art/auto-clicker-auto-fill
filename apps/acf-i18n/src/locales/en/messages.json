@@ -1,71 +1,40 @@
 {
-  "message_action_not_found": {
+  "EXT_NAME": {
+    "message": "Auto Clicker - AutoFill",
+    "description": "Extension name with placeholder"
+  },
+  "EXT_SHORT_NAME": {
+    "message": "Auto Fill",
+    "description": "Extension short name"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "AutoFill input field or auto click button or link anything anywhere.You can configure and check click speed test",
+    "description": "Extension description"
+  },
+  "@ACF_BACKUP__NOTIFICATION_TITLE": {
+    "message": "ACF Backup",
+    "description": "Notification title for acf backup"
+  },
+  "@ACF_BACKUP__NOTIFICATION_BACKUP": {
+    "message": "Configurations are backup on Google Drive at $1",
+    "description": "Notification message when configurations are backup on Google Drive"
+  },
+  "@ACF_BACKUP__NOTIFICATION_RESTORE": {
+    "message": "Configurations are restored from Google Drive. Refresh configurations page to load content.",
+    "description": "Notification title when configurations are restored from Google Drive"
+  },
+  "@ACF_BACKUP__ERROR_NO_CONFIG": {
+    "message": "No configurations found to backup",
+    "description": "Error message when no configurations found to backup"
+  },
+  "@ACF_BACKUP__ERROR_NO_CONTENT": {
+    "message": "No content found in the file",
+    "description": "Error message when no content found in the file"
+  },
+  "@PORT__ACTION_NOT_FOUND": {
     "message": "is not configured"
   },
-  "@PORT__action_not_found": {
-    "message": "is not configured"
-  },
-  "@PORT__method_not_found": {
+  "@PORT__METHOD_NOT_FOUND": {
     "message": "process method is not found"
-  },
-  "@RATE__title": {
-    "message": "Useful Extension"
-  },
-  "@RATE__message": {
-    "message": "Do you found our extension useful?"
-  },
-  "@RATE__yes_button": {
-    "message": "Yes"
-  },
-  "@RATE__no_button": {
-    "message": "No"
-  },
-  "@RATE__yes_title": {
-    "message": "Enjoying the extension?"
-  },
-  "@RATE__yes_message": {
-    "message": "Please help us become a 5-star extension,\nThank you!"
-  },
-  "@RATE__no_title": {
-    "message": "Let us help you"
-  },
-  "@RATE__no_message": {
-    "message": "Connect with us on Discord or Create issue if you find"
-  },
-  "@RATE__issue_button": {
-    "message": "☉ Create Issue"
-  },
-  "@RATE__connect_button": {
-    "message": "★ Connect with us"
-  },
-  "@RATE__rate_button": {
-    "message": "❤ Rate Now"
-  },
-  "@RATE__later_button": {
-    "message": "☹ Later"
-  },
-  "@RATE__review_url_missing": {
-    "message": "Review url is missing for rate"
-  },
-  "@NOTIFICATIONS__permission_error": {
-    "message": "notification permission is not provided in manifest. Please update manifest permission"
-  },
-  "@NOTIFICATIONS__default_icon_missing": {
-    "message": "default_icon is not defined under browser_action in manifest. Please add {browser_action:{default_icon}}"
-  },
-  "@TAB__options_page_url_missing": {
-    "message": "options page not defined in manifest. Please add {config{options_page_url}}"
-  },
-  "@IMPORT_DATA___target": {
-    "message": "Import target not specified"
-  },
-  "@NOTIFICATIONS_config_finish": {
-    "message": "Configuration Finished"
-  },
-  "@CLOUD_MESSAGE_config_error_title": {
-    "message": "Configuration Error"
-  },
-  "@CLOUD_MESSAGE_config_finish_title": {
-    "message": "Configuration Finish"
   }
 }
