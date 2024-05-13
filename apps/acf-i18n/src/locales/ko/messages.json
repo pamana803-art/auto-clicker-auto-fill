@@ -121,5 +121,17 @@
   },
   "@RECHECK_OPTION": {
     "message": "재확인"
+  },
+  "@DOCS": {
+    "message": "문서"
+  },
+  "@CHAT": {
+    "message": "채팅"
+  },
+  "@ADVANCE": {
+    "message": "전진"
+  },
+  "@SPONSOR": {
+    "message": "스폰서"
   }
 }

@@ -1,35 +1,27 @@
 {
   "EXT_NAME": {
-    "message": "Auto Clicker - AutoFill",
-    "description": "Extension name with placeholder"
+    "message": "Auto Clicker - AutoFill"
   },
   "EXT_SHORT_NAME": {
-    "message": "Auto Fill",
-    "description": "Extension short name"
+    "message": "Auto Fill"
   },
   "EXT_DESCRIPTION": {
-    "message": "AutoFill input field or auto click button or link anything anywhere.You can configure and check click speed test",
-    "description": "Extension description"
+    "message": "AutoFill input field or auto click button or link anything anywhere.You can configure and check click speed test"
   },
   "@ACF_BACKUP__NOTIFICATION_TITLE": {
-    "message": "ACF Backup",
-    "description": "Notification title for acf backup"
+    "message": "ACF Backup"
   },
   "@ACF_BACKUP__NOTIFICATION_BACKUP": {
-    "message": "Configurations are backup on Google Drive at $1",
-    "description": "Notification message when configurations are backup on Google Drive"
+    "message": "Configurations are backup on Google Drive at $1"
   },
   "@ACF_BACKUP__NOTIFICATION_RESTORE": {
-    "message": "Configurations are restored from Google Drive. Refresh configurations page to load content.",
-    "description": "Notification title when configurations are restored from Google Drive"
+    "message": "Configurations are restored from Google Drive. Refresh configurations page to load content."
   },
   "@ACF_BACKUP__ERROR_NO_CONFIG": {
-    "message": "No configurations found to backup",
-    "description": "Error message when no configurations found to backup"
+    "message": "No configurations found to backup"
   },
   "@ACF_BACKUP__ERROR_NO_CONTENT": {
-    "message": "No content found in the file",
-    "description": "Error message when no content found in the file"
+    "message": "No content found in the file"
   },
   "@PORT__ACTION_NOT_FOUND": {
     "message": "is not configured"
@@ -129,5 +121,17 @@
   },
   "@RECHECK_OPTION": {
     "message": "RecheckOption"
+  },
+  "@DOCS": {
+    "message": "Docs"
+  },
+  "@CHAT": {
+    "message": "Chat"
+  },
+  "@ADVANCE": {
+    "message": "Advance"
+  },
+  "@SPONSOR": {
+    "message": "Sponsor"
   }
 }

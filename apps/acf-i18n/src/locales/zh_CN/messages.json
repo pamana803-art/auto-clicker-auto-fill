@@ -121,5 +121,17 @@
   },
   "@RECHECK_OPTION": {
     "message": "补偿"
+  },
+  "@DOCS": {
+    "message": "文档"
+  },
+  "@CHAT": {
+    "message": "聊天"
+  },
+  "@ADVANCE": {
+    "message": "进步"
+  },
+  "@SPONSOR": {
+    "message": "赞助"
   }
 }

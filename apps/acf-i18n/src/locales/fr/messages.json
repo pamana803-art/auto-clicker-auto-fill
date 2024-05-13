@@ -121,5 +121,17 @@
   },
   "@RECHECK_OPTION": {
     "message": "Recentrique"
+  },
+  "@DOCS": {
+    "message": "Documents"
+  },
+  "@CHAT": {
+    "message": "Chat"
+  },
+  "@ADVANCE": {
+    "message": "Avance"
+  },
+  "@SPONSOR": {
+    "message": "Parrainer"
   }
 }
