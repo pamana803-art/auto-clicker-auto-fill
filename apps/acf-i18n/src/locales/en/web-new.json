@@ -158,7 +158,10 @@
       "windowHint": "<b>Window</b> (default) browser loads extension once all its content is loaded",
       "document": "Document",
       "hotkey": "Hotkey",
-      "documentHint": "<b>Document</b> browser loads extension before scripts and images are loaded (faster)(unsafe)"
+      "documentHint": "<b>Document</b> browser loads extension before scripts and images are loaded (faster)(unsafe)",
+      "urlMatch": "URL Match",
+      "regex": "Regex",
+      "exact": "Exact"
     },
     "reorder": {
       "title": "Reorder Configuration's",
@@ -297,6 +300,7 @@
     }
   },
   "common": {
+    "appName": "Auto Clicker - AutoFill",
     "settings": "Settings",
     "error": "Error",
     "save": "Save",
@@ -318,6 +322,18 @@
     "ko": "Korean",
     "ca": "Canada",
     "hi": "Hindi",
-    "zh_CN": "Chinese"
+    "zh_CN": "Chinese",
+    "sv": "Swedish",
+    "pt": "Portuguese",
+    "ja": "Japanese",
+    "nl": "Dutch",
+    "de": "German",
+    "es": "Spanish",
+    "vi": "Vietnamese",
+    "fi": "Finnish",
+    "ar": "Arabic",
+    "it": "Italian",
+    "ru": "Russian",
+    "id": "Indonesian"
   }
 }

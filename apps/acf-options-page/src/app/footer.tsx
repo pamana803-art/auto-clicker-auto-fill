@@ -1,7 +1,7 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Twitter, ChatFill, ShieldCheck, Facebook, Whatsapp, Star } from '../util';
-import { APP_NAME, SOCIAL_LINKS } from '../constants';
+import { SOCIAL_LINKS } from '../constants';
 import { useAppSelector } from '../hooks';
 import { appSelector } from '../store/app.slice';
 
@@ -22,11 +22,11 @@ function Footer() {
             <img src={imageURL} width='48' height='48' className='d-inline-block align-top me-2' alt='Auto click Auto Fill logo' title='Auto click Auto Fill logo' />
             <div className='d-inline-flex flex-column'>
               <h6 className='text-secondary mb-0'>
-                {APP_NAME}
+                {t('common.appName')}
                 <span className={`${process.env.NX_VARIANT} ms-2`}>[{process.env.NX_VARIANT}]</span>
               </h6>
               <div className='text-muted'>
-                <small>© 2017 - 2023</small>
+                <small>© 2017 - 2024</small>
                 <br />
                 <small id='extension-version'>☘ v{manifest?.version}</small>
                 <br />

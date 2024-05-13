@@ -2,7 +2,7 @@ import { Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import { GearFill, Github, Moon, Sun, ThreeDots, Youtube } from '../util';
 import { SettingsModal } from '../modal';
-import { APP_LANGUAGES, APP_LINK, APP_NAME, SOCIAL_LINKS } from '../constants';
+import { APP_LANGUAGES, APP_LINK, SOCIAL_LINKS } from '../constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { switchTheme, themeSelector } from '../store/theme.slice';
 import { appSelector } from '../store/app.slice';
@@ -34,6 +34,14 @@ function Header() {
   });
 
   useEffect(() => {
+    if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
+      window.document.title = `${t('common.appName')} [${process.env.NX_VARIANT}]`;
+    } else {
+      window.document.title = t('common.appName');
+    }
+  }, [t]);
+
+  useEffect(() => {
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
 
@@ -47,7 +55,7 @@ function Header() {
     dispatch(switchTheme());
   };
 
-  let appName = APP_NAME;
+  let appName = t('common.appName');
 
   if (/(DEV|BETA)/.test(process.env.NX_VARIANT || '')) {
     appName += ` [${process.env.NX_VARIANT}]`;
