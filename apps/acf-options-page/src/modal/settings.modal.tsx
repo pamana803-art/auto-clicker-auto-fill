@@ -90,7 +90,7 @@ export const SettingsModal = () => {
               <li className='list-group-item'>
                 <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-backup'>
                   <div className='fw-bold'>
-                    <CloudArrowUpFill className='me-2' /> Backup
+                    <CloudArrowUpFill className='me-2' /> {t('modal.settings.backup.title')}
                   </div>
                   <ChevronRight />
                 </Button>

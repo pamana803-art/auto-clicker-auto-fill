@@ -7,18 +7,7 @@
     "google-group": "grupo de google",
     "login": "Acceso",
     "logout": "Cerrar sesión",
-    "settings": "Ajustes globales",
-    "backup": {
-      "last-backup": "Última copia de seguridad:",
-      "backup": "Copia de seguridad en la nube",
-      "restore": "Restaurar desde la nube",
-      "now": "Copia ahora",
-      "auto-backup": "Copia de seguridad automática",
-      "daily": "A diario",
-      "weekly": "Semanalmente",
-      "monthly": "Mensual",
-      "off": "Apagado"
-    }
+    "settings": "Ajustes globales"
   },
   "footer": {
     "resources": "Recursos",
@@ -143,6 +132,18 @@
         "skip": "Saltar no encontrado",
         "refresh": "Actualizar",
         "hint": "A continuación se detallan las acciones que se pueden realizar si xpath no se encuentra por extensión después de volver a intentarlo."
+      },
+      "backup": {
+        "title": "Respaldo",
+        "last-backup": "Última copia de seguridad:",
+        "backup": "Copia de seguridad en la nube",
+        "restore": "Restaurar desde la nube",
+        "now": "Copia ahora",
+        "auto-backup": "Copia de seguridad automática",
+        "daily": "A diario",
+        "weekly": "Semanalmente",
+        "monthly": "Mensual",
+        "off": "Apagado"
       },
       "saveMessage": "¡La configuración se guardó correctamente!"
     },

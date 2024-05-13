@@ -5,6 +5,17 @@ const { LANGUAGES } = require('./translate.constant');
 // Creates a client
 const translate = new Translate();
 
+// Function to remove extra properties from obj2 that are not in obj1
+function removeExtraProperties(obj1, obj2) {
+  Object.keys(obj2).forEach((key) => {
+    if (!Object.hasOwn(obj1, key)) {
+      delete obj2[key];
+    } else if (typeof obj2[key] === 'object' && typeof obj1[key] === 'object') {
+      removeExtraProperties(obj1[key], obj2[key]);
+    }
+  });
+}
+
 async function translateStringValue(value, targetValue, targetLanguage) {
   if (targetValue) {
     return targetValue;
@@ -35,17 +46,21 @@ async function translateObject(obj, targetLanguage, targetJson) {
 async function start() {
   // Read the JSON file
   const filePath = 'locales/en/web-new.json';
-  const englishJson = await fs.promises.readFile(filePath, 'utf8');
+  const english = await fs.promises.readFile(filePath, 'utf8');
 
   for (const { lang, folder } of LANGUAGES) {
     console.error('------------- Processing :: ', folder, lang);
     const translatedFilePath = `locales/${folder}/web-new.json`;
 
-    const targetJson = await fs.promises.readFile(translatedFilePath, 'utf8').catch(() => {
+    const target = await fs.promises.readFile(translatedFilePath, 'utf8').catch(() => {
       fs.promises.mkdir(`locales/${folder}`, { recursive: true });
     });
+
+    const englishJson = JSON.parse(english);
+    const targetJson = JSON.parse(target || '{}');
+    removeExtraProperties(englishJson, targetJson);
     // Translate the JSON object and log the result
-    const translatedJson = await translateObject(JSON.parse(englishJson), lang, JSON.parse(targetJson || '{}'));
+    const translatedJson = await translateObject(englishJson, lang, targetJson);
     await fs.promises.writeFile(`locales/${folder}/web-new.json`, JSON.stringify(translatedJson, null, 2));
   }
 }

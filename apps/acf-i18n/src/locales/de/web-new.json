@@ -7,18 +7,7 @@
     "google-group": "Google-Gruppe",
     "login": "Anmeldung",
     "logout": "Ausloggen",
-    "settings": "Globale Einstellungen",
-    "backup": {
-      "last-backup": "Letztes Backup:",
-      "backup": "Backup in die Cloud",
-      "restore": "Wiederherstellung aus der Cloud",
-      "now": "Jetzt sichern",
-      "auto-backup": "Automatische Sicherung",
-      "daily": "Täglich",
-      "weekly": "Wöchentlich",
-      "monthly": "Monatlich",
-      "off": "Aus"
-    }
+    "settings": "Globale Einstellungen"
   },
   "footer": {
     "resources": "Ressourcen",
@@ -143,6 +132,18 @@
         "skip": "Überspringen – Nicht gefunden",
         "refresh": "Aktualisierung",
         "hint": "Nachfolgend finden Sie die Aktionen, die ausgeführt werden können, wenn XPath nach einem erneuten Versuch nicht von der Erweiterung gefunden wird."
+      },
+      "backup": {
+        "title": "Sicherung",
+        "last-backup": "Letztes Backup:",
+        "backup": "Backup in die Cloud",
+        "restore": "Wiederherstellung aus der Cloud",
+        "now": "Jetzt sichern",
+        "auto-backup": "Automatische Sicherung",
+        "daily": "Täglich",
+        "weekly": "Wöchentlich",
+        "monthly": "Monatlich",
+        "off": "Aus"
       },
       "saveMessage": "Einstellungen erfolgreich gespeichert!"
     },

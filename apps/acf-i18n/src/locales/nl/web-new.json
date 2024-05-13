@@ -7,18 +7,7 @@
     "google-group": "Google-groep",
     "login": "Log in",
     "logout": "Uitloggen",
-    "settings": "Algemene instellingen",
-    "backup": {
-      "last-backup": "Laatste backup:",
-      "backup": "Back-up naar de cloud",
-      "restore": "Herstellen vanuit de cloud",
-      "now": "Nu backuppen",
-      "auto-backup": "Automatische back-up",
-      "daily": "Dagelijks",
-      "weekly": "Wekelijks",
-      "monthly": "Maandelijks",
-      "off": "Uit"
-    }
+    "settings": "Algemene instellingen"
   },
   "footer": {
     "resources": "Bronnen",
@@ -143,6 +132,18 @@
         "skip": "Overslaan niet gevonden",
         "refresh": "Vernieuwen",
         "hint": "Hieronder staan acties die kunnen worden uitgevoerd als xpath na een nieuwe poging niet door de extensie wordt gevonden"
+      },
+      "backup": {
+        "title": "Back-up",
+        "last-backup": "Laatste backup:",
+        "backup": "Back-up naar de cloud",
+        "restore": "Herstellen vanuit de cloud",
+        "now": "Nu backuppen",
+        "auto-backup": "Automatische back-up",
+        "daily": "Dagelijks",
+        "weekly": "Wekelijks",
+        "monthly": "Maandelijks",
+        "off": "Uit"
       },
       "saveMessage": "Instellingen succesvol opgeslagen!"
     },

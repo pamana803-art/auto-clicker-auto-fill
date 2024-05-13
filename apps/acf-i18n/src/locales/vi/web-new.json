@@ -7,18 +7,7 @@
     "google-group": "Nhóm Google",
     "login": "Đăng nhập",
     "logout": "Đăng xuất",
-    "settings": "Thiết lập toàn cầu",
-    "backup": {
-      "last-backup": "Sao lưu cuối cùng:",
-      "backup": "Sao lưu lên đám mây",
-      "restore": "Khôi phục từ đám mây",
-      "now": "Sao lưu ngay",
-      "auto-backup": "Tự động sao lưu",
-      "daily": "Hằng ngày",
-      "weekly": "hàng tuần",
-      "monthly": "hàng tháng",
-      "off": "Tắt"
-    }
+    "settings": "Thiết lập toàn cầu"
   },
   "footer": {
     "resources": "Tài nguyên",
@@ -143,6 +132,18 @@
         "skip": "Bỏ qua Không tìm thấy",
         "refresh": "Làm cho khỏe lại",
         "hint": "Dưới đây là hành động có thể được thực hiện nếu tiện ích mở rộng không tìm thấy xpath sau khi thử lại"
+      },
+      "backup": {
+        "title": "Hỗ trợ",
+        "last-backup": "Sao lưu cuối cùng:",
+        "backup": "Sao lưu lên đám mây",
+        "restore": "Khôi phục từ đám mây",
+        "now": "Sao lưu ngay",
+        "auto-backup": "Tự động sao lưu",
+        "daily": "Hằng ngày",
+        "weekly": "hàng tuần",
+        "monthly": "hàng tháng",
+        "off": "Tắt"
       },
       "saveMessage": "Cài đặt đã lưu thành công!"
     },

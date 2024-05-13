@@ -7,18 +7,7 @@
     "google-group": "Google-ryhmä",
     "login": "Kirjaudu sisään",
     "logout": "Kirjautua ulos",
-    "settings": "Yleiset asetukset",
-    "backup": {
-      "last-backup": "Viimeisin varmuuskopio:",
-      "backup": "Varmuuskopioi pilveen",
-      "restore": "Palauta pilvestä",
-      "now": "Varmuuskopioi nyt",
-      "auto-backup": "Automaattinen varmuuskopiointi",
-      "daily": "Päivittäin",
-      "weekly": "Viikoittain",
-      "monthly": "Kuukausittain",
-      "off": "Vinossa"
-    }
+    "settings": "Yleiset asetukset"
   },
   "footer": {
     "resources": "Resurssit",
@@ -143,6 +132,18 @@
         "skip": "Ohita ei löydy",
         "refresh": "virkistää",
         "hint": "Alla on toiminto, joka voidaan suorittaa, jos xpath ei löydy laajennuksesta uudelleen yrittämisen jälkeen"
+      },
+      "backup": {
+        "title": "Varmuuskopioida",
+        "last-backup": "Viimeisin varmuuskopio:",
+        "backup": "Varmuuskopioi pilveen",
+        "restore": "Palauta pilvestä",
+        "now": "Varmuuskopioi nyt",
+        "auto-backup": "Automaattinen varmuuskopiointi",
+        "daily": "Päivittäin",
+        "weekly": "Viikoittain",
+        "monthly": "Kuukausittain",
+        "off": "Vinossa"
       },
       "saveMessage": "Asetukset tallennettu onnistuneesti!"
     },

@@ -7,18 +7,7 @@
     "google-group": "Google Group",
     "login": "Login",
     "logout": "Logout",
-    "settings": "Global Settings",
-    "backup": {
-      "last-backup": "Last Backup:",
-      "backup": "Backup to Cloud",
-      "restore": "Restore from Cloud",
-      "now": "Backup Now",
-      "auto-backup": "Auto Backup",
-      "daily": "Daily",
-      "weekly": "Weekly",
-      "monthly": "Monthly",
-      "off": "Off"
-    }
+    "settings": "Global Settings"
   },
   "footer": {
     "resources": "Resources",
@@ -143,6 +132,18 @@
         "skip": "Skip Not Found",
         "refresh": "Refresh",
         "hint": "Below are action which can be performed if xpath is not found by extension after retry"
+      },
+      "backup": {
+        "title": "Backup",
+        "last-backup": "Last Backup:",
+        "backup": "Backup to Cloud",
+        "restore": "Restore from Cloud",
+        "now": "Backup Now",
+        "auto-backup": "Auto Backup",
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "off": "Off"
       },
       "saveMessage": "Settings saved successfully!"
     },

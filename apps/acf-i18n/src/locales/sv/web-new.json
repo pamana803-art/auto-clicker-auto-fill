@@ -7,18 +7,7 @@
     "google-group": "Google-gruppen",
     "login": "Logga in",
     "logout": "Logga ut",
-    "settings": "Globala inställningar",
-    "backup": {
-      "last-backup": "Senaste säkerhetskopiering:",
-      "backup": "Säkerhetskopiera till molnet",
-      "restore": "Återställ från molnet",
-      "now": "Säkerhetskopiera nu",
-      "auto-backup": "Automatisk säkerhetskopiering",
-      "daily": "Dagligen",
-      "weekly": "Varje vecka",
-      "monthly": "En gång i månaden",
-      "off": "Av"
-    }
+    "settings": "Globala inställningar"
   },
   "footer": {
     "resources": "Resurser",
@@ -143,6 +132,18 @@
         "skip": "Hoppa ej hittades",
         "refresh": "Uppdatera",
         "hint": "Nedan finns åtgärder som kan utföras om xpath inte hittas som förlängning efter ett nytt försök"
+      },
+      "backup": {
+        "title": "Säkerhetskopiering",
+        "last-backup": "Senaste säkerhetskopiering:",
+        "backup": "Säkerhetskopiera till molnet",
+        "restore": "Återställ från molnet",
+        "now": "Säkerhetskopiera nu",
+        "auto-backup": "Automatisk säkerhetskopiering",
+        "daily": "Dagligen",
+        "weekly": "Varje vecka",
+        "monthly": "En gång i månaden",
+        "off": "Av"
       },
       "saveMessage": "Inställningarna har sparats!"
     },

@@ -7,18 +7,7 @@
     "google-group": "Gruppo Google",
     "login": "Login",
     "logout": "Disconnettersi",
-    "settings": "Impostazioni globali",
-    "backup": {
-      "last-backup": "Ultimo backup:",
-      "backup": "Backup sul cloud",
-      "restore": "Ripristina dal cloud",
-      "now": "Esegui il backup ora",
-      "auto-backup": "Auto Backup",
-      "daily": "Quotidiano",
-      "weekly": "settimanalmente",
-      "monthly": "Mensile",
-      "off": "Spento"
-    }
+    "settings": "Impostazioni globali"
   },
   "footer": {
     "resources": "Risorse",
@@ -143,6 +132,18 @@
         "skip": "Salta non trovato",
         "refresh": "ricaricare",
         "hint": "Di seguito sono riportate le azioni che possono essere eseguite se xpath non viene trovato dall'estensione dopo un nuovo tentativo"
+      },
+      "backup": {
+        "title": "Backup",
+        "last-backup": "Ultimo backup:",
+        "backup": "Backup sul cloud",
+        "restore": "Ripristina dal cloud",
+        "now": "Esegui il backup ora",
+        "auto-backup": "Auto Backup",
+        "daily": "Quotidiano",
+        "weekly": "settimanalmente",
+        "monthly": "Mensile",
+        "off": "Spento"
       },
       "saveMessage": "Impostazioni salvate con successo!"
     },

@@ -7,18 +7,7 @@
     "google-group": "Groupe Google",
     "login": "Connexion",
     "logout": "Se déconnecter",
-    "settings": "Paramètres globaux",
-    "backup": {
-      "last-backup": "Dernière sauvegarde:",
-      "backup": "Sauvegarde sur le cloud",
-      "restore": "Restaurer depuis le cloud",
-      "now": "Sauvegarder maintenant",
-      "auto-backup": "Sauvegarde automatique",
-      "daily": "Tous les jours",
-      "weekly": "Hebdomadaire",
-      "monthly": "Mensuel",
-      "off": "Désactivé"
-    }
+    "settings": "Paramètres globaux"
   },
   "footer": {
     "resources": "Ressources",
@@ -143,6 +132,18 @@
         "skip": "Passer non trouvé",
         "refresh": "Rafraîchir",
         "hint": "Vous trouverez ci-dessous une action qui peut être effectuée si XPath n'est pas trouvé par extension après la réparation"
+      },
+      "backup": {
+        "title": "Sauvegarde",
+        "last-backup": "Dernière sauvegarde:",
+        "backup": "Sauvegarde sur le cloud",
+        "restore": "Restaurer depuis le cloud",
+        "now": "Sauvegarder maintenant",
+        "auto-backup": "Sauvegarde automatique",
+        "daily": "Tous les jours",
+        "weekly": "Hebdomadaire",
+        "monthly": "Mensuel",
+        "off": "Désactivé"
       },
       "saveMessage": "Les paramètres enregistrés avec succès!"
     },

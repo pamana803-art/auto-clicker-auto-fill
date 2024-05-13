@@ -7,18 +7,7 @@
     "google-group": "Google グループ",
     "login": "ログイン",
     "logout": "ログアウト",
-    "settings": "全体設定",
-    "backup": {
-      "last-backup": "最終バックアップ:",
-      "backup": "クラウドへのバックアップ",
-      "restore": "クラウドから復元",
-      "now": "今すぐバックアップ",
-      "auto-backup": "自動バックアップ",
-      "daily": "毎日",
-      "weekly": "毎週",
-      "monthly": "月次",
-      "off": "オフ"
-    }
+    "settings": "全体設定"
   },
   "footer": {
     "resources": "リソース",
@@ -143,6 +132,18 @@
         "skip": "スキップが見つかりません",
         "refresh": "リフレッシュ",
         "hint": "以下は、再試行後に拡張子によってxpathが見つからない場合に実行できるアクションです。"
+      },
+      "backup": {
+        "title": "バックアップ",
+        "last-backup": "最終バックアップ:",
+        "backup": "クラウドへのバックアップ",
+        "restore": "クラウドから復元",
+        "now": "今すぐバックアップ",
+        "auto-backup": "自動バックアップ",
+        "daily": "毎日",
+        "weekly": "毎週",
+        "monthly": "月次",
+        "off": "オフ"
       },
       "saveMessage": "設定が正常に保存されました。"
     },

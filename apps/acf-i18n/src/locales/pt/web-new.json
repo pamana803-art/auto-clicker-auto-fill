@@ -7,18 +7,7 @@
     "google-group": "Grupo do Google",
     "login": "Conecte-se",
     "logout": "Sair",
-    "settings": "Configurações globais",
-    "backup": {
-      "last-backup": "Ultimo Back up:",
-      "backup": "Backup para nuvem",
-      "restore": "Restaurar da nuvem",
-      "now": "Faça backup agora",
-      "auto-backup": "Backup automático",
-      "daily": "Diário",
-      "weekly": "Semanalmente",
-      "monthly": "Por mês",
-      "off": "Desligado"
-    }
+    "settings": "Configurações globais"
   },
   "footer": {
     "resources": "Recursos",
@@ -143,6 +132,18 @@
         "skip": "Pular não encontrado",
         "refresh": "Atualizar",
         "hint": "Abaixo estão as ações que podem ser executadas se o xpath não for encontrado por extensão após nova tentativa"
+      },
+      "backup": {
+        "title": "Cópia de segurança",
+        "last-backup": "Ultimo Back up:",
+        "backup": "Backup na nuvem",
+        "restore": "Restaurar da nuvem",
+        "now": "Faça backup agora",
+        "auto-backup": "Backup automático",
+        "daily": "Diário",
+        "weekly": "Semanalmente",
+        "monthly": "Por mês",
+        "off": "Desligado"
       },
       "saveMessage": "Configurações salvas com sucesso!"
     },

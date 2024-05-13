@@ -7,18 +7,7 @@
     "google-group": "Grup Google",
     "login": "Gabung",
     "logout": "Keluar",
-    "settings": "Pengaturan global",
-    "backup": {
-      "last-backup": "Cadangan terakhir:",
-      "backup": "Cadangkan ke Cloud",
-      "restore": "Pulihkan dari Cloud",
-      "now": "Cadangkan Sekarang",
-      "auto-backup": "Pencadangan Otomatis",
-      "daily": "Sehari-hari",
-      "weekly": "Mingguan",
-      "monthly": "Bulanan",
-      "off": "Mati"
-    }
+    "settings": "Pengaturan global"
   },
   "footer": {
     "resources": "Sumber daya",
@@ -143,6 +132,18 @@
         "skip": "Lewati Tidak Ditemukan",
         "refresh": "Menyegarkan",
         "hint": "Di bawah ini adalah tindakan yang dapat dilakukan jika xpath tidak ditemukan dengan ekstensi setelah mencoba lagi"
+      },
+      "backup": {
+        "title": "Cadangan",
+        "last-backup": "Cadangan terakhir:",
+        "backup": "Cadangkan ke Cloud",
+        "restore": "Pulihkan dari Cloud",
+        "now": "Cadangkan Sekarang",
+        "auto-backup": "Pencadangan Otomatis",
+        "daily": "Sehari-hari",
+        "weekly": "Mingguan",
+        "monthly": "Bulanan",
+        "off": "Mati"
       },
       "saveMessage": "Pengaturan berhasil disimpan!"
     },

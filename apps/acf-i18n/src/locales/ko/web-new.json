@@ -7,18 +7,7 @@
     "google-group": "구글 그룹",
     "login": "로그인",
     "logout": "로그 아웃",
-    "settings": "전역 설정",
-    "backup": {
-      "last-backup": "마지막 백업:",
-      "backup": "클라우드에 백업",
-      "restore": "클라우드에서 복원",
-      "now": "백업 지금",
-      "auto-backup": "자동 백업",
-      "daily": "일일",
-      "weekly": "주간",
-      "monthly": "월간 간행물",
-      "off": "끄다"
-    }
+    "settings": "전역 설정"
   },
   "footer": {
     "resources": "자원",
@@ -143,6 +132,18 @@
         "skip": "건너 뛰지 않아",
         "refresh": "새로 고치다",
         "hint": "다음은 재시도 후에 XPath가 확장자가 발견하지 못하면 수행 할 수있는 동작입니다."
+      },
+      "backup": {
+        "title": "지원",
+        "last-backup": "마지막 백업:",
+        "backup": "클라우드에 백업",
+        "restore": "클라우드에서 복원",
+        "now": "백업 지금",
+        "auto-backup": "자동 백업",
+        "daily": "일일",
+        "weekly": "주간",
+        "monthly": "월간 간행물",
+        "off": "끄다"
       },
       "saveMessage": "설정이 성공적으로 저장되었습니다!"
     },
