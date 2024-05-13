@@ -1,9 +1,7 @@
 import { ConfigError, SystemError } from '@dhruv-techapps/core-common';
-import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 import { Timer } from '@dhruv-techapps/shared-util';
-
-// KeyEvents::{value:'Example text',delay:300}
-// KeyEvents::Example text
+import { ACTION_I18N_TITLE } from '.';
+import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 
 const KEYBOARD_EVENT_KEYDOWN = 'keydown';
 const KEYBOARD_EVENT_KEYUP = 'keyup';
@@ -56,7 +54,7 @@ export const KeyEvents = (() => {
 
   const start = (elements: Array<HTMLElement>, event: string) => {
     const events = getVerifiedEvents(event);
-    console.debug(`Action #${window.__currentAction}`, elements, events);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, events);
     CommonEvents.loopElements<HTMLElement, Array<KeyEvent>>(elements, events, dispatchEvent);
   };
   return { start };

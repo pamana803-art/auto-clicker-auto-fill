@@ -1,8 +1,9 @@
-import { ConfigError } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
-import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
+import { ConfigError } from '@dhruv-techapps/core-common';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { Sandbox } from '@dhruv-techapps/sandbox';
+import { ACTION_I18N_TITLE } from '.';
+import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 
 const LOCAL_STORAGE_COPY = 'auto-clicker-copy';
 const CHANGE_EVENT = ['input', 'change'];
@@ -28,7 +29,7 @@ export const PasteEvents = (() => {
     const copyContent = localStorage.getItem(LOCAL_STORAGE_COPY);
     value = value.replace(/paste::/i, '');
     value = await Sandbox.sandboxEval(value, copyContent);
-    console.debug(`Action #${window.__currentAction}`, elements, copyContent, value);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, copyContent, value);
     CommonEvents.loopElements(elements, value, checkNode);
     return true;
   };

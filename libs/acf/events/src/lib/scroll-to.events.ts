@@ -1,11 +1,12 @@
 import { ConfigError } from '@dhruv-techapps/core-common';
+import { ACTION_I18N_TITLE } from '.';
 import CommonEvents from './common.events';
 
 const SCROLL_COORDINATES = ['Top', 'Bottom', 'Left', 'Right', 'TopLeft', 'BottomLeft', 'BottomRight', 'TopRight', 'XPath'];
 
 export const ScrollToEvents = (() => {
   const scrollToCoordinates = (axis: string) => {
-    console.debug(`Action #${window.__currentAction}`, axis);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, axis);
     let xAxis = 0;
     let yAxis = 0;
     if (axis.indexOf('Right') !== -1) {
@@ -18,7 +19,7 @@ export const ScrollToEvents = (() => {
   };
 
   const scrollToElement = (elements: Array<HTMLElement>) => {
-    console.debug(`Action #${window.__currentAction}`, elements[0]);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements[0]);
     elements[0].scrollIntoView();
   };
 

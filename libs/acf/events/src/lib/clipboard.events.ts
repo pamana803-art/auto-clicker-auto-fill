@@ -1,8 +1,9 @@
-import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
-import { ConfigError } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
-import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
+import { ConfigError } from '@dhruv-techapps/core-common';
+import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { Sandbox } from '@dhruv-techapps/sandbox';
+import { ACTION_I18N_TITLE } from '.';
+import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 
 const LOGGER_LETTER = 'ClipboardEvents';
 const CHANGE_EVENT = ['input', 'change'];
@@ -48,7 +49,7 @@ export const ClipboardEvents = (() => {
   const copy = async (elements: Array<HTMLElement>, value: string) => {
     const text = getValue(elements[0]);
     const result = applyFilter(text, value.replace(/copy::/gi, ''));
-    console.debug(`Action #${window.__currentAction}`, elements[0], text, result);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements[0], text, result);
     await navigator.clipboard.writeText(result);
   };
 
@@ -56,7 +57,7 @@ export const ClipboardEvents = (() => {
     await navigator.clipboard.readText().then(async (clipText = '') => {
       value = value.replace(/paste::/i, '');
       value = await Sandbox.sandboxEval(value, clipText);
-      console.debug(`Action #${window.__currentAction}`, elements, clipText, value);
+      console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, clipText, value);
       CommonEvents.loopElements(elements, value, checkNode);
     });
   };

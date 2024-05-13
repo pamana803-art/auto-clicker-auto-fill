@@ -1,6 +1,7 @@
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
-import CommonEvents from './common.events';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
+import { ACTION_I18N_TITLE } from '.';
+import CommonEvents from './common.events';
 
 const DEFAULT_EVENT = ['mouseover', 'mousedown', 'mouseup', 'click'];
 const CHANGE_EVENT = ['input', 'change'];
@@ -35,7 +36,7 @@ export const PlainEvents = (() => {
 
   const start = (elements: Array<HTMLElement>, value: string) => {
     value = checkEmptyValue(value);
-    console.debug(`Action #${window.__currentAction}`, elements, value);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, value);
     CommonEvents.loopElements(elements, value, dispatchEvent);
   };
 

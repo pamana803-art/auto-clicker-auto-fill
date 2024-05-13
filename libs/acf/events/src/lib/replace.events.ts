@@ -1,7 +1,8 @@
-import { ConfigError } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
-import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
+import { ConfigError } from '@dhruv-techapps/core-common';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
+import { ACTION_I18N_TITLE } from '.';
+import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 
 const CHANGE_EVENT = ['input', 'change'];
 
@@ -25,7 +26,7 @@ export const ReplaceEvents = (() => {
 
   const start = (elements: Array<HTMLElement>, value: string) => {
     value = value.replace(/^replace::/i, '');
-    console.debug(`Action #${window.__currentAction}`, elements, value);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, value);
     CommonEvents.loopElements(elements, value, checkNode);
   };
 

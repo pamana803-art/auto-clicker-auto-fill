@@ -1,9 +1,9 @@
-import { ConfigError } from '@dhruv-techapps/core-common';
-import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
-
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
+import { ConfigError } from '@dhruv-techapps/core-common';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { Sandbox } from '@dhruv-techapps/sandbox';
+import { ACTION_I18N_TITLE } from '.';
+import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 
 const CHANGE_EVENT = ['input', 'change'];
 
@@ -26,7 +26,7 @@ export const FuncEvents = (() => {
 
   const start = async (elements: Array<HTMLElement>, value: string) => {
     value = value.replace(/func::/i, '');
-    console.debug(`Action #${window.__currentAction}`, elements, value);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, value);
     value = await Sandbox.sandboxEval(value);
     CommonEvents.loopElements(elements, value, checkNode);
     return true;

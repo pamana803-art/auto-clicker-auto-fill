@@ -1,3 +1,4 @@
+import { ACTION_I18N_TITLE } from '.';
 import CommonEvents from './common.events';
 
 export const AttributeEvents = (() => {
@@ -11,7 +12,7 @@ export const AttributeEvents = (() => {
   };
 
   const start = (elements: Array<HTMLElement>, value: string) => {
-    console.debug(`Action #${window.__currentAction}`, elements, value);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, value);
     CommonEvents.loopElements(elements, value, execCommand);
   };
   return { start };
