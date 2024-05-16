@@ -1,4 +1,4 @@
-import { STATUS_BAR_LOCATION } from '@dhruv-techapps/acf-common';
+import { STATUS_BAR_LOCATION } from '@dhruv-techapps/status-bar';
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -124,6 +124,15 @@ export const SettingsModal = () => {
                 </Form.Label>
                 <Form.Check type='switch' name='reloadOnError' onChange={onUpdate} id='settings-reloadOnError' checked={settings.reloadOnError || false} />
               </li>
+              {localStorage.getItem('DEV') === 'true' && (
+                <li className='list-group-item d-flex justify-content-between align-items-center'>
+                  <Form.Label className='ms-2 me-auto' htmlFor='settings-suppress-whats-new'>
+                    <div className='fw-bold'>{t('modal.settings.suppressWhatsNew')}</div>
+                    {t('modal.settings.suppressWhatsNewHint')} <br />
+                  </Form.Label>
+                  <Form.Check type='switch' name='suppressWhatsNew' onChange={onUpdate} id='settings-suppressWhatsNew' checked={settings.suppressWhatsNew || false} />
+                </li>
+              )}
               <li className='list-group-item d-flex justify-content-between align-items-center'>
                 <Form.Label className='ms-2' htmlFor='settings-statusBar'>
                   <div className='fw-bold'>{t('modal.settings.statusBar.title')}</div>
