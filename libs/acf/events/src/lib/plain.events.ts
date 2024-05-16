@@ -1,6 +1,7 @@
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { ACTION_I18N_TITLE } from '.';
+
 import CommonEvents from './common.events';
 
 const DEFAULT_EVENT = ['mouseover', 'mousedown', 'mouseup', 'click'];
@@ -11,7 +12,7 @@ export const PlainEvents = (() => {
 
   const dispatchEvent = (element: HTMLElement, value: string) => {
     if (element instanceof HTMLSelectElement) {
-      const nodes = document.evaluate(`//option[text()="${value}" or @value="${value}" or @id="${value}"]`, element, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+      const nodes = document.evaluate(`.//option[text()="${value}" or @value="${value}" or @id="${value}"]`, element, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
       if (nodes.snapshotLength !== 0) {
         (nodes.snapshotItem(0) as HTMLOptionElement).selected = true;
       }
