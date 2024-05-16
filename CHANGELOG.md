@@ -1,6 +1,5 @@
 ## 3.12.0 (2024-05-13)
 
-
 ### 🚀 Features
 
 - Add version check for tour in Header component ([#277](https://github.com/Dhruv-Techapps/auto-clicker-auto-fill/pull/277))
@@ -13,7 +12,7 @@
 - Update context menu titles for field configuration, auto clicker, and configuration page ([bede29d](https://github.com/Dhruv-Techapps/auto-clicker-auto-fill/commit/bede29d))
 - Update language translations for Korean, Chinese, and French ([97cc15c](https://github.com/Dhruv-Techapps/auto-clicker-auto-fill/commit/97cc15c))
 
-### ❤️  Thank You
+### ❤️ Thank You
 
 - Dharmesh @dharmesh-hemaram
 - Dharmesh Patel @dharmesh-hemaram
