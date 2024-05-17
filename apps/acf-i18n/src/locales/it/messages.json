@@ -2,6 +2,15 @@
   "EXT_NAME": {
     "message": "Clicker automatico: riempimento automatico"
   },
+  "EXT_NAME_DEV": {
+    "message": "Clicker automatico - Compilazione automatica [DEV]"
+  },
+  "EXT_NAME_BETA": {
+    "message": "Clicker automatico - Compilazione automatica [BETA]"
+  },
+  "EXT_NAME_LOCAL": {
+    "message": "Clicker automatico - Compilazione automatica [LOCALE]"
+  },
   "EXT_SHORT_NAME": {
     "message": "Compilazione automatica"
   },

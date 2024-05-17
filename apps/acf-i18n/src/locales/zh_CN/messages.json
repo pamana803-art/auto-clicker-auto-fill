@@ -2,6 +2,15 @@
   "EXT_NAME": {
     "message": "自动点击器 - 自动填充器"
   },
+  "EXT_NAME_DEV": {
+    "message": "自动点击器 - 自动填充 [DEV]"
+  },
+  "EXT_NAME_BETA": {
+    "message": "自动点击器 - 自动填充 [BETA]"
+  },
+  "EXT_NAME_LOCAL": {
+    "message": "自动点击器 - 自动填充 [本地]"
+  },
   "EXT_SHORT_NAME": {
     "message": "自动填充"
   },

@@ -2,6 +2,15 @@
   "EXT_NAME": {
     "message": "자동 클릭커 - 자동 완성"
   },
+  "EXT_NAME_DEV": {
+    "message": "자동 클릭커 - 자동 완성 [DEV]"
+  },
+  "EXT_NAME_BETA": {
+    "message": "자동 클릭커 - 자동완성[베타]"
+  },
+  "EXT_NAME_LOCAL": {
+    "message": "자동 클릭커 - 자동완성 [LOCAL]"
+  },
   "EXT_SHORT_NAME": {
     "message": "자동 채우기"
   },

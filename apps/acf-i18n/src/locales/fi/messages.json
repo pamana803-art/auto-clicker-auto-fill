@@ -2,6 +2,15 @@
   "EXT_NAME": {
     "message": "Auto Clicker - Automaattinen täyttö"
   },
+  "EXT_NAME_DEV": {
+    "message": "Auto Clicker - Automaattinen täyttö [DEV]"
+  },
+  "EXT_NAME_BETA": {
+    "message": "Automaattinen napsautuslaite – automaattinen täyttö [BETA]"
+  },
+  "EXT_NAME_LOCAL": {
+    "message": "Auto Clicker – automaattinen täyttö [PAIKALLINEN]"
+  },
   "EXT_SHORT_NAME": {
     "message": "Automaattinen täyttö"
   },

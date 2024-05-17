@@ -1,6 +1,15 @@
 {
   "EXT_NAME": {
-    "message": "Clicker automatique - Autofill"
+    "message": "Clic automatique - Remplissage automatique"
+  },
+  "EXT_NAME_DEV": {
+    "message": "Clic automatique - Remplissage automatique [DEV]"
+  },
+  "EXT_NAME_BETA": {
+    "message": "Clic automatique – Remplissage automatique [BÊTA]"
+  },
+  "EXT_NAME_LOCAL": {
+    "message": "Clic automatique - Remplissage automatique [LOCAL]"
   },
   "EXT_SHORT_NAME": {
     "message": "Remplissage automatique"

@@ -2,6 +2,15 @@
   "EXT_NAME": {
     "message": "Clicker automático - Autocompletar"
   },
+  "EXT_NAME_DEV": {
+    "message": "Clicker automático - Autocompletar [DEV]"
+  },
+  "EXT_NAME_BETA": {
+    "message": "Clicker automático - Autocompletar [BETA]"
+  },
+  "EXT_NAME_LOCAL": {
+    "message": "Clicker automático - Autocompletar [LOCAL]"
+  },
   "EXT_SHORT_NAME": {
     "message": "Autocompletar"
   },

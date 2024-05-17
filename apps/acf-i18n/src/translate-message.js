@@ -2,7 +2,7 @@ const { TranslateCommon } = require('./translate.common');
 
 class TranslateMessage extends TranslateCommon {
   constructor() {
-    super('web-new.json');
+    super('messages.json');
   }
 
   // Function to recursively translate the values in an object
