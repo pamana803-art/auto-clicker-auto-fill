@@ -1,11 +1,15 @@
 import { BROWSER, RESPONSE_CODE } from '@dhruv-techapps/core-common';
 import { NotificationHandler } from '@dhruv-techapps/notifications';
-import { GOOGLE_SCOPES, GOOGLE_LOCAL_STORAGE_KEY, GoogleOauth2LoginResponse } from './google-oauth.types';
+import { GOOGLE_LOCAL_STORAGE_KEY, GOOGLE_SCOPES, GoogleOauth2LoginResponse } from './google-oauth.types';
 
 const NOTIFICATIONS_TITLE = 'Google OAuth';
 const NOTIFICATIONS_ID = 'authentication';
 
 export class GoogleOauth2Background {
+  edgeClientId: string | undefined;
+  constructor(edgeClientId?: string) {
+    this.edgeClientId = edgeClientId;
+  }
   async removeCachedAuthToken() {
     const { token } = await chrome.identity.getAuthToken({ interactive: false });
     if (token) {
@@ -48,12 +52,16 @@ export class GoogleOauth2Background {
     return RESPONSE_CODE.REMOVED;
   }
 
-  async getAuthTokenEdge(scopes: Array<GOOGLE_SCOPES>, clientId: string) {
+  async getAuthTokenEdge(scopes: Array<GOOGLE_SCOPES>) {
+    if (this.edgeClientId) {
+      throw new Error('Edge client id not found');
+    }
+
     const redirectUrl = chrome.identity.getRedirectURL();
     const redirectUri = encodeURIComponent(redirectUrl);
     const scopesString = encodeURIComponent(scopes.join(' '));
     const result = await chrome.identity.launchWebAuthFlow({
-      url: `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scopesString}`,
+      url: `https://accounts.google.com/o/oauth2/auth?client_id=${this.edgeClientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scopesString}`,
       interactive: true,
     });
     if (result) {
@@ -73,9 +81,9 @@ export class GoogleOauth2Background {
     return null;
   }
 
-  async getAuthToken(scopes: Array<GOOGLE_SCOPES>, clientId?: string) {
-    if (BROWSER === 'EDGE' && clientId) {
-      const token = this.getAuthTokenEdge(scopes, clientId);
+  async getAuthToken(scopes: Array<GOOGLE_SCOPES>) {
+    if (BROWSER === 'EDGE') {
+      const token = this.getAuthTokenEdge(scopes);
       for (const scope of scopes) {
         await this.#addScope(scope);
       }
@@ -89,8 +97,8 @@ export class GoogleOauth2Background {
     }
   }
 
-  async getHeaders(scopes: Array<GOOGLE_SCOPES>, clientId?: string) {
-    const token = await this.getAuthToken(scopes, clientId);
+  async getHeaders(scopes: Array<GOOGLE_SCOPES>) {
+    const token = await this.getAuthToken(scopes);
     return new Headers({ Authorization: `Bearer ${token}` });
   }
 

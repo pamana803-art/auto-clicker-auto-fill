@@ -1,9 +1,9 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
 import { ManifestService } from '@dhruv-techapps/core-service';
-import { NO_EXTENSION_ERROR } from '../constants';
+import { FirebaseOauthService } from '@dhruv-techapps/firebase-oauth';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User } from 'firebase/auth';
-import { FirebaseOauthService } from '@dhruv-techapps/acf-service';
+import { NO_EXTENSION_ERROR } from '../constants';
+import { RootState } from '../store';
 
 export const getManifest = createAsyncThunk('app/getManifest', async () => {
   if (window.chrome?.runtime) {

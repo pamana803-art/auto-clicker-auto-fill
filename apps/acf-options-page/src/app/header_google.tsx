@@ -1,5 +1,4 @@
-import { GOOGLE_SCOPES } from '@dhruv-techapps/acf-common';
-import { GoogleOauthService } from '@dhruv-techapps/acf-service';
+import { GOOGLE_SCOPES, GoogleOauthService } from '@dhruv-techapps/google-oauth';
 import { GoogleAuthProvider, getAuth, signInWithCredential } from 'firebase/auth';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { useEffect } from 'react';

@@ -10,7 +10,6 @@
     "@dhruv-techapps:registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
-    "@invertase/firestore-stripe-payments": "^0.0.7",
     "@nx/devkit": "18.3.4",
     "@reactour/tour": "^3.6.1",
     "@reduxjs/toolkit": "^2.2.4",

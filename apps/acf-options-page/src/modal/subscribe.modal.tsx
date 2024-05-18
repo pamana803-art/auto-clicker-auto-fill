@@ -68,7 +68,7 @@ const SubscribeModal = () => {
             {products?.map((product) => (
               <React.Fragment key={product.id}>
                 {product.prices
-                  .filter((price) => price.recurring.interval === yearly)
+                  ?.filter((price) => price.recurring.interval === yearly)
                   .map((price) => (
                     <Col key={price.id}>
                       <Card style={{ height: '100%' }}>

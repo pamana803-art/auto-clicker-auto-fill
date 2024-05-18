@@ -96,7 +96,9 @@
       "status-bar",
       "acf-store",
       "acf-util",
-      "notifications"
+      "notifications",
+      "firebase-oauth",
+      "firebase-firestore"
     ],
     "changelog": {
       "workspaceChangelog": {

@@ -1,5 +1,4 @@
-import { FirebaseFirestoreService } from '@dhruv-techapps/acf-service';
-import { Product, Subscription } from '@invertase/firestore-stripe-payments';
+import { FirebaseFirestoreService, Product, Subscription } from '@dhruv-techapps/firebase-firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { logout } from '../app.slice';
