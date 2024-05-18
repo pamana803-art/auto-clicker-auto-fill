@@ -1,4 +1,5 @@
-import { Logger, SystemError } from '@dhruv-techapps/core-common';
+import { SystemError } from '@dhruv-techapps/core-common';
+import { ACTION_I18N_TITLE } from '.';
 
 import CommonEvents from './common.events';
 
@@ -51,7 +52,7 @@ export const WindowCommandEvents = (() => {
   };
   const start = (value: string) => {
     const commands = CommonEvents.getVerifiedEvents(WINDOW_COMMANDS, value);
-    Logger.colorDebug('WindowCommandEvents', commands);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, commands, value);
     execCommand(commands, value);
   };
   return { start };

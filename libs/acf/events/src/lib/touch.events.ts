@@ -1,4 +1,5 @@
-import { Logger, ConfigError, SystemError } from '@dhruv-techapps/core-common';
+import { ConfigError, SystemError } from '@dhruv-techapps/core-common';
+import { ACTION_I18N_TITLE } from '.';
 import CommonEvents from './common.events';
 
 export const TouchEvents = (() => {
@@ -13,7 +14,6 @@ export const TouchEvents = (() => {
   };
 
   const getVerifiedEvents = (events: string) => {
-    Logger.colorDebug('GetVerifiedEvents', events);
     if (!events) {
       throw new SystemError('Event is blank!', 'Event cant be blank | null | undefined');
     }
@@ -41,7 +41,7 @@ export const TouchEvents = (() => {
 
   const start = (elements: Array<HTMLElement>, event: string) => {
     const events = getVerifiedEvents(event);
-    Logger.colorDebug(`TouchEvents`, events);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, events);
     CommonEvents.loopElements(elements, events, dispatchEvent);
   };
   return { start };

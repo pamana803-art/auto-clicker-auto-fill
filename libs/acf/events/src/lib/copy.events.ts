@@ -1,13 +1,11 @@
-import { Logger } from '@dhruv-techapps/core-common';
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
+import { ACTION_I18N_TITLE } from '.';
 
 const LOCAL_STORAGE_COPY = 'auto-clicker-copy';
-const LOGGER_LETTER = 'CopyEvents';
 
 export const CopyEvents = (() => {
   const applyFilter = (text: string, value: string) => {
-    Logger.colorDebug('applyFilter', { text, value });
     if (value) {
       const matches = text.match(new RegExp(value));
       if (matches) {
@@ -29,19 +27,10 @@ export const CopyEvents = (() => {
   };
 
   const start = (elements: Array<HTMLElement>, value: string) => {
-    try {
-      console.groupCollapsed(LOGGER_LETTER);
-      Logger.colorDebug('Start', value);
-      const text = getValue(elements[0]);
-      Logger.colorDebug('Text', text);
-      const result = applyFilter(text, value.replace(/copy::/gi, ''));
-      Logger.colorDebug('Result', result);
-      localStorage.setItem(LOCAL_STORAGE_COPY, result);
-      console.groupEnd();
-    } catch (error) {
-      console.groupEnd();
-      throw error;
-    }
+    const text = getValue(elements[0]);
+    const result = applyFilter(text, value.replace(/copy::/gi, ''));
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements[0], text, result);
+    localStorage.setItem(LOCAL_STORAGE_COPY, result);
   };
 
   return { start };

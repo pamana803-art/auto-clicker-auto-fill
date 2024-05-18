@@ -9,8 +9,9 @@ import { statusBar } from './status-bar';
 
 declare global {
   interface Window {
-    __batchRepeat: number;
+    __currentAction: number;
     __actionRepeat: number;
+    __batchRepeat: number;
     __sessionCount: number;
     __sheets?: Sheets;
   }

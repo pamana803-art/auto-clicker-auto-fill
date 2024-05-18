@@ -1,71 +1,146 @@
 {
-  "message_action_not_found": {
+  "EXT_NAME": {
+    "message": "자동 클릭커 - 자동 완성"
+  },
+  "EXT_NAME_DEV": {
+    "message": "자동 클릭커 - 자동 완성 [DEV]"
+  },
+  "EXT_NAME_BETA": {
+    "message": "자동 클릭커 - 자동완성[베타]"
+  },
+  "EXT_NAME_LOCAL": {
+    "message": "자동 클릭커 - 자동완성 [LOCAL]"
+  },
+  "EXT_SHORT_NAME": {
+    "message": "자동 채우기"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "자동 입력 필드 또는 자동 클릭 버튼 또는 어디서나 링크. 클릭 속도 테스트를 구성하고 확인할 수 있습니다."
+  },
+  "@ACF_BACKUP__NOTIFICATION_TITLE": {
+    "message": "ACF 백업"
+  },
+  "@ACF_BACKUP__NOTIFICATION_BACKUP": {
+    "message": "구성은 Google Drive에 백업됩니다. $1"
+  },
+  "@ACF_BACKUP__NOTIFICATION_RESTORE": {
+    "message": "Google 드라이브에서 구성이 복원됩니다.구성 페이지를 새로 고침하여 컨텐츠를로드하십시오."
+  },
+  "@ACF_BACKUP__ERROR_NO_CONFIG": {
+    "message": "백업 할 수있는 구성이 없습니다"
+  },
+  "@ACF_BACKUP__ERROR_NO_CONTENT": {
+    "message": "파일에서 발견 된 콘텐츠가 없습니다"
+  },
+  "@PORT__ACTION_NOT_FOUND": {
     "message": "구성되지 않았습니다"
   },
-  "@PORT__action_not_found": {
-    "message": "구성되지 않았습니다"
+  "@PORT__METHOD_NOT_FOUND": {
+    "message": "프로세스 방법은 찾을 수 없습니다"
   },
-  "@PORT__method_not_found": {
-    "message": "프로세스 방법을 찾을 수 없습니다"
+  "@CONTEXT_MENU__FIELD": {
+    "message": "★이 필드를 구성합니다"
   },
-  "@RATE__title": {
-    "message": "유용한 확장"
+  "@CONTEXT_MENU__RECORD": {
+    "message": "☉ 자동 클릭 커 (레코드)"
   },
-  "@RATE__message": {
-    "message": "우리의 연장이 유용 했습니까?"
+  "@CONTEXT_MENU__CONFIG_PAGE": {
+    "message": "↗ 구성 페이지 열기"
   },
-  "@RATE__yes_button": {
-    "message": "예"
+  "@TABS__TITLE": {
+    "message": "탭"
   },
-  "@RATE__no_button": {
-    "message": "아니요"
+  "@TABS__ERROR": {
+    "message": "지정된 탭 또는 탭 ID를 찾을 수 없습니다."
   },
-  "@RATE__yes_title": {
-    "message": "확장을 즐기고 있니?"
+  "@ACTION__TITLE": {
+    "message": "행동"
   },
-  "@RATE__yes_message": {
-    "message": "우리가 5 성급 확장이되도록 도와주세요.\n감사합니다!"
+  "@ACTION__NO_NAME": {
+    "message": "이름이 없습니다"
   },
-  "@RATE__no_title": {
-    "message": "우리가 당신을 도울 수있게합시다"
+  "@ADDON__TITLE": {
+    "message": "애도"
   },
-  "@RATE__no_message": {
-    "message": "찾는 경우 불화에 우리와 연결하거나 찾으면 문제가 발생합니다."
+  "@BATCH__TITLE": {
+    "message": "일괄"
   },
-  "@RATE__issue_button": {
-    "message": "☉ 문제를 만듭니다"
+  "@CONFIG__TITLE": {
+    "message": "구성"
   },
-  "@RATE__connect_button": {
-    "message": "★ 우리와 접촉"
+  "@ERROR__ELEMENT_FINDER_BLANK": {
+    "message": "요소 찾기는 비어 있습니다"
   },
-  "@RATE__rate_button": {
-    "message": "❤ 지금 평가"
+  "@ERROR__NO_MATCH": {
+    "message": "애드온 조건이 일치하지 않았습니다."
   },
-  "@RATE__later_button": {
-    "message": "☹ 나중"
+  "@ERROR__WRONG_TITLE": {
+    "message": "잘못된 비교"
   },
-  "@RATE__review_url_missing": {
-    "message": "리뷰 URL이 속도가 없습니다"
+  "@ERROR__WRONG_DESCRIPTION": {
+    "message": "연산자보다 크거나 작은 것만 숫자 만 비교할 수 있습니다."
   },
-  "@NOTIFICATIONS__permission_error": {
-    "message": "알림 허가는 매니페스트에서 제공되지 않습니다.매니페스트 허가를 업데이트하십시오"
+  "@ERROR__ELEMENT_FINDER_TITLE": {
+    "message": "잘못된 요소 찾기 또는 애드온 조건"
   },
-  "@NOTIFICATIONS__default_icon_missing": {
-    "message": "default_icon은 매니페스트에서 browser_action에서 정의되지 않습니다.제발 추가하십시오{browser_action:{default_icon}}"
+  "@ERROR__ELEMENT_FINDER_DESCRIPTION": {
+    "message": "요소 찾기는 확인란을 대상으로해야합니다"
   },
-  "@TAB__options_page_url_missing": {
-    "message": "옵션 페이지는 매니페스트에서 정의되지 않았습니다.제발 추가하십시오{config{options_page_url}}"
+  "@ERROR__INVALID_ELEMENT_FINDER": {
+    "message": "잘못된 요소 찾기"
   },
-  "@IMPORT_DATA___target": {
-    "message": "가져 오기 대상이 지정되지 않았습니다"
+  "@ERROR__NOT_FOUND_STOP": {
+    "message": "찾을 수 없습니다 - 중지하십시오"
   },
-  "@NOTIFICATIONS_config_finish": {
-    "message": "구성 완료"
+  "@ERROR__NOT_FOUND_RELOAD": {
+    "message": "찾을 수 없습니다 - 다시로드"
   },
-  "@CLOUD_MESSAGE_config_error_title": {
-    "message": "구성 오류"
+  "@ERROR": {
+    "message": "오류"
   },
-  "@CLOUD_MESSAGE_config_finish_title": {
-    "message": "구성 완료"
+  "@SCHEDULE": {
+    "message": "일정"
+  },
+  "@REPEAT": {
+    "message": "반복하다"
+  },
+  "@COMPLETED": {
+    "message": "완전한"
+  },
+  "@DEFAULT": {
+    "message": "기본"
+  },
+  "@WAIT": {
+    "message": "기다리다"
+  },
+  "@DISABLED": {
+    "message": "장애가 있는"
+  },
+  "@RESULT": {
+    "message": "결과"
+  },
+  "@GOTO": {
+    "message": "이동"
+  },
+  "@RECHECK": {
+    "message": "다시 확인하십시오"
+  },
+  "@COMPARE": {
+    "message": "비교하다"
+  },
+  "@RECHECK_OPTION": {
+    "message": "재확인"
+  },
+  "@DOCS": {
+    "message": "문서"
+  },
+  "@CHAT": {
+    "message": "채팅"
+  },
+  "@ADVANCE": {
+    "message": "전진"
+  },
+  "@SPONSOR": {
+    "message": "스폰서"
   }
 }

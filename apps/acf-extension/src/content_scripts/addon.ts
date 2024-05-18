@@ -6,8 +6,12 @@ import { Sandbox } from '@dhruv-techapps/sandbox';
 import { RADIO_CHECKBOX_NODE_NAME } from '../common/constant';
 import Common from './common';
 import { statusBar } from './status-bar';
+import { I18N_COMMON, I18N_ERROR } from './i18n';
+import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
 
-const LOGGER_LETTER = 'Addon';
+const ADDON_I18N = {
+  TITLE: chrome.i18n.getMessage('@ADDON__TITLE'),
+};
 
 type AddonType = { nodeValue: string | boolean } & Addon;
 
@@ -16,7 +20,7 @@ const AddonProcessor = (() => {
     if (recheck !== undefined) {
       if (recheck > 0 || recheck < -1) {
         recheck -= 1;
-        await statusBar.wait(props.recheckInterval, `${LOGGER_LETTER} recheck`, recheck + 1);
+        await statusBar.wait(props.recheckInterval, STATUS_BAR_TYPE.ADDON_RECHECK, recheck + 1);
         // eslint-disable-next-line no-use-before-define
         return await start({ elementFinder, value, condition, recheck, recheckOption, ...props }, settings);
       }
@@ -32,11 +36,11 @@ const AddonProcessor = (() => {
         });
       }
     } else if (recheckOption === RECHECK_OPTIONS.STOP) {
-      throw new ConfigError(`'${nodeValue}' ${condition} '${value}'`, "Addon didn't matched");
+      throw new ConfigError(`'${nodeValue}' ${condition} '${value}'`, I18N_ERROR.NO_MATCH);
     } else if (recheckOption === RECHECK_OPTIONS.GOTO && props.recheckGoto !== undefined) {
       return props.recheckGoto;
     }
-    Logger.colorInfo('RecheckOption', recheckOption);
+    console.debug(I18N_COMMON.RECHECK_OPTION, recheckOption);
     return false;
   };
 
@@ -75,9 +79,9 @@ const AddonProcessor = (() => {
   };
 
   const compare = (nodeValue: string | boolean, condition: ADDON_CONDITIONS, value: string) => {
-    Logger.colorDebug('Compare', nodeValue, condition, value);
+    console.debug(I18N_COMMON.COMPARE, nodeValue, condition, value);
     if (/than/gi.test(condition) && (Number.isNaN(Number(nodeValue)) || Number.isNaN(Number(value)))) {
-      throw new ConfigError(`Greater || Less can only compare number '${nodeValue}' '${value}'`, 'Wrong Comparison');
+      throw new ConfigError(`${I18N_ERROR.WRONG_DESCRIPTION}'${nodeValue}' '${value}'`, I18N_ERROR.WRONG_TITLE);
     }
     if (typeof nodeValue === 'boolean' || condition === ADDON_CONDITIONS['✓ Is Checked '] || condition === ADDON_CONDITIONS['✕ Is Not Checked ']) {
       if (typeof nodeValue === 'boolean') {
@@ -86,7 +90,7 @@ const AddonProcessor = (() => {
         }
         return false;
       } else {
-        throw new ConfigError('Element Finder need to point checkbox', 'Wrong Element Finder / Addon Condition');
+        throw new ConfigError(I18N_ERROR.ELEMENT_FINDER_DESCRIPTION, I18N_ERROR.ELEMENT_FINDER_TITLE);
       }
     }
 
@@ -133,7 +137,7 @@ const AddonProcessor = (() => {
         if (!result) {
           result = await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, settings);
         }
-        Logger.colorDebug('Compare Result', result);
+        console.debug(`${ADDON_I18N.TITLE} ${I18N_COMMON.RESULT}`, result);
         console.groupEnd();
         return result;
       }
@@ -149,8 +153,7 @@ const AddonProcessor = (() => {
       let { value } = addon;
       const { elementFinder, condition, ...props } = addon;
       if (elementFinder && value && condition) {
-        console.groupCollapsed(LOGGER_LETTER);
-
+        console.groupCollapsed(ADDON_I18N.TITLE);
         value = await Value.getValue(value);
         return await start({ ...props, elementFinder, value, condition }, actionSettings);
       }

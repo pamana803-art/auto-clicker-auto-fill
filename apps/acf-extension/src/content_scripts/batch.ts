@@ -4,8 +4,12 @@ import { NotificationsService } from '@dhruv-techapps/core-service';
 import Actions from './actions';
 import Common from './common';
 import { statusBar } from './status-bar';
+import { I18N_COMMON } from './i18n';
+import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
 
-const LOGGER_LETTER = 'Batch';
+const BATCH_I18N = {
+  TITLE: chrome.i18n.getMessage('@BATCH__TITLE'),
+};
 
 const BatchProcessor = (() => {
   const refresh = () => {
@@ -23,17 +27,17 @@ const BatchProcessor = (() => {
       if (batch.repeat > 0) {
         for (let i = 0; i < batch.repeat; i += 1) {
           statusBar.batchUpdate(i + 2);
-          console.groupCollapsed(`${LOGGER_LETTER} #${i + 2} [repeat]`);
+          console.groupCollapsed(`${BATCH_I18N.TITLE} #${i + 2} [${I18N_COMMON.REPEAT}]`);
           if (batch?.repeatInterval) {
-            await statusBar.wait(batch?.repeatInterval, `${LOGGER_LETTER} repeat`, i + 2);
+            await statusBar.wait(batch?.repeatInterval, STATUS_BAR_TYPE.BATCH_REPEAT, i + 2);
           }
           await Actions.start(actions, i + 2);
           const { notifications } = await new SettingsStorage().getSettings();
           if (notifications?.onBatch) {
             NotificationsService.create(chrome.runtime.id, {
               type: 'basic',
-              title: 'Batch Completed',
-              message: `#${i + 1} Batch`,
+              title: `${BATCH_I18N.TITLE} ${I18N_COMMON.COMPLETED}`,
+              message: `#${i + 1} ${BATCH_I18N.TITLE}`,
               silent: !notifications.sound,
               iconUrl: Common.getNotificationIcon(),
             });
@@ -46,7 +50,7 @@ const BatchProcessor = (() => {
         while (true) {
           if (batch?.repeatInterval) {
             statusBar.batchUpdate('∞');
-            await statusBar.wait(batch?.repeatInterval, `${LOGGER_LETTER} repeat`, '∞');
+            await statusBar.wait(batch?.repeatInterval, STATUS_BAR_TYPE.BATCH_REPEAT, '∞');
           }
           await Actions.start(actions, i);
           i += 1;
@@ -58,7 +62,7 @@ const BatchProcessor = (() => {
   const start = async (actions: Array<Action>, batch?: Batch) => {
     try {
       statusBar.batchUpdate(1);
-      console.groupCollapsed(`${LOGGER_LETTER} #1 (default)`);
+      console.groupCollapsed(`${BATCH_I18N.TITLE} #1 (${I18N_COMMON.DEFAULT})`);
       await Actions.start(actions, 1);
       console.groupEnd();
       if (batch) {

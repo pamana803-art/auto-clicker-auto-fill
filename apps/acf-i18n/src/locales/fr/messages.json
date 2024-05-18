@@ -1,71 +1,146 @@
 {
-  "message_action_not_found": {
+  "EXT_NAME": {
+    "message": "Clic automatique - Remplissage automatique"
+  },
+  "EXT_NAME_DEV": {
+    "message": "Clic automatique - Remplissage automatique [DEV]"
+  },
+  "EXT_NAME_BETA": {
+    "message": "Clic automatique – Remplissage automatique [BÊTA]"
+  },
+  "EXT_NAME_LOCAL": {
+    "message": "Clic automatique - Remplissage automatique [LOCAL]"
+  },
+  "EXT_SHORT_NAME": {
+    "message": "Remplissage automatique"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "Champ de saisie automatique ou bouton de clic automatique ou de lien n'importe quoi n'importe où. Vous pouvez configurer et vérifier le test de vitesse de clic"
+  },
+  "@ACF_BACKUP__NOTIFICATION_TITLE": {
+    "message": "Sauvegarde ACF"
+  },
+  "@ACF_BACKUP__NOTIFICATION_BACKUP": {
+    "message": "Les configurations sont sauvegardées sur Google Drive à $1"
+  },
+  "@ACF_BACKUP__NOTIFICATION_RESTORE": {
+    "message": "Les configurations sont restaurées à partir de Google Drive. Actualisez la page des configurations pour charger le contenu."
+  },
+  "@ACF_BACKUP__ERROR_NO_CONFIG": {
+    "message": "Aucune configuration trouvée pour sauvegarder"
+  },
+  "@ACF_BACKUP__ERROR_NO_CONTENT": {
+    "message": "Aucun contenu trouvé dans le fichier"
+  },
+  "@PORT__ACTION_NOT_FOUND": {
     "message": "n'est pas configuré"
   },
-  "@PORT__action_not_found": {
-    "message": "n'est pas configuré"
-  },
-  "@PORT__method_not_found": {
+  "@PORT__METHOD_NOT_FOUND": {
     "message": "La méthode de processus n'est pas trouvée"
   },
-  "@RATE__title": {
-    "message": "Extension utile"
+  "@CONTEXT_MENU__FIELD": {
+    "message": "★ Configurer pour ce champ"
   },
-  "@RATE__message": {
-    "message": "Avez-vous trouvé notre extension utile?"
+  "@CONTEXT_MENU__RECORD": {
+    "message": "☉ Clicker automatique (enregistrement)"
   },
-  "@RATE__yes_button": {
-    "message": "Oui"
+  "@CONTEXT_MENU__CONFIG_PAGE": {
+    "message": "↗ Page de configuration ouvrir"
   },
-  "@RATE__no_button": {
-    "message": "Non"
+  "@TABS__TITLE": {
+    "message": "Onglets"
   },
-  "@RATE__yes_title": {
-    "message": "Profiter de l'extension?"
+  "@TABS__ERROR": {
+    "message": "Impossible de localiser l'onglet ou l'id d'onglet spécifié."
   },
-  "@RATE__yes_message": {
-    "message": "Aidez-nous à devenir une extension 5 étoiles,\nMerci!"
+  "@ACTION__TITLE": {
+    "message": "Action"
   },
-  "@RATE__no_title": {
-    "message": "Laissez-nous vous aider"
+  "@ACTION__NO_NAME": {
+    "message": "sans nom"
   },
-  "@RATE__no_message": {
-    "message": "Connectez-vous avec nous sur la discorde ou créez un problème si vous trouvez"
+  "@ADDON__TITLE": {
+    "message": "Ajouter sur"
   },
-  "@RATE__issue_button": {
-    "message": "☉ Créer un problème"
+  "@BATCH__TITLE": {
+    "message": "Lot"
   },
-  "@RATE__connect_button": {
-    "message": "★ Connectez-vous avec nous"
+  "@CONFIG__TITLE": {
+    "message": "Configurer"
   },
-  "@RATE__rate_button": {
-    "message": "❤ Noter maintenant"
+  "@ERROR__ELEMENT_FINDER_BLANK": {
+    "message": "Le chercheur d'élément est vide"
   },
-  "@RATE__later_button": {
-    "message": "☹ Plus tard"
+  "@ERROR__NO_MATCH": {
+    "message": "La condition d'addon ne correspondait pas."
   },
-  "@RATE__review_url_missing": {
-    "message": "L'URL d'examen est manquante pour le tarif"
+  "@ERROR__WRONG_TITLE": {
+    "message": "Comparaison incorrecte"
   },
-  "@NOTIFICATIONS__permission_error": {
-    "message": "La permission de notification n'est pas fournie dans Manifeste.S'il vous plaît mettre à jour la permission manifeste"
+  "@ERROR__WRONG_DESCRIPTION": {
+    "message": "Supérieur ou inférieur aux opérateurs ne peut comparer que les nombres"
   },
-  "@NOTIFICATIONS__default_icon_missing": {
-    "message": "Default_icon n'est pas défini sous Browser_action dans Manifest.S'il-vous-plait ajoutez {browser_action:{default_icon}}"
+  "@ERROR__ELEMENT_FINDER_TITLE": {
+    "message": "Finder d'élément incorrect ou condition addon"
   },
-  "@TAB__options_page_url_missing": {
-    "message": "Page Options non définie dans Manifeste.S'il-vous-plait ajoutez {config{options_page_url}}"
+  "@ERROR__ELEMENT_FINDER_DESCRIPTION": {
+    "message": "Element Finder doit cibler une case à cocher"
   },
-  "@IMPORT_DATA___target": {
-    "message": "Cible d'importation non spécifiée"
+  "@ERROR__INVALID_ELEMENT_FINDER": {
+    "message": "Finder d'élément non valide"
   },
-  "@NOTIFICATIONS_config_finish": {
-    "message": "Configuration terminée"
+  "@ERROR__NOT_FOUND_STOP": {
+    "message": "Non trouvé - Arrêtez"
   },
-  "@CLOUD_MESSAGE_config_error_title": {
-    "message": "Erreur de configuration"
+  "@ERROR__NOT_FOUND_RELOAD": {
+    "message": "Non trouvé - Reload"
   },
-  "@CLOUD_MESSAGE_config_finish_title": {
-    "message": "Finition de configuration"
+  "@ERROR": {
+    "message": "Erreur"
+  },
+  "@SCHEDULE": {
+    "message": "Calendrier"
+  },
+  "@REPEAT": {
+    "message": "répéter"
+  },
+  "@COMPLETED": {
+    "message": "Complété"
+  },
+  "@DEFAULT": {
+    "message": "défaut"
+  },
+  "@WAIT": {
+    "message": "attendez"
+  },
+  "@DISABLED": {
+    "message": "Désactivé"
+  },
+  "@RESULT": {
+    "message": "Résultat"
+  },
+  "@GOTO": {
+    "message": "Aller à"
+  },
+  "@RECHECK": {
+    "message": "revérifier"
+  },
+  "@COMPARE": {
+    "message": "Comparer"
+  },
+  "@RECHECK_OPTION": {
+    "message": "Recentrique"
+  },
+  "@DOCS": {
+    "message": "Documents"
+  },
+  "@CHAT": {
+    "message": "Chat"
+  },
+  "@ADVANCE": {
+    "message": "Avance"
+  },
+  "@SPONSOR": {
+    "message": "Parrainer"
   }
 }

@@ -1,11 +1,10 @@
-import { Logger, ConfigError } from '@dhruv-techapps/core-common';
-import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
-
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
+import { ConfigError } from '@dhruv-techapps/core-common';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { Sandbox } from '@dhruv-techapps/sandbox';
+import { ACTION_I18N_TITLE } from '.';
+import CommonEvents, { UNKNOWN_ELEMENT_TYPE_ERROR } from './common.events';
 
-const LOGGER_LETTER = 'FuncEvents';
 const CHANGE_EVENT = ['input', 'change'];
 
 export const FuncEvents = (() => {
@@ -26,18 +25,11 @@ export const FuncEvents = (() => {
   };
 
   const start = async (elements: Array<HTMLElement>, value: string) => {
-    try {
-      console.groupCollapsed(LOGGER_LETTER);
-      value = value.replace(/func::/i, '');
-      Logger.colorDebug('Start', value);
-      value = await Sandbox.sandboxEval(value);
-      CommonEvents.loopElements(elements, value, checkNode);
-      console.groupEnd();
-      return true;
-    } catch (error) {
-      console.groupEnd();
-      throw error;
-    }
+    value = value.replace(/func::/i, '');
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, value);
+    value = await Sandbox.sandboxEval(value);
+    CommonEvents.loopElements(elements, value, checkNode);
+    return true;
   };
   return { start };
 })();

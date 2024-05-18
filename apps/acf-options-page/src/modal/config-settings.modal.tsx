@@ -194,11 +194,11 @@ const ConfigSettingsModal = () => {
                     <Form.Select value={config.url_match} onChange={onUpdate} name='url_match' required>
                       {Object.entries(URL_MATCH).map((condition) => (
                         <option key={condition[1]} value={condition[1]}>
-                          {condition[0]}
+                          {t(`modal.configSettings.${condition[0].toLowerCase()}`)}
                         </option>
                       ))}
                     </Form.Select>
-                    <Form.Label>URL Match</Form.Label>
+                    <Form.Label>{t('modal.configSettings.urlMatch')}</Form.Label>
                   </Form.Group>
                 </Col>
               </Row>

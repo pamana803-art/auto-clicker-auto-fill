@@ -1,6 +1,15 @@
 import { Timer } from '@dhruv-techapps/shared-util';
 import { STATUS_BAR_LOCATION } from './status-bar.types';
 
+export enum STATUS_BAR_TYPE {
+  CONFIG_WAIT = 'Config wait',
+  BATCH_WAIT = 'Batch wait',
+  BATCH_REPEAT = 'Batch repeat',
+  ACTION_WAIT = 'Action wait',
+  ACTION_REPEAT = 'Action repeat',
+  ADDON_RECHECK = 'Addon recheck',
+}
+
 export class StatusBar {
   private statusBar: HTMLDivElement = document.createElement('div');
   private icon: HTMLSpanElement = document.createElement('span');
@@ -26,24 +35,24 @@ export class StatusBar {
     document.body.appendChild(this.statusBar);
   };
 
-  public async wait(text?: number | string, type?: string, name?: string | number): Promise<void> {
+  public async wait(text?: number | string, type?: STATUS_BAR_TYPE, name?: string | number): Promise<void> {
     this.timer.textContent = '';
     const waitTime = Timer.getWaitTime(text);
     if (!waitTime) {
       return;
     }
     switch (type) {
-      case 'Config wait':
+      case STATUS_BAR_TYPE.CONFIG_WAIT:
         this.text.textContent = 'Config';
         break;
-      case 'Batch wait':
-      case 'Batch repeat':
-      case 'Action wait':
+      case STATUS_BAR_TYPE.BATCH_WAIT:
+      case STATUS_BAR_TYPE.BATCH_REPEAT:
+      case STATUS_BAR_TYPE.ACTION_WAIT:
         break;
-      case 'Addon recheck':
+      case STATUS_BAR_TYPE.ADDON_RECHECK:
         this.timer.textContent = `🔁${name} ~`;
         break;
-      case 'Action repeat':
+      case STATUS_BAR_TYPE.ACTION_REPEAT:
         this.timer.textContent = `🔁${name} ~`;
         break;
       default:

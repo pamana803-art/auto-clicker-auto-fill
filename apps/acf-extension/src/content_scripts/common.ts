@@ -2,13 +2,13 @@ import { ActionSettings, RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { SettingsStorage } from '@dhruv-techapps/acf-store';
 import { ConfigError, Logger } from '@dhruv-techapps/core-common';
 import { statusBar } from './status-bar';
+import { I18N_ERROR } from './i18n';
 
-const LOGGER_LETTER = 'Common';
 const Common = (() => {
   const retryFunc = async (retry?: number, retryInterval?: number | string) => {
     if (retry !== undefined) {
       if (retry > 0 || retry < -1) {
-        await statusBar.wait(retryInterval, 'retry', retry);
+        await statusBar.wait(retryInterval, undefined, retry);
         return true;
       }
     }
@@ -16,7 +16,6 @@ const Common = (() => {
   };
 
   const getElements = async (document: Document, elementFinder: string, retry: number, retryInterval: number | string): Promise<Array<HTMLElement> | undefined> => {
-    Logger.colorDebug('GetElements', elementFinder);
     let elements: HTMLElement[] | undefined;
     try {
       if (/^(id::|#)/gi.test(elementFinder)) {
@@ -50,9 +49,9 @@ const Common = (() => {
       }
     } catch (e) {
       if (e instanceof Error) {
-        throw new ConfigError(e.message, 'Invalid Xpath');
+        throw new ConfigError(e.message, I18N_ERROR.INVALID_ELEMENT_FINDER);
       }
-      throw new ConfigError(JSON.stringify(e), 'Invalid Xpath');
+      throw new ConfigError(JSON.stringify(e), I18N_ERROR.INVALID_ELEMENT_FINDER);
     }
 
     if (!elements) {
@@ -67,7 +66,6 @@ const Common = (() => {
   const main = async (elementFinder: string, retry: number, retryInterval: number | string) => await getElements(document, elementFinder, retry, retryInterval);
 
   const checkIframe = async (elementFinder: string, retry: number, retryInterval: number | string) => {
-    Logger.colorDebug('CheckIframe');
     const iFrames = document.getElementsByTagName('iframe');
     let elements;
     for (let index = 0; index < iFrames.length; index += 1) {
@@ -91,9 +89,9 @@ const Common = (() => {
       } else {
         window.addEventListener('load', window.location.reload);
       }
-      throw new ConfigError(`elementFinder: ${elementFinder}`, 'Not Found - RELOAD');
+      throw new ConfigError(`elementFinder: ${elementFinder}`, I18N_ERROR.NOT_FOUND_RELOAD);
     } else if (retryOption === RETRY_OPTIONS.STOP) {
-      throw new ConfigError(`elementFinder: ${elementFinder}`, 'Not Found - STOP');
+      throw new ConfigError(`elementFinder: ${elementFinder}`, I18N_ERROR.NOT_FOUND_STOP);
     } else if (retryOption === RETRY_OPTIONS.GOTO) {
       console.groupEnd();
       return retryGoto;
@@ -102,34 +100,28 @@ const Common = (() => {
   };
 
   const start = async (elementFinder: string, settings?: ActionSettings) => {
-    try {
-      if (!elementFinder) {
-        throw new ConfigError('elementFinder can not be empty!', 'Element Finder');
-      }
-      console.groupCollapsed(LOGGER_LETTER);
-      const { retryOption, retryInterval, retry, checkiFrames, iframeFirst, retryGoto } = { ...(await new SettingsStorage().getSettings()), ...settings };
-      let elements: HTMLElement[] | undefined;
-      if (iframeFirst) {
-        elements = await checkIframe(elementFinder, retry, retryInterval);
-      } else {
-        elements = await main(elementFinder, retry, retryInterval);
-      }
-      if (!elements || elements.length === 0) {
-        if (iframeFirst) {
-          elements = await main(elementFinder, retry, retryInterval);
-        } else if (checkiFrames) {
-          elements = await checkIframe(elementFinder, retry, retryInterval);
-        }
-      }
-      if (!elements || elements.length === 0) {
-        return checkRetryOption(retryOption, elementFinder, retryGoto);
-      }
-      console.groupEnd();
-      return elements;
-    } catch (error) {
-      console.groupEnd();
-      throw error;
+    if (!elementFinder) {
+      throw new ConfigError(I18N_ERROR.ELEMENT_FINDER_BLANK, 'Element Finder');
     }
+
+    const { retryOption, retryInterval, retry, checkiFrames, iframeFirst, retryGoto } = { ...(await new SettingsStorage().getSettings()), ...settings };
+    let elements: HTMLElement[] | undefined;
+    if (iframeFirst) {
+      elements = await checkIframe(elementFinder, retry, retryInterval);
+    } else {
+      elements = await main(elementFinder, retry, retryInterval);
+    }
+    if (!elements || elements.length === 0) {
+      if (iframeFirst) {
+        elements = await main(elementFinder, retry, retryInterval);
+      } else if (checkiFrames) {
+        elements = await checkIframe(elementFinder, retry, retryInterval);
+      }
+    }
+    if (!elements || elements.length === 0) {
+      return checkRetryOption(retryOption, elementFinder, retryGoto);
+    }
+    return elements;
   };
 
   const getNotificationIcon = () => chrome.runtime.getManifest().action.default_icon;

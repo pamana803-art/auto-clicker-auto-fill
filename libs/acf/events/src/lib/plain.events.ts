@@ -1,12 +1,12 @@
 import { RADIO_CHECKBOX_NODE_NAME } from '@dhruv-techapps/acf-common';
-import { Logger } from '@dhruv-techapps/core-common';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
+import { ACTION_I18N_TITLE } from '.';
+
 import CommonEvents from './common.events';
 
 const DEFAULT_EVENT = ['mouseover', 'mousedown', 'mouseup', 'click'];
 const CHANGE_EVENT = ['input', 'change'];
 
-const LOGGER_LETTER = 'Plain Events';
 export const PlainEvents = (() => {
   const checkEmptyValue = (value: string) => (value === '::empty' ? '' : value);
 
@@ -36,8 +36,8 @@ export const PlainEvents = (() => {
   };
 
   const start = (elements: Array<HTMLElement>, value: string) => {
-    Logger.colorDebug(LOGGER_LETTER, value);
     value = checkEmptyValue(value);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, value);
     CommonEvents.loopElements(elements, value, dispatchEvent);
   };
 

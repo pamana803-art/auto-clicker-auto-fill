@@ -3,7 +3,6 @@ import ConfirmationModalContextProvider from './_providers/confirm.provider';
 import Configs from './app/configs/configs';
 import Header from './app/header';
 import { DataList, Loading, ToastHandler } from './components';
-import { APP_NAME } from './constants';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { BlogModal, ExtensionNotFoundModal } from './modal';
 import { LoginModal } from './modal/login.modal';
@@ -15,14 +14,6 @@ function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getManifest());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
-      window.document.title = `${APP_NAME} [${process.env.NX_VARIANT}]`;
-    } else {
-      window.document.title = APP_NAME;
-    }
   }, [dispatch]);
 
   useEffect(() => {
