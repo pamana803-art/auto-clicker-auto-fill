@@ -7,18 +7,7 @@
     "google-group": "Groupe Google",
     "login": "Connexion",
     "logout": "Se déconnecter",
-    "settings": "Paramètres globaux",
-    "backup": {
-      "last-backup": "Dernière sauvegarde:",
-      "backup": "Sauvegarde sur le cloud",
-      "restore": "Restaurer depuis le cloud",
-      "now": "Sauvegarder maintenant",
-      "auto-backup": "Sauvegarde automatique",
-      "daily": "Tous les jours",
-      "weekly": "Hebdomadaire",
-      "monthly": "Mensuel",
-      "off": "Désactivé"
-    }
+    "settings": "Paramètres globaux"
   },
   "footer": {
     "resources": "Ressources",
@@ -144,6 +133,18 @@
         "refresh": "Rafraîchir",
         "hint": "Vous trouverez ci-dessous une action qui peut être effectuée si XPath n'est pas trouvé par extension après la réparation"
       },
+      "backup": {
+        "title": "Sauvegarde",
+        "last-backup": "Dernière sauvegarde:",
+        "backup": "Sauvegarde sur le cloud",
+        "restore": "Restaurer depuis le cloud",
+        "now": "Sauvegarder maintenant",
+        "auto-backup": "Sauvegarde automatique",
+        "daily": "Tous les jours",
+        "weekly": "Hebdomadaire",
+        "monthly": "Mensuel",
+        "off": "Désactivé"
+      },
       "saveMessage": "Les paramètres enregistrés avec succès!"
     },
     "configSettings": {
@@ -158,7 +159,10 @@
       "windowHint": "<b>Window</b> (défaut) Le navigateur charge l'extension une fois que tout son contenu est chargé",
       "document": "Document",
       "hotkey": "Gamper",
-      "documentHint": "<b>Document</b> Le navigateur charge l'extension avant que les scripts et les images soient chargés (plus rapides) (dangereux)"
+      "documentHint": "<b>Document</b> Le navigateur charge l'extension avant que les scripts et les images soient chargés (plus rapides) (dangereux)",
+      "urlMatch": "Correspondance d'URL",
+      "regex": "Expression régulière",
+      "exact": "Exact"
     },
     "reorder": {
       "title": "Réorganiser Configuration's",
@@ -297,6 +301,7 @@
     }
   },
   "common": {
+    "appName": "Clic automatique - Remplissage automatique",
     "settings": "Paramètres",
     "error": "Erreur",
     "save": "sauvegarder",
@@ -318,6 +323,18 @@
     "ko": "Coréenne",
     "ca": "canada",
     "hi": "hindi",
-    "zh-cn": "Chinois"
+    "zh_CN": "Chinois",
+    "sv": "suédois",
+    "pt": "Portugais",
+    "ja": "Japonais",
+    "nl": "Néerlandais",
+    "de": "Allemand",
+    "es": "Espagnol",
+    "vi": "vietnamien",
+    "fi": "finlandais",
+    "ar": "arabe",
+    "it": "italien",
+    "ru": "russe",
+    "id": "indonésien"
   }
 }

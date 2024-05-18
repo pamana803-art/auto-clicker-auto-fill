@@ -102,7 +102,7 @@ export function SettingsGoogleBackup() {
               </span>
             </span>
           )}
-          Google Drive Backup
+          Google Drive {t('modal.settings.backup.title')}
         </b>
         <Image alt={google.name} className='me-2' title={google.name} src={google.picture} roundedCircle width='30' height='30' referrerPolicy='no-referrer' />
         {google.name}
@@ -110,37 +110,37 @@ export function SettingsGoogleBackup() {
       <hr />
       <ol className='list-group'>
         <ListGroup.Item as='li'>
-          <NavDropdown.Item href='#backup-now' disabled={loading} title={t('header.backup.now')} onClick={() => onBackup()}>
+          <NavDropdown.Item href='#backup-now' disabled={loading} title={t('modal.settings.backup.now')} onClick={() => onBackup()}>
             <CloudArrowUpFill className='me-2' />
-            {t('header.backup.now')}
+            {t('modal.settings.backup.now')}
           </NavDropdown.Item>
         </ListGroup.Item>
       </ol>
-      <h6 className='mt-4'>{t('header.backup.auto-backup')}</h6>
+      <h6 className='mt-4'>{t('modal.settings.backup.auto-backup')}</h6>
       <ol className='list-group'>
         <ListGroup.Item as='li' active={backup?.autoBackup === AUTO_BACKUP.DAILY}>
-          <NavDropdown.Item href='#backup-daily' title={t('header.backup.daily')} onClick={() => onBackup(AUTO_BACKUP.DAILY)}>
-            {t('header.backup.daily')}
+          <NavDropdown.Item href='#backup-daily' title={t('modal.settings.backup.daily')} onClick={() => onBackup(AUTO_BACKUP.DAILY)}>
+            {t('modal.settings.backup.daily')}
           </NavDropdown.Item>
         </ListGroup.Item>
         <ListGroup.Item as='li' active={backup?.autoBackup === AUTO_BACKUP.WEEKLY}>
-          <NavDropdown.Item href='#backup-weekly' title={t('header.backup.weekly')} onClick={() => onBackup(AUTO_BACKUP.WEEKLY)}>
-            {t('header.backup.weekly')}
+          <NavDropdown.Item href='#backup-weekly' title={t('modal.settings.backup.weekly')} onClick={() => onBackup(AUTO_BACKUP.WEEKLY)}>
+            {t('modal.settings.backup.weekly')}
           </NavDropdown.Item>
         </ListGroup.Item>
         <ListGroup.Item as='li' active={backup?.autoBackup === AUTO_BACKUP.MONTHLY}>
-          <NavDropdown.Item href='#backup-monthly' title={t('header.backup.monthly')} onClick={() => onBackup(AUTO_BACKUP.MONTHLY)}>
-            {t('header.backup.monthly')}
+          <NavDropdown.Item href='#backup-monthly' title={t('modal.settings.backup.monthly')} onClick={() => onBackup(AUTO_BACKUP.MONTHLY)}>
+            {t('modal.settings.backup.monthly')}
           </NavDropdown.Item>
         </ListGroup.Item>
         <ListGroup.Item as='li' active={!backup?.autoBackup || backup?.autoBackup === AUTO_BACKUP.OFF}>
-          <NavDropdown.Item href='#backup-off' title={t('header.backup.off')} onClick={() => onBackup(AUTO_BACKUP.OFF)}>
-            {t('header.backup.off')}
+          <NavDropdown.Item href='#backup-off' title={t('modal.settings.backup.off')} onClick={() => onBackup(AUTO_BACKUP.OFF)}>
+            {t('modal.settings.backup.off')}
           </NavDropdown.Item>
         </ListGroup.Item>
       </ol>
       <hr />
-      <h6 className='mt-4'>{t('header.backup.restore')}</h6>
+      <h6 className='mt-4'>{t('modal.settings.backup.restore')}</h6>
       {filesLoading ? (
         <div>Loading...</div>
       ) : (

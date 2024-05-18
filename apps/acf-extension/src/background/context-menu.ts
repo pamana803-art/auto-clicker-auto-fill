@@ -3,14 +3,21 @@ import { ACTION_POPUP } from '../common/constant';
 import { GoogleAnalyticsBackground } from '@dhruv-techapps/google-analytics';
 
 const CONTEXT_MENU_ELEMENT_ID = 'element-mode';
+const CONTEXT_MENU_SEPARATOR_ID = 'config-separator';
 const CONTEXT_MENU_CONFIG_PAGE_ID = 'config-page-mode';
+
+const CONTEXT_MENU_I18N = {
+  FIELD: chrome.i18n.getMessage('@CONTEXT_MENU__FIELD'),
+  RECORD: chrome.i18n.getMessage('@CONTEXT_MENU__RECORD'),
+  CONFIG_PAGE: chrome.i18n.getMessage('@CONTEXT_MENU__CONFIG_PAGE'),
+};
 
 export default function registerContextMenus(optionsPageUrl?: string, googleAnalytics?: GoogleAnalyticsBackground) {
   chrome.contextMenus.removeAll();
-  chrome.contextMenus.create({ id: CONTEXT_MENU_ELEMENT_ID, title: '★ Configure for this Field', contexts: ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio', 'video'] });
-  chrome.contextMenus.create({ id: ACTION_POPUP, title: '☉ Auto Clicker (Record)', contexts: ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio', 'video'] });
-  chrome.contextMenus.create({ id: 'CONFIG-SEPARATOR', type: 'separator', contexts: ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio', 'video'] });
-  chrome.contextMenus.create({ id: CONTEXT_MENU_CONFIG_PAGE_ID, title: '↗ Open Configuration Page', contexts: ['all'] });
+  chrome.contextMenus.create({ id: CONTEXT_MENU_ELEMENT_ID, title: CONTEXT_MENU_I18N.FIELD, contexts: ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio', 'video'] });
+  chrome.contextMenus.create({ id: ACTION_POPUP, title: CONTEXT_MENU_I18N.RECORD, contexts: ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio', 'video'] });
+  chrome.contextMenus.create({ id: CONTEXT_MENU_SEPARATOR_ID, type: 'separator', contexts: ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio', 'video'] });
+  chrome.contextMenus.create({ id: CONTEXT_MENU_CONFIG_PAGE_ID, title: CONTEXT_MENU_I18N.CONFIG_PAGE, contexts: ['all'] });
 
   if (optionsPageUrl) {
     chrome.contextMenus.onClicked.addListener(async ({ menuItemId }, tab) => {

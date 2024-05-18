@@ -24,10 +24,10 @@ export const messageListener = async (request: any, sender: chrome.runtime.Messa
           if (typeof configs[messenger][methodName] === 'function') {
             return configs[messenger][methodName](message, sender);
           } else {
-            throw new Error(`${messenger}.${methodName} ${chrome.i18n.getMessage('@PORT__method_not_found')}`);
+            throw new Error(`${messenger}.${methodName} ${chrome.i18n.getMessage('@PORT__METHOD_NOT_FOUND')}`);
           }
         } else {
-          throw new Error(`${messenger} ${chrome.i18n.getMessage('@PORT__action_not_found')}`);
+          throw new Error(`${messenger} ${chrome.i18n.getMessage('@PORT__ACTION_NOT_FOUND')}`);
         }
     }
   } catch (error) {

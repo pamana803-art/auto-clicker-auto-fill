@@ -57,7 +57,7 @@ export class GoogleSheetsCS {
       if (result) {
         return this.transformResult(result);
       }
-      Logger.colorDebug('Google Sheets', result);
+      console.debug('Google Sheets', result);
       return result;
     }
     return undefined;

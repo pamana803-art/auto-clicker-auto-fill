@@ -1,4 +1,5 @@
-import { Logger, SystemError } from '@dhruv-techapps/core-common';
+import { SystemError } from '@dhruv-techapps/core-common';
+import { ACTION_I18N_TITLE } from '.';
 import CommonEvents from './common.events';
 
 const LOCATION_COMMANDS = ['reload', 'href', 'replace', 'open', 'close', 'focus', 'blur', 'print', 'stop', 'moveBy', 'moveTo'];
@@ -61,7 +62,7 @@ export const LocationCommandEvents = (() => {
 
   const start = (value: string) => {
     const commands = CommonEvents.getVerifiedEvents(LOCATION_COMMANDS, value);
-    Logger.colorDebug('LocationCommandEvents', { commands, value });
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, commands);
     execCommand(commands, value);
   };
   return { start };

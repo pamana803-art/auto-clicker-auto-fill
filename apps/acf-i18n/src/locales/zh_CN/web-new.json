@@ -7,18 +7,7 @@
     "google-group": "Google Group",
     "login": "登录",
     "logout": "登出",
-    "settings": "全局设置",
-    "backup": {
-      "last-backup": "上次备份:",
-      "backup": "备份到云端",
-      "restore": "从云端恢复",
-      "now": "立即备份",
-      "auto-backup": "自动备份",
-      "daily": "每日",
-      "weekly": "每周",
-      "monthly": "每月",
-      "off": "关闭"
-    }
+    "settings": "全局设置"
   },
   "footer": {
     "resources": "资源",
@@ -144,6 +133,18 @@
         "refresh": "刷新",
         "hint": "如果扩展在重试后未找到xpath,则可以执行以下操作"
       },
+      "backup": {
+        "title": "备份",
+        "last-backup": "上次备份：",
+        "backup": "备份至云端",
+        "restore": "从云端还原",
+        "now": "立即备份",
+        "auto-backup": "自动备份",
+        "daily": "日常的",
+        "weekly": "每周",
+        "monthly": "每月",
+        "off": "离开"
+      },
       "saveMessage": "设置保存成功!"
     },
     "configSettings": {
@@ -158,7 +159,10 @@
       "windowHint": "<b>窗口</b>(默认)浏览器加载全部内容后才加载扩展",
       "document": "文档",
       "hotkey": "快捷键",
-      "documentHint": "<b>文档</b>浏览器在加载脚本和图片之前加载扩展(更快)(不安全)"
+      "documentHint": "<b>文档</b>浏览器在加载脚本和图片之前加载扩展(更快)(不安全)",
+      "urlMatch": "URL 匹配",
+      "regex": "正则表达式",
+      "exact": "精确的"
     },
     "reorder": {
       "title": "重新排序配置",
@@ -297,6 +301,7 @@
     }
   },
   "common": {
+    "appName": "自动点击器 - 自动填充",
     "settings": "设置",
     "error": "错误",
     "save": "保存",
@@ -318,6 +323,18 @@
     "ko": "韩语",
     "ca": "加拿大语",
     "hi": "印地语",
-    "zh-cn": "中文"
+    "zh_CN": "中文",
+    "sv": "瑞典",
+    "pt": "葡萄牙语",
+    "ja": "日本人",
+    "nl": "荷兰语",
+    "de": "德语",
+    "es": "西班牙语",
+    "vi": "越南语",
+    "fi": "芬兰",
+    "ar": "阿拉伯",
+    "it": "意大利语",
+    "ru": "俄语",
+    "id": "印度尼西亚"
   }
 }

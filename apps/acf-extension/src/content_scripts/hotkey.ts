@@ -5,7 +5,7 @@ const LOGGER_LETTER = 'Hotkey';
 
 export const Hotkey = (() => {
   const setup = (start: () => void, hotkey: string = defaultHotkey) => {
-    Logger.colorDebug(LOGGER_LETTER, hotkey);
+    console.debug(LOGGER_LETTER, hotkey);
     document.addEventListener('keydown', ({ ctrlKey, shiftKey, altKey, code }) => {
       const key = hotkey.split('+').pop()?.trim();
       if (code !== undefined && code.replace(/key/gi, '') === key) {

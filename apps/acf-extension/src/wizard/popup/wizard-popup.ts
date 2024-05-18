@@ -12,7 +12,27 @@ export class AutoClickerAutoFillPopup extends HTMLElement {
     const template = (document.getElementById('auto-clicker-autofill-popup') as HTMLTemplateElement).content;
     const shadowRoot = this.attachShadow({ mode: 'open' });
     shadowRoot.appendChild(template.cloneNode(true));
+    this.setI18n();
     this.attachEventListener();
+  }
+
+  setI18n() {
+    const docsTestElement = this.shadowRoot?.querySelector('#docs-text');
+    const chatTestElement = this.shadowRoot?.querySelector('#chat-text');
+    const advanceTestElement = this.shadowRoot?.querySelector('#advance-text');
+    const sponsorElement = this.shadowRoot?.querySelector('#sponsor-text');
+    if (docsTestElement) {
+      docsTestElement.innerHTML = chrome.i18n.getMessage('@DOCS');
+    }
+    if (chatTestElement) {
+      chatTestElement.innerHTML = chrome.i18n.getMessage('@CHAT');
+    }
+    if (advanceTestElement) {
+      advanceTestElement.innerHTML = chrome.i18n.getMessage('@ADVANCE');
+    }
+    if (sponsorElement) {
+      sponsorElement.innerHTML = chrome.i18n.getMessage('@SPONSOR');
+    }
   }
 
   attachEventListener() {

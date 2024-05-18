@@ -1,71 +1,146 @@
 {
-  "message_action_not_found": {
+  "EXT_NAME": {
+    "message": "Auto Clicker - AutoFill"
+  },
+  "EXT_NAME_DEV": {
+    "message": "Auto Clicker - AutoFill [DEV]"
+  },
+  "EXT_NAME_BETA": {
+    "message": "Auto Clicker - AutoFill [BETA]"
+  },
+  "EXT_NAME_LOCAL": {
+    "message": "Auto Clicker - AutoFill [LOCAL]"
+  },
+  "EXT_SHORT_NAME": {
+    "message": "Auto Fill"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "AutoFill input field or auto click button or link anything anywhere.You can configure and check click speed test"
+  },
+  "@ACF_BACKUP__NOTIFICATION_TITLE": {
+    "message": "ACF Backup"
+  },
+  "@ACF_BACKUP__NOTIFICATION_BACKUP": {
+    "message": "Configurations are backup on Google Drive at $1"
+  },
+  "@ACF_BACKUP__NOTIFICATION_RESTORE": {
+    "message": "Configurations are restored from Google Drive. Refresh configurations page to load content."
+  },
+  "@ACF_BACKUP__ERROR_NO_CONFIG": {
+    "message": "No configurations found to backup"
+  },
+  "@ACF_BACKUP__ERROR_NO_CONTENT": {
+    "message": "No content found in the file"
+  },
+  "@PORT__ACTION_NOT_FOUND": {
     "message": "is not configured"
   },
-  "@PORT__action_not_found": {
-    "message": "is not configured"
-  },
-  "@PORT__method_not_found": {
+  "@PORT__METHOD_NOT_FOUND": {
     "message": "process method is not found"
   },
-  "@RATE__title": {
-    "message": "Useful Extension"
+  "@CONTEXT_MENU__FIELD": {
+    "message": "★ Configure for this Field"
   },
-  "@RATE__message": {
-    "message": "Do you found our extension useful?"
+  "@CONTEXT_MENU__RECORD": {
+    "message": "☉ Auto Clicker (Record)"
   },
-  "@RATE__yes_button": {
-    "message": "Yes"
+  "@CONTEXT_MENU__CONFIG_PAGE": {
+    "message": "↗ Open Configuration Page"
   },
-  "@RATE__no_button": {
-    "message": "No"
+  "@TABS__TITLE": {
+    "message": "Tabs"
   },
-  "@RATE__yes_title": {
-    "message": "Enjoying the extension?"
+  "@TABS__ERROR": {
+    "message": "Unable to locate the specified tab or tab ID."
   },
-  "@RATE__yes_message": {
-    "message": "Please help us become a 5-star extension,\nThank you!"
+  "@ACTION__TITLE": {
+    "message": "Action"
   },
-  "@RATE__no_title": {
-    "message": "Let us help you"
+  "@ACTION__NO_NAME": {
+    "message": "no-name"
   },
-  "@RATE__no_message": {
-    "message": "Connect with us on Discord or Create issue if you find"
+  "@ADDON__TITLE": {
+    "message": "Addon"
   },
-  "@RATE__issue_button": {
-    "message": "☉ Create Issue"
+  "@BATCH__TITLE": {
+    "message": "Batch"
   },
-  "@RATE__connect_button": {
-    "message": "★ Connect with us"
+  "@CONFIG__TITLE": {
+    "message": "Config"
   },
-  "@RATE__rate_button": {
-    "message": "❤ Rate Now"
+  "@ERROR__ELEMENT_FINDER_BLANK": {
+    "message": "Element Finder is blank"
   },
-  "@RATE__later_button": {
-    "message": "☹ Later"
+  "@ERROR__NO_MATCH": {
+    "message": "Addon condition did not match."
   },
-  "@RATE__review_url_missing": {
-    "message": "Review url is missing for rate"
+  "@ERROR__WRONG_TITLE": {
+    "message": "Incorrect comparison"
   },
-  "@NOTIFICATIONS__permission_error": {
-    "message": "notification permission is not provided in manifest. Please update manifest permission"
+  "@ERROR__WRONG_DESCRIPTION": {
+    "message": "Greater than or less than operators can only compare numbers"
   },
-  "@NOTIFICATIONS__default_icon_missing": {
-    "message": "default_icon is not defined under browser_action in manifest. Please add {browser_action:{default_icon}}"
+  "@ERROR__ELEMENT_FINDER_TITLE": {
+    "message": "Incorrect element finder or addon condition"
   },
-  "@TAB__options_page_url_missing": {
-    "message": "options page not defined in manifest. Please add {config{options_page_url}}"
+  "@ERROR__ELEMENT_FINDER_DESCRIPTION": {
+    "message": "Element Finder should target a checkbox"
   },
-  "@IMPORT_DATA___target": {
-    "message": "Import target not specified"
+  "@ERROR__INVALID_ELEMENT_FINDER": {
+    "message": "Invalid element finder"
   },
-  "@NOTIFICATIONS_config_finish": {
-    "message": "Configuration Finished"
+  "@ERROR__NOT_FOUND_STOP": {
+    "message": "Not Found - STOP"
   },
-  "@CLOUD_MESSAGE_config_error_title": {
-    "message": "Configuration Error"
+  "@ERROR__NOT_FOUND_RELOAD": {
+    "message": "Not Found - RELOAD"
   },
-  "@CLOUD_MESSAGE_config_finish_title": {
-    "message": "Configuration Finish"
+  "@ERROR": {
+    "message": "Error"
+  },
+  "@SCHEDULE": {
+    "message": "Schedule"
+  },
+  "@REPEAT": {
+    "message": "repeat"
+  },
+  "@COMPLETED": {
+    "message": "Completed"
+  },
+  "@DEFAULT": {
+    "message": "default"
+  },
+  "@WAIT": {
+    "message": "wait"
+  },
+  "@DISABLED": {
+    "message": "Disabled"
+  },
+  "@RESULT": {
+    "message": "Result"
+  },
+  "@GOTO": {
+    "message": "Goto"
+  },
+  "@RECHECK": {
+    "message": "recheck"
+  },
+  "@COMPARE": {
+    "message": "Compare"
+  },
+  "@RECHECK_OPTION": {
+    "message": "RecheckOption"
+  },
+  "@DOCS": {
+    "message": "Docs"
+  },
+  "@CHAT": {
+    "message": "Chat"
+  },
+  "@ADVANCE": {
+    "message": "Advance"
+  },
+  "@SPONSOR": {
+    "message": "Sponsor"
   }
 }

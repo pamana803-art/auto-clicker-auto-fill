@@ -1,28 +1,28 @@
-import { Logger } from '@dhruv-techapps/core-common';
-import CommonEvents, { EVENTS } from './common.events';
-import { WindowCommandEvents } from './window-command.events';
+import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
+import { AppendEvents } from './append.events';
 import { AttributeEvents } from './attribute.events';
 import { ClassEvents } from './class-list.events';
-import { CopyEvents } from './copy.events';
-import { PasteEvents } from './paste.events';
-import { FuncEvents } from './func.events';
-import { ReplaceEvents } from './replace.events';
-import { AppendEvents } from './append.events';
-import { PrependEvents } from './prepend.events';
-import { ScrollToEvents } from './scroll-to.events';
-import { MouseEvents } from './mouse.events';
-import { TouchEvents } from './touch.events';
-import { FormEvents } from './form.events';
-import { KeyEvents } from './key.events';
-import { LocationCommandEvents } from './location-command.events';
-import { PlainEvents } from './plain.events';
-import { KeyboardEvents } from './keyboard.events';
-import { TabsEvents } from './tabs.events';
-
 import { ClipboardEvents } from './clipboard.events';
-import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
+import CommonEvents, { EVENTS } from './common.events';
+import { CopyEvents } from './copy.events';
+import { FormEvents } from './form.events';
+import { FuncEvents } from './func.events';
+import { KeyEvents } from './key.events';
+import { KeyboardEvents } from './keyboard.events';
+import { LocationCommandEvents } from './location-command.events';
+import { MouseEvents } from './mouse.events';
+import { PasteEvents } from './paste.events';
+import { PlainEvents } from './plain.events';
+import { PrependEvents } from './prepend.events';
+import { ReplaceEvents } from './replace.events';
+import { ScrollToEvents } from './scroll-to.events';
+import { TabsEvents } from './tabs.events';
+import { TouchEvents } from './touch.events';
+import { WindowCommandEvents } from './window-command.events';
 
 const DEFAULT_EVENT = ['mouseover', 'mousedown', 'mouseup', 'click'];
+
+export const ACTION_I18N_TITLE = chrome.i18n.getMessage('@ACTION__TITLE');
 
 export const Events = (() => {
   const check = async (elements: Array<HTMLElement>, value?: string) => {
@@ -93,7 +93,7 @@ export const Events = (() => {
           PlainEvents.start(elements, value);
       }
     } else {
-      Logger.colorDebug('Default Click Events');
+      console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, 'Default Click Events');
       elements.forEach((element) => {
         DEFAULT_EVENT.forEach((event) => {
           element.dispatchEvent(new MouseEvent(event, CommonEvents.getMouseEventProperties()));

@@ -1,7 +1,5 @@
 import { BROWSER } from './_helpers';
 
-// Application name
-export const APP_NAME = 'Auto Clicker - AutoFill';
 // Application Links
 export const APP_LINK = {
   DOCS: 'https://getautoclicker.com/docs/3.x/',
@@ -12,7 +10,7 @@ export const APP_LINK = {
   DISCUSSIONS: 'https://github.com/Dhruv-Techapps/acf-docs/discussions',
 };
 // Application Languages
-export const APP_LANGUAGES = ['en', 'ko', 'fr', 'zh-cn'];
+export const APP_LANGUAGES = ['en', 'ar', 'de', 'es', 'fi', 'fr', 'id', 'it', 'ja', 'ko', 'nl', 'pt', 'ru', 'sv', 'vi', 'zh_CN'];
 
 export const SPONSORS = [
   {

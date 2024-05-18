@@ -1,4 +1,5 @@
-import { Logger, ConfigError, SystemError } from '@dhruv-techapps/core-common';
+import { ConfigError, SystemError } from '@dhruv-techapps/core-common';
+import { ACTION_I18N_TITLE } from '.';
 import CommonEvents from './common.events';
 
 const FORM_EVENTS = ['blur', 'click', 'click-once', 'focus', 'select', 'submit', 'remove', 'clear'];
@@ -39,7 +40,8 @@ export const FormEvents = (() => {
           ) {
             element.form?.submit();
           } else {
-            throw new ConfigError(`elementFinder: ${element}`, 'Invalid Element for submit');
+            console.error(element);
+            throw new ConfigError(`invalid elementFinder`, 'Invalid Element for submit');
           }
           break;
         case 'select':
@@ -54,18 +56,19 @@ export const FormEvents = (() => {
           if (element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) {
             element.value = '';
           } else {
-            throw new ConfigError(`elementFinder: ${element}`, 'Invalid Element for clear');
+            console.error(element);
+            throw new ConfigError(`invalid elementFinder`, 'Invalid Element for clear');
           }
           break;
         default:
-          throw new SystemError(`Unhandled Event  "${event}"`, 'Form Events');
+          throw new SystemError(`Unhandled Event  "${typeof event === 'string' ? event : event.type}"`, 'Form Events');
       }
     });
   };
 
   const start = (elements: Array<HTMLElement>, action: string) => {
     const events = CommonEvents.getVerifiedEvents(FORM_EVENTS, action);
-    Logger.colorDebug(`FormEvents`, events);
+    console.debug(`${ACTION_I18N_TITLE} #${window.__currentAction}`, elements, events);
     CommonEvents.loopElements(elements, events, dispatchEvent);
   };
   return { start };

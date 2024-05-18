@@ -18,7 +18,7 @@ i18n
     ns: 'web-new',
     debug: false,
     defaultNS: 'web-new',
-    lng: window.localStorage.getItem('language'),
+    lng: window.localStorage.getItem('language') || navigator.language.replace('-', '_'),
     backend: {
       loadPath: `${process.env.NX_I18N}/{{lng}}/{{ns}}.json`,
       addPath: '/locales/add/{{lng}}/{{ns}}',
