@@ -45,6 +45,14 @@ function Header() {
   }, [t]);
 
   useEffect(() => {
+    if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
+      window.document.title = `${t('common.appName')} [${process.env.NX_VARIANT}]`;
+    } else {
+      window.document.title = t('common.appName');
+    }
+  }, [t]);
+
+  useEffect(() => {
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
 
