@@ -81,6 +81,7 @@ try {
   if (error instanceof Error) {
     googleAnalytics?.fireErrorEvent({ name: error.name, error: error.message, additionalParams: { page: 'background' } });
   }
+  console.error(error);
 }
 
 addEventListener('unhandledrejection', async (event) => {
@@ -89,4 +90,5 @@ addEventListener('unhandledrejection', async (event) => {
   } else {
     googleAnalytics?.fireErrorEvent({ error: JSON.stringify(event.reason), additionalParams: { page: 'background' } });
   }
+  console.error(event);
 });
