@@ -1,4 +1,4 @@
-import { BROWSER, RESPONSE_CODE } from '@dhruv-techapps/core-common';
+import { BROWSER } from '@dhruv-techapps/core-common';
 import { NotificationHandler } from '@dhruv-techapps/notifications';
 import { GOOGLE_LOCAL_STORAGE_KEY, GOOGLE_SCOPES, GoogleOauth2LoginResponse } from './google-oauth.types';
 
@@ -25,8 +25,7 @@ export class GoogleOauth2Background {
     try {
       const headers = await this.getHeaders([GOOGLE_SCOPES.PROFILE, scope]);
       const google = await this.getCurrentUser(headers);
-      const googleScopes = await this.#getScopes();
-      return { [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: googleScopes, [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE]: google };
+      return { [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE]: google };
     } catch (error) {
       if (error instanceof Error) {
         NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
@@ -43,27 +42,20 @@ export class GoogleOauth2Background {
     return response;
   }
 
-  async remove(scope: GOOGLE_SCOPES) {
-    const scopes = await this.#removeScope(scope);
-    if (scopes.length === 1) {
-      await chrome.storage.local.remove(GOOGLE_LOCAL_STORAGE_KEY.GOOGLE);
-      await this.removeCachedAuthToken();
-    }
-    return RESPONSE_CODE.REMOVED;
-  }
-
-  async getAuthTokenEdge(scopes: Array<GOOGLE_SCOPES>) {
-    if (this.edgeClientId) {
+  async getAuthTokenEdge(scopes: string[]) {
+    if (this.edgeClientId === undefined) {
       throw new Error('Edge client id not found');
     }
 
-    const redirectUrl = chrome.identity.getRedirectURL();
-    const redirectUri = encodeURIComponent(redirectUrl);
-    const scopesString = encodeURIComponent(scopes.join(' '));
-    const result = await chrome.identity.launchWebAuthFlow({
-      url: `https://accounts.google.com/o/oauth2/auth?client_id=${this.edgeClientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scopesString}`,
-      interactive: true,
-    });
+    const url = new URL('https://accounts.google.com/o/oauth2/auth');
+    url.searchParams.append('client_id', this.edgeClientId);
+    url.searchParams.append('redirect_uri', chrome.identity.getRedirectURL());
+    url.searchParams.append('response_type', 'token');
+    if (scopes && scopes?.length !== 0) {
+      url.searchParams.append('scope', scopes.join(' '));
+    }
+
+    const result = await chrome.identity.launchWebAuthFlow({ url: url.href, interactive: true });
     if (result) {
       const url = new URL(result);
       const token = url?.hash
@@ -72,57 +64,30 @@ export class GoogleOauth2Background {
         ?.split('=')[1];
       if (token) {
         return token;
-      } else {
-        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Token not found');
       }
-    } else {
-      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Error while retrieving token');
+      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Token not found');
+      throw new Error('Token not found');
     }
-    return null;
+    NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Error while retrieving token');
+    throw new Error('Error while retrieving token');
   }
 
-  async getAuthToken(scopes: Array<GOOGLE_SCOPES>) {
+  async getAuthToken(additionalScopes?: Array<GOOGLE_SCOPES>) {
+    const scopes = chrome.runtime.getManifest().oauth2?.scopes || [];
+    if (additionalScopes) {
+      scopes.push(...additionalScopes);
+    }
     if (BROWSER === 'EDGE') {
       const token = this.getAuthTokenEdge(scopes);
-      for (const scope of scopes) {
-        await this.#addScope(scope);
-      }
       return token;
     } else {
       const { token } = await chrome.identity.getAuthToken({ interactive: true, scopes });
-      for (const scope of scopes) {
-        await this.#addScope(scope);
-      }
       return token;
     }
   }
 
-  async getHeaders(scopes: Array<GOOGLE_SCOPES>) {
+  async getHeaders(scopes?: Array<GOOGLE_SCOPES>) {
     const token = await this.getAuthToken(scopes);
     return new Headers({ Authorization: `Bearer ${token}` });
-  }
-
-  async #addScope(scope: GOOGLE_SCOPES) {
-    const { [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes = [] } = await chrome.storage.local.get(GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES);
-    if (!scopes.includes(scope)) {
-      scopes.push(scope);
-      await chrome.storage.local.set({ [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes });
-    }
-    return scopes;
-  }
-
-  async #getScopes() {
-    const { [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes = [] } = await chrome.storage.local.get(GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES);
-    return scopes;
-  }
-
-  async #removeScope(scope: GOOGLE_SCOPES) {
-    const { [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes = [] } = await chrome.storage.local.get(GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES);
-    const index = scopes.findIndex(scope);
-    if (index !== -1) {
-      scopes.splice(index, 1);
-      await chrome.storage.local.set({ [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: scopes });
-    }
-    return scopes;
   }
 }

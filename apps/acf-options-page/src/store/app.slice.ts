@@ -23,6 +23,11 @@ export const login = createAsyncThunk('firebase/login', async () => {
   return user;
 });
 
+export const signInWithEmailAndPassword = createAsyncThunk('firebase/loginWithEmailAndPassword', async () => {
+  const user = await FirebaseOauthService.signInWithEmailAndPassword(window.EXTENSION_ID, 'dharmesh.hemaram@gmail.com', 'Dharmesh!2210');
+  return user;
+});
+
 export const logout = createAsyncThunk('firebase/logout', async () => {
   const result = await FirebaseOauthService.logout(window.EXTENSION_ID);
   return result;
@@ -98,6 +103,16 @@ const slice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.user = action.payload;
+      state.isLoginLoading = false;
+      state.loginModal = false;
+    });
+    builder.addCase(signInWithEmailAndPassword.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isLoginLoading = false;
+      state.loginModal = false;
+    });
+    builder.addCase(signInWithEmailAndPassword.rejected, (state, action) => {
+      state.error = action.error.message;
       state.isLoginLoading = false;
       state.loginModal = false;
     });

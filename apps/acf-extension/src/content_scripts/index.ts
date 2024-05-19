@@ -2,6 +2,7 @@ import { LOAD_TYPES } from '@dhruv-techapps/acf-common';
 import { ConfigStorage, GetConfigResult, SettingsStorage } from '@dhruv-techapps/acf-store';
 import { Session } from '@dhruv-techapps/acf-util';
 import { Logger, LoggerColor } from '@dhruv-techapps/core-common';
+import { FirebaseFunctionsService } from '@dhruv-techapps/firebase-functions';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { Sheets } from '@dhruv-techapps/google-sheets';
 import ConfigProcessor from './config';
@@ -33,6 +34,13 @@ async function loadConfig(loadType: LOAD_TYPES) {
           Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, host, loadType);
           await ConfigProcessor.checkStartType(manualConfigs, autoConfig);
           Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, host, 'END');
+          console.time('ocr');
+          FirebaseFunctionsService.ocr(chrome.runtime.id)
+            .then((re) => {
+              console.log(re);
+              console.timeEnd('ocr');
+            })
+            .catch((error) => console.error('Content Script', error));
         }
       } else if (manualConfigs.length > 0 && loadType === LOAD_TYPES.DOCUMENT) {
         await ConfigProcessor.checkStartType(manualConfigs);

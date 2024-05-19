@@ -1,5 +1,5 @@
-import { GOOGLE_SCOPES, GoogleOauth2Background } from '@dhruv-techapps/google-oauth';
-import { Auth, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import { GoogleOauth2Background } from '@dhruv-techapps/google-oauth';
+import { Auth, GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword } from 'firebase/auth';
 
 export class FirebaseOauth2Background extends GoogleOauth2Background {
   auth;
@@ -9,7 +9,7 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
   }
 
   async firebaseLogin() {
-    const token = await this.getAuthToken([GOOGLE_SCOPES.PROFILE, GOOGLE_SCOPES.EMAIL]);
+    const token = await this.getAuthToken();
     if (token) {
       const credential = GoogleAuthProvider.credential(null, token);
       if (credential) {
@@ -21,8 +21,13 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
     throw new Error('Error getting token');
   }
 
+  async signInWithEmailAndPassword(email: string, password: string) {
+    const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+    return userCredential.user;
+  }
+
   async logout() {
-    const token = await this.getAuthToken([GOOGLE_SCOPES.PROFILE, GOOGLE_SCOPES.EMAIL]);
+    const token = await this.getAuthToken();
     if (token) {
       chrome.identity.removeCachedAuthToken({ token });
     }

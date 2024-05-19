@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Button, Form, Modal } from 'react-bootstrap';
-import GoogleSignInLight from '../assets/btn_google_signin_light_normal_web.png';
 import GoogleSignInDark from '../assets/btn_google_signin_dark_normal_web.png';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { themeSelector } from '../store/theme.slice';
-import { appSelector, login, switchLogin } from '../store/app.slice';
+import GoogleSignInLight from '../assets/btn_google_signin_light_normal_web.png';
 import { Loading } from '../components';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { appSelector, login, switchLogin } from '../store/app.slice';
+import { themeSelector } from '../store/theme.slice';
 
 const LoginModal = () => {
   const dispatch = useAppDispatch();

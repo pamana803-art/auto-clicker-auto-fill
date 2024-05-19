@@ -12,7 +12,6 @@ export enum GOOGLE_SCOPES {
 }
 
 export type GoogleOauth2LoginResponse = {
-  [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE_SCOPES]: Array<GOOGLE_SCOPES>;
   [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE]: any;
 };
 

@@ -16,8 +16,11 @@ export const getProducts = createAsyncThunk('firebase/getProducts', async () => 
   return result;
 });
 
-export const getSubscription = createAsyncThunk('firebase/getSubscription', async () => {
+export const getSubscription = createAsyncThunk('firebase/getSubscription', async (_, thunkAPI) => {
   const subscription = await FirebaseFirestoreService.getSubscriptions(window.EXTENSION_ID);
+  if (!subscription) {
+    thunkAPI.dispatch(getProducts());
+  }
   return subscription;
 });
 

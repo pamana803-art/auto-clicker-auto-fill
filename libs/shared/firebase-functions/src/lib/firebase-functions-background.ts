@@ -1,20 +1,15 @@
 import { FirebaseOauth2Background } from '@dhruv-techapps/firebase-oauth';
 import { Auth } from 'firebase/auth';
-import { Functions, getFunctions, httpsCallable } from 'firebase/functions';
 
 export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
-  functions: Functions;
   constructor(auth: Auth) {
     super(auth);
-    this.functions = getFunctions(auth.app, 'us-central1');
   }
 
-  helloWorld = async () => {
-    console.log('functions', this.functions);
-    const httpsCallableFunc = httpsCallable(this.functions, 'helloWorld');
-    console.log('httpsCallableFunc', httpsCallableFunc);
-    const { data } = await httpsCallableFunc({ returnUrl: window.location.origin });
-    console.log('data', data);
+  ocr = async () => {
+    const token = await this.auth.currentUser?.getIdToken();
+    const headers = new Headers({ Authorization: `Bearer ${token}` });
+    const data = await fetch(' https://ocr-txzspjcsqq-uc.a.run.app', { headers }).then((r) => r.text());
     return data;
   };
 }

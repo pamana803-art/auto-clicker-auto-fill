@@ -10,6 +10,13 @@ export class FirebaseOauthService extends CoreService {
   static async login(extensionId: string) {
     return await this.message<RuntimeMessageRequest, User>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_OAUTH, methodName: 'firebaseLogin' });
   }
+  static async signInWithEmailAndPassword(extensionId: string, email: string, password: string) {
+    return await this.message<RuntimeMessageRequest<{ email: string; password: string }>, User>(extensionId, {
+      messenger: RUNTIME_MESSAGE_FIREBASE_OAUTH,
+      methodName: 'signInWithEmailAndPassword',
+      message: { email, password },
+    });
+  }
   static async logout(extensionId: string) {
     return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_OAUTH, methodName: 'logout' });
   }

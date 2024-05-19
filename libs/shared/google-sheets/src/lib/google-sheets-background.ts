@@ -13,7 +13,7 @@ export type GoogleSheetsRequest = {
 export type GoogleSheetsResponse = ValueRange[] | undefined;
 
 export class GoogleSheetsBackground extends GoogleOauth2Background {
-  scopes = [GOOGLE_SCOPES.SHEETS, GOOGLE_SCOPES.PROFILE];
+  scopes = [GOOGLE_SCOPES.SHEETS];
   async getSheets({ spreadsheetId, ranges }: GoogleSheetsRequest): Promise<GoogleSheetsResponse> {
     let response;
     if (!spreadsheetId || !ranges) {
@@ -51,7 +51,7 @@ export class GoogleSheetsBackground extends GoogleOauth2Background {
         NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
       }
       await this.removeCachedAuthToken();
+      throw error;
     }
-    return;
   }
 }

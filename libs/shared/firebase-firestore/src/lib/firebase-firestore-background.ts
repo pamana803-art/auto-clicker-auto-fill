@@ -6,11 +6,13 @@ import { NOTIFICATIONS_ID, NOTIFICATIONS_TITLE } from './firebase-firestore.cons
 
 export class FirebaseFirestoreBackground extends FirebaseOauth2Background {
   db: Firestore;
+  publicUrl: string;
   user: User | null = null;
 
-  constructor(auth: Auth) {
+  constructor(auth: Auth, publicUrl: string) {
     super(auth);
     this.db = getFirestore(auth.app);
+    this.publicUrl = publicUrl;
   }
 
   async getProducts() {
@@ -80,8 +82,8 @@ export class FirebaseFirestoreBackground extends FirebaseOauth2Background {
       mode: 'subscription',
       price: priceId,
       allow_promotion_codes: true,
-      success_url: chrome.identity.getRedirectURL(),
-      cancel_url: chrome.identity.getRedirectURL(),
+      success_url: this.publicUrl,
+      cancel_url: this.publicUrl,
     });
 
     const unsubscribe = onSnapshot(

@@ -73,7 +73,7 @@ try {
     [RUNTIME_MESSAGE_ACF.ACF_BACKUP]: new AcfBackup(EDGE_OAUTH_CLIENT_ID),
     [RUNTIME_MESSAGE_ACF.TABS]: new TabsMessenger(),
     [RUNTIME_MESSAGE_FIREBASE_OAUTH]: new FirebaseOauth2Background(auth, EDGE_OAUTH_CLIENT_ID),
-    [RUNTIME_MESSAGE_FIREBASE_FIRESTORE]: new FirebaseFirestoreBackground(auth),
+    [RUNTIME_MESSAGE_FIREBASE_FIRESTORE]: new FirebaseFirestoreBackground(auth, OPTIONS_PAGE_URL),
     [RUNTIME_MESSAGE_FIREBASE_FUNCTIONS]: new FirebaseFunctionsBackground(auth),
   };
   Runtime.onMessageExternal(onMessageListener);
