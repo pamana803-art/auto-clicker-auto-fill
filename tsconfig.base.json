@@ -27,6 +27,7 @@
       "@dhruv-techapps/discord-messaging": ["libs/shared/discord-messaging/src/index.ts"],
       "@dhruv-techapps/discord-oauth": ["libs/shared/discord-oauth/src/index.ts"],
       "@dhruv-techapps/firebase-firestore": ["libs/shared/firebase-firestore/src/index.ts"],
+      "@dhruv-techapps/firebase-functions": ["libs/shared/firebase-functions/src/index.ts"],
       "@dhruv-techapps/firebase-oauth": ["libs/shared/firebase-oauth/src/index.ts"],
       "@dhruv-techapps/google-analytics": ["libs/shared/google-analytics/src/index.ts"],
       "@dhruv-techapps/google-drive": ["libs/shared/google-drive/src/index.ts"],

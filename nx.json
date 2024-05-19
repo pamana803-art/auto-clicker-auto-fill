@@ -98,7 +98,8 @@
       "acf-util",
       "notifications",
       "firebase-oauth",
-      "firebase-firestore"
+      "firebase-firestore",
+      "firebase-functions"
     ],
     "changelog": {
       "workspaceChangelog": {

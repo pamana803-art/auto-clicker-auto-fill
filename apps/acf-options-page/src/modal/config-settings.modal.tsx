@@ -190,20 +190,6 @@ const ConfigSettingsModal = () => {
             <Card.Body>
               <Row>
                 <Col md='12' sm='12'>
-                  <Form.Group controlId='config-start-time'>
-                    <FormControl name='startTime' pattern={REGEX.START_TIME} autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
-                    <Form.Label>{t('configuration.startTime')}&nbsp;</Form.Label>
-                    <StartTimePopover />
-                    <Form.Control.Feedback type='invalid'>{t('error.startTime')}</Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-          <Card className='mb-2'>
-            <Card.Body>
-              <Row>
-                <Col md='12' sm='12'>
                   <Form.Group controlId='config-url-match'>
                     <Form.Select value={config.url_match} onChange={onUpdate} name='url_match' required>
                       {Object.entries(URL_MATCH).map((condition) => (
