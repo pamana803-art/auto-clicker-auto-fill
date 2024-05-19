@@ -1,7 +1,7 @@
-import RandExp from 'randexp';
 import { ConfigError } from '@dhruv-techapps/core-common';
-import { Sandbox } from '@dhruv-techapps/sandbox';
 import { Sheets } from '@dhruv-techapps/google-sheets';
+import { Sandbox } from '@dhruv-techapps/sandbox';
+import RandExp from 'randexp';
 
 declare global {
   interface Window {
@@ -9,7 +9,7 @@ declare global {
     __actionRepeat: number;
     __sessionCount: number;
     __sheets?: Sheets;
-    __api?: any;
+    __api?: { [key: string]: string };
   }
 }
 
@@ -95,7 +95,7 @@ export const Value = (() => {
 
   const getApiValue = (value: string): string => {
     const [, key] = value.split('::');
-    const apiValue = window.__api[key];
+    const apiValue = window.__api?.[key];
     if (apiValue) {
       return apiValue;
     }
