@@ -2,6 +2,9 @@ const { composePlugins, withNx } = require('@nx/webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
+const { BannerPlugin } = require('webpack');
+const fs = require('fs');
+
 function modify(buffer, { KEY, NX_NAME, OAUTH_CLIENT_ID, NX_RELEASE_VERSION }) {
   // copy-webpack-plugin passes a buffer
   const manifest = JSON.parse(buffer.toString());
@@ -56,7 +59,8 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
       path: config.watch ? path.resolve(config.context, '.env') : './.env',
       safe: true,
       systemvars: true,
-    })
+    }),
+    new BannerPlugin(fs.readFileSync('./LICENSE', 'utf8'))
   );
 
   return config;
