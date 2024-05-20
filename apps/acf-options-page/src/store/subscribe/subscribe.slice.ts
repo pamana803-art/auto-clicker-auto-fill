@@ -26,6 +26,9 @@ export const getSubscription = createAsyncThunk('firebase/getSubscription', asyn
 
 export const subscribe = createAsyncThunk('firebase/subscribe', async (priceId: string) => {
   const result = await FirebaseFirestoreService.subscribe(window.EXTENSION_ID, priceId);
+  if (result) {
+    window.location.href = result;
+  }
   return result;
 });
 

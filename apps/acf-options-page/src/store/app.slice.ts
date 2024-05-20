@@ -1,9 +1,10 @@
 import { ManifestService } from '@dhruv-techapps/core-service';
-import { FirebaseOauthService } from '@dhruv-techapps/firebase-oauth';
+import { FirebaseOauthService, FirebaseRole } from '@dhruv-techapps/firebase-oauth';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User } from 'firebase/auth';
 import { NO_EXTENSION_ERROR } from '../constants';
 import { RootState } from '../store';
+import { getProducts } from './subscribe';
 
 export const getManifest = createAsyncThunk('app/getManifest', async () => {
   if (window.chrome?.runtime) {
@@ -13,19 +14,20 @@ export const getManifest = createAsyncThunk('app/getManifest', async () => {
   throw new Error(NO_EXTENSION_ERROR[0]);
 });
 
-export const isLogin = createAsyncThunk('firebase/isLogin', async () => {
-  const user = await FirebaseOauthService.isLogin(window.EXTENSION_ID);
-  return user;
+export const isLogin = createAsyncThunk('firebase/isLogin', async (_, thunkAPI) => {
+  const response = await FirebaseOauthService.isLogin(window.EXTENSION_ID);
+  if (!response.role) {
+    thunkAPI.dispatch(getProducts());
+  }
+  return response;
 });
 
-export const login = createAsyncThunk('firebase/login', async () => {
-  const user = await FirebaseOauthService.login(window.EXTENSION_ID);
-  return user;
-});
-
-export const signInWithEmailAndPassword = createAsyncThunk('firebase/loginWithEmailAndPassword', async () => {
-  const user = await FirebaseOauthService.signInWithEmailAndPassword(window.EXTENSION_ID, 'dharmesh.hemaram@gmail.com', 'Dharmesh!2210');
-  return user;
+export const login = createAsyncThunk('firebase/login', async (_, thunkAPI) => {
+  const response = await FirebaseOauthService.login(window.EXTENSION_ID);
+  if (!response.role) {
+    thunkAPI.dispatch(getProducts());
+  }
+  return response;
 });
 
 export const logout = createAsyncThunk('firebase/logout', async () => {
@@ -41,6 +43,7 @@ type AppStore = {
   extensionNotFound: boolean;
   loginModal: boolean;
   isLoginLoading: boolean;
+  role?: FirebaseRole;
 };
 
 const initialState: AppStore = {
@@ -93,7 +96,8 @@ const slice = createSlice({
       }
     });
     builder.addCase(isLogin.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.role = action.payload.role;
     });
     builder.addCase(isLogin.rejected, (state, action) => {
       state.error = action.error.message;
@@ -102,17 +106,8 @@ const slice = createSlice({
       state.isLoginLoading = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.isLoginLoading = false;
-      state.loginModal = false;
-    });
-    builder.addCase(signInWithEmailAndPassword.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.isLoginLoading = false;
-      state.loginModal = false;
-    });
-    builder.addCase(signInWithEmailAndPassword.rejected, (state, action) => {
-      state.error = action.error.message;
+      state.user = action.payload.user;
+      state.role = action.payload.role;
       state.isLoginLoading = false;
       state.loginModal = false;
     });

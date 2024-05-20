@@ -4,9 +4,9 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ErrorAlert } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
+import { appSelector } from '../store/app.slice';
 import { googleGetAPI, settingsGetAPI } from '../store/settings/settings.api';
 import { settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
-import { subscribeSelector } from '../store/subscribe';
 import { themeSelector } from '../store/theme.slice';
 import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill, FileSpreadsheetFill } from '../util';
 import { getFieldNameValue } from '../util/element';
@@ -15,7 +15,6 @@ import { SettingGoogleSheets } from './settings/google-sheets';
 import { SettingMessage } from './settings/message';
 import { SettingNotifications } from './settings/notifications';
 import { SettingRetry } from './settings/retry';
-
 enum SETTINGS_PAGE {
   NOTIFICATION = 'Show Notification',
   RETRY = 'Retry',
@@ -28,7 +27,7 @@ export const SettingsModal = () => {
   const theme = useAppSelector(themeSelector);
   const [page, setPage] = useState<SETTINGS_PAGE>();
   const { error, settings, visible } = useAppSelector(settingsSelector);
-  const { subscriptions } = useAppSelector(subscribeSelector);
+  const { role } = useAppSelector(appSelector);
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
@@ -89,7 +88,7 @@ export const SettingsModal = () => {
                   <ChevronRight />
                 </Button>
               </li>
-              {subscriptions && (
+              {role === 'pro' && (
                 <>
                   <li className='list-group-item'>
                     <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-backup'>
@@ -107,14 +106,16 @@ export const SettingsModal = () => {
                       <ChevronRight />
                     </Button>
                   </li>
-                  <li className='list-group-item d-flex justify-content-between align-items-center'>
-                    <Form.Label className='ms-2 me-auto' htmlFor='settings-suppress-whats-new'>
-                      <div className='fw-bold'>{t('modal.settings.suppressWhatsNew')}</div>
-                      {t('modal.settings.suppressWhatsNewHint')} <br />
-                    </Form.Label>
-                    <Form.Check type='switch' name='suppressWhatsNew' onChange={onUpdate} id='settings-suppressWhatsNew' checked={settings.suppressWhatsNew || false} />
-                  </li>
                 </>
+              )}
+              {role && (
+                <li className='list-group-item d-flex justify-content-between align-items-center'>
+                  <Form.Label className='ms-2 me-auto' htmlFor='settings-suppress-whats-new'>
+                    <div className='fw-bold'>{t('modal.settings.suppressWhatsNew')}</div>
+                    {t('modal.settings.suppressWhatsNewHint')} <br />
+                  </Form.Label>
+                  <Form.Check type='switch' name='suppressWhatsNew' onChange={onUpdate} id='settings-suppressWhatsNew' checked={settings.suppressWhatsNew || false} />
+                </li>
               )}
               <li className='list-group-item d-flex justify-content-between align-items-center'>
                 <Form.Label className='ms-2 me-auto' htmlFor='settings-checkiFrames'>

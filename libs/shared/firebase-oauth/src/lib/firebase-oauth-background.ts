@@ -1,5 +1,6 @@
 import { GoogleOauth2Background } from '@dhruv-techapps/google-oauth';
-import { Auth, GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword } from 'firebase/auth';
+import { Auth, GoogleAuthProvider, User, signInWithCredential } from 'firebase/auth';
+import { FirebaseLoginResponse, FirebaseRole } from './firebase-oauth.types';
 
 export class FirebaseOauth2Background extends GoogleOauth2Background {
   auth;
@@ -8,35 +9,31 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
     this.auth = auth;
   }
 
-  async firebaseLogin() {
+  async firebaseLogin(): Promise<FirebaseLoginResponse> {
     const token = await this.getAuthToken();
     if (token) {
       const credential = GoogleAuthProvider.credential(null, token);
       if (credential) {
-        const userCredential = await signInWithCredential(this.auth, credential);
-        const { uid, displayName, email, emailVerified, photoURL } = userCredential.user;
-        return { uid, displayName, email, emailVerified, photoURL };
+        const { user } = await signInWithCredential(this.auth, credential);
+        return await this.getUserAndRole(user);
       }
+      throw new Error('Error getting credential');
     }
     throw new Error('Error getting token');
   }
 
-  async signInWithEmailAndPassword(email: string, password: string) {
-    const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-    return userCredential.user;
-  }
-
-  async logout() {
-    const token = await this.getAuthToken();
-    if (token) {
-      chrome.identity.removeCachedAuthToken({ token });
+  async getUserAndRole(user: User | null): Promise<FirebaseLoginResponse> {
+    if (user !== null) {
+      await user.getIdToken(true);
+      const decodedToken = await user.getIdTokenResult();
+      return { user, role: decodedToken.claims['stripeRole'] as FirebaseRole };
     }
-    return this.auth.signOut();
+    return { user };
   }
 
-  async isLogin() {
-    return await this.auth.authStateReady().then(() => {
-      return this.auth.currentUser;
+  async isLogin(): Promise<FirebaseLoginResponse> {
+    return await this.auth.authStateReady().then(async () => {
+      return await this.getUserAndRole(this.auth.currentUser);
     });
   }
 }

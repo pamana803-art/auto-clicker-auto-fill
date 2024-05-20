@@ -1,8 +1,6 @@
 import { FirebaseOauth2Background } from '@dhruv-techapps/firebase-oauth';
-import { NotificationHandler } from '@dhruv-techapps/notifications';
 import { Auth, User } from 'firebase/auth';
-import { Firestore, addDoc, collection, getDocs, getFirestore, onSnapshot, orderBy, query, where } from 'firebase/firestore';
-import { NOTIFICATIONS_ID, NOTIFICATIONS_TITLE } from './firebase-firestore.constant';
+import { Firestore, addDoc, collection, getDoc, getDocs, getFirestore, orderBy, query, where } from 'firebase/firestore';
 
 export class FirebaseFirestoreBackground extends FirebaseOauth2Background {
   db: Firestore;
@@ -54,16 +52,10 @@ export class FirebaseFirestoreBackground extends FirebaseOauth2Background {
     return null;
   }
 
-  async subscribe(priceId: string) {
+  async subscribe(priceId: string): Promise<string> {
     const user = this.auth.currentUser;
     if (!user) {
-      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Please login to subscribe');
-      return;
-    }
-    const subscriptions = await this.getSubscriptions();
-    if (subscriptions) {
-      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'You already have a subscription');
-      return;
+      throw new Error('Please login to subscribe');
     }
 
     const checkoutSessionsRef = query(collection(this.db, 'customers', user.uid, 'checkout_sessions'), where('price', '==', priceId));
@@ -71,11 +63,12 @@ export class FirebaseFirestoreBackground extends FirebaseOauth2Background {
     if (!checkoutSessions.empty) {
       checkoutSessions.forEach((doc) => {
         const data = doc.data();
-        if (data?.['url']) {
-          chrome.tabs.create({ url: data?.['url'] });
+        if (data['url']) {
+          return data['url'] as string;
+        } else {
+          throw new Error(data['error'].message);
         }
       });
-      return;
     }
 
     const checkoutSessionRef = await addDoc(collection(this.db, 'customers', user.uid, 'checkout_sessions'), {
@@ -86,20 +79,16 @@ export class FirebaseFirestoreBackground extends FirebaseOauth2Background {
       cancel_url: this.publicUrl,
     });
 
-    const unsubscribe = onSnapshot(
-      checkoutSessionRef,
-      (doc) => {
-        const data = doc.data();
-        if (data?.['error']) {
-          NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, `Error subscribing to product ${data['error'].message}`);
-          unsubscribe();
-        }
-        if (data?.['url']) {
-          chrome.tabs.create({ url: data?.['url'] });
-          unsubscribe();
-        }
-      },
-      (error) => NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, `Error subscribing to product ${error.message}`)
-    );
+    const docSnap = await getDoc(checkoutSessionRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if (data?.['error']) {
+        throw new Error(data['error'].message);
+      }
+      if (data?.['url']) {
+        return data?.['url'] as string;
+      }
+    }
+    throw new Error('Something went wrong');
   }
 }

@@ -8,8 +8,8 @@ import { useTimeout } from '../_hooks/message.hooks';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { HotkeyPopover } from '../popover';
 import { StartTimePopover } from '../popover/start-time.popover';
+import { appSelector } from '../store/app.slice';
 import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
-import { subscribeSelector } from '../store/subscribe';
 import { REGEX } from '../util';
 import { getFieldNameValue } from '../util/element';
 
@@ -18,7 +18,7 @@ const ConfigSettingsModal = () => {
 
   const { visible, message } = useAppSelector(configSettingsSelector);
   const config = useAppSelector(selectedConfigSelector);
-  const { subscriptions } = useAppSelector(subscribeSelector);
+  const { role } = useAppSelector(appSelector);
   const dispatch = useAppDispatch();
 
   useTimeout(() => {
@@ -155,7 +155,7 @@ const ConfigSettingsModal = () => {
               </Row>
             </Card.Body>
           </Card>
-          {subscriptions && (
+          {role === 'pro' && (
             <Card className='mb-2'>
               <Card.Body>
                 <Row>

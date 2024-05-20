@@ -1,16 +1,16 @@
+import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
+import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
+import { appSelector } from '@apps/acf-options-page/src/store/app.slice';
+import { actionSelector, addAction, openActionAddonModalAPI, openActionSettingsModalAPI, openActionStatementModalAPI, removeAction, updateAction } from '@apps/acf-options-page/src/store/config';
+import { Action, RANDOM_UUID } from '@dhruv-techapps/acf-common';
+import { ColumnDef, Row, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { Button, Dropdown, Form, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ColumnDef, Row, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
-import { Plus, REGEX, ThreeDots, Trash } from '../../../util';
-import { ElementFinderPopover, ValuePopover } from '../../../popover';
 import { DropdownToggle } from '../../../components';
-import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
-import { removeAction, updateAction, actionSelector, openActionAddonModalAPI, openActionStatementModalAPI, openActionSettingsModalAPI, addAction } from '@apps/acf-options-page/src/store/config';
-import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
-import { Action, RANDOM_UUID } from '@dhruv-techapps/acf-common';
+import { ElementFinderPopover, ValuePopover } from '../../../popover';
+import { Plus, REGEX, ThreeDots, Trash } from '../../../util';
 import { defaultColumn } from './editable-cell';
-import { subscribeSelector } from '@apps/acf-options-page/src/store/subscribe';
 
 type ActionMeta = { dataType: string; list: string; pattern: string; required: boolean; width?: string };
 
@@ -20,7 +20,7 @@ type ActionProps = {
 
 const ActionTable = ({ actions }: ActionProps) => {
   const { t } = useTranslation();
-  const { subscriptions } = useAppSelector(subscribeSelector);
+  const { role } = useAppSelector(appSelector);
 
   const { columnVisibility } = useAppSelector(actionSelector);
   const dispatch = useAppDispatch();
@@ -196,7 +196,7 @@ const ActionTable = ({ actions }: ActionProps) => {
                       <ThreeDots width='24' height='24' />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      {subscriptions && (
+                      {role && (
                         <>
                           <Dropdown.Item data-testid='action-addon' onClick={() => showAddon(row)}>
                             {t('action.addon')}

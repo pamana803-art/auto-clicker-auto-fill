@@ -1,24 +1,17 @@
 import { GOOGLE_SCOPES, GoogleOauthService } from '@dhruv-techapps/google-oauth';
 import { GoogleAuthProvider, getAuth, signInWithCredential } from 'firebase/auth';
 import { getFunctions, httpsCallable } from 'firebase/functions';
-import { useEffect } from 'react';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { firebase } from '../firebase';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { appSelector, logout, switchLogin } from '../store/app.slice';
-import { getSubscription, subscribeSelector, switchIsPortalLinkLoading, switchSubscribeModal } from '../store/subscribe';
+import { subscribeSelector, switchIsPortalLinkLoading, switchSubscribeModal } from '../store/subscribe';
 import { addToast } from '../store/toast.slice';
 
 export const HeaderGoogle = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector(appSelector);
-  const { subscriptions, isPortalLinkLoading } = useAppSelector(subscribeSelector);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(getSubscription());
-    }
-  }, [user, dispatch]);
+  const { user, role } = useAppSelector(appSelector);
+  const { isPortalLinkLoading } = useAppSelector(subscribeSelector);
 
   const onPortalLink = async () => {
     dispatch(switchIsPortalLinkLoading());
@@ -49,7 +42,7 @@ export const HeaderGoogle = () => {
         <NavDropdown title={user.displayName} id='subscription-nav-dropdown' align='end'>
           {user ? (
             <>
-              {subscriptions ? (
+              {role ? (
                 <NavDropdown.Item onClick={onPortalLink} disabled={isPortalLinkLoading}>
                   Manage Subscription
                 </NavDropdown.Item>

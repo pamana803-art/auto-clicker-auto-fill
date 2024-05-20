@@ -23,8 +23,6 @@ const SubscribeModal = () => {
     dispatch(switchSubscribeModal());
   };
 
-  console.log(products);
-
   return (
     <Modal show={visible} size='lg' onHide={handleClose} data-testid='subscription-modal' id='subscription-modal'>
       <Form>

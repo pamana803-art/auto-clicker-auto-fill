@@ -11,6 +11,6 @@ export class FirebaseFirestoreService extends CoreService {
     return await this.message<RuntimeMessageRequest, Subscription[]>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_FIRESTORE, methodName: 'getSubscriptions' });
   }
   static async subscribe(extensionId: string, priceId: string) {
-    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_FIRESTORE, methodName: 'subscribe', message: priceId });
+    return await this.message<RuntimeMessageRequest<string>, string>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_FIRESTORE, methodName: 'subscribe', message: priceId });
   }
 }

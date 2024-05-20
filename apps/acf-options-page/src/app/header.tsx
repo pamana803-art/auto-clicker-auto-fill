@@ -1,14 +1,14 @@
-import { Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { GearFill, Github, Moon, Sun, ThreeDots, Youtube } from '../util';
-import { SettingsModal } from '../modal';
-import { APP_LANGUAGES, APP_LINK, SOCIAL_LINKS } from '../constants';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { switchTheme, themeSelector } from '../store/theme.slice';
-import { appSelector } from '../store/app.slice';
-import { switchSettingsModal } from '../store/settings/settings.slice';
 import { useTour } from '@reactour/tour';
 import { useEffect, useState } from 'react';
+import { Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { APP_LANGUAGES, APP_LINK, SOCIAL_LINKS } from '../constants';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { SettingsModal } from '../modal';
+import { appSelector } from '../store/app.slice';
+import { switchSettingsModal } from '../store/settings/settings.slice';
+import { switchTheme, themeSelector } from '../store/theme.slice';
+import { GearFill, Github, Moon, Sun, ThreeDots, Youtube } from '../util';
 
 import { HeaderGoogle } from './header_google';
 
@@ -20,7 +20,7 @@ function Header() {
 
   const { setIsOpen } = useTour();
   const theme = useAppSelector(themeSelector);
-  const { error } = useAppSelector(appSelector);
+  const { role, error } = useAppSelector(appSelector);
 
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
@@ -77,7 +77,7 @@ function Header() {
       <Container fluid className='bd-gutter flex-wrap flex-lg-nowrap' as='nav'>
         <div className='d-lg-none' style={{ width: '4.25rem' }}></div>
         <Navbar.Brand href='/' className='p-0 me-0 me-lg-2'>
-          {appName}
+          {appName} <b className='text-warning'>{role ? `${role?.toUpperCase()}` : ''}</b>
         </Navbar.Brand>
         <div className='d-flex'>
           <Navbar.Toggle aria-controls='basic-navbar-nav' onClick={handleShow}>
