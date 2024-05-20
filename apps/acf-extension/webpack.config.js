@@ -10,7 +10,7 @@ function modify(buffer, { KEY, NX_NAME, OAUTH_CLIENT_ID, NX_RELEASE_VERSION }) {
   const manifest = JSON.parse(buffer.toString());
 
   // make any modifications you like, such as
-  manifest.version = NX_RELEASE_VERSION;
+  manifest.version = NX_RELEASE_VERSION.replace('v', '');
   manifest.name = NX_NAME;
   if (OAUTH_CLIENT_ID) {
     manifest.oauth2.client_id = OAUTH_CLIENT_ID;
