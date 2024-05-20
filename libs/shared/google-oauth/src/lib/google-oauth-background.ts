@@ -72,7 +72,7 @@ export class GoogleOauth2Background {
     throw new Error('Error while retrieving token');
   }
 
-  async getAuthToken(additionalScopes?: Array<GOOGLE_SCOPES>) {
+  async getAuthToken(additionalScopes?: Array<string>) {
     const scopes = chrome.runtime.getManifest().oauth2?.scopes || [];
     if (additionalScopes) {
       scopes.push(...additionalScopes);
@@ -86,7 +86,7 @@ export class GoogleOauth2Background {
     }
   }
 
-  async getHeaders(scopes?: Array<GOOGLE_SCOPES>) {
+  async getHeaders(scopes?: Array<string>) {
     const token = await this.getAuthToken(scopes);
     return new Headers({ Authorization: `Bearer ${token}` });
   }

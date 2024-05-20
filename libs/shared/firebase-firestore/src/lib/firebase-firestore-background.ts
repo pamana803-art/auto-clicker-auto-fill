@@ -4,11 +4,11 @@ import { Firestore, addDoc, collection, getDoc, getDocs, getFirestore, orderBy, 
 
 export class FirebaseFirestoreBackground extends FirebaseOauth2Background {
   db: Firestore;
-  publicUrl: string;
+  publicUrl?: string;
   user: User | null = null;
 
-  constructor(auth: Auth, publicUrl: string) {
-    super(auth);
+  constructor(auth: Auth, edgeClientId?: string, publicUrl?: string) {
+    super(auth, edgeClientId);
     this.db = getFirestore(auth.app);
     this.publicUrl = publicUrl;
   }

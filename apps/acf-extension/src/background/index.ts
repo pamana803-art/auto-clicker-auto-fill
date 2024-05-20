@@ -60,24 +60,27 @@ try {
   }
 
   googleAnalytics = new GoogleAnalyticsBackground(MEASUREMENT_ID, API_SECRET, VARIANT === 'LOCAL');
-  /**
-   * Setup on Message Listener
-   */
-  const onMessageListener = {
-    [RUNTIME_MESSAGE_DISCORD_OAUTH]: new DiscordOauth2Background(DISCORD_CLIENT_ID),
-    [RUNTIME_MESSAGE_DISCORD_MESSAGING]: new DiscordMessagingBackground(VARIANT, FUNCTION_URL),
-    [RUNTIME_MESSAGE_GOOGLE_OAUTH]: new GoogleOauth2Background(EDGE_OAUTH_CLIENT_ID),
-    [RUNTIME_MESSAGE_GOOGLE_DRIVE]: new GoogleDriveBackground(EDGE_OAUTH_CLIENT_ID),
-    [RUNTIME_MESSAGE_GOOGLE_SHEETS]: new GoogleSheetsBackground(EDGE_OAUTH_CLIENT_ID),
-    [RUNTIME_MESSAGE_GOOGLE_ANALYTICS]: googleAnalytics,
-    [RUNTIME_MESSAGE_ACF.ACF_BACKUP]: new AcfBackup(EDGE_OAUTH_CLIENT_ID),
-    [RUNTIME_MESSAGE_ACF.TABS]: new TabsMessenger(),
-    [RUNTIME_MESSAGE_FIREBASE_OAUTH]: new FirebaseOauth2Background(auth, EDGE_OAUTH_CLIENT_ID),
-    [RUNTIME_MESSAGE_FIREBASE_FIRESTORE]: new FirebaseFirestoreBackground(auth, OPTIONS_PAGE_URL),
-    [RUNTIME_MESSAGE_FIREBASE_FUNCTIONS]: new FirebaseFunctionsBackground(auth),
-  };
-  Runtime.onMessageExternal(onMessageListener);
-  Runtime.onMessage(onMessageListener);
+
+  auth.authStateReady().then(() => {
+    /**
+     * Setup on Message Listener
+     */
+    const onMessageListener = {
+      [RUNTIME_MESSAGE_DISCORD_OAUTH]: new DiscordOauth2Background(DISCORD_CLIENT_ID),
+      [RUNTIME_MESSAGE_DISCORD_MESSAGING]: new DiscordMessagingBackground(VARIANT, FUNCTION_URL),
+      [RUNTIME_MESSAGE_GOOGLE_OAUTH]: new GoogleOauth2Background(EDGE_OAUTH_CLIENT_ID),
+      [RUNTIME_MESSAGE_GOOGLE_DRIVE]: new GoogleDriveBackground(EDGE_OAUTH_CLIENT_ID),
+      [RUNTIME_MESSAGE_GOOGLE_ANALYTICS]: googleAnalytics,
+      [RUNTIME_MESSAGE_ACF.ACF_BACKUP]: new AcfBackup(EDGE_OAUTH_CLIENT_ID),
+      [RUNTIME_MESSAGE_ACF.TABS]: new TabsMessenger(),
+      [RUNTIME_MESSAGE_GOOGLE_SHEETS]: new GoogleSheetsBackground(auth, EDGE_OAUTH_CLIENT_ID),
+      [RUNTIME_MESSAGE_FIREBASE_OAUTH]: new FirebaseOauth2Background(auth, EDGE_OAUTH_CLIENT_ID),
+      [RUNTIME_MESSAGE_FIREBASE_FIRESTORE]: new FirebaseFirestoreBackground(auth, EDGE_OAUTH_CLIENT_ID, OPTIONS_PAGE_URL),
+      [RUNTIME_MESSAGE_FIREBASE_FUNCTIONS]: new FirebaseFunctionsBackground(auth),
+    };
+    Runtime.onMessageExternal(onMessageListener);
+    Runtime.onMessage(onMessageListener);
+  });
 } catch (error) {
   if (error instanceof Error) {
     googleAnalytics?.fireErrorEvent({ name: error.name, error: error.message, additionalParams: { page: 'background' } });

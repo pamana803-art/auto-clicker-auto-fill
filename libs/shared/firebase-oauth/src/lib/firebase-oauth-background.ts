@@ -9,6 +9,25 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
     this.auth = auth;
   }
 
+  async getFirebaseHeaders(scopes?: string[]) {
+    const user = this.auth.currentUser;
+    if (!user) {
+      throw new Error('User not logged in');
+    }
+    const decodedToken = await user.getIdTokenResult();
+    const role = decodedToken.claims['stripeRole'] as FirebaseRole;
+    if (role !== 'pro') {
+      throw new Error('Pro subscription required');
+    }
+    const token = await this.auth.currentUser?.getIdToken();
+    const headers = new Headers({ Authorization: `Bearer ${token}` });
+    const gToken = await this.getAuthToken(scopes);
+    if (gToken) {
+      headers.append('X-Auth-Token', gToken);
+    }
+    return headers;
+  }
+
   async firebaseLogin(): Promise<FirebaseLoginResponse> {
     const token = await this.getAuthToken();
     if (token) {
@@ -24,7 +43,6 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
 
   async getUserAndRole(user: User | null): Promise<FirebaseLoginResponse> {
     if (user !== null) {
-      await user.getIdToken(true);
       const decodedToken = await user.getIdTokenResult();
       return { user, role: decodedToken.claims['stripeRole'] as FirebaseRole };
     }
