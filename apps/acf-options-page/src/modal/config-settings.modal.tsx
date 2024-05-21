@@ -1,14 +1,13 @@
 import React from 'react';
 
 import { LOAD_TYPES, START_TYPES, URL_MATCH, defaultHotkey } from '@dhruv-techapps/acf-common';
-import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
+import { Badge, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { useTimeout } from '../_hooks/message.hooks';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { HotkeyPopover } from '../popover';
 import { StartTimePopover } from '../popover/start-time.popover';
-import { appSelector } from '../store/app.slice';
 import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 import { REGEX } from '../util';
 import { getFieldNameValue } from '../util/element';
@@ -18,7 +17,7 @@ const ConfigSettingsModal = () => {
 
   const { visible, message } = useAppSelector(configSettingsSelector);
   const config = useAppSelector(selectedConfigSelector);
-  const { role } = useAppSelector(appSelector);
+
   const dispatch = useAppDispatch();
 
   useTimeout(() => {
@@ -155,23 +154,25 @@ const ConfigSettingsModal = () => {
               </Row>
             </Card.Body>
           </Card>
-          {role === 'pro' && (
-            <Card className='mb-2'>
-              <Card.Body>
-                <Row>
-                  <Col md='12' sm='12'>
-                    <Form.Group controlId='config-google-sheets-id'>
-                      <FormControl name='spreadsheetId' defaultValue={config.spreadsheetId} autoComplete='off' onBlur={onUpdate} placeholder='Google Sheets ID' />
-                      <Form.Label>Google Sheets ID</Form.Label>
-                      <Form.Text className='text-muted'>
-                        https://docs.google.com/spreadsheets/d/<code>1J2OcSNJsnYQCcQmA4K9Fhtv8yqvg0NouB--H4B0jsZA</code>/
-                      </Form.Text>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          )}
+
+          <Card className='mb-2'>
+            <Card.Body>
+              <Row>
+                <Col md='12' sm='12'>
+                  <Form.Group controlId='config-google-sheets-id'>
+                    <FormControl name='spreadsheetId' defaultValue={config.spreadsheetId} autoComplete='off' onBlur={onUpdate} placeholder='Google Sheets ID' />
+                    <Form.Label>
+                      Google Sheets ID <Badge bg='danger'>PRO</Badge>
+                    </Form.Label>
+                    <Form.Text className='text-muted'>
+                      https://docs.google.com/spreadsheets/d/<code>1J2OcSNJsnYQCcQmA4K9Fhtv8yqvg0NouB--H4B0jsZA</code>/
+                    </Form.Text>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
           <Card className='mb-2'>
             <Card.Body>
               <Row>

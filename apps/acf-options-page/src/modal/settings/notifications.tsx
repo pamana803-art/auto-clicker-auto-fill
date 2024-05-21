@@ -1,7 +1,6 @@
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { appSelector } from '../../store/app.slice';
 import { settingsSelector, updateSettingsNotification } from '../../store/settings/settings.slice';
 import { VolumeMute, VolumeUp } from '../../util';
 import { getFieldNameValue } from '../../util/element';
@@ -11,7 +10,7 @@ function SettingNotifications() {
   const { t } = useTranslation();
 
   const { notifications } = useAppSelector(settingsSelector).settings;
-  const { role } = useAppSelector(appSelector);
+
   const dispatch = useAppDispatch();
   const onUpdate = (e) => {
     const update = getFieldNameValue<boolean>(e, notifications);
@@ -59,11 +58,9 @@ function SettingNotifications() {
           </Form.Label>
           <Form.Check type='switch' onChange={onUpdate} name='sound' checked={notifications?.sound || false} id='notifications.sound' />
         </li>
-        {role === 'pro' && (
-          <li className='list-group-item d-flex justify-content-between align-items-center'>
-            <SettingDiscord onChange={onUpdate} checked={notifications?.discord || false} label={t('modal.settings.notification.discord.title')} />
-          </li>
-        )}
+        <li className='list-group-item d-flex justify-content-between align-items-center'>
+          <SettingDiscord onChange={onUpdate} checked={notifications?.discord || false} label={t('modal.settings.notification.discord.title')} />
+        </li>
       </ol>
     </>
   );

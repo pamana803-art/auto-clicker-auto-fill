@@ -1,11 +1,10 @@
 import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
 import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
-import { appSelector } from '@apps/acf-options-page/src/store/app.slice';
 import { actionSelector, addAction, openActionAddonModalAPI, openActionSettingsModalAPI, openActionStatementModalAPI, removeAction, updateAction } from '@apps/acf-options-page/src/store/config';
 import { Action, RANDOM_UUID } from '@dhruv-techapps/acf-common';
 import { ColumnDef, Row, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { Button, Dropdown, Form, Table } from 'react-bootstrap';
+import { Badge, Button, Dropdown, Form, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { DropdownToggle } from '../../../components';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
@@ -20,7 +19,6 @@ type ActionProps = {
 
 const ActionTable = ({ actions }: ActionProps) => {
   const { t } = useTranslation();
-  const { role } = useAppSelector(appSelector);
 
   const { columnVisibility } = useAppSelector(actionSelector);
   const dispatch = useAppDispatch();
@@ -196,22 +194,27 @@ const ActionTable = ({ actions }: ActionProps) => {
                       <ThreeDots width='24' height='24' />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      {role && (
-                        <>
-                          <Dropdown.Item data-testid='action-addon' onClick={() => showAddon(row)}>
-                            {t('action.addon')}
-                          </Dropdown.Item>
-                          <Dropdown.Item data-testid='action-settings' onClick={() => showSettings(row)}>
-                            {t('action.settings')}
-                          </Dropdown.Item>
-                          {index !== 0 && (
-                            <Dropdown.Item data-testid='action-statement' onClick={() => showCondition(row)}>
-                              {t('modal.actionCondition.title')}
-                            </Dropdown.Item>
-                          )}
-                          <Dropdown.Divider />
-                        </>
+                      <Dropdown.Item data-testid='action-addon' onClick={() => showAddon(row)}>
+                        <Badge bg='warning' text='dark' className='me-1'>
+                          Plus
+                        </Badge>
+                        {t('action.addon')}
+                      </Dropdown.Item>
+                      <Dropdown.Item data-testid='action-settings' onClick={() => showSettings(row)}>
+                        <Badge bg='warning' text='dark' className='me-1'>
+                          Plus
+                        </Badge>
+                        {t('action.settings')}
+                      </Dropdown.Item>
+                      {index !== 0 && (
+                        <Dropdown.Item data-testid='action-statement' onClick={() => showCondition(row)}>
+                          <Badge bg='warning' text='dark' className='me-1'>
+                            Plus
+                          </Badge>
+                          {t('modal.actionCondition.title')}
+                        </Dropdown.Item>
                       )}
+                      <Dropdown.Divider />
                       <Dropdown.Item data-testid='action-add' onClick={() => onAddClick(row, 0)}>
                         <Plus className='me-2' /> {t('action.addBefore')}
                       </Dropdown.Item>

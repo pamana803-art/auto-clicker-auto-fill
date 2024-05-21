@@ -1,6 +1,6 @@
 import { useTour } from '@reactour/tour';
 import { useEffect, useState } from 'react';
-import { Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
+import { Badge, Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { APP_LANGUAGES, APP_LINK, SOCIAL_LINKS } from '../constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -77,7 +77,12 @@ function Header() {
       <Container fluid className='bd-gutter flex-wrap flex-lg-nowrap' as='nav'>
         <div className='d-lg-none' style={{ width: '4.25rem' }}></div>
         <Navbar.Brand href='/' className='p-0 me-0 me-lg-2'>
-          {appName} <b className='text-warning'>{role ? `${role?.toUpperCase()}` : ''}</b>
+          {appName}
+          {role && (
+            <Badge bg={role === 'pro' ? 'danger' : 'warning'} text={role === 'pro' ? 'light' : 'dark'} className='ms-2'>
+              {role.toUpperCase()}
+            </Badge>
+          )}
         </Navbar.Brand>
         <div className='d-flex'>
           <Navbar.Toggle aria-controls='basic-navbar-nav' onClick={handleShow}>

@@ -1,11 +1,11 @@
+import { RECHECK_OPTIONS } from '@dhruv-techapps/acf-common';
+import { ChangeEvent } from 'react';
 import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { RECHECK_OPTIONS } from '@dhruv-techapps/acf-common';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getFieldNameValue } from '../../util/element';
 import { actionAddonSelector, configSelector, selectedConfigSelector, updateActionAddon, updateActionAddonGoto } from '../../store/config';
 import { REGEX } from '../../util';
-import { ChangeEvent } from 'react';
+import { getFieldNameValue } from '../../util/element';
 
 function AddonRecheck() {
   const { t } = useTranslation();
