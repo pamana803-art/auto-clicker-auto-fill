@@ -33,7 +33,7 @@ try {
       const { settings } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.SETTINGS);
       if (details.reason === 'update' && settings?.suppressWhatsNew !== true) {
         const { version } = chrome.runtime.getManifest();
-        if (!/4.0.(9)/.test(version)) {
+        if (!/4.0.(8)/.test(version)) {
           TabsMessenger.optionsTab({ url: `${OPTIONS_PAGE_URL}?version=${version}` });
         }
       } else if (details.reason === 'install') {
