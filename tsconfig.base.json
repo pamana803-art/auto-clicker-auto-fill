@@ -26,6 +26,7 @@
       "@dhruv-techapps/core-service": ["libs/core/service/src/index.ts"],
       "@dhruv-techapps/discord-messaging": ["libs/shared/discord-messaging/src/index.ts"],
       "@dhruv-techapps/discord-oauth": ["libs/shared/discord-oauth/src/index.ts"],
+      "@dhruv-techapps/firebase-database": ["libs/shared/firebase-database/src/index.ts"],
       "@dhruv-techapps/firebase-firestore": ["libs/shared/firebase-firestore/src/index.ts"],
       "@dhruv-techapps/firebase-functions": ["libs/shared/firebase-functions/src/index.ts"],
       "@dhruv-techapps/firebase-oauth": ["libs/shared/firebase-oauth/src/index.ts"],

@@ -1,5 +1,6 @@
-import { LOCAL_STORAGE_KEY_DISCORD } from '@dhruv-techapps/discord-oauth';
+import { FirebaseFunctionsBackground } from '@dhruv-techapps/firebase-functions';
 import { NotificationHandler } from '@dhruv-techapps/notifications';
+import { Auth } from 'firebase/auth';
 import { NOTIFICATIONS_ID, NOTIFICATIONS_TITLE } from './discord-messaging.constant';
 
 type DiscordMessagingType = {
@@ -7,38 +8,23 @@ type DiscordMessagingType = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fields: Array<{ name: string; value: any }>;
   color: string;
+  variant?: string;
 };
 
-export class DiscordMessagingBackground {
+export class DiscordMessagingBackground extends FirebaseFunctionsBackground {
   constructor(
-    private VARIANT?: string,
-    private FUNCTION_URL?: string
+    auth: Auth,
+    edgeClientId?: string,
+    private VARIANT?: string
   ) {
+    super(auth, edgeClientId);
     this.VARIANT = VARIANT;
-    this.FUNCTION_URL = FUNCTION_URL;
   }
 
-  async push({ title, fields, color }: DiscordMessagingType) {
-    if (!this.FUNCTION_URL) {
-      throw new Error('Discord Messaging Function URL Missing');
-    }
+  async push(data: DiscordMessagingType) {
     try {
-      const url = new URL(this.FUNCTION_URL);
-      const { discord } = await chrome.storage.local.get(LOCAL_STORAGE_KEY_DISCORD);
-      const data = {
-        variant: this.VARIANT,
-        title,
-        id: discord.id,
-        fields,
-        color,
-      };
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      data.variant = this.VARIANT;
+      await this.discordNotify(data);
     } catch (error) {
       if (error instanceof Error) {
         NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);

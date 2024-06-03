@@ -78,7 +78,7 @@ export class GoogleOauth2Background {
       scopes.push(...additionalScopes);
     }
     if (BROWSER === 'EDGE') {
-      const token = this.getAuthTokenEdge(scopes);
+      const token = await this.getAuthTokenEdge(scopes);
       return token;
     } else {
       const { token } = await chrome.identity.getAuthToken({ interactive: true, scopes });

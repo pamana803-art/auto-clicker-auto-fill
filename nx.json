@@ -99,7 +99,8 @@
       "notifications",
       "firebase-oauth",
       "firebase-firestore",
-      "firebase-functions"
+      "firebase-functions",
+      "firebase-database"
     ],
     "changelog": {
       "workspaceChangelog": {

@@ -1,11 +1,12 @@
 /*global chrome*/
 
-import { GOOGLE_SCOPES, GoogleOauth2Background } from '@dhruv-techapps/google-oauth';
+import { FirebaseFunctionsBackground } from '@dhruv-techapps/firebase-functions';
+import { GOOGLE_SCOPES } from '@dhruv-techapps/google-oauth';
 import { NotificationHandler } from '@dhruv-techapps/notifications';
 import { BACKUP_ALARM, MINUTES_IN_DAY, NOTIFICATIONS_ID, NOTIFICATIONS_TITLE } from './google-drive.constant';
 import { AUTO_BACKUP, DriveFile, GoogleDriveFile } from './google-drive.types';
 
-export class GoogleDriveBackground extends GoogleOauth2Background {
+export class GoogleDriveBackground extends FirebaseFunctionsBackground {
   scopes = [GOOGLE_SCOPES.DRIVE];
 
   async setAlarm(autoBackup: AUTO_BACKUP) {
@@ -42,63 +43,15 @@ export class GoogleDriveBackground extends GoogleOauth2Background {
   }
 
   async createOrUpdate(name: string, data: string, fileId?: string) {
-    const metadata = {
-      name,
-      mimeType: 'plain/text',
-      ...(!fileId && { parents: ['appDataFolder'] }),
-    };
-
-    const form = new FormData();
-    form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-    form.append('file', new Blob([JSON.stringify(data)], { type: 'plain/text' }));
-
-    const headers = await this.getHeaders(this.scopes);
-    const options = {
-      headers,
-      method: fileId ? 'PATCH' : 'POST',
-      body: form,
-    };
-
-    const baseUrl = 'https://www.googleapis.com';
-    let url = new URL('upload/drive/v3/files', baseUrl);
-    if (fileId) {
-      url = new URL(`upload/drive/v3/files/${fileId}`, baseUrl);
-    }
-    url.searchParams.append('uploadType', 'multipart');
-    const result = await fetch(url.href, options);
-    const config = await result.json();
-    return config;
-  }
-
-  async list(): Promise<GoogleDriveFile> {
-    const headers = await this.getHeaders(this.scopes);
-    const response = await fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&fields=files(id%2C%20name%2C%20modifiedTime)&pageSize=10', { headers });
-    if (response.status === 401) {
-      const { error } = await response.json();
-      throw new Error(error.message);
-    }
-    const result = await response.json();
+    const result = await this.getGoogleDriveCreateOrUpdate({ name, data, fileId });
     return result;
   }
 
   async listWithContent(): Promise<Array<DriveFile>> {
-    const { files } = await this.list();
+    const { files } = await this.getGoogleDriveList<GoogleDriveFile>();
     for (const file of files) {
-      file.content = await this.get(file);
+      file.content = await this.getGoogleDriveGet(file);
     }
     return files;
-  }
-
-  async get({ id }: DriveFile) {
-    const headers = await this.getHeaders(this.scopes);
-    const result = await fetch(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`, { headers });
-    const file = await result.json();
-    return file;
-  }
-
-  async delete({ id }: DriveFile) {
-    const headers = await this.getHeaders(this.scopes);
-    const result = await fetch(`https://www.googleapis.com/drive/v3/files/${id}`, { headers, method: 'DELETE' });
-    return result;
   }
 }

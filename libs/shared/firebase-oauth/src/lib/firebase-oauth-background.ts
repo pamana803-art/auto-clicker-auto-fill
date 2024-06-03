@@ -9,7 +9,7 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
     this.auth = auth;
   }
 
-  async getFirebaseHeaders(scopes?: string[]) {
+  async getFirebaseHeaders(scopes?: string[], gToken?: string) {
     const user = this.auth.currentUser;
     if (!user) {
       throw new Error('User not logged in');
@@ -21,7 +21,9 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
     }
     const token = await this.auth.currentUser?.getIdToken();
     const headers = new Headers({ Authorization: `Bearer ${token}` });
-    const gToken = await this.getAuthToken(scopes);
+    if (!gToken) {
+      gToken = await this.getAuthToken(scopes);
+    }
     if (gToken) {
       headers.append('X-Auth-Token', gToken);
     }

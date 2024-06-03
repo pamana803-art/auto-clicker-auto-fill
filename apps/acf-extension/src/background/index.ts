@@ -3,6 +3,7 @@ import { LOCAL_STORAGE_KEY, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-comm
 import { Runtime } from '@dhruv-techapps/core-extension';
 import { DiscordMessagingBackground, RUNTIME_MESSAGE_DISCORD_MESSAGING } from '@dhruv-techapps/discord-messaging';
 import { DiscordOauth2Background, RUNTIME_MESSAGE_DISCORD_OAUTH } from '@dhruv-techapps/discord-oauth';
+import { FirebaseDatabaseBackground, RUNTIME_MESSAGE_FIREBASE_DATABASE } from '@dhruv-techapps/firebase-database';
 import { FirebaseFirestoreBackground, RUNTIME_MESSAGE_FIREBASE_FIRESTORE } from '@dhruv-techapps/firebase-firestore';
 import { FirebaseFunctionsBackground, RUNTIME_MESSAGE_FIREBASE_FUNCTIONS } from '@dhruv-techapps/firebase-functions';
 import { FirebaseOauth2Background, RUNTIME_MESSAGE_FIREBASE_OAUTH } from '@dhruv-techapps/firebase-oauth';
@@ -12,7 +13,7 @@ import { GoogleOauth2Background, RUNTIME_MESSAGE_GOOGLE_OAUTH } from '@dhruv-tec
 import { GoogleSheetsBackground, RUNTIME_MESSAGE_GOOGLE_SHEETS } from '@dhruv-techapps/google-sheets';
 import { registerNotifications } from '@dhruv-techapps/notifications';
 import { ACTION_POPUP } from '../common/constant';
-import { API_SECRET, DISCORD_CLIENT_ID, EDGE_OAUTH_CLIENT_ID, FUNCTION_URL, MEASUREMENT_ID, OPTIONS_PAGE_URL, UNINSTALL_URL, VARIANT } from '../common/environments';
+import { API_SECRET, DISCORD_CLIENT_ID, EDGE_OAUTH_CLIENT_ID, MEASUREMENT_ID, OPTIONS_PAGE_URL, UNINSTALL_URL, VARIANT } from '../common/environments';
 import AcfBackup from './acf-backup';
 import registerContextMenus from './context-menu';
 import { auth } from './firebase';
@@ -69,17 +70,18 @@ try {
      * Setup on Message Listener
      */
     const onMessageListener = {
-      [RUNTIME_MESSAGE_DISCORD_OAUTH]: new DiscordOauth2Background(DISCORD_CLIENT_ID),
-      [RUNTIME_MESSAGE_DISCORD_MESSAGING]: new DiscordMessagingBackground(VARIANT, FUNCTION_URL),
+      [RUNTIME_MESSAGE_DISCORD_OAUTH]: new DiscordOauth2Background(auth, EDGE_OAUTH_CLIENT_ID, DISCORD_CLIENT_ID),
+      [RUNTIME_MESSAGE_DISCORD_MESSAGING]: new DiscordMessagingBackground(auth, EDGE_OAUTH_CLIENT_ID, VARIANT),
       [RUNTIME_MESSAGE_GOOGLE_OAUTH]: new GoogleOauth2Background(EDGE_OAUTH_CLIENT_ID),
-      [RUNTIME_MESSAGE_GOOGLE_DRIVE]: new GoogleDriveBackground(EDGE_OAUTH_CLIENT_ID),
+      [RUNTIME_MESSAGE_GOOGLE_DRIVE]: new GoogleDriveBackground(auth, EDGE_OAUTH_CLIENT_ID),
       [RUNTIME_MESSAGE_GOOGLE_ANALYTICS]: googleAnalytics,
-      [RUNTIME_MESSAGE_ACF.ACF_BACKUP]: new AcfBackup(EDGE_OAUTH_CLIENT_ID),
+      [RUNTIME_MESSAGE_ACF.ACF_BACKUP]: new AcfBackup(auth, EDGE_OAUTH_CLIENT_ID),
       [RUNTIME_MESSAGE_ACF.TABS]: new TabsMessenger(),
       [RUNTIME_MESSAGE_GOOGLE_SHEETS]: new GoogleSheetsBackground(auth, EDGE_OAUTH_CLIENT_ID),
       [RUNTIME_MESSAGE_FIREBASE_OAUTH]: new FirebaseOauth2Background(auth, EDGE_OAUTH_CLIENT_ID),
       [RUNTIME_MESSAGE_FIREBASE_FIRESTORE]: new FirebaseFirestoreBackground(auth, EDGE_OAUTH_CLIENT_ID, OPTIONS_PAGE_URL),
-      [RUNTIME_MESSAGE_FIREBASE_FUNCTIONS]: new FirebaseFunctionsBackground(auth),
+      [RUNTIME_MESSAGE_FIREBASE_DATABASE]: new FirebaseDatabaseBackground(auth, EDGE_OAUTH_CLIENT_ID),
+      [RUNTIME_MESSAGE_FIREBASE_FUNCTIONS]: new FirebaseFunctionsBackground(auth, EDGE_OAUTH_CLIENT_ID),
     };
     Runtime.onMessageExternal(onMessageListener);
     Runtime.onMessage(onMessageListener);

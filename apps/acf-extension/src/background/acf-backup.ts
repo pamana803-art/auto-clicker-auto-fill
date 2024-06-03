@@ -1,9 +1,11 @@
 /*global chrome*/
 
-import { LOCAL_STORAGE_KEY, getDefaultConfig, defaultSettings } from '@dhruv-techapps/acf-common';
-import { BACKUP_ALARM, DriveFile, GoogleDriveBackground } from '@dhruv-techapps/google-drive';
+import { LOCAL_STORAGE_KEY, defaultSettings, getDefaultConfig } from '@dhruv-techapps/acf-common';
+import { BACKUP_ALARM, DriveFile, GoogleDriveBackground, GoogleDriveFile } from '@dhruv-techapps/google-drive';
 import { GOOGLE_SCOPES } from '@dhruv-techapps/google-oauth';
 import { NotificationHandler } from '@dhruv-techapps/notifications';
+import { EDGE_OAUTH_CLIENT_ID } from '../common/environments';
+import { auth } from './firebase';
 
 const ID = 'acf-backup';
 
@@ -31,7 +33,7 @@ export default class AcfBackup extends GoogleDriveBackground {
       const { configs = [getDefaultConfig()] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
       if (configs) {
         const { settings = { ...defaultSettings } } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.SETTINGS);
-        const { files } = await this.list();
+        const { files } = await this.getGoogleDriveList<GoogleDriveFile>();
         await this.createOrUpdate(BACKUP_FILE_NAMES.CONFIGS, configs, files.find((file) => file.name === BACKUP_FILE_NAMES.CONFIGS)?.id);
         await this.createOrUpdate(BACKUP_FILE_NAMES.SETTINGS, settings, files.find((file) => file.name === BACKUP_FILE_NAMES.SETTINGS)?.id);
         if (!settings.backup) {
@@ -59,7 +61,7 @@ export default class AcfBackup extends GoogleDriveBackground {
 
   async restore(file: DriveFile): Promise<void> {
     try {
-      const fileContent = await this.get(file);
+      const fileContent = await this.getGoogleDriveGet(file);
       if (fileContent) {
         if (file.name === BACKUP_FILE_NAMES.SETTINGS) {
           chrome.storage.local.set({ [LOCAL_STORAGE_KEY.SETTINGS]: fileContent });
@@ -83,11 +85,13 @@ export default class AcfBackup extends GoogleDriveBackground {
   }
 }
 
-/**
- * Alarm which periodically backup configurations
- */
-chrome.alarms.onAlarm.addListener(({ name }) => {
-  if (name === BACKUP_ALARM) {
-    new AcfBackup().backup();
-  }
+auth.authStateReady().then(() => {
+  /**
+   * Alarm which periodically backup configurations
+   */
+  chrome.alarms.onAlarm.addListener(({ name }) => {
+    if (name === BACKUP_ALARM) {
+      new AcfBackup(auth, EDGE_OAUTH_CLIENT_ID).backup();
+    }
+  });
 });

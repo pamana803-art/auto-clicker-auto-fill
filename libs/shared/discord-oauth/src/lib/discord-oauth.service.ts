@@ -5,7 +5,7 @@ import { Discord } from './discord-oauth.types';
 
 export class DiscordOauthService extends CoreService {
   static async login(extensionId: string) {
-    return await this.message<RuntimeMessageRequest, Discord>(extensionId, { messenger: RUNTIME_MESSAGE_DISCORD_OAUTH, methodName: 'login' });
+    return await this.message<RuntimeMessageRequest, Discord>(extensionId, { messenger: RUNTIME_MESSAGE_DISCORD_OAUTH, methodName: 'discordLogin' });
   }
   static async remove(extensionId: string) {
     return await this.message<RuntimeMessageRequest>(extensionId, { messenger: RUNTIME_MESSAGE_DISCORD_OAUTH, methodName: 'remove' });

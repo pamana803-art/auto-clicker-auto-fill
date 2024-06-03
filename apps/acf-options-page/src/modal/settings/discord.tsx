@@ -1,6 +1,6 @@
-import { Discord, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
-import { StorageService } from '@dhruv-techapps/core-service';
+import { Discord } from '@dhruv-techapps/acf-common';
 import { DiscordOauthService } from '@dhruv-techapps/discord-oauth';
+import { FirebaseDatabaseService } from '@dhruv-techapps/firebase-database';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Badge, Button, Form, Image } from 'react-bootstrap';
@@ -12,8 +12,8 @@ function SettingDiscord({ onChange, label, checked }) {
   const [error, setError] = useState<Error>();
   const { role } = useAppSelector(appSelector);
   useEffect(() => {
-    StorageService.get<LOCAL_STORAGE_KEY.DISCORD, Discord>(window.EXTENSION_ID, LOCAL_STORAGE_KEY.DISCORD)
-      .then(({ discord: result }) => {
+    FirebaseDatabaseService.getDiscord<Discord>(window.EXTENSION_ID)
+      .then((result) => {
         if (result) {
           setDiscord(result);
         }
@@ -32,7 +32,7 @@ function SettingDiscord({ onChange, label, checked }) {
   };
 
   const remove = () => {
-    DiscordOauthService.remove(window.EXTENSION_ID)
+    FirebaseDatabaseService.deleteDiscord(window.EXTENSION_ID)
       .then(() => {
         setDiscord(undefined);
       })
