@@ -85,6 +85,7 @@
       "acf-common",
       "acf-service",
       "acf-events",
+      "acf-util",
       "sandbox",
       "google-sheets",
       "google-oauth",
