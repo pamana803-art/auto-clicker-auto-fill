@@ -10,20 +10,17 @@ export class GoogleOauth2Background {
   constructor(edgeClientId?: string) {
     this.edgeClientId = edgeClientId;
   }
-  async removeCachedAuthToken() {
-    const { token } = await chrome.identity.getAuthToken({ interactive: false });
+  async removeCachedAuthToken(additionalScopes?: Array<GOOGLE_SCOPES>) {
+    const token = await this.getAuthToken(additionalScopes);
     if (token) {
       await chrome.identity.removeCachedAuthToken({ token });
     }
     return true;
   }
 
-  async login(scope: GOOGLE_SCOPES): Promise<GoogleOauth2LoginResponse | null> {
-    if (!scope) {
-      throw new Error('Scopes not defined');
-    }
+  async login(additionalScopes?: Array<GOOGLE_SCOPES>): Promise<GoogleOauth2LoginResponse | null> {
     try {
-      const headers = await this.getHeaders([GOOGLE_SCOPES.PROFILE, scope]);
+      const headers = await this.getHeaders(additionalScopes);
       const google = await this.getCurrentUser(headers);
       return { [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE]: google };
     } catch (error) {
@@ -86,8 +83,8 @@ export class GoogleOauth2Background {
     }
   }
 
-  async getHeaders(scopes?: Array<string>) {
-    const token = await this.getAuthToken(scopes);
+  async getHeaders(additionalScopes?: Array<string>) {
+    const token = await this.getAuthToken(additionalScopes);
     return new Headers({ Authorization: `Bearer ${token}` });
   }
 }
