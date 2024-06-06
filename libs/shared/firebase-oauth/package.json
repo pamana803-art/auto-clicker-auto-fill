@@ -1,11 +1,10 @@
 {
   "name": "@dhruv-techapps/firebase-oauth",
-  "version": "0.0.1",
-  "dependencies": {
+  "peerDependencies": {
     "tslib": "^2.3.0",
-    "@dhruv-techapps/google-oauth": "3.8.0",
-    "@dhruv-techapps/core-common": "3.11.0",
-    "@dhruv-techapps/core-service": "3.11.0",
+    "@dhruv-techapps/google-oauth": "^4.0.x",
+    "@dhruv-techapps/core-common": "^4.0.x",
+    "@dhruv-techapps/core-service": "^4.0.x",
     "firebase": "^10.12.0"
   },
   "type": "commonjs",
