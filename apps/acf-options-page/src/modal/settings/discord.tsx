@@ -4,13 +4,11 @@ import { FirebaseDatabaseService } from '@dhruv-techapps/firebase-database';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Badge, Button, Form, Image } from 'react-bootstrap';
-import { useAppSelector } from '../../hooks';
-import { appSelector } from '../../store/app.slice';
 
 function SettingDiscord({ onChange, label, checked }) {
   const [discord, setDiscord] = useState<Discord>();
   const [error, setError] = useState<Error>();
-  const { role } = useAppSelector(appSelector);
+
   useEffect(() => {
     FirebaseDatabaseService.getDiscord<Discord>(window.EXTENSION_ID)
       .then((result) => {
@@ -70,7 +68,7 @@ function SettingDiscord({ onChange, label, checked }) {
   return (
     <div>
       <Badge bg='danger'>Pro</Badge>
-      <Button variant='link' onClick={connect} data-testid='discord-connect' disabled={role !== 'pro'}>
+      <Button variant='link' onClick={connect} data-testid='discord-connect'>
         Connect with discord
       </Button>
       {error?.message && <Badge bg='danger'>{error?.message}</Badge>}

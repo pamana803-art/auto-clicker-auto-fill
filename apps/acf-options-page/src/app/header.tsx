@@ -79,7 +79,7 @@ function Header() {
         <Navbar.Brand href='/' className='p-0 me-0 me-lg-2'>
           {appName}
           {role && (
-            <Badge bg={role === 'pro' ? 'danger' : 'warning'} text={role === 'pro' ? 'light' : 'dark'} className='ms-2'>
+            <Badge bg='danger' text='light' className='ms-2'>
               {role.toUpperCase()}
             </Badge>
           )}

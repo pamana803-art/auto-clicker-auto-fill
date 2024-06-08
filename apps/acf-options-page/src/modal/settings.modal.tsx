@@ -4,7 +4,6 @@ import { Badge, Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ErrorAlert } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { appSelector } from '../store/app.slice';
 import { googleGetAPI, settingsGetAPI } from '../store/settings/settings.api';
 import { settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
 import { themeSelector } from '../store/theme.slice';
@@ -27,7 +26,6 @@ export const SettingsModal = () => {
   const theme = useAppSelector(themeSelector);
   const [page, setPage] = useState<SETTINGS_PAGE>();
   const { error, settings, visible } = useAppSelector(settingsSelector);
-  const { role } = useAppSelector(appSelector);
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
@@ -89,54 +87,26 @@ export const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button
-                  onClick={() => setPage(SETTINGS_PAGE.BACKUP)}
-                  variant={theme}
-                  className='d-flex align-items-center justify-content-between w-100'
-                  data-testid='settings-backup'
-                  disabled={role !== 'pro'}
-                >
+                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-backup'>
                   <div className='fw-bold'>
                     <CloudArrowUpFill className='me-2' />
-                    <Badge bg='danger' className='me-2'>
-                      Pro
-                    </Badge>
                     Backup
                   </div>
                   <ChevronRight />
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button
-                  onClick={() => setPage(SETTINGS_PAGE.SHEETS)}
-                  variant={theme}
-                  className='d-flex align-items-center justify-content-between w-100'
-                  data-testid='settings-backup'
-                  disabled={role !== 'pro'}
-                >
+                <Button onClick={() => setPage(SETTINGS_PAGE.SHEETS)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-backup'>
                   <div className='fw-bold'>
                     <FileSpreadsheetFill className='me-2' />
                     <Badge bg='danger' className='me-2'>
-                      Pro
+                      Pro | Sheets
                     </Badge>
                     Google Sheets
                   </div>
                   <ChevronRight />
                 </Button>
               </li>
-              <li className='list-group-item d-flex justify-content-between align-items-center'>
-                <Form.Label className='ms-2 me-auto' htmlFor='settings-suppress-whats-new'>
-                  <div className='fw-bold'>
-                    <Badge bg='warning' text='dark' className='me-1'>
-                      Plus
-                    </Badge>
-                    {t('modal.settings.suppressWhatsNew')}
-                  </div>
-                  {t('modal.settings.suppressWhatsNewHint')} <br />
-                </Form.Label>
-                <Form.Check type='switch' name='suppressWhatsNew' disabled={role === undefined} onChange={onUpdate} id='settings-suppressWhatsNew' checked={settings.suppressWhatsNew || false} />
-              </li>
-
               <li className='list-group-item d-flex justify-content-between align-items-center'>
                 <Form.Label className='ms-2 me-auto' htmlFor='settings-checkiFrames'>
                   <div className='fw-bold'>{t('modal.settings.checkIFrames')}</div>

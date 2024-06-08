@@ -4,7 +4,6 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User } from 'firebase/auth';
 import { NO_EXTENSION_ERROR } from '../constants';
 import { RootState } from '../store';
-import { getProducts } from './subscribe';
 
 export const getManifest = createAsyncThunk('app/getManifest', async () => {
   if (window.chrome?.runtime) {
@@ -14,19 +13,13 @@ export const getManifest = createAsyncThunk('app/getManifest', async () => {
   throw new Error(NO_EXTENSION_ERROR[0]);
 });
 
-export const isLogin = createAsyncThunk('firebase/isLogin', async (_, thunkAPI) => {
+export const isLogin = createAsyncThunk('firebase/isLogin', async () => {
   const response = await FirebaseOauthService.isLogin(window.EXTENSION_ID);
-  if (!response.role) {
-    thunkAPI.dispatch(getProducts());
-  }
   return response;
 });
 
-export const login = createAsyncThunk('firebase/login', async (_, thunkAPI) => {
+export const login = createAsyncThunk('firebase/login', async () => {
   const response = await FirebaseOauthService.login(window.EXTENSION_ID);
-  if (!response.role) {
-    thunkAPI.dispatch(getProducts());
-  }
   return response;
 });
 
@@ -96,8 +89,10 @@ const slice = createSlice({
       }
     });
     builder.addCase(isLogin.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.role = action.payload.role;
+      if (action.payload) {
+        state.user = action.payload.user;
+        state.role = action.payload.role;
+      }
     });
     builder.addCase(isLogin.rejected, (state, action) => {
       state.error = action.error.message;
@@ -106,8 +101,10 @@ const slice = createSlice({
       state.isLoginLoading = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.role = action.payload.role;
+      if (action.payload) {
+        state.user = action.payload.user;
+        state.role = action.payload.role;
+      }
       state.isLoginLoading = false;
       state.loginModal = false;
     });

@@ -1,5 +1,4 @@
 import { ACTION_CONDITION_OPR, ACTION_RUNNING, ActionCondition, ActionStatement } from '@dhruv-techapps/acf-common';
-import { FirebaseOauthService } from '@dhruv-techapps/firebase-oauth';
 
 const Statement = (() => {
   const conditionResult = (conditions: Array<ActionCondition>, actions: Array<string>) => {
@@ -33,11 +32,6 @@ const Statement = (() => {
     if (statement) {
       const { conditions, then, goto } = statement;
       if (conditions && then) {
-        const { role } = await FirebaseOauthService.isLogin(chrome.runtime.id);
-        if (!role) {
-          console.warn('Plus or Pro subscription required for Action Condition Feature');
-          return true;
-        }
         const result = checkThen(conditionResult(conditions, actions), then, goto);
         console.debug('Statement Result', result);
         return result;

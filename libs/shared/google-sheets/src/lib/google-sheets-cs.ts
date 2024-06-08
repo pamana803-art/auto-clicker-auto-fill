@@ -1,4 +1,3 @@
-import { FirebaseOauthService } from '@dhruv-techapps/firebase-oauth';
 import { GoogleSheetsService } from './google-sheets.service';
 import { Sheets, ValueRange } from './google-sheets.types';
 
@@ -48,11 +47,6 @@ export class GoogleSheetsCS {
 
   async getValues(sheets: Map<string, Set<string> | string>, spreadsheetId?: string): Promise<Sheets | undefined> {
     if (spreadsheetId) {
-      const { role } = await FirebaseOauthService.isLogin(chrome.runtime.id);
-      if (role !== 'pro') {
-        console.error('Pro subscription required for Google Sheets Feature');
-        return undefined;
-      }
       this.transformSheets(sheets);
       const result = await GoogleSheetsService.getSheets(
         chrome.runtime.id,
