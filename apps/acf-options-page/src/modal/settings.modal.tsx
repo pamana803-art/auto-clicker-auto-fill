@@ -1,6 +1,6 @@
 import { STATUS_BAR_LOCATION } from '@dhruv-techapps/status-bar';
 import { useEffect, useState } from 'react';
-import { Badge, Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ErrorAlert } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -99,9 +99,6 @@ export const SettingsModal = () => {
                 <Button onClick={() => setPage(SETTINGS_PAGE.SHEETS)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-backup'>
                   <div className='fw-bold'>
                     <FileSpreadsheetFill className='me-2' />
-                    <Badge bg='danger' className='me-2'>
-                      Pro | Sheets
-                    </Badge>
                     Google Sheets
                   </div>
                   <ChevronRight />

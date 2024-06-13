@@ -43,14 +43,14 @@ export class GoogleDriveBackground extends FirebaseFunctionsBackground {
   }
 
   async createOrUpdate(name: string, data: string, fileId?: string) {
-    const result = await this.getGoogleDriveCreateOrUpdate({ name, data, fileId });
+    const result = await this.driveCreateOrUpdate({ name, data, fileId });
     return result;
   }
 
   async listWithContent(): Promise<Array<DriveFile>> {
-    const { files } = await this.getGoogleDriveList<GoogleDriveFile>();
+    const { files } = await this.driveList<GoogleDriveFile>();
     for (const file of files) {
-      file.content = await this.getGoogleDriveGet(file);
+      file.content = await this.driveGet(file);
     }
     return files;
   }

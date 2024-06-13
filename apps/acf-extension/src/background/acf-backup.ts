@@ -33,7 +33,7 @@ export default class AcfBackup extends GoogleDriveBackground {
       const { configs = [getDefaultConfig()] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
       if (configs) {
         const { settings = { ...defaultSettings } } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.SETTINGS);
-        const { files } = await this.getGoogleDriveList<GoogleDriveFile>();
+        const { files } = await this.driveList<GoogleDriveFile>();
         await this.createOrUpdate(BACKUP_FILE_NAMES.CONFIGS, configs, files.find((file) => file.name === BACKUP_FILE_NAMES.CONFIGS)?.id);
         await this.createOrUpdate(BACKUP_FILE_NAMES.SETTINGS, settings, files.find((file) => file.name === BACKUP_FILE_NAMES.SETTINGS)?.id);
         if (!settings.backup) {
@@ -61,7 +61,7 @@ export default class AcfBackup extends GoogleDriveBackground {
 
   async restore(file: DriveFile): Promise<void> {
     try {
-      const fileContent = await this.getGoogleDriveGet(file);
+      const fileContent = await this.driveGet(file);
       if (fileContent) {
         if (file.name === BACKUP_FILE_NAMES.SETTINGS) {
           chrome.storage.local.set({ [LOCAL_STORAGE_KEY.SETTINGS]: fileContent });

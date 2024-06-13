@@ -4,7 +4,7 @@ import { RUNTIME_MESSAGE_FIREBASE_FUNCTIONS } from './firebase-functions.constan
 
 export class FirebaseFunctionsService extends CoreService {
   static async vision(extensionId: string) {
-    return await this.message<RuntimeMessageRequest, string>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_FUNCTIONS, methodName: 'vision' });
+    return await this.message<RuntimeMessageRequest, string>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_FUNCTIONS, methodName: 'visionImagesAnnotate' });
   }
 
   static async getValues<Req, Res>(extensionId: string, message: Req) {

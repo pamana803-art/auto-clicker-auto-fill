@@ -115,6 +115,7 @@ const slice = createSlice({
     });
     builder.addCase(logout.fulfilled, (state) => {
       delete state.user;
+      delete state.role;
     });
     builder.addCase(logout.rejected, (state, action) => {
       state.error = action.error.message;

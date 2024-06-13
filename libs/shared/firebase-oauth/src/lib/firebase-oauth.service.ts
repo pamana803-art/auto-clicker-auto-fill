@@ -12,6 +12,6 @@ export class FirebaseOauthService extends CoreService {
   }
 
   static async logout(extensionId: string) {
-    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_OAUTH, methodName: 'logout' });
+    return await this.message(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_OAUTH, methodName: 'firebaseLogout' });
   }
 }

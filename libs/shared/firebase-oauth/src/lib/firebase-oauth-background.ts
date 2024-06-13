@@ -25,6 +25,11 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
     return headers;
   }
 
+  async firebaseLogout() {
+    await this.removeCachedAuthToken();
+    await this.auth.signOut();
+  }
+
   async firebaseLogin(): Promise<FirebaseLoginResponse> {
     const token = await this.getAuthToken();
     if (token) {

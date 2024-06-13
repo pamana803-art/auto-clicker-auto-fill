@@ -24,8 +24,12 @@ export class DiscordMessagingBackground extends FirebaseFunctionsBackground {
   async push(data: DiscordMessagingType) {
     try {
       data.variant = this.VARIANT;
-      await this.discordNotify(data);
+      const { error } = await this.discordNotify<DiscordMessagingType, { error: string }>(data);
+      if (error) {
+        throw new Error(error);
+      }
     } catch (error) {
+      console.error('error', error);
       if (error instanceof Error) {
         NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
       }
