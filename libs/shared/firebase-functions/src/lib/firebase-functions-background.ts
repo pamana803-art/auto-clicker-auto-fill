@@ -9,6 +9,7 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
     super(auth, edgeClientId);
     this.cloudFunctionUrl = 'https://us-central1-auto-clicker-autofill.cloudfunctions.net';
   }
+
   async visionImagesAnnotate<Res = unknown>(content: string) {
     const headers = await this.getFirebaseHeaders();
     const data = {

@@ -4,7 +4,7 @@ import { actionSelector, addAction, openActionAddonModalAPI, openActionSettingsM
 import { Action, RANDOM_UUID } from '@dhruv-techapps/acf-common';
 import { ColumnDef, Row, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { Badge, Button, Dropdown, Form, Table } from 'react-bootstrap';
+import { Button, Dropdown, Form, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { DropdownToggle } from '../../../components';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
@@ -195,22 +195,13 @@ const ActionTable = ({ actions }: ActionProps) => {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item data-testid='action-addon' onClick={() => showAddon(row)}>
-                        <Badge bg='warning' text='dark' className='me-1'>
-                          Plus
-                        </Badge>
                         {t('action.addon')}
                       </Dropdown.Item>
                       <Dropdown.Item data-testid='action-settings' onClick={() => showSettings(row)}>
-                        <Badge bg='warning' text='dark' className='me-1'>
-                          Plus
-                        </Badge>
                         {t('action.settings')}
                       </Dropdown.Item>
                       {index !== 0 && (
                         <Dropdown.Item data-testid='action-statement' onClick={() => showCondition(row)}>
-                          <Badge bg='warning' text='dark' className='me-1'>
-                            Plus
-                          </Badge>
                           {t('modal.actionCondition.title')}
                         </Dropdown.Item>
                       )}
