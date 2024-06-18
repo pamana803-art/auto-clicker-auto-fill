@@ -1,5 +1,5 @@
 import { ADDON_CONDITIONS } from '@dhruv-techapps/acf-common';
-import { Alert, Badge, Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import { FormEvent, useEffect } from 'react';
@@ -58,12 +58,7 @@ const AddonModal = () => {
     <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='addon-modal'>
       <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
-          <Modal.Title as='h6'>
-            <Badge bg='warning' text='dark' className='me-1'>
-              Plus
-            </Badge>
-            {t('modal.addon.title')}
-          </Modal.Title>
+          <Modal.Title as='h6'>{t('modal.addon.title')}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>

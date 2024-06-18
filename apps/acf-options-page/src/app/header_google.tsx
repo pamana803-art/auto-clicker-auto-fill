@@ -1,18 +1,12 @@
-import { GOOGLE_SCOPES, GoogleOauthService } from '@dhruv-techapps/google-oauth';
-import { GoogleAuthProvider, getAuth, signInWithCredential } from 'firebase/auth';
-import { getFunctions, httpsCallable } from 'firebase/functions';
 import { Nav, NavDropdown } from 'react-bootstrap';
-import { firebase } from '../firebase';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { appSelector, logout, switchLogin } from '../store/app.slice';
-import { subscribeSelector, switchIsPortalLinkLoading, switchSubscribeModal } from '../store/subscribe';
-import { addToast } from '../store/toast.slice';
 
 export const HeaderGoogle = () => {
   const dispatch = useAppDispatch();
-  const { user, role } = useAppSelector(appSelector);
-  const { isPortalLinkLoading } = useAppSelector(subscribeSelector);
+  const { user } = useAppSelector(appSelector);
 
+  /*
   const onPortalLink = async () => {
     dispatch(switchIsPortalLinkLoading());
     dispatch(addToast({ header: 'Loading Manage Subscription', variant: 'primary' }));
@@ -35,26 +29,22 @@ export const HeaderGoogle = () => {
       dispatch(switchIsPortalLinkLoading());
     }
   };
+  */
 
   return (
     <div>
       {user ? (
         <NavDropdown title={user.displayName} id='subscription-nav-dropdown' align='end'>
-          {user ? (
-            <>
-              {role ? (
-                <NavDropdown.Item onClick={onPortalLink} disabled={isPortalLinkLoading}>
-                  Manage Subscription
-                </NavDropdown.Item>
-              ) : (
-                <NavDropdown.Item title='subscribe' onClick={() => dispatch(switchSubscribeModal())}>
-                  Subscribe
-                </NavDropdown.Item>
-              )}
-              <NavDropdown.Divider />
-            </>
-          ) : null}
-
+          {/*{role ? (
+            <NavDropdown.Item onClick={onPortalLink} disabled={isPortalLinkLoading}>
+              Manage Subscription
+            </NavDropdown.Item>
+          ) : (
+            <NavDropdown.Item title='subscribe' onClick={() => dispatch(switchSubscribeModal())}>
+              Subscribe
+            </NavDropdown.Item>
+          )}
+          <NavDropdown.Divider />*/}
           <NavDropdown.Item title='logout' onClick={() => dispatch(logout())}>
             Logout
           </NavDropdown.Item>

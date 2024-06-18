@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect } from 'react';
 
 import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
-import { Alert, Badge, Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import { useTimeout } from '../_hooks/message.hooks';
@@ -79,9 +79,6 @@ const ActionSettingsModal = () => {
     <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='action-settings-modal'>
       <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
-          <Badge bg='warning' text='dark' className='me-1'>
-            Plus
-          </Badge>
           <Modal.Title as='h6'>{t('modal.actionSettings.title')}</Modal.Title>
         </Modal.Header>
 

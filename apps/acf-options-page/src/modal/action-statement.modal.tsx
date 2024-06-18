@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent } from 'react';
 
 import { ACTION_CONDITION_OPR, ACTION_RUNNING, getDefaultActionCondition } from '@dhruv-techapps/acf-common';
-import { Alert, Badge, Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
+import { Alert, Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useTimeout } from '../_hooks/message.hooks';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -74,9 +74,6 @@ const ActionStatementModal = () => {
     <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='action-statement-modal'>
       <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
-          <Badge bg='warning' text='dark' className='me-1'>
-            Plus
-          </Badge>
           <Modal.Title as='h6'>{t('modal.actionCondition.title')}</Modal.Title>
         </Modal.Header>
 
