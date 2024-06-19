@@ -14,7 +14,7 @@ function SettingDiscord({ onChange, label, checked }) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    FirebaseDatabaseService.getDiscord<Discord>(window.EXTENSION_ID)
+    FirebaseDatabaseService.getDiscord<Discord>()
       .then((result) => {
         if (result) {
           setDiscord(result);
@@ -24,7 +24,7 @@ function SettingDiscord({ onChange, label, checked }) {
   }, []);
 
   const connect = () => {
-    DiscordOauthService.login(window.EXTENSION_ID)
+    DiscordOauthService.login()
       .then((response) => {
         if (response) {
           setDiscord(response);
@@ -34,14 +34,12 @@ function SettingDiscord({ onChange, label, checked }) {
   };
 
   const remove = () => {
-    FirebaseDatabaseService.deleteDiscord(window.EXTENSION_ID)
+    FirebaseDatabaseService.deleteDiscord()
       .then(() => {
         setDiscord(undefined);
       })
       .catch(setError);
   };
-
-  console.log(error?.name, error?.message, error?.stack);
 
   if (discord) {
     return (

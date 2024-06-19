@@ -15,7 +15,7 @@ export const TabsEvents = (() => {
         case 'update':
           {
             const updateProperties = JSON.parse(value.split('::')[2]);
-            TabsService.update(chrome.runtime.id, updateProperties);
+            TabsService.update(updateProperties);
           }
           break;
         default:

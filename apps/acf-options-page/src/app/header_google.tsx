@@ -10,7 +10,7 @@ export const HeaderGoogle = () => {
   const onPortalLink = async () => {
     dispatch(switchIsPortalLinkLoading());
     dispatch(addToast({ header: 'Loading Manage Subscription', variant: 'primary' }));
-    const token = await GoogleOauthService.getAuthToken(window.EXTENSION_ID, [GOOGLE_SCOPES.PROFILE, GOOGLE_SCOPES.EMAIL]);
+    const token = await GoogleOauthService.getAuthToken([GOOGLE_SCOPES.PROFILE, GOOGLE_SCOPES.EMAIL]);
 
     if (!token) {
       return;

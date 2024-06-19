@@ -22,7 +22,7 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
 
   async getValues<Req = unknown, Res = unknown>(data: Req) {
     const headers = await this.getFirebaseHeaders([GOOGLE_SCOPES.SHEETS]);
-    const url = new URL(this.cloudFunctionUrl + '/getValues');
+    const url = new URL(this.cloudFunctionUrl + '/sheetValues');
     const response = await fetch(url.href, { headers, method: 'POST', body: JSON.stringify(data) });
     const result: Res = await response.json();
     return result;
@@ -39,7 +39,7 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
   async discordUser<Res = unknown>(token: string): Promise<Res> {
     const headers = await this.getFirebaseHeaders(undefined, token); // Cast the token argument to string
     const url = new URL(this.cloudFunctionUrl + '/discordUser');
-    const response = await fetch(url.href, { headers });
+    const response = await fetch(url.href, { headers, method: 'POST' });
     const result: Res = await response.json();
     return result;
   }

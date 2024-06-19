@@ -7,24 +7,24 @@ import { RootState } from '../store';
 
 export const getManifest = createAsyncThunk('app/getManifest', async () => {
   if (window.chrome?.runtime) {
-    const manifest = await ManifestService.values(window.EXTENSION_ID, ['name', 'version']);
+    const manifest = await ManifestService.values(['name', 'version']);
     return manifest;
   }
   throw new Error(NO_EXTENSION_ERROR[0]);
 });
 
 export const isLogin = createAsyncThunk('firebase/isLogin', async () => {
-  const response = await FirebaseOauthService.isLogin(window.EXTENSION_ID);
+  const response = await FirebaseOauthService.isLogin();
   return response;
 });
 
 export const login = createAsyncThunk('firebase/login', async () => {
-  const response = await FirebaseOauthService.login(window.EXTENSION_ID);
+  const response = await FirebaseOauthService.login();
   return response;
 });
 
 export const logout = createAsyncThunk('firebase/logout', async () => {
-  const result = await FirebaseOauthService.logout(window.EXTENSION_ID);
+  const result = await FirebaseOauthService.logout();
   return result;
 });
 

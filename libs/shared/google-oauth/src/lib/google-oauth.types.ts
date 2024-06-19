@@ -16,3 +16,9 @@ export type GoogleOauth2LoginResponse = {
 };
 
 export type GoogleOauth2RemoveResponse = RESPONSE_CODE.REMOVED;
+
+
+export abstract class GoogleOauth2Service {
+  abstract login(): Promise<GoogleOauth2LoginResponse>;
+  abstract remove(): Promise<GoogleOauth2RemoveResponse>;
+}

@@ -4,13 +4,13 @@ import { RUNTIME_MESSAGE_FIREBASE_FIRESTORE } from './firebase-firestore.constan
 import { Product, Subscription } from './firebase-firestore.types';
 
 export class FirebaseFirestoreService extends CoreService {
-  static async getProducts(extensionId: string) {
-    return await this.message<RuntimeMessageRequest, Product[]>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_FIRESTORE, methodName: 'getProducts' });
+  static async getProducts() {
+    return await this.message<RuntimeMessageRequest, Product[]>({ messenger: RUNTIME_MESSAGE_FIREBASE_FIRESTORE, methodName: 'getProducts' });
   }
-  static async getSubscriptions(extensionId: string) {
-    return await this.message<RuntimeMessageRequest, Subscription[]>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_FIRESTORE, methodName: 'getSubscriptions' });
+  static async getSubscriptions() {
+    return await this.message<RuntimeMessageRequest, Subscription[]>({ messenger: RUNTIME_MESSAGE_FIREBASE_FIRESTORE, methodName: 'getSubscriptions' });
   }
-  static async subscribe(extensionId: string, priceId: string) {
-    return await this.message<RuntimeMessageRequest<string>, string>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_FIRESTORE, methodName: 'subscribe', message: priceId });
+  static async subscribe(priceId: string) {
+    return await this.message<RuntimeMessageRequest<string>, string>({ messenger: RUNTIME_MESSAGE_FIREBASE_FIRESTORE, methodName: 'subscribe', message: priceId });
   }
 }

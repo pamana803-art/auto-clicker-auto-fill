@@ -3,10 +3,10 @@ import { CoreService } from '@dhruv-techapps/core-service';
 import { RUNTIME_MESSAGE_FIREBASE_DATABASE } from './firebase-database.constant';
 
 export class FirebaseDatabaseService extends CoreService {
-  static async getDiscord<T>(extensionId: string) {
-    return await this.message<RuntimeMessageRequest, T>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_DATABASE, methodName: 'getDiscord' });
+  static async getDiscord<T>() {
+    return await this.message<RuntimeMessageRequest, T>({ messenger: RUNTIME_MESSAGE_FIREBASE_DATABASE, methodName: 'getDiscord' });
   }
-  static async deleteDiscord(extensionId: string) {
-    return await this.message<RuntimeMessageRequest>(extensionId, { messenger: RUNTIME_MESSAGE_FIREBASE_DATABASE, methodName: 'deleteDiscord' });
+  static async deleteDiscord() {
+    return await this.message<RuntimeMessageRequest>({ messenger: RUNTIME_MESSAGE_FIREBASE_DATABASE, methodName: 'deleteDiscord' });
   }
 }

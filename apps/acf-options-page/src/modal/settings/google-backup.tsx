@@ -27,12 +27,12 @@ export function SettingsGoogleBackup() {
   const dispatch = useAppDispatch();
 
   const connect = async () => {
-    dispatch(googleLoginAPI(scope));
+    dispatch(googleLoginAPI([scope]));
   };
 
   const loadFiles = async () => {
     setFilesLoading(true);
-    GoogleDriveService.listWithContent(window.EXTENSION_ID).then((files) => {
+    GoogleDriveService.listWithContent().then((files) => {
       setFiles(files);
       setFilesLoading(false);
     });
@@ -47,13 +47,13 @@ export function SettingsGoogleBackup() {
   const onBackup = async (autoBackup?: AUTO_BACKUP) => {
     setLoading(true);
     if (autoBackup) {
-      GoogleDriveService.autoBackup(window.EXTENSION_ID, autoBackup)
+      GoogleDriveService.autoBackup(autoBackup)
         .then(() => {
           dispatch(updateSettingsBackup(autoBackup));
         })
         .finally(() => setLoading(false));
     } else {
-      GoogleBackupService.backup(window.EXTENSION_ID)
+      GoogleBackupService.backup()
         .then(() => {
           loadFiles();
         })
@@ -68,11 +68,11 @@ export function SettingsGoogleBackup() {
       message: t('confirm.backup.restore.message'),
       headerClass: 'text-danger',
     });
-    result && GoogleBackupService.restore(window.EXTENSION_ID, id, name);
+    result && GoogleBackupService.restore(id, name);
   };
 
   const deleteFile = async (id: string, name: string) => {
-    GoogleDriveService.delete(window.EXTENSION_ID, id, name)
+    GoogleDriveService.delete(id, name)
       .then(() => {
         setFiles(files?.filter((file) => file.id !== id));
       })

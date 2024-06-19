@@ -60,7 +60,6 @@ const AddonModal = () => {
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.addon.title')}</Modal.Title>
         </Modal.Header>
-
         <Modal.Body>
           <p className='text-muted'>{t('modal.addon.info')}</p>
           <Card>
@@ -130,7 +129,6 @@ const AddonModal = () => {
             </Alert>
           )}
         </Modal.Body>
-
         <Modal.Footer className='justify-content-between'>
           <Button type='reset' variant='outline-primary' className='px-5' data-testid='action-addon-reset'>
             {t('common.clear')}

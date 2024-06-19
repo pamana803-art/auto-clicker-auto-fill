@@ -2,14 +2,7 @@ import { FirebaseFunctionsBackground } from '@dhruv-techapps/firebase-functions'
 import { NotificationHandler } from '@dhruv-techapps/notifications';
 import { Auth } from 'firebase/auth';
 import { NOTIFICATIONS_ID, NOTIFICATIONS_TITLE } from './discord-messaging.constant';
-
-type DiscordMessagingType = {
-  title: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fields: Array<{ name: string; value: any }>;
-  color: string;
-  variant?: string;
-};
+import { DiscordMessagingType } from './discord-messaging.types';
 
 export class DiscordMessagingBackground extends FirebaseFunctionsBackground {
   constructor(
@@ -29,11 +22,9 @@ export class DiscordMessagingBackground extends FirebaseFunctionsBackground {
         throw new Error(error);
       }
     } catch (error) {
-      console.error('error', error);
       if (error instanceof Error) {
         NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
       }
-      throw error;
     }
   }
 }

@@ -76,7 +76,6 @@ const ActionStatementModal = () => {
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.actionCondition.title')}</Modal.Title>
         </Modal.Header>
-
         <Modal.Body>
           <p className='text-muted'>{t('modal.actionCondition.info')}</p>
           <h4 className='text-center mb-3'>IF</h4>
@@ -156,7 +155,6 @@ const ActionStatementModal = () => {
             </Alert>
           )}
         </Modal.Body>
-
         <Modal.Footer className='justify-content-between'>
           <Button type='reset' variant='outline-primary px-5' data-testid='action-statement-reset'>
             {t('common.clear')}

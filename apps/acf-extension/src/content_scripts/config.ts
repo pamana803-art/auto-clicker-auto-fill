@@ -2,7 +2,7 @@ import { Configuration } from '@dhruv-techapps/acf-common';
 import { SettingsStorage } from '@dhruv-techapps/acf-store';
 import { ConfigError } from '@dhruv-techapps/core-common';
 import { NotificationsService } from '@dhruv-techapps/core-service';
-import { DiscordMessagingService } from '@dhruv-techapps/discord-messaging';
+import { DiscordMessagingColor, DiscordMessagingService } from '@dhruv-techapps/discord-messaging';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { GoogleSheetsCS } from '@dhruv-techapps/google-sheets';
 import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
@@ -51,7 +51,7 @@ const ConfigProcessor = (() => {
       if (notifications) {
         const { onConfig, sound, discord } = notifications;
         if (onConfig) {
-          NotificationsService.create(chrome.runtime.id, {
+          NotificationsService.create({
             type: 'basic',
             title: `${CONFIG_I18N.TITLE} ${I18N_COMMON.COMPLETED}`,
             message: config.name || config.url,
@@ -59,12 +59,12 @@ const ConfigProcessor = (() => {
             iconUrl: Common.getNotificationIcon(),
           });
           if (discord) {
-            DiscordMessagingService.success(chrome.runtime.id, `${CONFIG_I18N.TITLE} ${I18N_COMMON.COMPLETED}`, getFields(config));
+            DiscordMessagingService.push(`${CONFIG_I18N.TITLE} ${I18N_COMMON.COMPLETED}`, getFields(config));
           }
         }
       }
       statusBar.done();
-      GoogleAnalyticsService.fireEvent(chrome.runtime.id, 'configuration_completed', getEvents(config));
+      GoogleAnalyticsService.fireEvent('configuration_completed', getEvents(config));
     } catch (e) {
       if (e instanceof ConfigError) {
         statusBar.error(e.message);
@@ -72,20 +72,24 @@ const ConfigProcessor = (() => {
         const { notifications } = await new SettingsStorage().getSettings();
         if (notifications?.onError) {
           const { sound, discord } = notifications;
-          NotificationsService.create(chrome.runtime.id, { type: 'basic', ...error, silent: !sound, iconUrl: Common.getNotificationIcon() }, 'error');
+          NotificationsService.create({ type: 'basic', ...error, silent: !sound, iconUrl: Common.getNotificationIcon() }, 'error');
           if (discord) {
-            DiscordMessagingService.error(chrome.runtime.id, e.title || `${CONFIG_I18N.TITLE} ${I18N_COMMON.ERROR}`, [
-              ...getFields(config),
-              ...e.message.split('\n').map((info) => {
-                const [name, value] = info.split(':');
-                return { name, value: value.replace(/'/g, '`') };
-              }),
-            ]);
+            DiscordMessagingService.push(
+              e.title || `${CONFIG_I18N.TITLE} ${I18N_COMMON.ERROR}`,
+              [
+                ...getFields(config),
+                ...e.message.split('\n').map((info) => {
+                  const [name, value] = info.split(':');
+                  return { name, value: value.replace(/'/g, '`') };
+                }),
+              ],
+              DiscordMessagingColor.ERROR
+            );
           }
         } else {
           console.error(error.title, '\n', error.message);
         }
-        GoogleAnalyticsService.fireErrorEvent(chrome.runtime.id, e.name, e.message, { page: 'content_scripts' });
+        GoogleAnalyticsService.fireErrorEvent(e.name, e.message, { page: 'content_scripts' });
       } else {
         throw e;
       }

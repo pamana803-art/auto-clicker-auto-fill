@@ -15,7 +15,7 @@ function SettingGoogleSheets() {
   const dispatch = useAppDispatch();
 
   const connect = async () => {
-    dispatch(googleLoginAPI(scope));
+    dispatch(googleLoginAPI([scope]));
   };
 
   if (!google || !googleScopes.includes(scope)) {

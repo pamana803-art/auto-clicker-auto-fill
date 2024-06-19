@@ -12,12 +12,12 @@ const initialState: SubscribeStore = {
 };
 
 export const getProducts = createAsyncThunk('firebase/getProducts', async () => {
-  const result = await FirebaseFirestoreService.getProducts(window.EXTENSION_ID);
+  const result = await FirebaseFirestoreService.getProducts();
   return result;
 });
 
 export const getSubscription = createAsyncThunk('firebase/getSubscription', async (_, thunkAPI) => {
-  const subscription = await FirebaseFirestoreService.getSubscriptions(window.EXTENSION_ID);
+  const subscription = await FirebaseFirestoreService.getSubscriptions();
   if (!subscription) {
     thunkAPI.dispatch(getProducts());
   }
@@ -25,7 +25,7 @@ export const getSubscription = createAsyncThunk('firebase/getSubscription', asyn
 });
 
 export const subscribe = createAsyncThunk('firebase/subscribe', async (priceId: string) => {
-  const result = await FirebaseFirestoreService.subscribe(window.EXTENSION_ID, priceId);
+  const result = await FirebaseFirestoreService.subscribe(priceId);
   if (result) {
     window.location.href = result;
   }

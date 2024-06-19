@@ -16,7 +16,6 @@ const ConfigSettingsModal = () => {
 
   const { visible, message } = useAppSelector(configSettingsSelector);
   const config = useAppSelector(selectedConfigSelector);
-
   const dispatch = useAppDispatch();
 
   useTimeout(() => {
@@ -153,7 +152,6 @@ const ConfigSettingsModal = () => {
               </Row>
             </Card.Body>
           </Card>
-
           <Card className='mb-2'>
             <Card.Body>
               <Row>
@@ -169,7 +167,6 @@ const ConfigSettingsModal = () => {
               </Row>
             </Card.Body>
           </Card>
-
           <Card className='mb-2'>
             <Card.Body>
               <Row>
