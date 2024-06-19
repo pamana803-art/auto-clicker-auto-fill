@@ -11,14 +11,18 @@ export class GoogleOauthService extends CoreService {
       message: additionalScopes,
     });
   }
-  static async remove(additionalScopes: GOOGLE_SCOPES[]) {
+  static async logout(additionalScopes: GOOGLE_SCOPES[]) {
     return await this.message<RuntimeMessageRequest<Array<GOOGLE_SCOPES>>, GoogleOauth2RemoveResponse>({
       messenger: RUNTIME_MESSAGE_GOOGLE_OAUTH,
-      methodName: 'removeCachedAuthToken',
+      methodName: 'logout',
       message: additionalScopes,
     });
   }
-  static async getAuthToken(scopes: Array<GOOGLE_SCOPES>) {
-    return await this.message<RuntimeMessageRequest<Array<GOOGLE_SCOPES>>, string>({ messenger: RUNTIME_MESSAGE_GOOGLE_OAUTH, methodName: 'getAuthToken', message: scopes });
+  static async getAuthToken(additionalScopes: Array<GOOGLE_SCOPES>) {
+    return await this.message<RuntimeMessageRequest<Array<GOOGLE_SCOPES>>, string>({ messenger: RUNTIME_MESSAGE_GOOGLE_OAUTH, methodName: 'getAuthToken', message: additionalScopes });
+  }
+
+  static async userInfo() {
+    return await this.message<RuntimeMessageRequest<undefined>, GoogleOauth2RemoveResponse>({ messenger: RUNTIME_MESSAGE_GOOGLE_OAUTH, methodName: 'userInfo' });
   }
 }

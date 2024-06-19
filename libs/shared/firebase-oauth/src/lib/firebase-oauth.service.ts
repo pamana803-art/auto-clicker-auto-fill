@@ -5,8 +5,9 @@ import { FirebaseLoginResponse } from './firebase-oauth.types';
 
 export class FirebaseOauthService extends CoreService {
   static async isLogin() {
-    return await this.message<RuntimeMessageRequest, FirebaseLoginResponse>({ messenger: RUNTIME_MESSAGE_FIREBASE_OAUTH, methodName: 'isLogin' });
+    return await this.message<RuntimeMessageRequest, FirebaseLoginResponse>({ messenger: RUNTIME_MESSAGE_FIREBASE_OAUTH, methodName: 'firebaseIsLogin' });
   }
+
   static async login() {
     return await this.message<RuntimeMessageRequest, FirebaseLoginResponse>({ messenger: RUNTIME_MESSAGE_FIREBASE_OAUTH, methodName: 'firebaseLogin' });
   }

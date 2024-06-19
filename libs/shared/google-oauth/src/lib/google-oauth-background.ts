@@ -1,6 +1,6 @@
 import { BROWSER } from '@dhruv-techapps/core-common';
 import { NotificationHandler } from '@dhruv-techapps/notifications';
-import { GOOGLE_LOCAL_STORAGE_KEY, GOOGLE_SCOPES, GoogleOauth2LoginResponse } from './google-oauth.types';
+import { GOOGLE_SCOPES, GoogleOauth2LoginResponse } from './google-oauth.types';
 
 const NOTIFICATIONS_TITLE = 'Google OAuth';
 const NOTIFICATIONS_ID = 'authentication';
@@ -10,36 +10,52 @@ export class GoogleOauth2Background {
   constructor(edgeClientId?: string) {
     this.edgeClientId = edgeClientId;
   }
-  async removeCachedAuthToken(additionalScopes?: Array<GOOGLE_SCOPES>) {
-    const token = await this.getAuthToken(additionalScopes);
+
+  async login(additionalScopes?: Array<GOOGLE_SCOPES>): Promise<GoogleOauth2LoginResponse | null> {
+    try {
+      const result = await this.getAuthToken(additionalScopes);
+      return result;
+    } catch (error) {
+      if (error instanceof Error) {
+        NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
+      }
+      await this.logout(additionalScopes);
+      throw error;
+    }
+  }
+
+  async logout(additionalScopes?: Array<GOOGLE_SCOPES>) {
+    const { token } = await this.getAuthToken(additionalScopes);
     if (token) {
       await chrome.identity.removeCachedAuthToken({ token });
     }
     return true;
   }
 
-  async login(additionalScopes?: Array<GOOGLE_SCOPES>): Promise<GoogleOauth2LoginResponse | null> {
+  async userInfo() {
+    const headers = await this._getHeaders();
+    let response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo`, { headers });
+    response = await response.json();
+    return response;
+  }
+
+  async getAuthToken(additionalScopes?: Array<string>) {
+    const scopes = chrome.runtime.getManifest().oauth2?.scopes || [];
+    if (additionalScopes) {
+      scopes.push(...additionalScopes);
+    }
     try {
-      const headers = await this.getHeaders(additionalScopes);
-      const google = await this.getCurrentUser(headers);
-      return { [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE]: google };
+      const result = BROWSER === 'EDGE' ? await this._launchWebAuthFlow(scopes) : await chrome.identity.getAuthToken({ interactive: true, scopes });
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, error.message);
       }
-      await this.removeCachedAuthToken();
       throw error;
     }
   }
 
-  async getCurrentUser(headers: HeadersInit) {
-    let response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo`, { headers });
-    response = await response.json();
-    chrome.storage.local.set({ [GOOGLE_LOCAL_STORAGE_KEY.GOOGLE]: response });
-    return response;
-  }
-
-  async getAuthTokenEdge(scopes: string[]) {
+  async _launchWebAuthFlow(scopes: string[]) {
     if (this.edgeClientId === undefined) {
       throw new Error('Edge client id not found');
     }
@@ -60,7 +76,7 @@ export class GoogleOauth2Background {
         .find((param) => param.startsWith('#access_token='))
         ?.split('=')[1];
       if (token) {
-        return token;
+        return { token, grantedScopes: scopes };
       }
       NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Token not found');
       throw new Error('Token not found');
@@ -69,22 +85,18 @@ export class GoogleOauth2Background {
     throw new Error('Error while retrieving token');
   }
 
-  async getAuthToken(additionalScopes?: Array<string>) {
-    const scopes = chrome.runtime.getManifest().oauth2?.scopes || [];
-    if (additionalScopes) {
-      scopes.push(...additionalScopes);
-    }
-    if (BROWSER === 'EDGE') {
-      const token = await this.getAuthTokenEdge(scopes);
-      return token;
-    } else {
-      const { token } = await chrome.identity.getAuthToken({ interactive: true, scopes });
-      return token;
-    }
+  async _getHeaders(additionalScopes?: Array<string>) {
+    const { token } = await this.getAuthToken(additionalScopes);
+    return new Headers({ Authorization: `Bearer ${token}` });
   }
 
-  async getHeaders(additionalScopes?: Array<string>) {
-    const token = await this.getAuthToken(additionalScopes);
-    return new Headers({ Authorization: `Bearer ${token}` });
+  async _checkInvalidCredentials(message: string) {
+    if (message === 'Invalid Credentials' || message.includes('invalid authentication credentials')) {
+      await this.logout();
+      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Token expired reauthenticate!');
+      return true;
+    }
+    NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, message);
+    return false;
   }
 }

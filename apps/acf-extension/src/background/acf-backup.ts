@@ -50,7 +50,7 @@ export default class AcfBackup extends GoogleDriveBackground {
       throw new Error(ACF_BACKUP_I18N.ERROR_NO_CONFIG);
     } catch (error) {
       if (error instanceof Error) {
-        const retry = await this.checkInvalidCredentials(error.message);
+        const retry = await this._checkInvalidCredentials(error.message);
         if (retry) {
           this.backup(now);
         }
@@ -75,7 +75,7 @@ export default class AcfBackup extends GoogleDriveBackground {
       throw new Error(ACF_BACKUP_I18N.ERROR_NO_CONTENT);
     } catch (error) {
       if (error instanceof Error) {
-        const retry = await this.checkInvalidCredentials(error.message);
+        const retry = await this._checkInvalidCredentials(error.message);
         if (retry) {
           this.restore(file);
         }

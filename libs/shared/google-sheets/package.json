@@ -6,8 +6,7 @@
     "@dhruv-techapps/notifications": "^4.0.x",
     "@dhruv-techapps/core-common": "^4.0.x",
     "@dhruv-techapps/core-service": "^4.0.x",
-    "@dhruv-techapps/firebase-functions": "^4.0.x",
-    "@dhruv-techapps/firebase-oauth": "^4.0.x"
+    "@dhruv-techapps/firebase-functions": "^4.0.x"
   },
   "type": "commonjs",
   "main": "./src/index.js",

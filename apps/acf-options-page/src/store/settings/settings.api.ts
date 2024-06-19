@@ -19,6 +19,6 @@ export const googleLoginAPI = createAsyncThunk('google/login', async (additional
 });
 
 export const googleLogoutAPI = createAsyncThunk('google/logout', async (additionalScopes: GOOGLE_SCOPES[]) => {
-  const response = await GoogleOauthService.remove(additionalScopes);
+  const response = await GoogleOauthService.logout(additionalScopes);
   return response;
 });

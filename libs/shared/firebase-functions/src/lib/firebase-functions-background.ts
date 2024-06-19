@@ -11,7 +11,7 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
   }
 
   async visionImagesAnnotate<Res = unknown>(content: string) {
-    const headers = await this.getFirebaseHeaders();
+    const headers = await this._getFirebaseHeaders();
     const data = {
       requests: [{ image: { content }, features: [{ type: 'TEXT_DETECTION' }] }],
     };
@@ -21,7 +21,7 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
   }
 
   async getValues<Req = unknown, Res = unknown>(data: Req) {
-    const headers = await this.getFirebaseHeaders([GOOGLE_SCOPES.SHEETS]);
+    const headers = await this._getFirebaseHeaders([GOOGLE_SCOPES.SHEETS]);
     const url = new URL(this.cloudFunctionUrl + '/sheetValues');
     const response = await fetch(url.href, { headers, method: 'POST', body: JSON.stringify(data) });
     const result: Res = await response.json();
@@ -29,7 +29,7 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
   }
 
   async discordNotify<Req = unknown, Res = unknown>(data: Req): Promise<Res> {
-    const headers = await this.getFirebaseHeaders();
+    const headers = await this._getFirebaseHeaders();
     const url = new URL(this.cloudFunctionUrl + '/discordNotify');
     const response = await fetch(url.href, { headers, method: 'POST', body: JSON.stringify(data) });
     const result: Res = await response.json();
@@ -37,7 +37,7 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
   }
 
   async discordUser<Res = unknown>(token: string): Promise<Res> {
-    const headers = await this.getFirebaseHeaders(undefined, token); // Cast the token argument to string
+    const headers = await this._getFirebaseHeaders(undefined, token); // Cast the token argument to string
     const url = new URL(this.cloudFunctionUrl + '/discordUser');
     const response = await fetch(url.href, { headers, method: 'POST' });
     const result: Res = await response.json();
@@ -45,7 +45,7 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
   }
 
   async driveList<Res = unknown>() {
-    const headers = await this.getFirebaseHeaders([GOOGLE_SCOPES.DRIVE]);
+    const headers = await this._getFirebaseHeaders([GOOGLE_SCOPES.DRIVE]);
     const url = new URL(this.cloudFunctionUrl + '/driveList');
     const response = await fetch(url.href, { headers, method: 'POST' });
     const result: Res = await response.json();
@@ -53,21 +53,21 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
   }
 
   async driveGet<Req = unknown, Res = unknown>(data: Req) {
-    const headers = await this.getFirebaseHeaders([GOOGLE_SCOPES.DRIVE]);
+    const headers = await this._getFirebaseHeaders([GOOGLE_SCOPES.DRIVE]);
     const url = new URL(this.cloudFunctionUrl + '/driveGet');
     const response: Res = await fetch(url.href, { headers, method: 'POST', body: JSON.stringify(data) }).then((r) => r.json());
     return response;
   }
 
   async driveDelete<Req = unknown, Res = unknown>(data: Req) {
-    const headers = await this.getFirebaseHeaders([GOOGLE_SCOPES.DRIVE]);
+    const headers = await this._getFirebaseHeaders([GOOGLE_SCOPES.DRIVE]);
     const url = new URL(this.cloudFunctionUrl + '/driveDelete');
     const response: Res = await fetch(url.href, { headers, method: 'POST', body: JSON.stringify(data) }).then((r) => r.json());
     return response;
   }
 
   async driveCreateOrUpdate<Req = unknown, Res = unknown>(data: Req) {
-    const headers = await this.getFirebaseHeaders([GOOGLE_SCOPES.DRIVE]);
+    const headers = await this._getFirebaseHeaders([GOOGLE_SCOPES.DRIVE]);
     const url = new URL(this.cloudFunctionUrl + '/driveCreateOrUpdate');
     const response: Res = await fetch(url.href, { headers, method: 'POST', body: JSON.stringify(data) }).then((r) => r.json());
     return response;

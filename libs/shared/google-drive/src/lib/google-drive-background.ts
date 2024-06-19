@@ -32,16 +32,6 @@ export class GoogleDriveBackground extends FirebaseFunctionsBackground {
     chrome.alarms.create(BACKUP_ALARM, alarmInfo);
   }
 
-  async checkInvalidCredentials(message: string) {
-    if (message === 'Invalid Credentials' || message.includes('invalid authentication credentials')) {
-      await this.removeCachedAuthToken();
-      NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, 'Token expired reauthenticate!');
-      return true;
-    }
-    NotificationHandler.notify(NOTIFICATIONS_ID, NOTIFICATIONS_TITLE, message);
-    return false;
-  }
-
   async createOrUpdate(name: string, data: string, fileId?: string) {
     const result = await this.driveCreateOrUpdate({ name, data, fileId });
     return result;
