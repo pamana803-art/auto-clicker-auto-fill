@@ -1,4 +1,3 @@
-import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { AppendEvents } from './append.events';
 import { AttributeEvents } from './attribute.events';
 import { ClassEvents } from './class-list.events';
@@ -32,7 +31,6 @@ export const Events = (() => {
       if (eventRegexArray) {
         event = eventRegexArray[1].toLowerCase();
       }
-      GoogleAnalyticsService.fireEvent(event || 'plain');
       switch (event) {
         case EVENTS.SCROLL_TO:
           ScrollToEvents.start(elements, value);

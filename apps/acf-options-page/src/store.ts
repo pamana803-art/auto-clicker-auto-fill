@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import appReducer from './store/app.slice';
+import { blogReducer } from './store/blog';
+import { configReducers, configsListenerMiddleware, configsToastListenerMiddleware } from './store/config';
+import { firebaseReducer } from './store/firebase';
+import { googleDriveReducer, googleReducer } from './store/google';
+
+import { settingsListenerMiddleware, settingsReducer } from './store/settings';
+import { subscribeReducer } from './store/subscribe';
 import themeReducer from './store/theme.slice';
 import toastReducer from './store/toast.slice';
-import { blogReducer } from './store/blog';
-import { settingsReducer, settingsListenerMiddleware } from './store/settings';
-import { subscribeReducer } from './store/subscribe';
-import { configReducers, configsListenerMiddleware, configsToastListenerMiddleware } from './store/config';
+
 export const store = configureStore({
   reducer: {
     app: appReducer,
@@ -13,6 +17,9 @@ export const store = configureStore({
     settings: settingsReducer,
     toast: toastReducer,
     blog: blogReducer,
+    google: googleReducer,
+    googleDrive: googleDriveReducer,
+    firebase: firebaseReducer,
     subscribe: subscribeReducer,
     ...configReducers,
   },

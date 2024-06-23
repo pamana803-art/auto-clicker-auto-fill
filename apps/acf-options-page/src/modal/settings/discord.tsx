@@ -1,45 +1,41 @@
-import { Discord } from '@dhruv-techapps/acf-common';
-import { DiscordOauthService } from '@dhruv-techapps/discord-oauth';
-import { FirebaseDatabaseService } from '@dhruv-techapps/firebase-database';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { Badge, Button, Form, Image } from 'react-bootstrap';
+import { useEffect } from 'react';
+import { Button, Form, Image } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { appSelector, switchLogin } from '../../store/app.slice';
+import { firebaseSelector, switchFirebaseLoginModal } from '../../store/firebase';
+import { settingsSelector } from '../../store/settings';
+import { discordDeleteAPI, discordGetAPI, discordLoginAPI } from '../../store/settings/settings.api';
 
 function SettingDiscord({ onChange, label, checked }) {
-  const [discord, setDiscord] = useState<Discord>();
-  const { user } = useAppSelector(appSelector);
-  const [error, setError] = useState<Error>();
+  const { discord } = useAppSelector(settingsSelector);
+  const { user } = useAppSelector(firebaseSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    FirebaseDatabaseService.getDiscord<Discord>()
-      .then((result) => {
-        if (result) {
-          setDiscord(result);
-        }
-      })
-      .catch(setError);
-  }, []);
+    if (user && !discord) {
+      dispatch(discordGetAPI());
+    }
+  }, [user, discord, dispatch]);
 
   const connect = () => {
-    DiscordOauthService.login()
-      .then((response) => {
-        if (response) {
-          setDiscord(response);
-        }
-      })
-      .catch(setError);
+    dispatch(discordLoginAPI());
   };
 
   const remove = () => {
-    FirebaseDatabaseService.deleteDiscord()
-      .then(() => {
-        setDiscord(undefined);
-      })
-      .catch(setError);
+    dispatch(discordDeleteAPI());
   };
+
+  if (!user) {
+    return (
+      <p>
+        Please
+        <Button variant='link' title='login' onClick={() => dispatch(switchFirebaseLoginModal())}>
+          Login
+        </Button>
+        to your account before connecting with Discord.
+      </p>
+    );
+  }
 
   if (discord) {
     return (
@@ -67,25 +63,10 @@ function SettingDiscord({ onChange, label, checked }) {
     );
   }
 
-  if (!user) {
-    return (
-      <p>
-        Please
-        <Button variant='link' title='login' onClick={() => dispatch(switchLogin())}>
-          Login
-        </Button>
-        to your account before connecting with Discord.
-      </p>
-    );
-  }
-
   return (
-    <div>
-      <Button variant='link' onClick={connect} data-testid='discord-connect'>
-        Connect with discord
-      </Button>
-      {error?.message && <Badge bg='danger'>{error?.message}</Badge>}
-    </div>
+    <Button variant='link' onClick={connect} data-testid='discord-connect'>
+      Connect with discord
+    </Button>
   );
 }
 

@@ -29,59 +29,36 @@ export default class AcfBackup extends GoogleDriveBackground {
   scopes = [GOOGLE_SCOPES.DRIVE, GOOGLE_SCOPES.PROFILE];
 
   async backup(now?: boolean): Promise<string> {
-    try {
-      const { configs = [getDefaultConfig()] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
-      if (configs) {
-        const { settings = { ...defaultSettings } } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.SETTINGS);
-        const { files } = await this.driveList<GoogleDriveFile>();
-        await this.createOrUpdate(BACKUP_FILE_NAMES.CONFIGS, configs, files.find((file) => file.name === BACKUP_FILE_NAMES.CONFIGS)?.id);
-        await this.createOrUpdate(BACKUP_FILE_NAMES.SETTINGS, settings, files.find((file) => file.name === BACKUP_FILE_NAMES.SETTINGS)?.id);
-        if (!settings.backup) {
-          settings.backup = {};
-        }
-        const lastBackup = new Date().toLocaleString();
-        settings.backup.lastBackup = lastBackup;
-        chrome.storage.local.set({ [LOCAL_STORAGE_KEY.SETTINGS]: settings });
-        if (now) {
-          NotificationHandler.notify(ID, ACF_BACKUP_I18N.NOTIFICATION_TITLE, chrome.i18n.getMessage(ACF_BACKUP_I18N_KEY.NOTIFICATION_BACKUP, settings.backup.lastBackup));
-        }
-        return lastBackup;
-      }
-      throw new Error(ACF_BACKUP_I18N.ERROR_NO_CONFIG);
-    } catch (error) {
-      if (error instanceof Error) {
-        const retry = await this._checkInvalidCredentials(error.message);
-        if (retry) {
-          this.backup(now);
-        }
-      }
-      throw error;
+    const { configs = [getDefaultConfig()] } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.CONFIGS);
+    const { settings = { ...defaultSettings } } = await chrome.storage.local.get(LOCAL_STORAGE_KEY.SETTINGS);
+    const { files } = await this.driveList<GoogleDriveFile>();
+    await this._createOrUpdate(BACKUP_FILE_NAMES.CONFIGS, configs, files.find((file) => file.name === BACKUP_FILE_NAMES.CONFIGS)?.id);
+    await this._createOrUpdate(BACKUP_FILE_NAMES.SETTINGS, settings, files.find((file) => file.name === BACKUP_FILE_NAMES.SETTINGS)?.id);
+    if (!settings.backup) {
+      settings.backup = {};
     }
+    const lastBackup = new Date().toLocaleString();
+    settings.backup.lastBackup = lastBackup;
+    chrome.storage.local.set({ [LOCAL_STORAGE_KEY.SETTINGS]: settings });
+    if (now) {
+      NotificationHandler.notify(ID, ACF_BACKUP_I18N.NOTIFICATION_TITLE, chrome.i18n.getMessage(ACF_BACKUP_I18N_KEY.NOTIFICATION_BACKUP, settings.backup.lastBackup));
+    }
+    return lastBackup;
   }
 
   async restore(file: DriveFile): Promise<void> {
-    try {
-      const fileContent = await this.driveGet(file);
-      if (fileContent) {
-        if (file.name === BACKUP_FILE_NAMES.SETTINGS) {
-          chrome.storage.local.set({ [LOCAL_STORAGE_KEY.SETTINGS]: fileContent });
-        }
-        if (file.name === BACKUP_FILE_NAMES.CONFIGS) {
-          chrome.storage.local.set({ [LOCAL_STORAGE_KEY.CONFIGS]: fileContent });
-        }
-        NotificationHandler.notify(ID, ACF_BACKUP_I18N.NOTIFICATION_TITLE, ACF_BACKUP_I18N.NOTIFICATION_RESTORE);
-        return;
+    const fileContent = await this.driveGet(file);
+    if (fileContent) {
+      if (file.name === BACKUP_FILE_NAMES.SETTINGS) {
+        chrome.storage.local.set({ [LOCAL_STORAGE_KEY.SETTINGS]: fileContent });
       }
-      throw new Error(ACF_BACKUP_I18N.ERROR_NO_CONTENT);
-    } catch (error) {
-      if (error instanceof Error) {
-        const retry = await this._checkInvalidCredentials(error.message);
-        if (retry) {
-          this.restore(file);
-        }
+      if (file.name === BACKUP_FILE_NAMES.CONFIGS) {
+        chrome.storage.local.set({ [LOCAL_STORAGE_KEY.CONFIGS]: fileContent });
       }
-      throw error;
+      NotificationHandler.notify(ID, ACF_BACKUP_I18N.NOTIFICATION_TITLE, ACF_BACKUP_I18N.NOTIFICATION_RESTORE);
+      return;
     }
+    throw new Error(ACF_BACKUP_I18N.ERROR_NO_CONTENT);
   }
 }
 

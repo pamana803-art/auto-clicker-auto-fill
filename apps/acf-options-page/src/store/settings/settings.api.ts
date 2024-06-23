@@ -1,6 +1,7 @@
-import { LOCAL_STORAGE_KEY, Settings } from '@dhruv-techapps/acf-common';
+import { Discord, LOCAL_STORAGE_KEY, Settings } from '@dhruv-techapps/acf-common';
 import { StorageService } from '@dhruv-techapps/core-service';
-import { GOOGLE_SCOPES, GoogleOauthService } from '@dhruv-techapps/google-oauth';
+import { DiscordOauthService } from '@dhruv-techapps/discord-oauth';
+import { FirebaseDatabaseService } from '@dhruv-techapps/firebase-database';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const settingsGetAPI = createAsyncThunk('settings/get', async () => {
@@ -8,17 +9,17 @@ export const settingsGetAPI = createAsyncThunk('settings/get', async () => {
   return result.settings;
 });
 
-export const googleGetAPI = createAsyncThunk('google/get', async () => {
-  const result = await StorageService.get([LOCAL_STORAGE_KEY.GOOGLE, LOCAL_STORAGE_KEY.GOOGLE_SCOPES]);
+export const discordGetAPI = createAsyncThunk('discord/get', async () => {
+  const result = await FirebaseDatabaseService.getDiscord<Discord>();
   return result;
 });
 
-export const googleLoginAPI = createAsyncThunk('google/login', async (additionalScopes: GOOGLE_SCOPES[]) => {
-  const response = await GoogleOauthService.login(additionalScopes);
-  return response;
+export const discordLoginAPI = createAsyncThunk('discord/login', async () => {
+  const result = await DiscordOauthService.login();
+  return result;
 });
 
-export const googleLogoutAPI = createAsyncThunk('google/logout', async (additionalScopes: GOOGLE_SCOPES[]) => {
-  const response = await GoogleOauthService.logout(additionalScopes);
-  return response;
+export const discordDeleteAPI = createAsyncThunk('discord/delete', async () => {
+  const result = await FirebaseDatabaseService.deleteDiscord();
+  return result;
 });

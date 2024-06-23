@@ -42,7 +42,7 @@
   },
   "oauth2": {
     "client_id": "",
-    "scopes": ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
+    "scopes": ["openid", "email", "profile"]
   },
   "sandbox": {
     "pages": ["html/sandbox.html"]

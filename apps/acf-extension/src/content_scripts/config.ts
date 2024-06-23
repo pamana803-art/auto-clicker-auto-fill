@@ -43,9 +43,9 @@ const ConfigProcessor = (() => {
   };
 
   const start = async (config: Configuration) => {
-    const sheets = GoogleSheets.getSheets(config);
-    window.__sheets = await new GoogleSheetsCS().getValues(sheets, config.spreadsheetId);
     try {
+      const sheets = GoogleSheets.getSheets(config);
+      window.__sheets = await new GoogleSheetsCS().getValues(sheets, config.spreadsheetId);
       await BatchProcessor.start(config.actions, config.batch);
       const { notifications } = await new SettingsStorage().getSettings();
       if (notifications) {

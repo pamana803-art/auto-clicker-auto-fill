@@ -9,7 +9,7 @@ import { AUTO_BACKUP, DriveFile, GoogleDriveFile } from './google-drive.types';
 export class GoogleDriveBackground extends FirebaseFunctionsBackground {
   scopes = [GOOGLE_SCOPES.DRIVE];
 
-  async setAlarm(autoBackup: AUTO_BACKUP) {
+  async autoBackup(autoBackup: AUTO_BACKUP) {
     const alarmInfo: chrome.alarms.AlarmCreateInfo = { when: Date.now() + 500 };
     await chrome.alarms.clear(BACKUP_ALARM);
     switch (autoBackup) {
@@ -32,13 +32,22 @@ export class GoogleDriveBackground extends FirebaseFunctionsBackground {
     chrome.alarms.create(BACKUP_ALARM, alarmInfo);
   }
 
-  async createOrUpdate(name: string, data: string, fileId?: string) {
+  async _createOrUpdate(name: string, data: string, fileId?: string) {
     const result = await this.driveCreateOrUpdate({ name, data, fileId });
     return result;
   }
 
+  async delete(request: { id: string; name: string }) {
+    const date = JSON.stringify(request);
+    const response = await this.driveDelete<string, { error: string }>(date);
+    if (response.error) {
+      throw new Error(response.error);
+    }
+  }
+
   async listWithContent(): Promise<Array<DriveFile>> {
     const { files } = await this.driveList<GoogleDriveFile>();
+    if (!files) return [];
     for (const file of files) {
       file.content = await this.driveGet(file);
     }

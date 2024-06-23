@@ -1,10 +1,10 @@
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { appSelector, logout, switchLogin } from '../store/app.slice';
+import { firebaseLogoutAPI, firebaseSelector, switchFirebaseLoginModal } from '../store/firebase';
 
 export const HeaderGoogle = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector(appSelector);
+  const { user } = useAppSelector(firebaseSelector);
 
   /*
   const onPortalLink = async () => {
@@ -45,12 +45,12 @@ export const HeaderGoogle = () => {
             </NavDropdown.Item>
           )}
           <NavDropdown.Divider />*/}
-          <NavDropdown.Item title='logout' onClick={() => dispatch(logout())}>
+          <NavDropdown.Item title='logout' onClick={() => dispatch(firebaseLogoutAPI())}>
             Logout
           </NavDropdown.Item>
         </NavDropdown>
       ) : (
-        <Nav.Link title='login' onClick={() => dispatch(switchLogin())}>
+        <Nav.Link title='login' onClick={() => dispatch(switchFirebaseLoginModal())}>
           Login
         </Nav.Link>
       )}

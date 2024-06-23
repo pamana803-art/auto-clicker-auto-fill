@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { APP_LANGUAGES, APP_LINK, SOCIAL_LINKS } from '../constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { SettingsModal } from '../modal';
-import { appSelector } from '../store/app.slice';
 import { switchSettingsModal } from '../store/settings/settings.slice';
 import { switchTheme, themeSelector } from '../store/theme.slice';
 import { GearFill, Github, Moon, Sun, ThreeDots, Youtube } from '../util';
 
+import { firebaseSelector } from '../store/firebase';
 import { HeaderGoogle } from './header_google';
 
 function Header() {
@@ -20,7 +20,7 @@ function Header() {
 
   const { setIsOpen } = useTour();
   const theme = useAppSelector(themeSelector);
-  const { role, error } = useAppSelector(appSelector);
+  const { role, error } = useAppSelector(firebaseSelector);
 
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();

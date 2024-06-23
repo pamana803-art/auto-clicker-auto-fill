@@ -1,19 +1,16 @@
+import { Discord, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
+import { AUTO_BACKUP } from '@dhruv-techapps/google-drive';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { LOCAL_STORAGE_KEY, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
-import { googleGetAPI, googleLoginAPI, settingsGetAPI } from './settings.api';
-import { GOOGLE_SCOPES } from '@dhruv-techapps/google-oauth';
-import { AUTO_BACKUP } from '@dhruv-techapps/google-drive';
+import { discordDeleteAPI, discordGetAPI, discordLoginAPI, settingsGetAPI } from './settings.api';
 
 type SettingsStore = {
   visible: boolean;
   loading: boolean;
   error?: string;
   settings: Settings;
+  discord?: Discord;
   message?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  google?: any;
-  googleScopes: Array<GOOGLE_SCOPES>;
 };
 
 type SettingsAction = {
@@ -21,7 +18,7 @@ type SettingsAction = {
   value: boolean;
 };
 
-const initialState: SettingsStore = { visible: false, loading: true, settings: defaultSettings, googleScopes: [] };
+const initialState: SettingsStore = { visible: false, loading: true, settings: defaultSettings };
 
 const slice = createSlice({
   name: 'settings',
@@ -71,17 +68,28 @@ const slice = createSlice({
       state.error = action.error.message;
       state.loading = false;
     });
-    builder.addCase(googleGetAPI.fulfilled, (state, action) => {
-      state.google = action.payload[LOCAL_STORAGE_KEY.GOOGLE];
-      state.googleScopes = action.payload[LOCAL_STORAGE_KEY.GOOGLE_SCOPES] || [];
+    builder.addCase(discordGetAPI.pending, (state) => {
+      delete state.error;
+      state.loading = true;
     });
-    builder.addCase(googleLoginAPI.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.google = action.payload[LOCAL_STORAGE_KEY.GOOGLE];
-        state.googleScopes = action.payload[LOCAL_STORAGE_KEY.GOOGLE_SCOPES];
-      }
+    builder.addCase(discordGetAPI.fulfilled, (state, action) => {
+      state.discord = action.payload;
+      state.loading = false;
     });
-    builder.addCase(googleLoginAPI.rejected, (state, action) => {
+    builder.addCase(discordGetAPI.rejected, (state, action) => {
+      state.error = action.error.message;
+      state.loading = false;
+    });
+    builder.addCase(discordLoginAPI.fulfilled, (state, action) => {
+      state.discord = action.payload;
+    });
+    builder.addCase(discordLoginAPI.rejected, (state, action) => {
+      state.error = action.error.message;
+    });
+    builder.addCase(discordDeleteAPI.fulfilled, (state) => {
+      delete state.discord;
+    });
+    builder.addCase(discordDeleteAPI.rejected, (state, action) => {
       state.error = action.error.message;
     });
   },

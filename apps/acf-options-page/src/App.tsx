@@ -7,14 +7,16 @@ import { useAppDispatch, useAppSelector } from './hooks';
 import { BlogModal, ExtensionNotFoundModal } from './modal';
 import { LoginModal } from './modal/login.modal';
 import { SubscribeModal } from './modal/subscribe.modal';
-import { appSelector, getManifest, isLogin } from './store/app.slice';
+import { getManifest } from './store/app.api';
+import { appSelector } from './store/app.slice';
+import { firebaseIsLoginAPI } from './store/firebase';
 
 function App() {
   const { loading, error } = useAppSelector(appSelector);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getManifest());
-    dispatch(isLogin());
+    dispatch(firebaseIsLoginAPI());
   }, [dispatch]);
 
   return (

@@ -15,8 +15,8 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
     });
   }
 
-  async firebaseLogin(): Promise<FirebaseLoginResponse> {
-    const { token } = await this.getAuthToken();
+  async firebaseLogin(interactive = true): Promise<FirebaseLoginResponse> {
+    const { token } = await this._getAuthToken({ interactive });
     if (token) {
       const credential = GoogleAuthProvider.credential(null, token);
       if (credential) {
@@ -41,7 +41,7 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
     const token = await this.auth.currentUser?.getIdToken();
     const headers = new Headers({ Authorization: `Bearer ${token}` });
     if (!gToken) {
-      gToken = (await this.getAuthToken(scopes)).token;
+      gToken = (await this._getAuthToken({ scopes })).token;
     }
     if (gToken) {
       headers.append('X-Auth-Token', gToken);
@@ -53,6 +53,19 @@ export class FirebaseOauth2Background extends GoogleOauth2Background {
     if (user) {
       const decodedToken = await user.getIdTokenResult();
       return { user, role: decodedToken.claims['stripeRole'] as FirebaseRole };
+    } else {
+      try {
+        const { token } = await this._getAuthToken({ interactive: false });
+        if (token) {
+          const credential = GoogleAuthProvider.credential(null, token);
+          if (credential) {
+            const { user } = await signInWithCredential(this.auth, credential);
+            return await this.#getUserAndRole(user);
+          }
+        }
+      } catch (error) {
+        return user;
+      }
     }
     return user;
   }

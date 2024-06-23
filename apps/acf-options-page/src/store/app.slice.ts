@@ -1,48 +1,17 @@
-import { ManifestService } from '@dhruv-techapps/core-service';
-import { FirebaseOauthService, FirebaseRole } from '@dhruv-techapps/firebase-oauth';
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { User } from 'firebase/auth';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NO_EXTENSION_ERROR } from '../constants';
 import { RootState } from '../store';
-
-export const getManifest = createAsyncThunk('app/getManifest', async () => {
-  if (window.chrome?.runtime) {
-    const manifest = await ManifestService.values(['name', 'version']);
-    return manifest;
-  }
-  throw new Error(NO_EXTENSION_ERROR[0]);
-});
-
-export const isLogin = createAsyncThunk('firebase/isLogin', async () => {
-  const response = await FirebaseOauthService.isLogin();
-  return response;
-});
-
-export const login = createAsyncThunk('firebase/login', async () => {
-  const response = await FirebaseOauthService.login();
-  return response;
-});
-
-export const logout = createAsyncThunk('firebase/logout', async () => {
-  const result = await FirebaseOauthService.logout();
-  return result;
-});
+import { getManifest } from './app.api';
 
 type AppStore = {
   manifest?: Partial<chrome.runtime.Manifest>;
   error?: string;
   loading: boolean;
-  user?: User | null;
   extensionNotFound: boolean;
-  loginModal: boolean;
-  isLoginLoading: boolean;
-  role?: FirebaseRole;
 };
 
 const initialState: AppStore = {
   loading: true,
-  loginModal: false,
-  isLoginLoading: false,
   extensionNotFound: false,
 };
 
@@ -66,11 +35,6 @@ const slice = createSlice({
         state.error = action.payload;
       }
     },
-    switchLogin: (state) => {
-      state.loading = false;
-      window.dataLayer.push({ event: 'modal', name: 'login', visibility: !state.loginModal });
-      state.loginModal = !state.loginModal;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(getManifest.fulfilled, (state, action) => {
@@ -88,42 +52,10 @@ const slice = createSlice({
         }
       }
     });
-    builder.addCase(isLogin.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.user = action.payload.user;
-        state.role = action.payload.role;
-      }
-    });
-    builder.addCase(isLogin.rejected, (state, action) => {
-      state.error = action.error.message;
-    });
-    builder.addCase(login.pending, (state) => {
-      state.isLoginLoading = true;
-    });
-    builder.addCase(login.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.user = action.payload.user;
-        state.role = action.payload.role;
-      }
-      state.isLoginLoading = false;
-      state.loginModal = false;
-    });
-    builder.addCase(login.rejected, (state, action) => {
-      state.error = action.error.message;
-      state.isLoginLoading = false;
-      state.loginModal = false;
-    });
-    builder.addCase(logout.fulfilled, (state) => {
-      delete state.user;
-      delete state.role;
-    });
-    builder.addCase(logout.rejected, (state, action) => {
-      state.error = action.error.message;
-    });
   },
 });
 
-export const { switchExtensionNotFound, switchLogin, setAppError, setManifest } = slice.actions;
+export const { switchExtensionNotFound, setAppError, setManifest } = slice.actions;
 
 export const appSelector = (state: RootState) => state.app;
 

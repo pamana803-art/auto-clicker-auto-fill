@@ -18,9 +18,15 @@ import AcfBackup from './acf-backup';
 import registerContextMenus from './context-menu';
 import { auth } from './firebase';
 import { TabsMessenger } from './tab';
+import { Update } from './update';
 
 let googleAnalytics: GoogleAnalyticsBackground | undefined;
+let firebaseDatabaseBackground: FirebaseDatabaseBackground;
+let firebaseOauth2Background: FirebaseOauth2Background;
 try {
+  googleAnalytics = new GoogleAnalyticsBackground(MEASUREMENT_ID, API_SECRET, VARIANT === 'LOCAL');
+  firebaseDatabaseBackground = new FirebaseDatabaseBackground(auth, EDGE_OAUTH_CLIENT_ID);
+  firebaseOauth2Background = new FirebaseOauth2Background(auth, EDGE_OAUTH_CLIENT_ID);
   /**
    * Browser Action set to open option page / configuration page
    */
@@ -35,6 +41,9 @@ try {
   chrome.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
       TabsMessenger.optionsTab({ url: OPTIONS_PAGE_URL });
+    } else if (details.reason === 'update') {
+      await Update.login(firebaseOauth2Background);
+      Update.discord(firebaseDatabaseBackground);
     }
   });
 
@@ -55,24 +64,22 @@ try {
     chrome.runtime.setUninstallURL(UNINSTALL_URL);
   }
 
-  googleAnalytics = new GoogleAnalyticsBackground(MEASUREMENT_ID, API_SECRET, VARIANT === 'LOCAL');
-
   auth.authStateReady().then(() => {
     /**
      * Setup on Message Listener
      */
     const onMessageListener = {
+      [RUNTIME_MESSAGE_ACF.TABS]: new TabsMessenger(),
       [RUNTIME_MESSAGE_DISCORD_OAUTH]: new DiscordOauth2Background(auth, EDGE_OAUTH_CLIENT_ID, DISCORD_CLIENT_ID),
       [RUNTIME_MESSAGE_DISCORD_MESSAGING]: new DiscordMessagingBackground(auth, EDGE_OAUTH_CLIENT_ID, VARIANT),
+      [RUNTIME_MESSAGE_GOOGLE_ANALYTICS]: googleAnalytics,
       [RUNTIME_MESSAGE_GOOGLE_OAUTH]: new GoogleOauth2Background(EDGE_OAUTH_CLIENT_ID),
       [RUNTIME_MESSAGE_GOOGLE_DRIVE]: new GoogleDriveBackground(auth, EDGE_OAUTH_CLIENT_ID),
-      [RUNTIME_MESSAGE_GOOGLE_ANALYTICS]: googleAnalytics,
       [RUNTIME_MESSAGE_ACF.ACF_BACKUP]: new AcfBackup(auth, EDGE_OAUTH_CLIENT_ID),
-      [RUNTIME_MESSAGE_ACF.TABS]: new TabsMessenger(),
       [RUNTIME_MESSAGE_GOOGLE_SHEETS]: new GoogleSheetsBackground(auth, EDGE_OAUTH_CLIENT_ID),
+      [RUNTIME_MESSAGE_FIREBASE_DATABASE]: firebaseDatabaseBackground,
       [RUNTIME_MESSAGE_FIREBASE_OAUTH]: new FirebaseOauth2Background(auth, EDGE_OAUTH_CLIENT_ID),
       [RUNTIME_MESSAGE_FIREBASE_FIRESTORE]: new FirebaseFirestoreBackground(auth, EDGE_OAUTH_CLIENT_ID, OPTIONS_PAGE_URL),
-      [RUNTIME_MESSAGE_FIREBASE_DATABASE]: new FirebaseDatabaseBackground(auth, EDGE_OAUTH_CLIENT_ID),
       [RUNTIME_MESSAGE_FIREBASE_FUNCTIONS]: new FirebaseFunctionsBackground(auth, EDGE_OAUTH_CLIENT_ID),
     };
     Runtime.onMessageExternal(onMessageListener);

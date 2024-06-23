@@ -2,9 +2,9 @@ import { STATUS_BAR_LOCATION_ENUM } from '@dhruv-techapps/status-bar';
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ErrorAlert } from '../components';
+import { ErrorAlert, Loading } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { googleGetAPI, settingsGetAPI } from '../store/settings/settings.api';
+import { settingsGetAPI } from '../store/settings/settings.api';
 import { settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
 import { themeSelector } from '../store/theme.slice';
 import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill, FileSpreadsheetFill } from '../util';
@@ -25,7 +25,7 @@ export const SettingsModal = () => {
   const { t } = useTranslation();
   const theme = useAppSelector(themeSelector);
   const [page, setPage] = useState<SETTINGS_PAGE>();
-  const { error, settings, visible } = useAppSelector(settingsSelector);
+  const { error, settings, visible, loading } = useAppSelector(settingsSelector);
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
@@ -35,7 +35,7 @@ export const SettingsModal = () => {
   useEffect(() => {
     if (window.chrome?.runtime) {
       dispatch(settingsGetAPI());
-      dispatch(googleGetAPI());
+      //dispatch(googleGetAPI());
     }
   }, [dispatch]);
 
@@ -66,6 +66,7 @@ export const SettingsModal = () => {
         </Modal.Header>
         <Modal.Body>
           <ErrorAlert error={error} />
+          {loading && <Loading />}
           {!page && (
             <ol className='list-group'>
               <li className='list-group-item'>

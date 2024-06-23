@@ -10,7 +10,7 @@ export const TabsEvents = (() => {
     commands.forEach((command) => {
       switch (command) {
         case 'reload':
-          TabsService.reload(chrome.runtime.id);
+          TabsService.reload();
           break;
         case 'update':
           {

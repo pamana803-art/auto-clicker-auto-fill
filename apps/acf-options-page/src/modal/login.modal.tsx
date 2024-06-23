@@ -4,27 +4,27 @@ import GoogleSignInDark from '../assets/btn_google_signin_dark_normal_web.png';
 import GoogleSignInLight from '../assets/btn_google_signin_light_normal_web.png';
 import { Loading } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { appSelector, login, switchLogin } from '../store/app.slice';
+import { firebaseLoginAPI, firebaseSelector, switchFirebaseLoginModal } from '../store/firebase';
 import { themeSelector } from '../store/theme.slice';
 
 const LoginModal = () => {
   const dispatch = useAppDispatch();
   const theme = useAppSelector(themeSelector);
-  const { loginModal, isLoginLoading } = useAppSelector(appSelector);
+  const { visible, isLoading } = useAppSelector(firebaseSelector);
 
   const handleClose = () => {
-    dispatch(switchLogin());
+    dispatch(switchFirebaseLoginModal());
   };
 
   return (
-    <Modal show={loginModal} onHide={handleClose} data-testid='login-modal' centered>
+    <Modal show={visible} onHide={handleClose} data-testid='login-modal' centered>
       <Form>
         <Modal.Header closeButton>
           <Modal.Title>Please sign in</Modal.Title>
         </Modal.Header>
         <Modal.Body className='d-flex justify-content-center'>
-          {isLoginLoading && <Loading message='Sign in...' />}
-          <Button variant='link' onClick={() => dispatch(login())} disabled={isLoginLoading} data-testid='google-sign-in'>
+          {isLoading && <Loading message='Sign in...' />}
+          <Button variant='link' onClick={() => dispatch(firebaseLoginAPI())} disabled={isLoading} data-testid='google-sign-in'>
             <img src={theme === 'light' ? GoogleSignInLight : GoogleSignInDark} alt='Logo' />
           </Button>
         </Modal.Body>

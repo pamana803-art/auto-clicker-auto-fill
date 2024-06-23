@@ -1,7 +1,6 @@
 import { FirebaseFirestoreService, Product, Subscription } from '@dhruv-techapps/firebase-firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { logout } from '../app.slice';
 
 type SubscribeStore = { visible: boolean; isPortalLinkLoading: boolean; subscriptions?: Subscription[]; error?: string; products?: Product[]; isSubscribing: boolean };
 
@@ -46,9 +45,6 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(logout.fulfilled, (state) => {
-      delete state.subscriptions;
-    });
     builder.addCase(getSubscription.fulfilled, (state, action) => {
       state.subscriptions = action.payload;
     });
