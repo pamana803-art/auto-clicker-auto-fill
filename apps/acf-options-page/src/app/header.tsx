@@ -68,7 +68,7 @@ function Header() {
 
   let appName = t('common.appName');
 
-  if (/(LOCAL|EV|BETA)/.test(process.env.NX_VARIANT || '')) {
+  if (/(LOCAL|DEV|BETA)/.test(process.env.NX_VARIANT || '')) {
     appName += ` [${process.env.NX_VARIANT}]`;
   }
 
