@@ -1,5 +1,3 @@
-import { BROWSER } from './_helpers';
-
 // Application Links
 export const APP_LINK = {
   DOCS: 'https://getautoclicker.com/docs/3.x/',
@@ -27,8 +25,8 @@ export const EDGE_WEB_STORE = 'https://microsoftedge.microsoft.com/addons/detail
 export const CHROME_WEB_STORE = 'https://chrome.google.com/webstore/detail/';
 
 const message = encodeURIComponent('Fill input field or click button or link anything anywhere. easy configure in few steps and work like PRO #AutoClickerAutoFill');
-const webStore = BROWSER === 'EDGE' ? EDGE_WEB_STORE : CHROME_WEB_STORE;
-const extensionId = process.env[`NX_${BROWSER}_EXTENSION_ID`];
+const webStore = CHROME_WEB_STORE;
+const extensionId = process.env[`NX_CHROME_EXTENSION_ID`];
 const url = encodeURIComponent(webStore + extensionId);
 // Social
 export const SOCIAL_LINKS = {

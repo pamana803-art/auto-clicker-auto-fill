@@ -3,7 +3,7 @@
   "version": "3.4.37",
   "license": "MIT",
   "scripts": {
-    "start": ""
+    "start": "nx run-many -t serve"
   },
   "private": true,
   "publishConfig": {

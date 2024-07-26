@@ -41,7 +41,7 @@
     "matches": ["http://localhost:*/*", "https://*.getautoclicker.com/*", "https://*.getdataentry.com/*"]
   },
   "oauth2": {
-    "client_id": "",
+    "client_id": "1068181857899-u8kurrhqoph1ht9d4psotb25ivvjhhft.apps.googleusercontent.com",
     "scopes": ["openid", "email", "profile"]
   },
   "sandbox": {
