@@ -2,7 +2,7 @@
   "name": "@dhruv-techapps/status-bar",
   "peerDependencies": {
     "tslib": "^2.3.0",
-    "@dhruv-techapps/shared-util": "4.0.x"
+    "@dhruv-techapps/shared-util": "^4.0.x"
   },
   "type": "commonjs",
   "main": "./src/index.js",
