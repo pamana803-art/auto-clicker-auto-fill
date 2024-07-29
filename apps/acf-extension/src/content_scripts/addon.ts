@@ -7,7 +7,7 @@ import { RADIO_CHECKBOX_NODE_NAME } from '../common/constant';
 import Common from './common';
 import { I18N_COMMON, I18N_ERROR } from './i18n';
 import { statusBar } from './status-bar';
-import { ACFValue } from './util/acf-value';
+import { ACFValue } from './util/acf-util';
 
 const ADDON_I18N = {
   TITLE: chrome.i18n.getMessage('@ADDON__TITLE'),
