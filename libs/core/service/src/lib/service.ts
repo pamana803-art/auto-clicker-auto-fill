@@ -1,11 +1,10 @@
 type CoreServiceRequest = {
   messenger: string;
   methodName: string;
-  message?: any;
+  message?: unknown;
 };
 
 export class CoreService {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static messageChrome<K extends CoreServiceRequest, T = void>(message: K): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       try {
@@ -19,13 +18,13 @@ export class CoreService {
           reject(new Error('extensionId is not undefined neither string'));
           return;
         }
-        console.debug(`${message.messenger}.${message.methodName}`, message.message);
+        // This line is kept for debugging purpose console.debug(`${message.messenger}.${message.methodName}`, message.message);
         chrome.runtime.sendMessage(id, message, (response) => {
           if (chrome.runtime.lastError || response?.error) {
             console.error(chrome.runtime.lastError?.message || response?.error);
             reject(new Error(chrome.runtime.lastError?.message || response?.error));
           } else {
-            console.debug(response);
+            // This line is kept for debugging purpose console.debug(response);
             resolve(response);
           }
         });
@@ -35,7 +34,6 @@ export class CoreService {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static async message<K extends CoreServiceRequest, T = void>(message: K): Promise<T> {
     return await this.messageChrome<K, T>(message);
   }

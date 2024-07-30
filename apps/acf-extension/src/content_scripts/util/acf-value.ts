@@ -1,3 +1,4 @@
+import { Value } from '@dhruv-techapps/acf-util';
 import { GoogleSheetsValue } from '@dhruv-techapps/google-sheets';
 import { SandboxValue } from '@dhruv-techapps/sandbox';
 
@@ -8,7 +9,7 @@ export const VALUE_MATCHER = {
 
 export class ACFValue {
   static async getValue(value: string) {
-    value = await ACFValue.getValue(value);
+    value = await Value.getValue(value);
     if (VALUE_MATCHER.GOOGLE_SHEETS.test(value)) {
       value = GoogleSheetsValue.getSheetValue(value);
     }
