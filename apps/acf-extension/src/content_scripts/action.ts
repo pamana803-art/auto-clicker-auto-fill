@@ -1,10 +1,9 @@
 import { ACTION_STATUS, Action } from '@dhruv-techapps/acf-common';
 import { Events } from '@dhruv-techapps/acf-events';
+import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
 import Common from './common';
 import { statusBar } from './status-bar';
-
-import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
-import { ACFValue } from './util/acf-util';
+import { ACFValue } from './util/acf-value';
 
 const ActionProcessor = (() => {
   const repeatFunc = async (action: Action, repeat?: number, repeatInterval?: number | string): Promise<ACTION_STATUS | number> => {
