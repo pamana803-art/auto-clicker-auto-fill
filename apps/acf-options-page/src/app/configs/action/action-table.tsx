@@ -90,6 +90,7 @@ const ActionTable = ({ actions }: ActionProps) => {
         accessorKey: 'value',
         meta: {
           list: 'value',
+          as: 'textarea',
         },
       },
       {

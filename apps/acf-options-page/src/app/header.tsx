@@ -1,6 +1,6 @@
 import { useTour } from '@reactour/tour';
 import { useEffect, useState } from 'react';
-import { Badge, Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
+import { Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { APP_LANGUAGES, APP_LINK, SOCIAL_LINKS } from '../constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -8,9 +8,6 @@ import { SettingsModal } from '../modal';
 import { switchSettingsModal } from '../store/settings/settings.slice';
 import { switchTheme, themeSelector } from '../store/theme.slice';
 import { GearFill, Github, Moon, Sun, ThreeDots, Youtube } from '../util';
-
-import { firebaseSelector } from '../store/firebase';
-import { HeaderGoogle } from './header_google';
 
 function Header() {
   const [show, setShow] = useState<boolean>(false);
@@ -45,8 +42,8 @@ function Header() {
   }, [t]);
 
   useEffect(() => {
-    if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
-      window.document.title = `${t('common.appName')} [${process.env.NX_VARIANT}]`;
+    if (/(DEV|BETA|LOCAL)/.test(process.env.NX_PUBLIC_VARIANT || '')) {
+      window.document.title = `${t('common.appName')} [${process.env.NX_PUBLIC_VARIANT}]`;
     } else {
       window.document.title = t('common.appName');
     }
@@ -68,8 +65,8 @@ function Header() {
 
   let appName = t('common.appName');
 
-  if (/(LOCAL|DEV|BETA)/.test(process.env.NX_VARIANT || '')) {
-    appName += ` [${process.env.NX_VARIANT}]`;
+  if (/(DEV|BETA)/.test(process.env.NX_PUBLIC_VARIANT || '')) {
+    appName += ` [${process.env.NX_PUBLIC_VARIANT}]`;
   }
 
   return (

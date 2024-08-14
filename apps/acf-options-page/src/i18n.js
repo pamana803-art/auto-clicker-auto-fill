@@ -20,7 +20,7 @@ i18n
     defaultNS: 'web-new',
     lng: window.localStorage.getItem('language') || navigator.language.replace('-', '_'),
     backend: {
-      loadPath: `${process.env.NX_I18N}/{{lng}}/{{ns}}.json`,
+      loadPath: `${process.env.NX_PUBLIC_I18N}/{{lng}}/{{ns}}.json`,
       addPath: '/locales/add/{{lng}}/{{ns}}',
       allowMultiLoading: true,
       reloadInterval: false,
