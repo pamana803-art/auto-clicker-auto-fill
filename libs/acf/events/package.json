@@ -1,12 +1,12 @@
 {
   "name": "@dhruv-techapps/acf-events",
   "peerDependencies": {
-    "@dhruv-techapps/core-common": "^4.0.x",
-    "@dhruv-techapps/acf-common": "^4.0.x",
-    "@dhruv-techapps/acf-service": "^4.0.x",
-    "@dhruv-techapps/sandbox": "^4.0.x",
-    "@dhruv-techapps/shared-util": "^4.0.x",
-    "@dhruv-techapps/google-analytics": "^4.0.x",
+    "@dhruv-techapps/core-common": "*",
+    "@dhruv-techapps/acf-common": "*",
+    "@dhruv-techapps/acf-service": "*",
+    "@dhruv-techapps/sandbox": "*",
+    "@dhruv-techapps/shared-util": "*",
+    "@dhruv-techapps/google-analytics": "*",
     "tslib": "^2.3.0"
   },
   "type": "commonjs",

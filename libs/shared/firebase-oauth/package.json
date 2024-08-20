@@ -2,9 +2,9 @@
   "name": "@dhruv-techapps/firebase-oauth",
   "peerDependencies": {
     "tslib": "^2.3.0",
-    "@dhruv-techapps/google-oauth": "^4.0.x",
-    "@dhruv-techapps/core-common": "^4.0.x",
-    "@dhruv-techapps/core-service": "^4.0.x",
+    "@dhruv-techapps/google-oauth": "*",
+    "@dhruv-techapps/core-common": "*",
+    "@dhruv-techapps/core-service": "*",
     "firebase": "^10.12.0"
   },
   "type": "commonjs",
