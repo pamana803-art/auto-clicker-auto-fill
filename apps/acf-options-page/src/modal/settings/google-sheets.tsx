@@ -29,6 +29,19 @@ function SettingGoogleSheets() {
     }
   }, [user, grantedScopes, scope, dispatch]);
 
+  if (['DEV', 'BETA'].includes(process.env.NX_PUBLIC_VARIANT || '')) {
+    return (
+      <div className='d-flex flex-column align-items-start'>
+        <Alert>
+          <Alert.Heading>Use Stable Versions for Google Sheets Features.</Alert.Heading>
+          For optimal performance and reliability in Google Sheets, it's recommended to utilize <Alert.Link href={`https://stable.getautoclicker.com`}>stable</Alert.Link> versions of its features.
+          These versions undergo thorough testing to ensure seamless functionality, providing you with a dependable platform for your tasks. By prioritizing stability, you can enhance your
+          productivity and minimize the risk of encountering unexpected issues. If you need assistance or guidance on leveraging Google Sheets effectively, feel free to reach out for support!.
+        </Alert>
+      </div>
+    );
+  }
+
   if (!user) {
     return (
       <p>
@@ -44,21 +57,10 @@ function SettingGoogleSheets() {
   if (!grantedScopes?.includes(scope)) {
     return (
       <div className='d-flex flex-column align-items-start'>
-        {['DEV', 'BETA'].includes(process.env.NX_PUBLIC_VARIANT || '') ? (
-          <Alert>
-            <Alert.Heading>Use Stable Versions for Google Sheets Features.</Alert.Heading>
-            For optimal performance and reliability in Google Sheets, it's recommended to utilize <Alert.Link href={`https://stable.getautoclicker.com`}>stable</Alert.Link> versions of its features.
-            These versions undergo thorough testing to ensure seamless functionality, providing you with a dependable platform for your tasks. By prioritizing stability, you can enhance your
-            productivity and minimize the risk of encountering unexpected issues. If you need assistance or guidance on leveraging Google Sheets effectively, feel free to reach out for support!.
-          </Alert>
-        ) : (
-          <>
-            <b className='mx-3 text-muted'>Connect with Google Sheets</b>
-            <Button variant='link' onClick={connect} data-testid='google-sheets-connect' disabled={['DEV', 'BETA'].includes(process.env.NX_PUBLIC_VARIANT || '')}>
-              <img src={theme === 'light' ? GoogleSignInLight : GoogleSignInDark} alt='Logo' />
-            </Button>
-          </>
-        )}
+        <b className='mx-3 text-muted'>Connect with Google Sheets</b>
+        <Button variant='link' onClick={connect} data-testid='google-sheets-connect'>
+          <img src={theme === 'light' ? GoogleSignInLight : GoogleSignInDark} alt='Logo' />
+        </Button>
       </div>
     );
   }
