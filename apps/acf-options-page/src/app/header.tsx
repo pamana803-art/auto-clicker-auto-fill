@@ -1,13 +1,15 @@
 import { useTour } from '@reactour/tour';
 import { useEffect, useState } from 'react';
-import { Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
+import { Badge, Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { APP_LANGUAGES, APP_LINK, SOCIAL_LINKS } from '../constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { SettingsModal } from '../modal';
+import { firebaseSelector } from '../store/firebase';
 import { switchSettingsModal } from '../store/settings/settings.slice';
 import { switchTheme, themeSelector } from '../store/theme.slice';
 import { GearFill, Github, Moon, Sun, ThreeDots, Youtube } from '../util';
+import { HeaderGoogle } from './header_google';
 
 function Header() {
   const [show, setShow] = useState<boolean>(false);
@@ -31,7 +33,7 @@ function Header() {
         setIsOpen(true);
       }, 1000);
     }
-  }, []);
+  }, [setIsOpen]);
 
   useEffect(() => {
     if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
