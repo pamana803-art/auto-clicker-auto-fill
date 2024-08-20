@@ -109,7 +109,7 @@
       }
     },
     "version": {
-      "preVersionCommand": "npm nx run-many -t lint && npx nx run-many -t build"
+      "preVersionCommand": "npx nx run-many --targets=lint,test,build"
     }
   }
 }
