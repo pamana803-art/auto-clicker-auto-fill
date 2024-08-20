@@ -19,7 +19,7 @@ function Header() {
 
   const { setIsOpen } = useTour();
   const theme = useAppSelector(themeSelector);
-  const { role, error } = useAppSelector(firebaseSelector);
+  const { role } = useAppSelector(firebaseSelector);
 
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
@@ -145,35 +145,35 @@ function Header() {
                 <div className='vr d-none d-lg-flex h-100 mx-lg-2 text-white'></div>
                 <hr className='d-lg-none my-2 text-white-50'></hr>
               </Nav.Item>
-              {!error && (
-                <Nav.Item as='li' className='col-6 col-lg-auto'>
-                  <Nav.Link onClick={() => dispatch(switchSettingsModal())} data-testid='open-global-settings'>
-                    <GearFill title={t('header.settings')} />
-                    <small className='d-lg-none ms-2'>{t('header.settings')}</small>
-                  </Nav.Link>
-                </Nav.Item>
-              )}
+
+              <Nav.Item as='li' className='col-6 col-lg-auto'>
+                <Nav.Link onClick={() => dispatch(switchSettingsModal())} data-testid='open-global-settings'>
+                  <GearFill title={t('header.settings')} />
+                  <small className='d-lg-none ms-2'>{t('header.settings')}</small>
+                </Nav.Link>
+              </Nav.Item>
+
               <Nav.Item as='li' className='col-6 col-lg-auto'>
                 <Nav.Link onClick={toggleTheme} data-testid='switch-theme'>
                   {theme !== 'light' ? <Sun title={t('header.theme.dark')} /> : <Moon title={t('header.theme.light')} />}
                   <small className='d-lg-none ms-2'>Toggle Theme</small>
                 </Nav.Link>
               </Nav.Item>
-              {!error && (
-                <Nav.Item as='li' className='col-6 col-lg-auto'>
-                  <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase fw-bolder' data-testid='switch-language'>
-                    {APP_LANGUAGES.map((language) => (
-                      <NavDropdown.Item key={language} title={language} onClick={() => changeLanguage(language)} active={i18n.language === language}>
-                        {t(`language.${language}`)}
-                      </NavDropdown.Item>
-                    ))}
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item title='Add your Language' href='https://github.com/Dhruv-Techapps/acf-i18n/discussions/4' target='_blank' rel='noopener noreferrer'>
-                      Add your Language
+
+              <Nav.Item as='li' className='col-6 col-lg-auto'>
+                <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase fw-bolder' data-testid='switch-language'>
+                  {APP_LANGUAGES.map((language) => (
+                    <NavDropdown.Item key={language} title={language} onClick={() => changeLanguage(language)} active={i18n.language === language}>
+                      {t(`language.${language}`)}
                     </NavDropdown.Item>
-                  </NavDropdown>
-                </Nav.Item>
-              )}
+                  ))}
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item title='Add your Language' href='https://github.com/Dhruv-Techapps/acf-i18n/discussions/4' target='_blank' rel='noopener noreferrer'>
+                    Add your Language
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav.Item>
+
               <Nav.Item as='li' className='py-2 py-lg-1 col-12 col-lg-auto'>
                 <div className='vr d-none d-lg-flex h-100 mx-lg-2 text-white'></div>
                 <hr className='d-lg-none my-2 text-white-50'></hr>
