@@ -58,14 +58,14 @@ jobs:
       - name: Build Projects and Library
         run: npx nx run-many -t=build --parallel=3 --prod --base-href ${{vars.PUBLIC_URL}}
         env:
-          NX_PUBLIC_NAME: ${{vars.NX_NAME}}
-          NX_PUBLIC_VARIANT: ${{vars.NX_VARIANT}}
-          NX_PUBLIC_CHROME_EXTENSION_ID: ${{vars.NX_CHROME_EXTENSION_ID}}
-          NX_PUBLIC_EDGE_EXTENSION_ID: ${{vars.NX_EDGE_EXTENSION_ID  || 'DEV'}}
-          NX_PUBLIC_I18N: ${{vars.NX_I18N}}
-          NX_PUBLIC_GOOGLE_ANALYTICS_ID: ${{vars.NX_GOOGLE_ANALYTICS_ID}}
-          NX_PUBLIC_GOOGLE_ADS_SLOT: ${{vars.NX_GOOGLE_ADS_SLOT}}
-          NX_PUBLIC_GOOGLE_ADS_CLIENT: ${{vars.NX_GOOGLE_ADS_CLIENT}}
+          NX_PUBLIC_NAME: ${{vars.NX_PUBLIC_NAME}}
+          NX_PUBLIC_VARIANT: ${{vars.NX_PUBLIC_VARIANT}}
+          NX_PUBLIC_CHROME_EXTENSION_ID: ${{vars.NX_PUBLIC_CHROME_EXTENSION_ID}}
+          NX_PUBLIC_EDGE_EXTENSION_ID: ${{vars.NX_PUBLIC_EDGE_EXTENSION_ID  || 'DEV'}}
+          NX_PUBLIC_I18N: ${{vars.NX_PUBLIC_I18N}}
+          NX_PUBLIC_GOOGLE_ANALYTICS_ID: ${{vars.NX_PUBLIC_GOOGLE_ANALYTICS_ID}}
+          NX_PUBLIC_GOOGLE_ADS_SLOT: ${{vars.NX_PUBLIC_GOOGLE_ADS_SLOT}}
+          NX_PUBLIC_GOOGLE_ADS_CLIENT: ${{vars.NX_PUBLIC_GOOGLE_ADS_CLIENT}}
           UNINSTALL_URL: ${{vars.UNINSTALL_URL}}
           TRACKING_ID: ${{vars.TRACKING_ID}}
           FUNCTION_URL: ${{vars.FUNCTION_URL}}
@@ -110,7 +110,7 @@ jobs:
         id: chrome-extension-upload
         with:
           file-path: acf-extension.zip
-          extension-id: ${{ vars.NX_CHROME_EXTENSION_ID }}
+          extension-id: ${{ vars.NX_PUBLIC_CHROME_EXTENSION_ID }}
           client-id: ${{ secrets.CLIENT_ID }}
           client-secret: ${{ secrets.CLIENT_SECRET }}
           refresh-token: ${{ secrets.REFRESH_TOKEN }}
@@ -171,7 +171,7 @@ jobs:
         id: release
         with:
           token: ${{ secrets.REPO_PAT }} # Use the PAT here
-          prerelease: ${{ vars.NX_VARIANT == 'BETA' || vars.NX_VARIANT == 'DEV'}}
+          prerelease: ${{ vars.NX_PUBLIC_VARIANT == 'BETA' || vars.NX_PUBLIC_VARIANT == 'DEV'}}
           repository: Dhruv-Techapps/acf-docs
           generate_release_notes: true
           discussion_category_name: 'Release'
@@ -186,8 +186,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Set ${{vars.NX_VARIANT}} Tag
+      - name: Set ${{vars.NX_PUBLIC_VARIANT}} Tag
         uses: rickstaa/action-create-tag@v1
         with:
           force_push_tag: true
-          tag: '${{vars.NX_VARIANT}}'
+          tag: '${{vars.NX_PUBLIC_VARIANT}}'
