@@ -46,18 +46,23 @@ export class GoogleSheetsCS {
   }
 
   async getValues(sheets: Map<string, Set<string> | string>, spreadsheetId?: string): Promise<Sheets | undefined> {
-    if (spreadsheetId) {
-      this.transformSheets(sheets);
-      const result = await GoogleSheetsService.getSheets(
-        spreadsheetId,
-        Array.from(sheets, ([sheetName, range]) => `${sheetName}!${range}`)
-      );
-      if (result) {
-        return this.transformResult(result);
+    try {
+      if (spreadsheetId) {
+        this.transformSheets(sheets);
+        const result = await GoogleSheetsService.getSheets(
+          spreadsheetId,
+          Array.from(sheets, ([sheetName, range]) => `${sheetName}!${range}`)
+        );
+        if (result) {
+          return this.transformResult(result);
+        }
+        console.debug('Google Sheets', result);
+        return result;
       }
-      console.debug('Google Sheets', result);
-      return result;
+    } catch (error) {
+      console.warn('Google Sheets', error);
     }
+
     return undefined;
   }
 }

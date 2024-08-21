@@ -11,7 +11,7 @@ function Footer() {
 
   let imageURL = 'https://getautoclicker.com/favicons/favicon48.png';
   if (/(DEV|BETA)/.test(process.env.NX_PUBLIC_VARIANT ?? '')) {
-    imageURL = `https://getautoclicker.com/icons/${process.env.NX_PUBLIC_VARIANT?.toLocaleLowerCase()}_icon48.png.png`;
+    imageURL = `https://getautoclicker.com/icons/${process.env.NX_PUBLIC_VARIANT?.toLocaleLowerCase()}_icon48.png`;
   }
 
   return (
