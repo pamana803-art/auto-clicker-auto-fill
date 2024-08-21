@@ -11,7 +11,7 @@ function Footer() {
 
   let imageURL = 'https://getautoclicker.com/favicons/favicon48.png';
   if (/(DEV|BETA)/.test(process.env.NX_PUBLIC_VARIANT ?? '')) {
-    imageURL = `https://getautoclicker.com/favicons/${process.env.NX_PUBLIC_VARIANT}/icon48.png`;
+    imageURL = `https://getautoclicker.com/icons/${process.env.NX_PUBLIC_VARIANT?.toLocaleLowerCase()}_icon48.png.png`;
   }
 
   return (
@@ -38,9 +38,9 @@ function Footer() {
             <h5 className='text-secondary'>{t('footer.connect')}</h5>
             <ul className='list-unstyled text-small'>
               <li>
-                <a className='text-decoration-none' target='_blank' rel='noopener noreferrer' title='google group' href={SOCIAL_LINKS.GOOGLE_GROUP}>
+                <a className='text-decoration-none' target='_blank' rel='noopener noreferrer' title='discord' href={SOCIAL_LINKS.DISCORD}>
                   <ChatFill className='me-2' />
-                  {t('footer.google-group')}
+                  {t('footer.discord')}
                 </a>
               </li>
             </ul>
