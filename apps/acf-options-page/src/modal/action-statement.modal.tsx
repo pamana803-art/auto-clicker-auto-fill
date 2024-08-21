@@ -1,14 +1,23 @@
 import { ChangeEvent, FormEvent } from 'react';
 
+import { ACTION_CONDITION_OPR, ACTION_RUNNING, getDefaultActionCondition } from '@dhruv-techapps/acf-common';
 import { Alert, Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ACTION_CONDITION_OPR, ACTION_RUNNING, getDefaultActionCondition } from '@dhruv-techapps/acf-common';
-import { ActionStatementCondition } from './action-statement/action-statement-condition';
-import { Plus } from '../util/svg';
-import { actionStatementSelector, setActionStatementMessage, switchActionStatementModal, syncActionStatement } from '../store/config';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { addActionStatementCondition, configSelector, selectedConfigSelector, updateActionStatementGoto, updateActionStatementThen } from '../store/config';
 import { useTimeout } from '../_hooks/message.hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import {
+  actionStatementSelector,
+  addActionStatementCondition,
+  configSelector,
+  selectedConfigSelector,
+  setActionStatementMessage,
+  switchActionStatementModal,
+  syncActionStatement,
+  updateActionStatementGoto,
+  updateActionStatementThen,
+} from '../store/config';
+import { Plus } from '../util/svg';
+import { ActionStatementCondition } from './action-statement/action-statement-condition';
 
 const FORM_ID = 'actionCondition';
 

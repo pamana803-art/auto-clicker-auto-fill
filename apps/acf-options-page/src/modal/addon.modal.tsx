@@ -1,21 +1,22 @@
-import { Alert, Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap';
 import { ADDON_CONDITIONS } from '@dhruv-techapps/acf-common';
+import { Alert, Button, Card, Col, Form, InputGroup, Modal, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-import { ValueExtractorPopover } from '../popover';
-import { AddonRecheck } from './addon/recheck';
-import { getFieldNameValue, updateForm } from '../util/element';
-import { AddonValueExtractorFlags } from './addon/value-extractor-flags';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { actionAddonSelector, setActionAddonMessage, switchActionAddonModal, updateActionAddon, syncActionAddon } from '../store/config';
-import { useTimeout } from '../_hooks/message.hooks';
 import { FormEvent, useEffect } from 'react';
+import { useTimeout } from '../_hooks/message.hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { ValueExtractorPopover } from '../popover';
+import { actionAddonSelector, setActionAddonMessage, switchActionAddonModal, syncActionAddon, updateActionAddon } from '../store/config';
+import { getFieldNameValue, updateForm } from '../util/element';
+import { AddonRecheck } from './addon/recheck';
+import { AddonValueExtractorFlags } from './addon/value-extractor-flags';
 
 const FORM_ID = 'addon';
 
 const AddonModal = () => {
   const { t } = useTranslation();
   const { visible, message, error, addon } = useAppSelector(actionAddonSelector);
+
   const dispatch = useAppDispatch();
 
   useTimeout(() => {

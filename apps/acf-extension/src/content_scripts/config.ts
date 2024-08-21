@@ -2,7 +2,7 @@ import { Configuration } from '@dhruv-techapps/acf-common';
 import { SettingsStorage } from '@dhruv-techapps/acf-store';
 import { ConfigError } from '@dhruv-techapps/core-common';
 import { NotificationsService } from '@dhruv-techapps/core-service';
-import { DiscordMessagingService } from '@dhruv-techapps/discord-messaging';
+import { DiscordMessagingColor, DiscordMessagingService } from '@dhruv-techapps/discord-messaging';
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { GoogleSheetsCS } from '@dhruv-techapps/google-sheets';
 import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
@@ -43,9 +43,9 @@ const ConfigProcessor = (() => {
   };
 
   const start = async (config: Configuration) => {
-    const sheets = GoogleSheets.getSheets(config);
-    window.__sheets = await new GoogleSheetsCS().getValues(sheets, config.spreadsheetId);
     try {
+      const sheets = GoogleSheets.getSheets(config);
+      window.__sheets = await new GoogleSheetsCS().getValues(sheets, config.spreadsheetId);
       await BatchProcessor.start(config.actions, config.batch);
       const { notifications } = await new SettingsStorage().getSettings();
       if (notifications) {
@@ -59,7 +59,7 @@ const ConfigProcessor = (() => {
             iconUrl: Common.getNotificationIcon(),
           });
           if (discord) {
-            DiscordMessagingService.success(`${CONFIG_I18N.TITLE} ${I18N_COMMON.COMPLETED}`, getFields(config));
+            DiscordMessagingService.push(`${CONFIG_I18N.TITLE} ${I18N_COMMON.COMPLETED}`, getFields(config));
           }
         }
       }
@@ -74,13 +74,17 @@ const ConfigProcessor = (() => {
           const { sound, discord } = notifications;
           NotificationsService.create({ type: 'basic', ...error, silent: !sound, iconUrl: Common.getNotificationIcon() }, 'error');
           if (discord) {
-            DiscordMessagingService.error(e.title || `${CONFIG_I18N.TITLE} ${I18N_COMMON.ERROR}`, [
-              ...getFields(config),
-              ...e.message.split('\n').map((info) => {
-                const [name, value] = info.split(':');
-                return { name, value: value.replace(/'/g, '`') };
-              }),
-            ]);
+            DiscordMessagingService.push(
+              e.title || `${CONFIG_I18N.TITLE} ${I18N_COMMON.ERROR}`,
+              [
+                ...getFields(config),
+                ...e.message.split('\n').map((info) => {
+                  const [name, value] = info.split(':');
+                  return { name, value: value.replace(/'/g, '`') };
+                }),
+              ],
+              DiscordMessagingColor.ERROR
+            );
           }
         } else {
           console.error(error.title, '\n', error.message);

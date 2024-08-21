@@ -1,10 +1,12 @@
 {
   "name": "@dhruv-techapps/discord-oauth",
   "peerDependencies": {
-    "tslib": "^2.3.0",
-    "@dhruv-techapps/core-common": "^4.0.x",
-    "@dhruv-techapps/notifications": "^4.0.x",
-    "@dhruv-techapps/core-service": "^4.0.x"
+    "@dhruv-techapps/core-service": "*",
+    "@dhruv-techapps/notifications": "*",
+    "@dhruv-techapps/firebase-functions": "*",
+    "@dhruv-techapps/core-common": "*",
+    "tslib": "^2.6.2",
+    "firebase": "^10.12.5"
   },
   "type": "commonjs",
   "main": "./src/index.js",

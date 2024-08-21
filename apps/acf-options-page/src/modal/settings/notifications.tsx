@@ -1,15 +1,16 @@
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { settingsSelector, updateSettingsNotification } from '../../store/settings/settings.slice';
 import { VolumeMute, VolumeUp } from '../../util';
 import { getFieldNameValue } from '../../util/element';
 import { SettingDiscord } from './discord';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { settingsSelector, updateSettingsNotification } from '../../store/settings/settings.slice';
 
 function SettingNotifications() {
   const { t } = useTranslation();
 
   const { notifications } = useAppSelector(settingsSelector).settings;
+
   const dispatch = useAppDispatch();
   const onUpdate = (e) => {
     const update = getFieldNameValue<boolean>(e, notifications);

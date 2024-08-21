@@ -1,4 +1,3 @@
-import { Sheets } from '@dhruv-techapps/google-sheets';
 import RandExp from 'randexp';
 
 declare global {
@@ -6,7 +5,6 @@ declare global {
     __batchRepeat: number;
     __actionRepeat: number;
     __sessionCount: number;
-    __sheets?: Sheets;
     __api?: { [key: string]: string };
   }
 }
@@ -67,9 +65,6 @@ export const Value = (() => {
     }
     if (VALUE_MATCHER.ACTION_REPEAT.test(value)) {
       value = getActionRepeat(value);
-    }
-    if (VALUE_MATCHER.API.test(value)) {
-      value = getApiValue(value);
     }
     if (VALUE_MATCHER.SESSION_COUNT.test(value)) {
       value = getSessionCount(value);

@@ -8,6 +8,7 @@ export type ValueRange = {
   range: string;
   majorDimension: Dimension;
   values: Array<any>;
+  error?: { message: string };
 };
 
 export type Sheets = {
@@ -17,3 +18,10 @@ export type Sheets = {
     values: Array<any>;
   };
 };
+
+export type GoogleSheetsRequest = {
+  spreadsheetId: string;
+  ranges: Array<string>;
+};
+
+export type GoogleSheetsResponse = Array<ValueRange>;

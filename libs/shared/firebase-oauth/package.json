@@ -1,0 +1,13 @@
+{
+  "name": "@dhruv-techapps/firebase-oauth",
+  "peerDependencies": {
+    "tslib": "^2.3.0",
+    "@dhruv-techapps/google-oauth": "*",
+    "@dhruv-techapps/core-common": "*",
+    "@dhruv-techapps/core-service": "*",
+    "firebase": "^10.12.0"
+  },
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts"
+}

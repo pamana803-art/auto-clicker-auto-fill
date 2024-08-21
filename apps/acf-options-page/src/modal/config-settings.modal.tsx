@@ -1,16 +1,15 @@
 import React from 'react';
 
-import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { LOAD_TYPES, START_TYPES, URL_MATCH, defaultHotkey } from '@dhruv-techapps/acf-common';
+import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
-
-import { HotkeyPopover } from '../popover';
-import { getFieldNameValue } from '../util/element';
-import { StartTimePopover } from '../popover/start-time.popover';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 import { useTimeout } from '../_hooks/message.hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { HotkeyPopover } from '../popover';
+import { StartTimePopover } from '../popover/start-time.popover';
+import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 import { REGEX } from '../util';
+import { getFieldNameValue } from '../util/element';
 
 const ConfigSettingsModal = () => {
   const { t } = useTranslation();

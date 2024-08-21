@@ -1,15 +1,18 @@
-import { GoogleBackupService } from '@dhruv-techapps/acf-service';
-import { AUTO_BACKUP, DriveFile, GoogleDriveService } from '@dhruv-techapps/google-drive';
+import { AUTO_BACKUP } from '@dhruv-techapps/google-drive';
 import { GOOGLE_SCOPES } from '@dhruv-techapps/google-oauth';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Accordion, Button, Card, Image, ListGroup, NavDropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useConfirmationModalContext } from '../../_providers/confirm.provider';
 import GoogleSignInDark from '../../assets/btn_google_signin_dark_normal_web.png';
 import GoogleSignInLight from '../../assets/btn_google_signin_light_normal_web.png';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { googleLoginAPI } from '../../store/settings/settings.api';
-import { settingsSelector, updateSettingsBackup } from '../../store/settings/settings.slice';
+
+import { ErrorAlert } from '../../components';
+import { firebaseSelector, switchFirebaseLoginModal } from '../../store/firebase';
+import { googleDriveSelector, googleHasAccessAPI, googleLoginAPI, googleSelector } from '../../store/google';
+import { googleDriveAutoBackupAPI, googleDriveBackupAPI, googleDriveDeleteAPI, googleDriveListWithContentAPI, googleDriveRestoreAPI } from '../../store/google/google-drive/google-drive.api';
+import { settingsSelector } from '../../store/settings/settings.slice';
 import { themeSelector } from '../../store/theme.slice';
 import { CloudArrowDownFill, CloudArrowUpFill, Trash } from '../../util';
 
@@ -17,48 +20,35 @@ export function SettingsGoogleBackup() {
   const { t } = useTranslation();
   const theme = useAppSelector(themeSelector);
   const modalContext = useConfirmationModalContext();
-  const { settings, google, googleScopes } = useAppSelector(settingsSelector);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [files, setFiles] = useState<Array<DriveFile>>();
-  const [filesLoading, setFilesLoading] = useState<boolean>();
-  const { backup } = settings;
+  const {
+    settings: { backup },
+  } = useAppSelector(settingsSelector);
+  const { user } = useAppSelector(firebaseSelector);
+  const { grantedScopes } = useAppSelector(googleSelector);
+  const { files, loading, filesLoading, error } = useAppSelector(googleDriveSelector);
 
   const scope = GOOGLE_SCOPES.DRIVE;
   const dispatch = useAppDispatch();
 
   const connect = async () => {
-    dispatch(googleLoginAPI(scope));
-  };
-
-  const loadFiles = async () => {
-    setFilesLoading(true);
-    GoogleDriveService.listWithContent().then((files) => {
-      setFiles(files);
-      setFilesLoading(false);
-    });
+    dispatch(googleLoginAPI([scope]));
   };
 
   useEffect(() => {
-    if (google && googleScopes.includes(scope)) {
-      loadFiles();
+    if (user) {
+      if (grantedScopes.includes(scope)) {
+        dispatch(googleDriveListWithContentAPI());
+      } else {
+        dispatch(googleHasAccessAPI([scope]));
+      }
     }
-  }, [google, googleScopes, scope]);
+  }, [user, grantedScopes, scope, dispatch]);
 
   const onBackup = async (autoBackup?: AUTO_BACKUP) => {
-    setLoading(true);
     if (autoBackup) {
-      GoogleDriveService.autoBackup(autoBackup)
-        .then(() => {
-          dispatch(updateSettingsBackup(autoBackup));
-        })
-        .finally(() => setLoading(false));
+      dispatch(googleDriveAutoBackupAPI(autoBackup));
     } else {
-      GoogleBackupService.backup()
-        .then(() => {
-          loadFiles();
-        })
-        .catch(console.error)
-        .finally(() => setLoading(false));
+      dispatch(googleDriveBackupAPI());
     }
   };
 
@@ -68,18 +58,26 @@ export function SettingsGoogleBackup() {
       message: t('confirm.backup.restore.message'),
       headerClass: 'text-danger',
     });
-    result && GoogleBackupService.restore(id, name);
+    result && dispatch(googleDriveRestoreAPI({ id, name }));
   };
 
   const deleteFile = async (id: string, name: string) => {
-    GoogleDriveService.delete(id, name)
-      .then(() => {
-        setFiles(files?.filter((file) => file.id !== id));
-      })
-      .catch(console.error);
+    dispatch(googleDriveDeleteAPI({ id, name }));
   };
 
-  if (!google || !googleScopes.includes(scope)) {
+  if (!user) {
+    return (
+      <p>
+        Please
+        <Button variant='link' title='login' onClick={() => dispatch(switchFirebaseLoginModal())}>
+          Login
+        </Button>
+        to your account before connecting with Google Drive.
+      </p>
+    );
+  }
+
+  if (!grantedScopes?.includes(scope)) {
     return (
       <div className='d-flex flex-column align-items-start'>
         <b className='mx-3 text-muted'>Connect with Google Drive</b>
@@ -93,19 +91,21 @@ export function SettingsGoogleBackup() {
   return (
     <>
       <div>
-        <b className='text-muted d-block mb-2'>
-          {loading && (
-            <span className='me-2'>
-              <span className='spinner-border spinner-border-sm' aria-hidden='true'></span>
-              <span className='visually-hidden' role='status'>
-                Loading...
-              </span>
+        {error && <ErrorAlert error={error} />}
+        {loading && (
+          <span className='me-2'>
+            <span className='spinner-border spinner-border-sm' aria-hidden='true'></span>
+            <span className='visually-hidden' role='status'>
+              Loading...
             </span>
-          )}
-          Google Drive {t('modal.settings.backup.title')}
-        </b>
-        <Image alt={google.name} className='me-2' title={google.name} src={google.picture} roundedCircle width='30' height='30' referrerPolicy='no-referrer' />
-        {google.name}
+          </span>
+        )}
+        <b className='text-muted d-block mb-2'>Google Drive {t('modal.settings.backup.title')}</b>
+
+        {user.photoURL && user.displayName && (
+          <Image alt={user.displayName} className='me-2' title={user.displayName} src={user.photoURL} roundedCircle width='30' height='30' referrerPolicy='no-referrer' />
+        )}
+        {user.displayName}
       </div>
       <hr />
       <ol className='list-group'>
@@ -145,9 +145,9 @@ export function SettingsGoogleBackup() {
         <div>Loading...</div>
       ) : (
         <div>
-          {files && files.length !== 0 ? (
+          {files?.length !== 0 ? (
             <Accordion defaultActiveKey='0'>
-              {files.map((file) => (
+              {files?.map((file) => (
                 <Accordion.Item eventKey={file.id} key={file.id}>
                   <Accordion.Header>
                     {file.name} <small className='ms-2'>{new Date(file.modifiedTime).toLocaleString()}</small>

@@ -1,15 +1,23 @@
 import { ChangeEvent, FormEvent, useEffect } from 'react';
 
-import { Alert, Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
+import { Alert, Button, Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-import { getFieldNameValue, updateForm } from '../util/element';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { configSelector, selectedConfigSelector, syncActionSettings, updateActionSettings, updateActionSettingsGoto } from '../store/config';
-import { actionSettingsSelector, setActionSettingsMessage, switchActionSettingsModal } from '../store/config';
 import { useTimeout } from '../_hooks/message.hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import {
+  actionSettingsSelector,
+  configSelector,
+  selectedConfigSelector,
+  setActionSettingsMessage,
+  switchActionSettingsModal,
+  syncActionSettings,
+  updateActionSettings,
+  updateActionSettingsGoto,
+} from '../store/config';
 import { REGEX } from '../util';
+import { getFieldNameValue, updateForm } from '../util/element';
 
 const FORM_ID = 'action-settings';
 

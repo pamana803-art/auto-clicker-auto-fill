@@ -5,7 +5,7 @@
   "projectType": "application",
   "tags": ["puppeteer"],
   "targets": {
-    "test": {
+    "e2e": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {

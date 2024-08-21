@@ -1,24 +1,26 @@
 import { useTour } from '@reactour/tour';
 import { useEffect, useState } from 'react';
-import { Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
+import { Badge, Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { APP_LANGUAGES, APP_LINK, SOCIAL_LINKS } from '../constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { SettingsModal } from '../modal';
-import { appSelector } from '../store/app.slice';
+import { firebaseSelector } from '../store/firebase';
 import { switchSettingsModal } from '../store/settings/settings.slice';
 import { switchTheme, themeSelector } from '../store/theme.slice';
 import { GearFill, Github, Moon, Sun, ThreeDots, Youtube } from '../util';
+import { HeaderGoogle } from './header_google';
 
 function Header() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState<boolean>(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const { setIsOpen } = useTour();
   const theme = useAppSelector(themeSelector);
-  const { error } = useAppSelector(appSelector);
+  const { role } = useAppSelector(firebaseSelector);
+
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
 
@@ -31,7 +33,15 @@ function Header() {
         setIsOpen(true);
       }, 1000);
     }
-  });
+  }, [setIsOpen]);
+
+  useEffect(() => {
+    if (/(DEV|BETA|LOCAL)/.test(process.env.NX_VARIANT || '')) {
+      window.document.title = `${t('common.appName')} [${process.env.NX_VARIANT}]`;
+    } else {
+      window.document.title = t('common.appName');
+    }
+  }, [t]);
 
   useEffect(() => {
     if (/(DEV|BETA|LOCAL)/.test(process.env.NX_PUBLIC_VARIANT || '')) {
@@ -67,6 +77,11 @@ function Header() {
         <div className='d-lg-none' style={{ width: '4.25rem' }}></div>
         <Navbar.Brand href='/' className='p-0 me-0 me-lg-2'>
           {appName}
+          {role && (
+            <Badge bg='danger' text='light' className='ms-2'>
+              {role.toUpperCase()}
+            </Badge>
+          )}
         </Navbar.Brand>
         <div className='d-flex'>
           <Navbar.Toggle aria-controls='basic-navbar-nav' onClick={handleShow}>
@@ -114,20 +129,6 @@ function Header() {
             </Nav>
             <hr className='d-lg-none text-white-50'></hr>
             <Nav className='flex-row flex-wrap ms-md-auto' as='ul'>
-              {!error && (
-                <>
-                  <Nav.Item as='li' className='col-6 col-lg-auto'>
-                    <Nav.Link onClick={() => dispatch(switchSettingsModal())} data-testid='open-global-settings'>
-                      <GearFill title={t('header.settings')} />
-                      <small className='d-lg-none ms-2'>{t('header.settings')}</small>
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item as='li' className='py-2 py-lg-1 col-12 col-lg-auto'>
-                    <div className='vr d-none d-lg-flex h-100 mx-lg-2 text-white'></div>
-                    <hr className='d-lg-none my-2 text-white-50'></hr>
-                  </Nav.Item>
-                </>
-              )}
               <Nav.Item as='li' className='col-6 col-lg-auto'>
                 <Nav.Link target='_blank' rel='noopener noreferrer' title='youtube' href={SOCIAL_LINKS.YOUTUBE}>
                   <Youtube />
@@ -144,27 +145,40 @@ function Header() {
                 <div className='vr d-none d-lg-flex h-100 mx-lg-2 text-white'></div>
                 <hr className='d-lg-none my-2 text-white-50'></hr>
               </Nav.Item>
+
+              <Nav.Item as='li' className='col-6 col-lg-auto'>
+                <Nav.Link onClick={() => dispatch(switchSettingsModal())} data-testid='open-global-settings'>
+                  <GearFill title={t('header.settings')} />
+                  <small className='d-lg-none ms-2'>{t('header.settings')}</small>
+                </Nav.Link>
+              </Nav.Item>
+
               <Nav.Item as='li' className='col-6 col-lg-auto'>
                 <Nav.Link onClick={toggleTheme} data-testid='switch-theme'>
                   {theme !== 'light' ? <Sun title={t('header.theme.dark')} /> : <Moon title={t('header.theme.light')} />}
                   <small className='d-lg-none ms-2'>Toggle Theme</small>
                 </Nav.Link>
               </Nav.Item>
-              {!error && (
-                <Nav.Item as='li' className='col-6 col-lg-auto'>
-                  <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase fw-bolder' data-testid='switch-language'>
-                    {APP_LANGUAGES.map((language) => (
-                      <NavDropdown.Item key={language} title={language} onClick={() => changeLanguage(language)} active={i18n.language === language}>
-                        {t(`language.${language}`)}
-                      </NavDropdown.Item>
-                    ))}
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item title='Add your Language' href='https://github.com/Dhruv-Techapps/acf-i18n/discussions/4' target='_blank' rel='noopener noreferrer'>
-                      Add your Language
+
+              <Nav.Item as='li' className='col-6 col-lg-auto'>
+                <NavDropdown title={i18n.language} id='language-nav-dropdown' align='end' className='text-uppercase fw-bolder' data-testid='switch-language'>
+                  {APP_LANGUAGES.map((language) => (
+                    <NavDropdown.Item key={language} title={language} onClick={() => changeLanguage(language)} active={i18n.language === language}>
+                      {t(`language.${language}`)}
                     </NavDropdown.Item>
-                  </NavDropdown>
-                </Nav.Item>
-              )}
+                  ))}
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item title='Add your Language' href='https://github.com/Dhruv-Techapps/acf-i18n/discussions/4' target='_blank' rel='noopener noreferrer'>
+                    Add your Language
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav.Item>
+
+              <Nav.Item as='li' className='py-2 py-lg-1 col-12 col-lg-auto'>
+                <div className='vr d-none d-lg-flex h-100 mx-lg-2 text-white'></div>
+                <hr className='d-lg-none my-2 text-white-50'></hr>
+              </Nav.Item>
+              <HeaderGoogle />
             </Nav>
           </Offcanvas.Body>
         </Offcanvas>

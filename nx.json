@@ -85,6 +85,8 @@
       "acf-common",
       "acf-service",
       "acf-events",
+      "acf-util",
+      "acf-store",
       "sandbox",
       "google-sheets",
       "google-oauth",
@@ -94,9 +96,11 @@
       "discord-messaging",
       "shared-util",
       "status-bar",
-      "acf-store",
-      "acf-util",
-      "notifications"
+      "notifications",
+      "firebase-oauth",
+      "firebase-firestore",
+      "firebase-functions",
+      "firebase-database"
     ],
     "changelog": {
       "workspaceChangelog": {
@@ -105,7 +109,7 @@
       }
     },
     "version": {
-      "preVersionCommand": "npm nx run-many -t lint && npx nx run-many -t build"
+      "preVersionCommand": "npx nx run-many --targets=lint,test,build"
     }
   }
 }

@@ -2,9 +2,9 @@ import { STATUS_BAR_LOCATION_ENUM } from '@dhruv-techapps/status-bar';
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ErrorAlert } from '../components';
+import { ErrorAlert, Loading } from '../components';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { googleGetAPI, settingsGetAPI } from '../store/settings/settings.api';
+import { settingsGetAPI } from '../store/settings/settings.api';
 import { settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
 import { themeSelector } from '../store/theme.slice';
 import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill, FileSpreadsheetFill } from '../util';
@@ -14,7 +14,6 @@ import { SettingGoogleSheets } from './settings/google-sheets';
 import { SettingMessage } from './settings/message';
 import { SettingNotifications } from './settings/notifications';
 import { SettingRetry } from './settings/retry';
-
 enum SETTINGS_PAGE {
   NOTIFICATION = 'Show Notification',
   RETRY = 'Retry',
@@ -26,7 +25,7 @@ export const SettingsModal = () => {
   const { t } = useTranslation();
   const theme = useAppSelector(themeSelector);
   const [page, setPage] = useState<SETTINGS_PAGE>();
-  const { error, settings, visible } = useAppSelector(settingsSelector);
+  const { error, settings, visible, loading } = useAppSelector(settingsSelector);
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
@@ -36,7 +35,7 @@ export const SettingsModal = () => {
   useEffect(() => {
     if (window.chrome?.runtime) {
       dispatch(settingsGetAPI());
-      dispatch(googleGetAPI());
+      //dispatch(googleGetAPI());
     }
   }, [dispatch]);
 
@@ -67,10 +66,11 @@ export const SettingsModal = () => {
         </Modal.Header>
         <Modal.Body>
           <ErrorAlert error={error} />
+          {loading && <Loading />}
           {!page && (
             <ol className='list-group'>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-notification'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.NOTIFICATION)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-notification'>
                   <div className='fw-bold'>
                     <BellFill className='me-2' />
                     {t('modal.settings.notification.title')}
@@ -79,7 +79,7 @@ export const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-retry'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.RETRY)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-retry'>
                   <div className='fw-bold'>
                     <ArrowRepeat className='me-2' />
                     {t('modal.settings.retry.title')}
@@ -88,17 +88,19 @@ export const SettingsModal = () => {
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-backup'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.BACKUP)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-backup'>
                   <div className='fw-bold'>
-                    <CloudArrowUpFill className='me-2' /> {t('modal.settings.backup.title')}
+                    <CloudArrowUpFill className='me-2' />
+                    Backup
                   </div>
                   <ChevronRight />
                 </Button>
               </li>
               <li className='list-group-item'>
-                <Button onClick={() => setPage(SETTINGS_PAGE.SHEETS)} variant={theme} className='d-flex justify-content-between w-100' data-testid='settings-backup'>
+                <Button onClick={() => setPage(SETTINGS_PAGE.SHEETS)} variant={theme} className='d-flex align-items-center justify-content-between w-100' data-testid='settings-backup'>
                   <div className='fw-bold'>
-                    <FileSpreadsheetFill className='me-2' /> Google Sheets
+                    <FileSpreadsheetFill className='me-2' />
+                    Google Sheets
                   </div>
                   <ChevronRight />
                 </Button>
@@ -118,15 +120,6 @@ export const SettingsModal = () => {
                 </Form.Label>
                 <Form.Check type='switch' name='reloadOnError' onChange={onUpdate} id='settings-reloadOnError' checked={settings.reloadOnError || false} />
               </li>
-              {localStorage.getItem('DEV') === 'true' && (
-                <li className='list-group-item d-flex justify-content-between align-items-center'>
-                  <Form.Label className='ms-2 me-auto' htmlFor='settings-suppress-whats-new'>
-                    <div className='fw-bold'>{t('modal.settings.suppressWhatsNew')}</div>
-                    {t('modal.settings.suppressWhatsNewHint')} <br />
-                  </Form.Label>
-                  <Form.Check type='switch' name='suppressWhatsNew' onChange={onUpdate} id='settings-suppressWhatsNew' checked={settings.suppressWhatsNew || false} />
-                </li>
-              )}
               <li className='list-group-item d-flex justify-content-between align-items-center'>
                 <Form.Label className='ms-2' htmlFor='settings-statusBar'>
                   <div className='fw-bold'>{t('modal.settings.statusBar.title')}</div>

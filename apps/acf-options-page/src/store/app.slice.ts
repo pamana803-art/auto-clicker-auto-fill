@@ -1,15 +1,7 @@
-import { ManifestService } from '@dhruv-techapps/core-service';
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NO_EXTENSION_ERROR } from '../constants';
 import { RootState } from '../store';
-
-export const getManifest = createAsyncThunk('app/getManifest', async () => {
-  if (window.chrome?.runtime) {
-    const manifest = await ManifestService.values(['name', 'version']);
-    return manifest;
-  }
-  throw new Error(NO_EXTENSION_ERROR[0]);
-});
+import { getManifest } from './app.api';
 
 type AppStore = {
   manifest?: Partial<chrome.runtime.Manifest>;
