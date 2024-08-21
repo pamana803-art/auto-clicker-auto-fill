@@ -2,7 +2,7 @@
 import { Button, ButtonGroup, Card, CardBody, Col, Form, Modal, Row, ToggleButton } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../hooks';
 
-import { subscribe, subscribeSelector, switchSubscribeModal } from '../store/subscribe';
+import { subscribeSelector, switchSubscribeModal } from '../store/subscribe';
 
 import * as React from 'react';
 import { AwardFill, Discord, Fire, Star } from '../util';
@@ -63,7 +63,7 @@ const SubscribeModal = () => {
                         {yearly}
                       </small>
                     </div>
-                    <Button variant='primary' disabled={isSubscribing} className='px-5 py-2 mt-3 w-100' onClick={() => dispatch(subscribe('asd'))}>
+                    <Button variant='primary' href='https://getautoclicker.com/docs/4.x/about/subscription/' disabled={isSubscribing} className='px-5 py-2 mt-3 w-100'>
                       {isSubscribing && <span className='spinner-border spinner-border-sm me-3' aria-hidden='true'></span>}
                       Upgrade to Pro
                     </Button>
@@ -71,10 +71,9 @@ const SubscribeModal = () => {
                   <div>
                     <p className='p-0 m-0'>This includes:</p>
                     <ul style={{ listStyle: 'none' }}>
-                      <li>Google Sheets</li>
-                      <li>Google Backup</li>
-                      <li>Discord Messaging</li>
-                      <li>Captcha resolver</li>
+                      <li>Unlimited Google Sheets</li>
+                      <li>Unlimited Discord Messaging</li>
+                      <li>Captcha resolver (Coming Soon)</li>
                       <li>No Ads</li>
                       <li>
                         <Discord /> VIP Assistance over Discord
