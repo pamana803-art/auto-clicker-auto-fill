@@ -46,10 +46,10 @@ function Config() {
     const fr = new FileReader();
     fr.onload = function ({ target }) {
       try {
-        if (target === null || target.result === null) {
+        if (target?.result === null) {
           dispatch(addToast({ header: 'File', body: t('error.json'), variant: 'danger' }));
         } else {
-          const importedConfig: Configuration = JSON.parse(target.result as string);
+          const importedConfig: Configuration = JSON.parse(target?.result as string);
           if (Array.isArray(importedConfig)) {
             dispatch(importAll(importedConfig));
           } else {
