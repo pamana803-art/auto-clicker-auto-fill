@@ -88,7 +88,7 @@ Follow these steps to set up and run the project:
 
 ## Important Links
 
-- [Docs](https://stable.getautoclicker.com/docs/3.x/getting-started/introduction/)
+- [Docs](https://stable.getautoclicker.com/docs/4.x/getting-started/introduction/)
 - [Examples](https://gist.github.com/dharmesh-hemaram)
 - [Blog](https://blog.getautoclicker.com/)
 - Variant

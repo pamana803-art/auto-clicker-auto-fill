@@ -1,21 +1,19 @@
+import { Configuration } from '@dhruv-techapps/acf-common';
 import { createRef, useEffect } from 'react';
-
 import { Alert, Col, Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import Config from './config';
-import { Ads } from '../../components';
-import { ConfigSettingsModal, ReorderConfigsModal, RemoveConfigsModal } from '../../modal';
 import { download } from '../../_helpers';
 import { useAppDispatch } from '../../hooks';
-import { importAll, importConfig } from '../../store/config';
-import { addToast } from '../../store/toast.slice';
-import { configGetAllAPI } from '../../store/config/config.api';
-import Action from './action';
-import { Configuration } from '@dhruv-techapps/acf-common';
-import { ConfigSidebar } from './config/config-sidebar';
-import { ConfigDropdown } from './config/config-dropdown';
-import Footer from '../footer';
+import { ConfigSettingsModal, RemoveConfigsModal, ReorderConfigsModal } from '../../modal';
 import { BatchModal } from '../../modal/config-batch.modal';
+import { importAll, importConfig } from '../../store/config';
+import { configGetAllAPI } from '../../store/config/config.api';
+import { addToast } from '../../store/toast.slice';
+import Footer from '../footer';
+import Action from './action';
+import Config from './config';
+import { ConfigDropdown } from './config/config-dropdown';
+import { ConfigSidebar } from './config/config-sidebar';
 
 function Configs(props) {
   const { t } = useTranslation();
@@ -40,10 +38,10 @@ function Configs(props) {
     const fr = new FileReader();
     fr.onload = function ({ target }) {
       try {
-        if (target === null || target.result === null) {
+        if (target?.result === null) {
           dispatch(addToast({ header: 'File', body: t('error.json'), variant: 'danger' }));
         } else {
-          const importedConfigs: Array<Configuration> | Configuration = JSON.parse(target.result as string);
+          const importedConfigs: Array<Configuration> | Configuration = JSON.parse(target?.result as string);
           if (!Array.isArray(importedConfigs)) {
             dispatch(importConfig(importedConfigs));
           } else {
@@ -81,7 +79,6 @@ function Configs(props) {
               )}
               <Config />
               <Action />
-              <Ads />
               <Footer />
               <ConfigSettingsModal />
               <BatchModal />

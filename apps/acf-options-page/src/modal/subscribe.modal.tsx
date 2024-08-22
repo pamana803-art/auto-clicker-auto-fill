@@ -63,7 +63,7 @@ const SubscribeModal = () => {
                         {yearly}
                       </small>
                     </div>
-                    <Button variant='primary' href='https://getautoclicker.com/docs/4.x/about/subscription/' disabled={isSubscribing} className='px-5 py-2 mt-3 w-100'>
+                    <Button variant='primary' target='_blank' href='https://getautoclicker.com/docs/4.x/about/subscription/' disabled={isSubscribing} className='px-5 py-2 mt-3 w-100'>
                       {isSubscribing && <span className='spinner-border spinner-border-sm me-3' aria-hidden='true'></span>}
                       Upgrade to Pro
                     </Button>

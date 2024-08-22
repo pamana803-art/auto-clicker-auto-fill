@@ -52,7 +52,7 @@ function Action() {
                 <Plus className='me-2' /> {t('action.add')}
               </Button>
               <Dropdown className='ml-2' id='acton-column-filter-wrapper'>
-                <Dropdown.Toggle as={DropdownToggle} id='acton-column-filter' className='pe-0' aria-label='Filter Action Column'>
+                <Dropdown.Toggle as={DropdownToggle} id='acton-column-filter' className='pe-0 fs-5' aria-label='Filter Action Column'>
                   <Filter />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>

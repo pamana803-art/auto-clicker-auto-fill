@@ -1,6 +1,6 @@
 // Application Links
 export const APP_LINK = {
-  DOCS: 'https://getautoclicker.com/docs/3.x/',
+  DOCS: 'https://getautoclicker.com/docs/4.x/',
   BLOG: 'https://blog.getautoclicker.com/',
   CONFIGS: 'https://gist.github.com/dharmesh-hemaram',
   TEST: 'https://test.getautoclicker.com/',
