@@ -8,7 +8,6 @@ const fs = require('fs');
 function modify(buffer, { KEY, NX_PUBLIC_NAME, OAUTH_CLIENT_ID, NX_PUBLIC_RELEASE_VERSION }) {
   // copy-webpack-plugin passes a buffer
   const manifest = JSON.parse(buffer.toString());
-
   // make any modifications you like, such as
   manifest.version = NX_PUBLIC_RELEASE_VERSION.replace('v', '');
   manifest.name = NX_PUBLIC_NAME;
@@ -57,7 +56,6 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
   config.plugins.push(
     new Dotenv({
       path: config.watch ? path.resolve(config.context, '.env') : './.env',
-      safe: true,
       systemvars: true,
     }),
     new BannerPlugin(fs.readFileSync('./LICENSE', 'utf8'))
