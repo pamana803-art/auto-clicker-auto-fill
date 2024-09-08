@@ -55,7 +55,7 @@ jobs:
           echo "HEAD: ${{ env.NX_HEAD }}"
       - run: npm ci
       - name: Build Projects and Library
-        run: npx nx run-many -t=build --parallel=3 --prod --base-href ${{vars.PUBLIC_URL}} --verbose
+        run: npx nx run-many -t=build --parallel=3 --prod --exclude=acf-configs --base-href ${{vars.PUBLIC_URL}} --verbose
         env:
           NX_PUBLIC_NAME: ${{vars.NX_PUBLIC_NAME}}
           NX_PUBLIC_VARIANT: ${{vars.NX_PUBLIC_VARIANT}}
@@ -92,6 +92,7 @@ jobs:
           cd ..
           cd acf-extension
           zip -r ../../../bundle/acf-extension-${{vars.NX_PUBLIC_VARIANT}}.zip .
+          cd ..
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
