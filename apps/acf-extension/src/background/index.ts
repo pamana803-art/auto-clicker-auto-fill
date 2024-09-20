@@ -12,23 +12,20 @@ import { GoogleDriveBackground, RUNTIME_MESSAGE_GOOGLE_DRIVE } from '@dhruv-tech
 import { GoogleOauth2Background, RUNTIME_MESSAGE_GOOGLE_OAUTH } from '@dhruv-techapps/google-oauth';
 import { GoogleSheetsBackground, RUNTIME_MESSAGE_GOOGLE_SHEETS } from '@dhruv-techapps/google-sheets';
 import { registerNotifications } from '@dhruv-techapps/notifications';
+import { RUNTIME_MESSAGE_VISION, VisionBackground } from '@dhruv-techapps/vision';
 import XMLHttpRequest from 'xhr-shim';
 import { ACTION_POPUP } from '../common/constant';
-import { DISCORD_CLIENT_ID, EDGE_OAUTH_CLIENT_ID, FIREBASE_FUNCTIONS_URL, OPTIONS_PAGE_URL, UNINSTALL_URL, VARIANT } from '../common/environments';
+import { DISCORD_CLIENT_ID, EDGE_OAUTH_CLIENT_ID, FIREBASE_FUNCTIONS_URL, OPTIONS_PAGE_URL, VARIANT } from '../common/environments';
 import AcfBackup from './acf-backup';
 import registerContextMenus from './context-menu';
 import { auth } from './firebase';
 import { googleAnalytics } from './google-analytics';
 import './sync-config';
 import { TabsMessenger } from './tab';
-import { Update } from './update';
+
 self['XMLHttpRequest'] = XMLHttpRequest;
 
-let firebaseFirestoreBackground: FirebaseFirestoreBackground;
-
 try {
-  firebaseFirestoreBackground = new FirebaseFirestoreBackground(auth, EDGE_OAUTH_CLIENT_ID, OPTIONS_PAGE_URL);
-
   /**
    * Browser Action set to open option page / configuration page
    */
@@ -46,12 +43,6 @@ try {
     }
   });
 
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      Update.discord(firebaseFirestoreBackground);
-    }
-  });
-
   /**
    * Set Context Menu for right click
    */
@@ -61,13 +52,6 @@ try {
    * Set Notifications
    */
   registerNotifications(OPTIONS_PAGE_URL);
-
-  /**
-   * Setup Uninstall action
-   */
-  if (UNINSTALL_URL) {
-    chrome.runtime.setUninstallURL(UNINSTALL_URL);
-  }
 
   /**
    * Setup on Message Listener
@@ -85,6 +69,7 @@ try {
     [RUNTIME_MESSAGE_FIREBASE_OAUTH]: new FirebaseOauth2Background(auth, EDGE_OAUTH_CLIENT_ID),
     [RUNTIME_MESSAGE_FIREBASE_FIRESTORE]: new FirebaseFirestoreBackground(auth, EDGE_OAUTH_CLIENT_ID, OPTIONS_PAGE_URL),
     [RUNTIME_MESSAGE_FIREBASE_FUNCTIONS]: new FirebaseFunctionsBackground(auth, FIREBASE_FUNCTIONS_URL, EDGE_OAUTH_CLIENT_ID),
+    [RUNTIME_MESSAGE_VISION]: new VisionBackground(auth, FIREBASE_FUNCTIONS_URL, EDGE_OAUTH_CLIENT_ID),
   };
   Runtime.onMessageExternal(onMessageListener);
   Runtime.onMessage(onMessageListener);
