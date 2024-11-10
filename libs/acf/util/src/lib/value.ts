@@ -13,6 +13,7 @@ declare global {
 
 export const VALUE_MATCHER = {
   QUERY_PARAM: /^Query::/i,
+  QUERY: /<query::(.*?)>/gi,
   API: /^Api::/i,
   RANDOM: /<random(.+?)(\/[a-z]+)?>/gi,
   BATCH_REPEAT: /<batchRepeat>/,
@@ -38,12 +39,38 @@ export const Value = (() => {
 
   const getSessionCount = (value: string) => value.replaceAll('<sessionCount>', String(window.__sessionCount));
 
+  const sanitizeInput = (input: string): string => {
+    const element = document.createElement('div');
+    element.textContent = input;
+    return element.innerHTML;
+  };
+
+  const validateQueryParam = (key: string, value: string): boolean => {
+    const pattern = /^[a-zA-Z0-9_-]+$/;
+    return pattern.test(key) && pattern.test(value);
+  };
+
   const getQueryParam = (value: string) => {
-    const [, key] = value.split('::');
     const searchParams = new URLSearchParams(window.location.search);
+    const [, key] = value.split('::');
     if (searchParams.has(key)) {
-      value = searchParams.get(key) || key;
+      const paramValue = searchParams.get(key) ?? key;
+      if (validateQueryParam(key, paramValue)) {
+        value = sanitizeInput(paramValue);
+      }
     }
+    return value;
+  };
+
+  const getMultiQueryParam = (value: string) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    value = value.replace(VALUE_MATCHER.QUERY, (_, key) => {
+      const paramValue = searchParams.get(key) ?? key;
+      if (validateQueryParam(key, paramValue)) {
+        return sanitizeInput(paramValue);
+      }
+      return key;
+    });
     return value;
   };
 
@@ -75,6 +102,9 @@ export const Value = (() => {
 
     if (VALUE_MATCHER.QUERY_PARAM.test(value)) {
       value = getQueryParam(value);
+    }
+    if (VALUE_MATCHER.QUERY.test(value)) {
+      value = getMultiQueryParam(value);
     }
     if (VALUE_MATCHER.BATCH_REPEAT.test(value)) {
       value = getBatchRepeat(value);
