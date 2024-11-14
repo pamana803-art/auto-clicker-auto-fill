@@ -17,6 +17,12 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
     const response = await this.#fetch(url, headers, data);
     return response;
   }
+  async openAiChat<Req, Res>(data: Req): Promise<Res> {
+    const headers = await this._getFirebaseHeaders();
+    const url = new URL(this.cloudFunctionUrl + '/openAiChat');
+    const response = await this.#fetch(url, headers, data);
+    return response;
+  }
 
   async getValues<Req, Res>(data: Req): Promise<Res> {
     const headers = await this._getFirebaseHeaders([GOOGLE_SCOPES.SHEETS]);

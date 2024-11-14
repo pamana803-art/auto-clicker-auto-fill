@@ -180,6 +180,11 @@ export function DataList() {
         <option value='Image::Name::'>Image::Name::</option>
         <option value='Image::Selector::'>Image::Selector::</option>
         <option value='Image:://input[@id="element-id"]'>Image:://input[@id=&quot;element-id&quot;]</option>
+        <option value='openai::generateText::prompt'>openai::generateText::prompt</option>
+        {/*<option value='openai::summarizeText'>openai::summarizeText</option>
+        <option value='openai::translateText'>openai::translateText</option>
+        <option value='openai::classifyText'>openai::classifyText</option>
+        <option value='openai::analyzeSentiment'>openai::analyzeSentiment</option>*/}
       </datalist>
       <datalist id='valueExtractor'>
         <option value='@id'>To get id attribute of element</option>
