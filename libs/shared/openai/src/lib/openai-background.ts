@@ -2,12 +2,12 @@ import { FirebaseFunctionsBackground } from '@dhruv-techapps/firebase-functions'
 import { OpenAIRequest, OpenAIResponse } from './openai.types';
 
 export class OpenAIBackground extends FirebaseFunctionsBackground {
-  async generateText({ prompt }: OpenAIRequest): Promise<string> {
-    if (!prompt) {
+  async generateText({ content }: OpenAIRequest): Promise<string> {
+    if (!content || content.trim().length === 0) {
       throw new Error('No prompt provided');
     }
-    const data: OpenAIRequest = { prompt };
+    const data: OpenAIRequest = { content };
     const result = await this.openAiChat<OpenAIRequest, OpenAIResponse>(data);
-    return result.message;
+    return result.content;
   }
 }

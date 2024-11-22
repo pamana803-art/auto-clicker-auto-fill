@@ -1,7 +1,7 @@
 export type OpenAIRequest = {
-  prompt: string;
+  content: string;
 };
 
 export type OpenAIResponse = {
-  message: string;
+  content: string;
 };

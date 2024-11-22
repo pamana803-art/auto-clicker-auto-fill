@@ -42,7 +42,7 @@ export class ACFValue {
   private static async getOpenAIValue(value: string): Promise<string> {
     try {
       const prompt = value.replace(/openai::/i, '');
-      const message = await OpenAIService.generateText({ prompt });
+      const message = await OpenAIService.generateText({ content: prompt });
       return message;
     } catch (error) {
       if (error instanceof Error) {
