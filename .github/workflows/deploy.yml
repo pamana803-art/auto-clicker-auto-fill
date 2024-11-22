@@ -55,7 +55,7 @@ jobs:
           echo "HEAD: ${{ env.NX_HEAD }}"
       - run: npm ci
       - name: Build Projects and Library
-        run: npx nx run-many -t build  -p acf-options-page acf-extension --prod --base-href ${{vars.PUBLIC_URL}} --verbose
+        run: npx nx run-many -t build  -p acf-options-page acf-extension --prod --base-href ${{vars.PUBLIC_URL}} --verbose --skip-nx-cache
         env:
           NX_PUBLIC_NAME: ${{vars.NX_PUBLIC_NAME}}
           NX_PUBLIC_VARIANT: ${{vars.NX_PUBLIC_VARIANT}}
