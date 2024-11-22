@@ -59,9 +59,6 @@
     "@nx/workspace": "20.1.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.15",
     "@svgr/webpack": "8.1.0",
-    "@swc-node/register": "~1.9.1",
-    "@swc/core": "~1.5.7",
-    "@swc/helpers": "~0.5.11",
     "@testing-library/react": "16.0.1",
     "@types/chrome": "0.0.280",
     "@types/express": "5.0.0",
@@ -88,8 +85,7 @@
     "react-refresh": "0.14.2",
     "ts-jest": "29.2.5",
     "ts-node": "10.9.2",
-    "typescript": "5.6.3",
-    "verdaccio": "^5.0.4"
+    "typescript": "5.6.3"
   },
   "nx": {
     "includedScripts": []
