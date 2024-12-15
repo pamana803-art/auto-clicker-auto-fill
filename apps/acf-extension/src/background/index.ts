@@ -77,6 +77,13 @@ try {
   };
   Runtime.onMessageExternal(onMessageListener);
   Runtime.onMessage(onMessageListener);
+
+  auth.authStateReady().then(() => {
+    const clientId = auth.currentUser?.uid;
+    if (clientId) {
+      chrome.storage.local.set({ clientId });
+    }
+  });
 } catch (error) {
   if (error instanceof Error) {
     googleAnalytics?.fireErrorEvent({ name: error.name, error: error.message, additionalParams: { page: 'background' } });
