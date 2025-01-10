@@ -79,8 +79,8 @@ function Configs(props) {
                 </Alert>
               )}
               <Config />
-              <Action />
               <Ads />
+              <Action />
               <Footer />
               <ConfigSettingsModal />
               <BatchModal />
