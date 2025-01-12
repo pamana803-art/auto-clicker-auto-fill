@@ -6,7 +6,7 @@
 // @author       Dhruv Techapps
 // @match        https://app.shiftboard.com/servola/schedule/schedule.cgi?tradeboard=1*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-// @grant        none
+// @grant        GM_notification
 // ==/UserScript==
 
 (function () {
@@ -46,6 +46,7 @@
             tr.querySelector('a').click();
             setTimeout(() => {
               document.querySelectorAll('button.primary-button[type=submit]')[1].click();
+              GM_notification({ title: 'Tradeboard', text: `${reg[0][0]} shift picked`, image: 'https://www.shiftboard.com/favicon.ico' });
             }, 300);
           }
         }
