@@ -2,13 +2,14 @@ import { ThemeContext } from '@dhruv-techapps/context';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import GoogleSignInDark from '../assets/btn_google_signin_dark_normal_web.png';
 import GoogleSignInLight from '../assets/btn_google_signin_light_normal_web.png';
 import { auth } from '../firebase';
 
 const Login: React.FC = () => {
   const { theme } = useContext(ThemeContext);
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,7 +21,7 @@ const Login: React.FC = () => {
     const user = await signInWithPopup(auth, provider);
     if (user) {
       // Add your redirect logic here
-      navigate('/');
+      navigate(searchParams.get('from') ?? '/');
     }
   };
 

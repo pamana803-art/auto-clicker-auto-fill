@@ -8,7 +8,7 @@ export const User = () => {
   const navigate = useNavigate();
   const onSignOut = async () => {
     await auth.signOut();
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
   };
 
   if (!user) return null;
