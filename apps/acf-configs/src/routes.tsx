@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        loader: protectedLoader,
+        //loader: protectedLoader,
         Component: Search,
       },
       {

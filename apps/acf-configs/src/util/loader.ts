@@ -9,7 +9,8 @@ export const protectedLoader = async ({ request }: LoaderFunctionArgs) => {
   await auth.authStateReady();
   if (!auth.currentUser) {
     const params = new URLSearchParams();
-    params.set('from', new URL(request.url).pathname);
+    const { pathname, search } = new URL(request.url);
+    params.set('from', pathname + search);
     return redirect('/login?' + params.toString());
   }
   return auth.currentUser;
