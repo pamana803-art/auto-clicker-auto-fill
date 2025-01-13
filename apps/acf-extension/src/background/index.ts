@@ -124,7 +124,3 @@ addEventListener('unhandledrejection', async (event) => {
   }
   console.error(event);
 });
-
-auth.authStateReady().then(() => {
-  new SyncConfig(auth).syncConfig(false);
-});

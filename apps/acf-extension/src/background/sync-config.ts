@@ -128,7 +128,6 @@ export class SyncConfig {
             data.name = config.name;
             this.getTags(data, config);
           }
-          console.log(data);
           await new FirebaseFirestoreBackground(this.auth, EDGE_OAUTH_CLIENT_ID).setConfig(data, config.id);
           // Update Storage
           const blob = this.getBlob(config);
