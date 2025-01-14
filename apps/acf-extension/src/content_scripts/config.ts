@@ -7,6 +7,7 @@ import { DiscordMessagingColor, DiscordMessagingService } from '@dhruv-techapps/
 import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { GoogleSheetsCS } from '@dhruv-techapps/google-sheets';
 import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
+import { scope } from '../common/instrument';
 import BatchProcessor from './batch';
 import Common from './common';
 import { Hotkey } from './hotkey';
@@ -93,7 +94,7 @@ const ConfigProcessor = (() => {
         } else {
           console.error(error.title, '\n', error.message);
         }
-        GoogleAnalyticsService.fireErrorEvent(e.name, e.message, { page: 'content_scripts' });
+        scope.captureEvent(e);
       } else {
         throw e;
       }
