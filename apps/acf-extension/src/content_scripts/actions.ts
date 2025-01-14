@@ -1,6 +1,6 @@
-import { ACTION_STATUS, Action } from '@dhruv-techapps/acf-common';
+import { Action, ACTION_RUNNING, ACTION_STATUS } from '@dhruv-techapps/acf-common';
 import { SettingsStorage } from '@dhruv-techapps/acf-store';
-import { ConfigError, Logger, LoggerColor } from '@dhruv-techapps/core-common';
+import { ConfigError, isValidUUID, Logger, LoggerColor } from '@dhruv-techapps/core-common';
 import { NotificationsService } from '@dhruv-techapps/core-service';
 import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
 import ActionProcessor from './action';
@@ -41,7 +41,7 @@ const Actions = (() => {
       const action = actions[i];
       if (action.disabled) {
         i += 1;
-        Logger.color(` ${I18N_COMMON.DISABLED} `, 'debug', LoggerColor.BLACK, `${ACTION_I18N.TITLE} #${i + 1} [${action.name || ACTION_I18N.NO_NAME}]`);
+        Logger.color(` ${I18N_COMMON.DISABLED} `, 'debug', LoggerColor.BLACK, `${ACTION_I18N.TITLE} #${i + 1} [${action.name ?? ACTION_I18N.NO_NAME}]`);
         continue;
       }
       statusBar.actionUpdate(i + 1, action.name);
@@ -49,30 +49,22 @@ const Actions = (() => {
       if (!action.elementFinder) {
         throw new ConfigError(I18N_ERROR.ELEMENT_FINDER_BLANK, ACTION_I18N.TITLE);
       }
-      const statementResult = await checkStatement(actions, action);
-      if (statementResult === true) {
+      try {
+        await checkStatement(actions, action);
         await statusBar.wait(action.initWait, STATUS_BAR_TYPE.ACTION_WAIT);
-        const addonResult = await AddonProcessor.check(action.addon, action.settings);
-        if (typeof addonResult === 'number') {
-          i = Number(addonResult) - 1;
-          Logger.colorInfo(I18N_COMMON.GOTO, Number(addonResult) + 1);
-        } else if (addonResult) {
-          const status = await ActionProcessor.start(action);
-          if (typeof status === 'number') {
-            i = Number(status) - 1;
-            Logger.colorInfo(I18N_COMMON.GOTO, Number(status) + 1);
-          } else {
-            action.status = status;
-            notify(action);
-          }
-        } else {
+        await AddonProcessor.check(action.addon, action.settings);
+        const status = await ActionProcessor.start(action);
+        action.status = status;
+        notify(action);
+      } catch (error) {
+        if (error === ACTION_STATUS.SKIPPED || error === ACTION_RUNNING.SKIP) {
           action.status = ACTION_STATUS.SKIPPED;
-        }
-      } else {
-        action.status = ACTION_STATUS.SKIPPED;
-        if (typeof statementResult !== 'boolean') {
-          i = Number(statementResult) - 1;
-          Logger.colorInfo(I18N_COMMON.GOTO, Number(statementResult) + 1);
+        } else if (isValidUUID(error) || typeof error === 'number') {
+          const index = actions.findIndex((a) => a.id === error);
+          i = index - 1;
+          Logger.colorInfo(I18N_COMMON.GOTO, index + 1);
+        } else {
+          throw error;
         }
       }
       // Increment

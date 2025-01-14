@@ -1,5 +1,5 @@
-import { ActionSettings, defaultActionSettings } from '@dhruv-techapps/acf-common';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { ActionSettings, defaultActionSettings, GOTO } from '@dhruv-techapps/acf-common';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../../store';
 import { openActionSettingsModalAPI } from './action-settings.api';
 
@@ -34,7 +34,7 @@ const slice = createSlice({
       state.error = action.payload;
       state.message = undefined;
     },
-    updateActionSettingsGoto: (state, action: PayloadAction<number>) => {
+    updateActionSettingsGoto: (state, action: PayloadAction<GOTO>) => {
       state.settings.retryGoto = action.payload;
     },
   },

@@ -1,4 +1,4 @@
-import { ACTION_CONDITION_OPR, ACTION_RUNNING, ActionCondition, ActionStatement } from '@dhruv-techapps/acf-common';
+import { ACTION_CONDITION_OPR, ACTION_RUNNING, ActionCondition, ActionStatement, GOTO } from '@dhruv-techapps/acf-common';
 
 const Statement = (() => {
   const conditionResult = (conditions: Array<ActionCondition>, actions: Array<string>) => {
@@ -13,19 +13,19 @@ const Statement = (() => {
       }, false);
   };
 
-  const checkThen = (condition: boolean | { status: boolean; operator: ACTION_CONDITION_OPR }, then: ACTION_RUNNING, goto?: number) => {
+  const checkThen = (condition: boolean | { status: boolean; operator: ACTION_CONDITION_OPR }, then: ACTION_RUNNING, goto?: GOTO): true => {
     console.debug('Check Then', { condition, then, goto });
-    let result;
     if (condition) {
       if (then === ACTION_RUNNING.GOTO) {
-        result = goto;
+        throw goto;
+      } else if (then === ACTION_RUNNING.PROCEED) {
+        return true;
       } else {
-        result = then === ACTION_RUNNING.PROCEED;
+        throw ACTION_RUNNING.SKIP;
       }
     } else {
-      result = then !== ACTION_RUNNING.PROCEED;
+      throw ACTION_RUNNING.SKIP;
     }
-    return result;
   };
 
   const check = async (actions: Array<string>, statement?: ActionStatement) => {

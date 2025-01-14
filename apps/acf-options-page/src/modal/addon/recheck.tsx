@@ -1,4 +1,5 @@
 import { RECHECK_OPTIONS } from '@dhruv-techapps/acf-common';
+import { RANDOM_UUID } from '@dhruv-techapps/core-common';
 import { ChangeEvent } from 'react';
 import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -18,11 +19,17 @@ function AddonRecheck() {
     const update = getFieldNameValue(e, addon);
     if (update) {
       dispatch(updateActionAddon(update));
+      if (update.name === 'recheckOption' && update.value === RECHECK_OPTIONS.GOTO) {
+        const actionId = config?.actions[0].id;
+        if (actionId) {
+          dispatch(updateActionAddonGoto(actionId));
+        }
+      }
     }
   };
 
   const onUpdateGoto = (e: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(updateActionAddonGoto(Number(e.currentTarget.value)));
+    dispatch(updateActionAddonGoto(e.currentTarget.value as RANDOM_UUID));
   };
 
   if (!config || !addon || !selectedActionId) {
@@ -96,8 +103,8 @@ function AddonRecheck() {
         <Col xs={{ span: 3, offset: 9 }}>
           <Form.Select value={addon.recheckGoto} onChange={onUpdateGoto} name='goto' required>
             {actions.map((_action, index) => (
-              <option key={_action.id} value={index} disabled={_action.id === selectedActionId}>
-                {index + 1} . {_action.name || _action.elementFinder}
+              <option key={_action.id} value={_action.id} disabled={_action.id === selectedActionId}>
+                {index + 1} . {_action.name ?? _action.elementFinder}
               </option>
             ))}
           </Form.Select>

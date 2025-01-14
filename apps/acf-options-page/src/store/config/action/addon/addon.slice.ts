@@ -1,6 +1,6 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Addon, RECHECK_OPTIONS, defaultAddon } from '@dhruv-techapps/acf-common';
 import { RootState } from '@apps/acf-options-page/src/store';
+import { Addon, GOTO, defaultAddon } from '@dhruv-techapps/acf-common';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { openActionAddonModalAPI } from './addon.api';
 
 type ActionAddonStore = {
@@ -19,11 +19,8 @@ const slice = createSlice({
     updateActionAddon: (state, action) => {
       const { name, value } = action.payload;
       state.addon[name] = value;
-      if (name === 'recheckOption' && value === RECHECK_OPTIONS.GOTO) {
-        state.addon.recheckGoto = 0;
-      }
     },
-    updateActionAddonGoto: (state, action: PayloadAction<number>) => {
+    updateActionAddonGoto: (state, action: PayloadAction<GOTO>) => {
       state.addon.recheckGoto = action.payload;
     },
     switchActionAddonModal: (state) => {
