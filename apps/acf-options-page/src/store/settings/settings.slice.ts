@@ -1,6 +1,7 @@
 import { Discord, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
 import { AUTO_BACKUP } from '@dhruv-techapps/google-drive';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { RootState } from '../../store';
 import { discordDeleteAPI, discordGetAPI, discordLoginAPI, settingsGetAPI } from './settings.api';
 
@@ -53,6 +54,7 @@ const slice = createSlice({
     },
     setSettingsError: (state, action) => {
       state.error = action.payload;
+      Sentry.captureException(state.error);
       state.message = undefined;
       state.loading = false;
     },
@@ -66,6 +68,7 @@ const slice = createSlice({
     });
     builder.addCase(settingsGetAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
       state.loading = false;
     });
     builder.addCase(discordGetAPI.pending, (state) => {
@@ -78,6 +81,7 @@ const slice = createSlice({
     });
     builder.addCase(discordGetAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
       state.loading = false;
     });
     builder.addCase(discordLoginAPI.fulfilled, (state, action) => {
@@ -85,12 +89,14 @@ const slice = createSlice({
     });
     builder.addCase(discordLoginAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
     });
     builder.addCase(discordDeleteAPI.fulfilled, (state) => {
       delete state.discord;
     });
     builder.addCase(discordDeleteAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
     });
   },
 });

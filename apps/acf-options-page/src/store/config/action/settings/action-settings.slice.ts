@@ -1,5 +1,6 @@
 import { ActionSettings, defaultActionSettings } from '@dhruv-techapps/acf-common';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { RootState } from '../../../../store';
 import { openActionSettingsModalAPI } from './action-settings.api';
 
@@ -32,6 +33,7 @@ const slice = createSlice({
     },
     setActionSettingsError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
+      Sentry.captureException(state.error);
       state.message = undefined;
     },
     updateActionSettingsGoto: (state, action: PayloadAction<number>) => {

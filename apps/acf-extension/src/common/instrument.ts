@@ -14,10 +14,6 @@ const client = new BrowserClient({
   stackParser: defaultStackParser,
   integrations: integrations,
   release: `acf-extension@${RELEASE_VERSION?.replace('v', '')}`,
-  beforeSend: (event) => {
-    console.log('beforeSend', event);
-    return event;
-  },
 });
 scope.setClient(client);
 client.init(); // initializing has to be done after setting the client on the scope

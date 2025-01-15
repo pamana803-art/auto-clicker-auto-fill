@@ -74,6 +74,15 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
         release: {
           name: process.env.NX_PUBLIC_RELEASE_VERSION?.replace('v', ''),
         },
+        bundleSizeOptimizations: {
+          excludeDebugStatements: true,
+          // Only relevant if you added `browserTracingIntegration`
+          excludePerformanceMonitoring: true,
+          // Only relevant if you added `replayIntegration`
+          excludeReplayIframe: true,
+          excludeReplayShadowDom: true,
+          excludeReplayWorker: true,
+        },
       })
     );
   }

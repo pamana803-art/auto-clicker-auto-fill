@@ -79,6 +79,8 @@ jobs:
           NX_PUBLIC_RELEASE_VERSION: ${{inputs.version || github.ref_name}}
           API_SECRET: ${{vars.API_SECRET}}
           MEASUREMENT_ID: ${{vars.MEASUREMENT_ID}}
+          NX_PUBLIC_SENTRY_DSN: ${{vars.NX_PUBLIC_SENTRY_DSN}}
+          SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
       - name: Print Environment Info
         run: npx nx report
       - name: Bundle Projects

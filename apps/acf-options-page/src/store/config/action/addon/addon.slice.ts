@@ -1,6 +1,7 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Addon, RECHECK_OPTIONS, defaultAddon } from '@dhruv-techapps/acf-common';
 import { RootState } from '@apps/acf-options-page/src/store';
+import { Addon, RECHECK_OPTIONS, defaultAddon } from '@dhruv-techapps/acf-common';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { openActionAddonModalAPI } from './addon.api';
 
 type ActionAddonStore = {
@@ -36,6 +37,7 @@ const slice = createSlice({
     },
     setActionAddonError: (state, action: PayloadAction<string | undefined>) => {
       state.error = action.payload;
+      Sentry.captureException(state.error);
       state.message = undefined;
     },
   },

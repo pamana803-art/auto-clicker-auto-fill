@@ -1,5 +1,6 @@
 import { DriveFile } from '@dhruv-techapps/google-drive';
 import { createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { RootState } from '../../../store';
 import { googleDriveDeleteAPI, googleDriveListWithContentAPI } from './google-drive.api';
 
@@ -27,6 +28,7 @@ const slice = createSlice({
     builder.addCase(googleDriveListWithContentAPI.rejected, (state, action) => {
       state.filesLoading = false;
       state.error = action.error.message;
+      Sentry.captureException(state.error);
     });
     builder.addCase(googleDriveDeleteAPI.fulfilled, (state, action) => {
       state.files = state.files.filter((file) => file.id !== action.payload.id);
