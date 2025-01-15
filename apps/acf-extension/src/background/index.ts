@@ -109,7 +109,7 @@ try {
     const clientId = auth.currentUser?.uid;
     if (clientId) {
       chrome.storage.local.set({ clientId });
-      scope.setUser({ id: clientId, email: auth.currentUser?.email ?? undefined, username: auth.currentUser?.displayName ?? undefined });
+      scope.setUser({ id: clientId });
     }
   });
 } catch (error) {
@@ -117,11 +117,10 @@ try {
   console.error('background', error);
 }
 
-addEventListener('unhandledrejection', async (event) => {
+self.onunhandledrejection = async (event) => {
+  scope.captureException(event.reason);
+};
+
+self.onerror = async (event) => {
   scope.captureException(event);
-  console.error('unhandledrejection', event);
-});
-addEventListener('onerror', async (event) => {
-  scope.captureException(event);
-  console.error('onerror', event);
-});
+};

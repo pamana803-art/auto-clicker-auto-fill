@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react';
 Sentry.init({
-  dsn: 'https://23ec1ed44876c4cbe18082f514cc5901@o4506036997455872.ingest.us.sentry.io/4506037629943808',
+  dsn: process.env.SENTRY_DSN,
   integrations: [],
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for tracing.

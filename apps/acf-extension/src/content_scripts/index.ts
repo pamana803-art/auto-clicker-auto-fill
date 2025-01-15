@@ -77,8 +77,8 @@ chrome.runtime.onMessage.addListener(async (message) => {
     } catch (e) {
       if (e instanceof Error) {
         statusBar.error(e.message);
-        GoogleAnalyticsService.fireErrorEvent(e.name, e.message, { page: 'content_scripts' });
       }
+      scope.captureException(e);
     }
   }
 });
