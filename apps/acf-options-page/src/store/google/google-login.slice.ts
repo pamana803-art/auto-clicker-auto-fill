@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { RootState } from '../../store';
 import { googleHasAccessAPI, googleLoginAPI } from './google-login.api';
 
@@ -22,6 +23,7 @@ const slice = createSlice({
     });
     builder.addCase(googleLoginAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
     });
     builder.addCase(googleHasAccessAPI.pending, (state) => {
       state.googleLoading = true;
@@ -34,6 +36,7 @@ const slice = createSlice({
     });
     builder.addCase(googleHasAccessAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
       state.googleLoading = false;
     });
   },

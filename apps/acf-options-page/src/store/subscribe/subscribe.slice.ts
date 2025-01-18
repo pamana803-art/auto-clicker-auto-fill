@@ -1,5 +1,6 @@
 import { FirebaseFirestoreService, Product, Subscription } from '@dhruv-techapps/firebase-firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { RootState } from '../../store';
 
 type SubscribeStore = { visible: boolean; isPortalLinkLoading: boolean; subscriptions?: Subscription[]; error?: string; products?: Product[]; isSubscribing: boolean };
@@ -50,12 +51,14 @@ const slice = createSlice({
     });
     builder.addCase(getSubscription.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
     });
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.products = action.payload;
     });
     builder.addCase(getProducts.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
     });
     builder.addCase(subscribe.pending, (state) => {
       state.isSubscribing = true;
@@ -63,6 +66,7 @@ const slice = createSlice({
     builder.addCase(subscribe.rejected, (state, action) => {
       state.isSubscribing = false;
       state.error = action.error.message;
+      Sentry.captureException(state.error);
     });
   },
 });

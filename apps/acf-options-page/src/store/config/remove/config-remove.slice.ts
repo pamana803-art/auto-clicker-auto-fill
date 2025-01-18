@@ -1,6 +1,7 @@
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { RootState } from '../../../store';
 import { configRemoveUpdateAPI } from './config-remove.api';
 
@@ -31,6 +32,7 @@ const slice = createSlice({
         const config = state.configs.find((config) => config.id === action.payload);
         if (!config) {
           state.error = 'Invalid Config';
+          Sentry.captureException(state.error);
           return;
         }
 
@@ -48,6 +50,7 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(configRemoveUpdateAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
       state.message = undefined;
     });
     builder.addCase(configRemoveUpdateAPI.fulfilled, (state) => {

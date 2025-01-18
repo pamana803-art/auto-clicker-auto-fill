@@ -1,4 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { ConfigStore } from '../config.slice';
 
 export const batchActions = {
@@ -8,6 +9,7 @@ export const batchActions = {
     const config = configs.find((config) => config.id === selectedConfigId);
     if (!config) {
       state.error = 'Invalid Configuration';
+      Sentry.captureException(state.error);
       return;
     }
     const { batch } = config;
@@ -23,6 +25,7 @@ export const batchActions = {
     const config = configs.find((config) => config.id === selectedConfigId);
     if (!config) {
       state.error = 'Invalid Configuration';
+      Sentry.captureException(state.error);
       return;
     }
     const { batch } = config;

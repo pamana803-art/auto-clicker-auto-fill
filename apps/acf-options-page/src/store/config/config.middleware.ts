@@ -1,9 +1,11 @@
 import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 import { StorageService } from '@dhruv-techapps/core-service';
 import { AnyAction, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import i18next from 'i18next';
 import { RootState } from '../../store';
 import { addToast } from '../toast.slice';
+
 import {
   setActionAddonError,
   setActionAddonMessage,
@@ -105,6 +107,7 @@ configsListenerMiddleware.startListening({
       .catch((error) => {
         const { failure } = getMessageFunc(action);
         if (failure) {
+          Sentry.captureException(error);
           if (error instanceof Error) {
             listenerApi.dispatch(failure(error.message));
           } else if (typeof error === 'string') {

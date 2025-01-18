@@ -3,7 +3,7 @@ import { ConfigRequest, FirebaseFirestoreBackground } from '@dhruv-techapps/fire
 import { Auth } from '@dhruv-techapps/firebase-oauth';
 import { FirebaseStorageBackground } from '@dhruv-techapps/firebase-storage';
 import { EDGE_OAUTH_CLIENT_ID } from '../common/environments';
-import { googleAnalytics } from './google-analytics';
+import { scope } from '../common/instrument';
 
 export const EVENTS_REGEX =
   /scrollto|clickevents|mouseevents|touchevents|formevents|keyevents|tabs|keyboardevents|attr|class|copy|paste|windowcommand|locationcommand|func|replace|append|prepend|clipboard|GoogleSheets/i;
@@ -97,12 +97,7 @@ export class SyncConfig {
   }
 
   getTags(data: ConfigRequest, config: Configuration) {
-    data.tags = [
-      ...config.actions
-        .map((action) => action.value?.match(TAGS_REGEX))
-        .filter((match): match is RegExpMatchArray => match !== null)
-        .map((match) => match[0].toLowerCase()),
-    ];
+    data.tags = Array.from(new Set(config.actions.map((action) => action.value?.match(TAGS_REGEX)?.[0].toLowerCase()).filter((value): value is string => !!value)));
     if (config.actions.find((action) => action.addon)) {
       data.tags.push('addon');
     }
@@ -133,21 +128,13 @@ export class SyncConfig {
           const blob = this.getBlob(config);
           await new FirebaseStorageBackground(this.auth).uploadFile(blob, `users/${uid}/${config.id}.json`);
         } catch (error) {
-          if (error instanceof Error) {
-            googleAnalytics?.fireErrorEvent({ error: error.message, additionalParams: { page: 'sync-config-upload' } });
-          } else {
-            googleAnalytics?.fireErrorEvent({ error: JSON.stringify(error), additionalParams: { page: 'sync-config-upload' } });
-          }
+          scope.captureException(error);
         }
       }
       console.log(`Synced ${configs.length} configs`);
       await this.reset();
     } catch (error) {
-      if (error instanceof Error) {
-        googleAnalytics?.fireErrorEvent({ error: error.message, additionalParams: { page: 'sync-config' } });
-      } else {
-        googleAnalytics?.fireErrorEvent({ error: JSON.stringify(error), additionalParams: { page: 'sync-config' } });
-      }
+      scope.captureException(error);
     }
   }
 }

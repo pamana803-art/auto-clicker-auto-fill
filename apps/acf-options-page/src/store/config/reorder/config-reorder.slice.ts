@@ -1,6 +1,7 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../../../store';
 import { Configuration } from '@dhruv-techapps/acf-common';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
+import { RootState } from '../../../store';
 import { configReorderUpdateAPI } from './config-reorder.api';
 
 type ConfigReorderStore = {
@@ -34,6 +35,7 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(configReorderUpdateAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
       state.message = undefined;
     });
     builder.addCase(configReorderUpdateAPI.fulfilled, (state) => {

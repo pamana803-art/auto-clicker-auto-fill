@@ -10,7 +10,9 @@ const FIREBASE_API_KEY = process.env.NX_PUBLIC_FIREBASE_API_KEY;
 const FIREBASE_DATABASE_URL = process.env.NX_PUBLIC_FIREBASE_DATABASE_URL;
 const FIREBASE_PROJECT_ID = process.env.NX_PUBLIC_FIREBASE_PROJECT_ID;
 const FIREBASE_BUCKET = process.env.NX_PUBLIC_FIREBASE_BUCKET;
-const FIREBASE_FUNCTIONS_URL = process.env.NX_PUBLIC_FIREBASE_FUNCTIONS_URL || 'https://us-central1-auto-clicker-autofill.cloudfunctions.net';
+const FIREBASE_FUNCTIONS_URL = process.env.NX_PUBLIC_FIREBASE_FUNCTIONS_URL ?? 'https://us-central1-auto-clicker-autofill.cloudfunctions.net';
+const RELEASE_VERSION = process.env.NX_PUBLIC_RELEASE_VERSION;
+const SENTRY_DSN = process.env.NX_PUBLIC_EXTENSION_SENTRY_DSN;
 export {
   API_SECRET,
   DISCORD_CLIENT_ID,
@@ -22,6 +24,8 @@ export {
   FIREBASE_PROJECT_ID,
   MEASUREMENT_ID,
   OPTIONS_PAGE_URL,
+  RELEASE_VERSION,
+  SENTRY_DSN,
   UNINSTALL_URL,
   VARIANT,
 };

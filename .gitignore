@@ -17,7 +17,7 @@ node_modules
 .settings/
 *.sublime-workspace
 .env
-.env.beta
+.env.*
 
 # IDE - VSCode
 .vscode/*
