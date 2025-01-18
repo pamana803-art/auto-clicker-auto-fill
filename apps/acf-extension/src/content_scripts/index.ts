@@ -2,10 +2,12 @@ import { LOAD_TYPES, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common';
 import { ConfigStorage, GetConfigResult, SettingsStorage } from '@dhruv-techapps/acf-store';
 import { Session } from '@dhruv-techapps/acf-util';
 import { Logger, LoggerColor } from '@dhruv-techapps/core-common';
-import { GoogleAnalyticsService } from '@dhruv-techapps/google-analytics';
 import { Sheets } from '@dhruv-techapps/google-sheets';
+import { scope } from '../common/instrument';
 import ConfigProcessor from './config';
 import { statusBar } from './status-bar';
+
+scope.setTag('page', 'content-script');
 
 declare global {
   interface Window {
@@ -41,8 +43,8 @@ async function loadConfig(loadType: LOAD_TYPES) {
   } catch (e) {
     if (e instanceof Error) {
       statusBar.error(e.message);
-      GoogleAnalyticsService.fireErrorEvent(e.name, e.message, { page: 'content_scripts' });
     }
+    scope.captureException(e);
   }
 }
 
@@ -60,8 +62,12 @@ addEventListener('unhandledrejection', (event) => {
     window.location.reload();
     return;
   }
-  GoogleAnalyticsService.fireErrorEvent('unhandledrejection', event.reason, { page: 'content_scripts' });
+  scope.captureException(event.reason);
 });
+
+self.onerror = (...rest) => {
+  scope.captureException({ ...rest });
+};
 
 chrome.runtime.onMessage.addListener(async (message) => {
   const { action, configId } = message;
@@ -75,8 +81,8 @@ chrome.runtime.onMessage.addListener(async (message) => {
     } catch (e) {
       if (e instanceof Error) {
         statusBar.error(e.message);
-        GoogleAnalyticsService.fireErrorEvent(e.name, e.message, { page: 'content_scripts' });
       }
+      scope.captureException(e);
     }
   }
 });

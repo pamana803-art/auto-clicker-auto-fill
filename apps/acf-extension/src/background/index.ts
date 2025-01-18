@@ -17,6 +17,7 @@ import { OpenAIBackground, RUNTIME_MESSAGE_OPENAI } from '@dhruv.techapps/openai
 import XMLHttpRequest from 'xhr-shim';
 import { ACTION_POPUP } from '../common/constant';
 import { DISCORD_CLIENT_ID, EDGE_OAUTH_CLIENT_ID, FIREBASE_FUNCTIONS_URL, OPTIONS_PAGE_URL, VARIANT } from '../common/environments';
+import { scope } from '../common/instrument';
 import AcfBackup from './acf-backup';
 import registerContextMenus from './context-menu';
 import { auth } from './firebase';
@@ -27,6 +28,7 @@ import { TabsMessenger } from './tab';
 self['XMLHttpRequest'] = XMLHttpRequest;
 
 try {
+  scope.setTag('page', 'background');
   /**
    * Browser Action set to open option page / configuration page
    */
@@ -107,20 +109,18 @@ try {
     const clientId = auth.currentUser?.uid;
     if (clientId) {
       chrome.storage.local.set({ clientId });
+      scope.setUser({ id: clientId });
     }
   });
 } catch (error) {
-  if (error instanceof Error) {
-    googleAnalytics?.fireErrorEvent({ name: error.name, error: error.message, additionalParams: { page: 'background' } });
-  }
-  console.error(error);
+  scope.captureException(error);
+  console.error('background', error);
 }
 
-addEventListener('unhandledrejection', async (event) => {
-  if (event.reason instanceof Error) {
-    googleAnalytics?.fireErrorEvent({ error: event.reason.message, additionalParams: { page: 'background' } });
-  } else {
-    googleAnalytics?.fireErrorEvent({ error: JSON.stringify(event.reason), additionalParams: { page: 'background' } });
-  }
-  console.error(event);
-});
+self.onunhandledrejection = async (event) => {
+  scope.captureException(event.reason);
+};
+
+self.onerror = async (...rest) => {
+  scope.captureException({ ...rest });
+};

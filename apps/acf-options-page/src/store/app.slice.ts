@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { NO_EXTENSION_ERROR } from '../constants';
 import { RootState } from '../store';
 import { getManifest } from './app.api';
@@ -26,6 +27,7 @@ const slice = createSlice({
     },
     setAppError: (state, action) => {
       state.error = action.payload;
+      Sentry.captureException(state.error);
       state.loading = false;
     },
     switchExtensionNotFound: (state, action: PayloadAction<string | undefined>) => {
@@ -47,6 +49,7 @@ const slice = createSlice({
       const error = action.error.message;
       if (error) {
         state.error = error;
+        Sentry.captureException(state.error);
         if (NO_EXTENSION_ERROR.includes(error)) {
           state.error = "Kindly download the extension first. If it's already installed, please refresh the page to proceed.";
           state.errorButton = true;

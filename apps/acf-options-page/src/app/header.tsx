@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import { useEffect, useState } from 'react';
 import { Badge, Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -44,6 +45,7 @@ function Header() {
     await i18n.changeLanguage(lng);
     document.documentElement.lang = lng;
     localStorage.setItem('language', lng);
+    Sentry.setTag('page_locale', lng);
   };
 
   const toggleTheme = () => {

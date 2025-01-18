@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports  */
 const { composePlugins, withNx } = require('@nx/webpack');
+const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
@@ -63,5 +64,26 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
     new BannerPlugin(fs.readFileSync('./LICENSE', 'utf8'))
   );
 
+  if (!config.watch) {
+    config.plugins.push(
+      sentryWebpackPlugin({
+        org: 'dhruv-techapps',
+        project: 'acf-extension',
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        release: {
+          name: process.env.NX_PUBLIC_RELEASE_VERSION?.replace('v', ''),
+        },
+        bundleSizeOptimizations: {
+          excludeDebugStatements: true,
+          // Only relevant if you added `browserTracingIntegration`
+          excludePerformanceMonitoring: true,
+          // Only relevant if you added `replayIntegration`
+          excludeReplayIframe: true,
+          excludeReplayShadowDom: true,
+          excludeReplayWorker: true,
+        },
+      })
+    );
+  }
   return config;
 });

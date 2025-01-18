@@ -1,5 +1,6 @@
 import { FirebaseRole, User } from '@dhruv-techapps/firebase-oauth';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { RootState } from '../../store';
 import { firebaseIsLoginAPI, firebaseLoginAPI, firebaseLogoutAPI } from './firebase-login.api';
 
@@ -28,6 +29,7 @@ const slice = createSlice({
     },
     setFirebaseLoginError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
+      Sentry.captureException(state.error);
       state.message = undefined;
     },
   },
@@ -36,10 +38,12 @@ const slice = createSlice({
       if (action.payload?.user) {
         state.user = action.payload.user;
         state.role = action.payload.role;
+        Sentry.setUser({ id: action.payload.user.uid });
       }
     });
     builder.addCase(firebaseIsLoginAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
     });
     builder.addCase(firebaseLoginAPI.pending, (state) => {
       state.isLoading = true;
@@ -48,12 +52,14 @@ const slice = createSlice({
       if (action.payload) {
         state.user = action.payload.user;
         state.role = action.payload.role;
+        Sentry.setUser({ id: action.payload.user?.uid });
       }
       state.isLoading = false;
       state.visible = false;
     });
     builder.addCase(firebaseLoginAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
       state.isLoading = false;
     });
     builder.addCase(firebaseLogoutAPI.fulfilled, (state) => {
@@ -62,6 +68,7 @@ const slice = createSlice({
     });
     builder.addCase(firebaseLogoutAPI.rejected, (state, action) => {
       state.error = action.error.message;
+      Sentry.captureException(state.error);
     });
   },
 });

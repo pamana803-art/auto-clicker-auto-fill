@@ -1,6 +1,7 @@
 import { getDefaultAction } from '@dhruv-techapps/acf-common';
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
 import { PayloadAction } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react';
 import { ConfigStore } from '../config.slice';
 import { actionAddonActions } from './addon';
 import { actionSettingsActions } from './settings';
@@ -28,6 +29,7 @@ export const actionActions = {
     const selectedConfig = configs.find((config) => config.id === selectedConfigId);
     if (!selectedConfig) {
       state.error = 'Invalid Configuration';
+      Sentry.captureException(state.error);
       return;
     }
     selectedConfig.actions = [...arrayMove(selectedConfig.actions, oldIndex, newIndex)];
@@ -38,6 +40,7 @@ export const actionActions = {
     const selectedConfig = configs.find((config) => config.id === selectedConfigId);
     if (!selectedConfig) {
       state.error = 'Invalid Configuration';
+      Sentry.captureException(state.error);
       return;
     }
     if (action.payload?.actionId) {
@@ -59,12 +62,14 @@ export const actionActions = {
     const selectedConfig = configs.find((config) => config.id === selectedConfigId);
     if (!selectedConfig) {
       state.error = 'Invalid Configuration';
+      Sentry.captureException(state.error);
       return;
     }
 
     const selectedAction = selectedConfig.actions.find((action) => action.id === selectedActionId);
     if (!selectedAction) {
       state.error = 'Invalid Action';
+      Sentry.captureException(state.error);
       return;
     }
 
@@ -85,12 +90,14 @@ export const actionActions = {
     const selectedConfig = configs.find((config) => config.id === selectedConfigId);
     if (!selectedConfig) {
       state.error = 'Invalid Configuration';
+      Sentry.captureException(state.error);
       return;
     }
 
     const selectedActionIndex = selectedConfig.actions.findIndex((action) => action.id === selectedActionId);
     if (selectedActionIndex === -1) {
       state.error = 'Invalid Action';
+      Sentry.captureException(state.error);
       return;
     }
 
