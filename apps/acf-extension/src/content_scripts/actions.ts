@@ -57,14 +57,14 @@ const Actions = (() => {
         notify(action);
       } catch (error) {
         if (error === ACTION_STATUS.SKIPPED || error === ACTION_RUNNING.SKIP) {
-          console.debug(`Action #${window.__currentAction}`, `[${window.__currentActionName}]`, window.__actionError, `⏭️ ${ACTION_STATUS.SKIPPED}`);
+          console.debug(`${ACTION_I18N.TITLE} #${window.__currentAction}`, `[${window.__currentActionName}]`, window.__actionError, `⏭️ ${ACTION_STATUS.SKIPPED}`);
           action.status = ACTION_STATUS.SKIPPED;
         } else if (typeof error === 'number' || (typeof error === 'string' && isValidUUID(error))) {
           const index = typeof error === 'number' ? error : actions.findIndex((a) => a.id === error);
           if (index === -1) {
             throw new ConfigError(I18N_ERROR.ACTION_NOT_FOUND_FOR_GOTO, ACTION_I18N.TITLE);
           }
-          console.debug(`Action #${window.__currentAction}`, `[${window.__currentActionName}]`, window.__actionError, `${I18N_COMMON.GOTO} Action ➡️ ${index + 1}`);
+          console.debug(`${ACTION_I18N.TITLE} #${window.__currentAction}`, `[${window.__currentActionName}]`, window.__actionError, `${I18N_COMMON.GOTO} Action ➡️ ${index + 1}`);
           i = index - 1;
         } else {
           throw error;

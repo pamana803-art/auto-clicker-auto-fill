@@ -1,4 +1,5 @@
 import { ACTION_CONDITION_OPR, ACTION_RUNNING, ActionCondition, ActionStatement, GOTO } from '@dhruv-techapps/acf-common';
+import { I18N_COMMON } from './i18n';
 
 const Statement = (() => {
   const conditionResult = (conditions: Array<ActionCondition>, actions: Array<string>) => {
@@ -13,7 +14,7 @@ const Statement = (() => {
   };
 
   const checkThen = (condition: boolean | { status: boolean; operator: ACTION_CONDITION_OPR }, then: ACTION_RUNNING, goto?: GOTO) => {
-    window.__actionError = `↔️ Action Condition ${condition ? 'Satisfied' : 'Not Satisfied'}`;
+    window.__actionError = `↔️ ${chrome.i18n.getMessage('@ACTION__TITLE')} ${condition ? I18N_COMMON.CONDITION_SATISFIED : I18N_COMMON.CONDITION_NOT_SATISFIED}`;
     if (!condition || then === ACTION_RUNNING.SKIP) {
       throw ACTION_RUNNING.SKIP;
     } else if (then === ACTION_RUNNING.GOTO) {
