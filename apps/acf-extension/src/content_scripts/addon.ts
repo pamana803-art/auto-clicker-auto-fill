@@ -16,7 +16,7 @@ const ADDON_I18N = {
 type AddonType = { nodeValue: string | boolean } & Addon;
 
 const AddonProcessor = (() => {
-  const recheckFunc = async ({ nodeValue, elementFinder, value, condition, recheck, recheckOption, ...props }: AddonType, settings?: ActionSettings): Promise<true> => {
+  const recheckFunc = async ({ nodeValue, elementFinder, value, condition, recheck, recheckOption, ...props }: AddonType, settings?: ActionSettings): Promise<void> => {
     if (recheck !== undefined) {
       if (recheck > 0 || recheck < -1) {
         recheck -= 1;
@@ -113,7 +113,7 @@ const AddonProcessor = (() => {
     }
   };
 
-  const start = async ({ elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }: Addon, settings?: ActionSettings): Promise<true> => {
+  const start = async ({ elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }: Addon, settings?: ActionSettings): Promise<void> => {
     try {
       statusBar.addonUpdate();
       let nodeValue;
@@ -127,15 +127,14 @@ const AddonProcessor = (() => {
         }
       }
       if (nodeValue !== undefined) {
-        let result: boolean = compare(nodeValue, condition, value);
+        const result: boolean = compare(nodeValue, condition, value);
         if (!result) {
-          result = await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, settings);
+          await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, settings);
         }
         console.debug(
           `Action #${window.__currentAction} [${window.__currentActionName}]`,
           `${ADDON_I18N.TITLE} ${I18N_COMMON.COMPARE} '${nodeValue}' ${condition} '${value}'. ${I18N_COMMON.RESULT}: Condition Satisfied`
         );
-        return result;
       }
       throw ACTION_STATUS.SKIPPED;
     } catch (error) {

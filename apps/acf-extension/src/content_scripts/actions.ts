@@ -53,8 +53,7 @@ const Actions = (() => {
         await checkStatement(actions, action);
         await statusBar.wait(action.initWait, STATUS_BAR_TYPE.ACTION_WAIT);
         await AddonProcessor.check(action.addon, action.settings);
-        const status = await ActionProcessor.start(action);
-        action.status = status;
+        action.status = await ActionProcessor.start(action);
         notify(action);
       } catch (error) {
         if (error === ACTION_STATUS.SKIPPED || error === ACTION_RUNNING.SKIP) {
