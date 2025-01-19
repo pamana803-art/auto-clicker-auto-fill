@@ -26,8 +26,7 @@ const Statement = (() => {
     if (statement) {
       const { conditions, then, goto } = statement;
       if (conditions && then) {
-        const result = checkThen(conditionResult(conditions, actions), then, goto);
-        return result;
+        checkThen(conditionResult(conditions, actions), then, goto);
       }
     }
   };
