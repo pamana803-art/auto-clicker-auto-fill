@@ -42,7 +42,11 @@ const slice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(openActionSettingsModalAPI.fulfilled, (state, action) => {
-      state.settings = action.payload.settings || { ...defaultActionSettings };
+      if (action.payload.settings) {
+        state.settings = { ...action.payload.settings, retryGoto: action.payload.retryGoto };
+      } else {
+        state.settings = { ...defaultActionSettings };
+      }
       state.visible = !state.visible;
     });
   },

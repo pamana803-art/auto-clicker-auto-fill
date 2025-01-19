@@ -65,7 +65,11 @@ const slice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(openActionStatementModalAPI.fulfilled, (state, action) => {
-      state.statement = action.payload.statement || getDefaultActionStatement();
+      if (action.payload.statement) {
+        state.statement = { ...action.payload.statement, goto: action.payload.goto };
+      } else {
+        state.statement = getDefaultActionStatement();
+      }
       state.visible = !state.visible;
     });
   },

@@ -1,6 +1,6 @@
 import { ActionSettings, GOTO, RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { SettingsStorage } from '@dhruv-techapps/acf-store';
-import { ConfigError, Logger } from '@dhruv-techapps/core-common';
+import { ConfigError } from '@dhruv-techapps/core-common';
 import { I18N_ERROR } from './i18n';
 import { statusBar } from './status-bar';
 
@@ -106,17 +106,15 @@ const Common = (() => {
     } else if (retryOption === RETRY_OPTIONS.STOP) {
       throw new ConfigError(`elementFinder: ${elementFinder}`, I18N_ERROR.NOT_FOUND_STOP);
     } else if (retryOption === RETRY_OPTIONS.GOTO) {
-      console.groupEnd();
       throw retryGoto;
     }
-    Logger.colorInfo('RetryOption', retryOption);
   };
 
   const start = async (elementFinder: string, settings?: ActionSettings) => {
     if (!elementFinder) {
       throw new ConfigError(I18N_ERROR.ELEMENT_FINDER_BLANK, 'Element Finder');
     }
-
+    window.__actionError = `Element not found`;
     const { retryOption, retryInterval, retry, checkiFrames, iframeFirst, retryGoto } = { ...(await new SettingsStorage().getSettings()), ...settings };
     let elements: HTMLElement[] | undefined;
     if (iframeFirst) {

@@ -25,8 +25,7 @@ const AddonProcessor = (() => {
         return await start({ elementFinder, value, condition, recheck, recheckOption, ...props }, settings);
       }
     }
-    // eslint-disable-next-line no-console
-    console.table([{ elementFinder, value, condition, nodeValue }]);
+    window.__actionError = `${ADDON_I18N.TITLE} ${I18N_COMMON.COMPARE} '${nodeValue}' ${condition} '${value}'. ${I18N_COMMON.RESULT}: Condition not met`;
     if (recheckOption === RECHECK_OPTIONS.RELOAD) {
       if (document.readyState === 'complete') {
         window.location.reload();
@@ -40,7 +39,6 @@ const AddonProcessor = (() => {
     } else if (recheckOption === RECHECK_OPTIONS.GOTO && props.recheckGoto !== undefined) {
       throw props.recheckGoto;
     }
-    console.debug(I18N_COMMON.RECHECK_OPTION, recheckOption);
     throw ACTION_STATUS.SKIPPED;
   };
 
@@ -79,7 +77,6 @@ const AddonProcessor = (() => {
   };
 
   const compare = (nodeValue: string | boolean, condition: ADDON_CONDITIONS, value: string): boolean => {
-    console.debug(I18N_COMMON.COMPARE, nodeValue, condition, value);
     if (/than/gi.test(condition) && (Number.isNaN(Number(nodeValue)) || Number.isNaN(Number(value)))) {
       throw new ConfigError(`${I18N_ERROR.WRONG_DESCRIPTION}'${nodeValue}' '${value}'`, I18N_ERROR.WRONG_TITLE);
     }
@@ -134,14 +131,14 @@ const AddonProcessor = (() => {
         if (!result) {
           result = await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, settings);
         }
-        console.debug(`${ADDON_I18N.TITLE} ${I18N_COMMON.RESULT}`, result);
-        console.groupEnd();
+        console.debug(
+          `Action #${window.__currentAction} [${window.__currentActionName}]`,
+          `${ADDON_I18N.TITLE} ${I18N_COMMON.COMPARE} '${nodeValue}' ${condition} '${value}'. ${I18N_COMMON.RESULT}: Condition Satisfied`
+        );
         return result;
       }
-      console.groupEnd();
       throw ACTION_STATUS.SKIPPED;
     } catch (error) {
-      console.groupEnd();
       throw error;
     }
   };
@@ -150,7 +147,6 @@ const AddonProcessor = (() => {
       let { value } = addon;
       const { elementFinder, condition, ...props } = addon;
       if (elementFinder && value && condition) {
-        console.groupCollapsed(ADDON_I18N.TITLE);
         value = await ACFValue.getValue(value);
         return await start({ ...props, elementFinder, value, condition }, actionSettings);
       }

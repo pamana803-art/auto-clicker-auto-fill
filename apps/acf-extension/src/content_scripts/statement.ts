@@ -2,7 +2,6 @@ import { ACTION_CONDITION_OPR, ACTION_RUNNING, ActionCondition, ActionStatement,
 
 const Statement = (() => {
   const conditionResult = (conditions: Array<ActionCondition>, actions: Array<string>) => {
-    console.debug('Condition Result', { conditions, actions });
     return conditions
       .map(({ actionIndex, status, operator }) => ({ status: actions[actionIndex] === status, operator }))
       .reduce((accumulator, currentValue) => {
@@ -13,32 +12,23 @@ const Statement = (() => {
       }, false);
   };
 
-  const checkThen = (condition: boolean | { status: boolean; operator: ACTION_CONDITION_OPR }, then: ACTION_RUNNING, goto?: GOTO): true => {
-    console.debug('Check Then', { condition, then, goto });
-    if (condition) {
-      if (then === ACTION_RUNNING.GOTO) {
-        throw goto;
-      } else if (then === ACTION_RUNNING.PROCEED) {
-        return true;
-      } else {
-        throw ACTION_RUNNING.SKIP;
-      }
-    } else {
+  const checkThen = (condition: boolean | { status: boolean; operator: ACTION_CONDITION_OPR }, then: ACTION_RUNNING, goto?: GOTO) => {
+    window.__actionError = `↔️ Action Condition ${condition ? 'Satisfied' : 'Not Satisfied'}`;
+    if (!condition || then === ACTION_RUNNING.SKIP) {
       throw ACTION_RUNNING.SKIP;
+    } else if (then === ACTION_RUNNING.GOTO) {
+      throw goto;
     }
   };
 
-  const check = async (actions: Array<string>, statement?: ActionStatement) => {
+  const check = (actions: Array<string>, statement?: ActionStatement) => {
     if (statement) {
       const { conditions, then, goto } = statement;
       if (conditions && then) {
         const result = checkThen(conditionResult(conditions, actions), then, goto);
-        console.debug('Statement Result', result);
         return result;
       }
     }
-
-    return true;
   };
 
   return { check };

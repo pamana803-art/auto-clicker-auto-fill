@@ -40,7 +40,11 @@ const slice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(openActionAddonModalAPI.fulfilled, (state, action) => {
-      state.addon = action.payload.addon || { ...defaultAddon };
+      if (action.payload.addon) {
+        state.addon = { ...action.payload.addon, recheckGoto: action.payload.recheckGoto };
+      } else {
+        state.addon = { ...defaultAddon };
+      }
       state.visible = !state.visible;
     });
   },
