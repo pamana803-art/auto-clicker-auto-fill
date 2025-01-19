@@ -95,6 +95,9 @@
   "@ERROR__NOT_FOUND_RELOAD": {
     "message": "Not Found - RELOAD"
   },
+  "@ERROR__ACTION_NOT_FOUND_FOR_GOTO": {
+    "message": "Action not found for Goto"
+  },
   "@ERROR": {
     "message": "Error"
   },

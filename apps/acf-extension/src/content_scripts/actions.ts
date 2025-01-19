@@ -59,8 +59,11 @@ const Actions = (() => {
       } catch (error) {
         if (error === ACTION_STATUS.SKIPPED || error === ACTION_RUNNING.SKIP) {
           action.status = ACTION_STATUS.SKIPPED;
-        } else if (isValidUUID(error) || typeof error === 'number') {
-          const index = actions.findIndex((a) => a.id === error);
+        } else if (typeof error === 'number' || (typeof error === 'string' && isValidUUID(error))) {
+          const index = typeof error === 'number' ? error : actions.findIndex((a) => a.id === error);
+          if (index === -1) {
+            throw new ConfigError(I18N_ERROR.ACTION_NOT_FOUND_FOR_GOTO, ACTION_I18N.TITLE);
+          }
           i = index - 1;
           Logger.colorInfo(I18N_COMMON.GOTO, index + 1);
         } else {

@@ -22,4 +22,5 @@ export const I18N_ERROR = {
   INVALID_ELEMENT_FINDER: chrome.i18n.getMessage('@ERROR__INVALID_ELEMENT_FINDER'),
   NOT_FOUND_STOP: chrome.i18n.getMessage('@ERROR__NOT_FOUND_STOP'),
   NOT_FOUND_RELOAD: chrome.i18n.getMessage('@ERROR__NOT_FOUND_RELOAD'),
+  ACTION_NOT_FOUND_FOR_GOTO: chrome.i18n.getMessage('@ERROR__ACTION_NOT_FOUND_FOR_GOTO'),
 };

@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import {
   actionStatementSelector,
   addActionStatementCondition,
-  configSelector,
   selectedConfigSelector,
   setActionStatementMessage,
   switchActionStatementModal,
@@ -26,7 +25,6 @@ const ActionStatementModal = () => {
   const { t } = useTranslation();
   const { message, visible, statement, error } = useAppSelector(actionStatementSelector);
   const config = useAppSelector(selectedConfigSelector);
-  const { selectedActionId } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
 
   useTimeout(() => {
@@ -71,7 +69,7 @@ const ActionStatementModal = () => {
     dispatch(syncActionStatement(statement));
   };
 
-  if (!config || !selectedActionId) {
+  if (!config) {
     return null;
   }
 
@@ -143,7 +141,7 @@ const ActionStatementModal = () => {
               <Col xs={{ span: 4, offset: 8 }}>
                 <Form.Select value={statement.goto} onChange={onUpdateGoto} name='goto' required>
                   {actions.map((_action, index) => (
-                    <option key={_action.id} value={_action.id} disabled={_action.id === selectedActionId}>
+                    <option key={_action.id} value={_action.id}>
                       {index + 1} . {_action.name ?? _action.elementFinder}
                     </option>
                   ))}

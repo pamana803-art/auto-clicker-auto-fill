@@ -4,7 +4,7 @@ import { ChangeEvent } from 'react';
 import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { actionAddonSelector, configSelector, selectedConfigSelector, updateActionAddon, updateActionAddonGoto } from '../../store/config';
+import { actionAddonSelector, selectedConfigSelector, updateActionAddon, updateActionAddonGoto } from '../../store/config';
 import { REGEX } from '../../util';
 import { getFieldNameValue } from '../../util/element';
 
@@ -12,7 +12,6 @@ function AddonRecheck() {
   const { t } = useTranslation();
   const { addon } = useAppSelector(actionAddonSelector);
   const config = useAppSelector(selectedConfigSelector);
-  const { selectedActionId } = useAppSelector(configSelector);
   const dispatch = useAppDispatch();
 
   const onUpdate = (e) => {
@@ -32,7 +31,7 @@ function AddonRecheck() {
     dispatch(updateActionAddonGoto(e.currentTarget.value as RANDOM_UUID));
   };
 
-  if (!config || !addon || !selectedActionId) {
+  if (!config || !addon) {
     return null;
   }
 
@@ -103,7 +102,7 @@ function AddonRecheck() {
         <Col xs={{ span: 3, offset: 9 }}>
           <Form.Select value={addon.recheckGoto} onChange={onUpdateGoto} name='goto' required>
             {actions.map((_action, index) => (
-              <option key={_action.id} value={_action.id} disabled={_action.id === selectedActionId}>
+              <option key={_action.id} value={_action.id}>
                 {index + 1} . {_action.name ?? _action.elementFinder}
               </option>
             ))}
