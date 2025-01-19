@@ -114,32 +114,28 @@ const AddonProcessor = (() => {
   };
 
   const start = async ({ elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }: Addon, settings?: ActionSettings): Promise<void> => {
-    try {
-      statusBar.addonUpdate();
-      let nodeValue;
-      if (/^Func::/gi.test(elementFinder)) {
-        nodeValue = await Sandbox.sandboxEval(elementFinder.replace(/^Func::/gi, ''));
-      } else {
-        elementFinder = await ACFValue.getValue(elementFinder);
-        const elements = await Common.start(elementFinder, settings);
-        if (elements) {
-          nodeValue = getNodeValue(elements, valueExtractor, valueExtractorFlags);
-        }
+    statusBar.addonUpdate();
+    let nodeValue;
+    if (/^Func::/gi.test(elementFinder)) {
+      nodeValue = await Sandbox.sandboxEval(elementFinder.replace(/^Func::/gi, ''));
+    } else {
+      elementFinder = await ACFValue.getValue(elementFinder);
+      const elements = await Common.start(elementFinder, settings);
+      if (elements) {
+        nodeValue = getNodeValue(elements, valueExtractor, valueExtractorFlags);
       }
-      if (nodeValue !== undefined) {
-        const result: boolean = compare(nodeValue, condition, value);
-        if (!result) {
-          await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, settings);
-        }
-        console.debug(
-          `${ADDON_I18N.TITLE} #${window.__currentAction} [${window.__currentActionName}]`,
-          `${I18N_COMMON.COMPARE} '${nodeValue}' ${condition} '${value}'. ${I18N_COMMON.RESULT}: ${I18N_COMMON.CONDITION_SATISFIED}`
-        );
-      }
-      throw ACTION_STATUS.SKIPPED;
-    } catch (error) {
-      throw error;
     }
+    if (nodeValue !== undefined) {
+      const result: boolean = compare(nodeValue, condition, value);
+      if (!result) {
+        await recheckFunc({ nodeValue, elementFinder, value, condition, valueExtractor, valueExtractorFlags, ...props }, settings);
+      }
+      console.debug(
+        `${ADDON_I18N.TITLE} #${window.__currentAction} [${window.__currentActionName}]`,
+        `${I18N_COMMON.COMPARE} '${nodeValue}' ${condition} '${value}'. ${I18N_COMMON.RESULT}: ${I18N_COMMON.CONDITION_SATISFIED}`
+      );
+    }
+    throw ACTION_STATUS.SKIPPED;
   };
   const check = async (addon?: Addon, actionSettings?: ActionSettings) => {
     if (addon) {
