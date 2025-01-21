@@ -1,6 +1,6 @@
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import 'instantsearch.css/themes/satellite.css';
-import { Breadcrumb, Configure, Hits, HitsPerPage, InstantSearch, Pagination, SearchBox, SortBy } from 'react-instantsearch';
+import { Breadcrumb, Configure, Hits, HitsPerPage, InstantSearch, Pagination, PoweredBy, SearchBox, SortBy } from 'react-instantsearch';
 import { Hit } from './hits';
 
 const searchClient = algoliasearch(process.env.NX_PUBLIC_ALGOLIA_APP_ID ?? '', process.env.NX_PUBLIC_ALGOLIA_SEARCH_API_KEY ?? '');
@@ -15,7 +15,8 @@ export const Search = () => {
             <div className='Search col'>
               <Breadcrumb attributes={['hierarchicalCategories.lvl0', 'hierarchicalCategories.lvl1', 'hierarchicalCategories.lvl2']} />
               <SearchBox placeholder='Search' autoFocus />
-              <div className='d-flex justify-content-end'>
+              <div className='Search-header'>
+                <PoweredBy />
                 <HitsPerPage
                   items={[
                     { label: '10 configurations per page', value: 10, default: true },

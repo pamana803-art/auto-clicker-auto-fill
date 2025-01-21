@@ -1,6 +1,6 @@
 import { Configuration as ConfigurationType } from '@dhruv-techapps/acf-common';
 import React, { useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
 import { useParams, useSearchParams } from 'react-router-dom';
 import JsonView from 'react18-json-view';
 import 'react18-json-view/src/style.css';
@@ -14,6 +14,7 @@ export const Configuration: React.FC<{ configId?: string }> = ({ configId }) => 
   const [config, setConfig] = React.useState<ConfigType>();
   const [file, setFile] = React.useState<ConfigurationType>();
   const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
   if (configId) {
     id = configId;
@@ -22,12 +23,18 @@ export const Configuration: React.FC<{ configId?: string }> = ({ configId }) => 
   useEffect(() => {
     // Fetch the configuration
     if (id) {
-      getConfig(id).then(async (_config) => {
-        setConfig(_config);
-        const configuration = await downloadFile(`users/${_config?.userId}/${id}.json`);
-        setFile(configuration);
-        setLoading(false);
-      });
+      getConfig(id)
+        .then(async (_config) => {
+          setConfig(_config);
+          const configuration = await downloadFile(`users/${_config?.userId}/${id}.json`);
+          setFile(configuration);
+        })
+        .catch((error) => {
+          setError('Error while fetching configuration');
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   }, [id]);
 
@@ -46,6 +53,7 @@ export const Configuration: React.FC<{ configId?: string }> = ({ configId }) => 
       <main className='container-fluid m-auto'>
         <div className='d-flex justify-content-center m-5'>
           {loading && <h1>Loading Configuration...</h1>}
+          {!loading && error && <h1>{error}</h1>}
           {!loading && config && (
             <div>
               <h1>{config.name ?? 'Configuration'}</h1>
@@ -55,6 +63,10 @@ export const Configuration: React.FC<{ configId?: string }> = ({ configId }) => 
                     <tr>
                       <th scope='col'>URL:</th>
                       <td>{config.url}</td>
+                    </tr>
+                    <tr>
+                      <th scope='col'>User:</th>
+                      <td>{config.userName}</td>
                     </tr>
                     <tr>
                       <th scope='col'>Load Type:</th>
@@ -97,8 +109,30 @@ export const Configuration: React.FC<{ configId?: string }> = ({ configId }) => 
                         <td>Require value from google sheets</td>
                       </tr>
                     )}
+                    {config.created && (
+                      <tr>
+                        <th scope='col'>Created:</th>
+                        <td>{config.created?.toDate().toDateString()}</td>
+                      </tr>
+                    )}
+                    {config.updated && (
+                      <tr>
+                        <th scope='col'>Updated:</th>
+                        <td>{config.updated?.toDate().toDateString()}</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
+              )}
+              {config.tags && (
+                <div className='mb-4'>
+                  Tags:
+                  {config.tags.map((tag) => (
+                    <Badge bg='secondary' className='ms-2'>
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
               )}
               {file && (
                 <>

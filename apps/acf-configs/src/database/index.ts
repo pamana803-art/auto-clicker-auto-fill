@@ -1,4 +1,4 @@
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 
 export type ConfigType = {
@@ -6,6 +6,10 @@ export type ConfigType = {
   name: string;
   url: string;
   userId: string;
+  userName?: string;
+  tags?: string[];
+  updated?: Timestamp;
+  created?: Timestamp;
 };
 
 export const getConfig = async (id: string) => {
