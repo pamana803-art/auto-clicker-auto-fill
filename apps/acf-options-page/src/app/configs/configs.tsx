@@ -87,8 +87,8 @@ function Configs(props) {
             <ConfigDropdown importFiled={importFiled} onExportAll={onExportAll} />
             <main>
               <Config />
-              <Ads />
               <Action />
+              <Ads />
               <Footer />
               <ConfigSettingsModal />
               <BatchModal />
