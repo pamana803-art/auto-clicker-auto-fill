@@ -64,7 +64,7 @@ module.exports = composePlugins(withNx(), (config, ctx) => {
     new BannerPlugin(fs.readFileSync('./LICENSE', 'utf8'))
   );
 
-  if (!config.watch) {
+  if (process.env.NX_PUBLIC_VARIANT === 'PROD') {
     config.plugins.push(
       sentryWebpackPlugin({
         org: 'dhruv-techapps',

@@ -10,7 +10,7 @@ module.exports = composePlugins(withNx(), withReact(), (config) => {
   // Update the webpack config as needed here.
   // e.g. `config.plugins.push(new MyPlugin())`
   config.plugins.push(new BannerPlugin(fs.readFileSync('./LICENSE', 'utf8')));
-  if (config.mode !== 'development') {
+  if (process.env.NX_PUBLIC_VARIANT === 'PROD') {
     config.plugins.push(
       sentryWebpackPlugin({
         org: 'dhruv-techapps',
