@@ -1,0 +1,24 @@
+name: Notify Discord on Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send release notification to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "username": "Release Bot",
+              "avatar_url": "https://getautoclicker.com/docs/4.x/assets/brand/bootstrap-social-logo.png",
+              "content": "@everyone \n ${GITHUB_ACTOR} published a new release: [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})\n\n**Release Notes:**\n${{ github.event.release.body }}"
+            }' \
+            $DISCORD_WEBHOOK_URL
