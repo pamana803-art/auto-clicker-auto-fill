@@ -21,6 +21,6 @@ jobs:
             -d '{
               "username": "Release Bot",
               "avatar_url": "https://getautoclicker.com/docs/4.x/assets/brand/bootstrap-social-logo.png",
-              "content": "@everyone \n ${GITHUB_ACTOR} published a new release: [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})\n\n**Release Notes:**\n${{ github.event.release.body }}"
+              "content": "@everyone \n ${{ github.actor }} published a new release: [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})\n\n**Release Notes:**\n${{ github.event.release.body }}"
             }' \
             $DISCORD_WEBHOOK_URL
