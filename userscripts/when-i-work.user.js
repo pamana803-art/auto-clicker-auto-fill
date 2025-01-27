@@ -86,7 +86,7 @@
         const [, , datetime, type] = shift.querySelectorAll('div.ag-cell');
         const [date, time] = datetime.innerText.split(' | ');
         const shiftDate = new Date(DATE).toDateString();
-        if (date.replace(',', '') === shiftDate && checkTimeDiff(time.innerText) && time)
+        if (date.replace(',', '') === shiftDate && checkTimeDiff(time.innerText) && time) {
           if (LINES_ACCEPT.includes(type.innerText)) {
             tr.click();
             setTimeout(() => {
@@ -95,6 +95,7 @@
               GM_notification({ title: 'When I Work', text: `${datetime} ${type} shift picked`, image: 'https://appx.wheniwork.com/favicon.ico' });
             }, 300);
           }
+        }
       }
     });
     setTimeout(() => {
