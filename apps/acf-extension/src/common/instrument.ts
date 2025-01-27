@@ -14,9 +14,15 @@ if (VARIANT === 'PROD') {
     transport: makeFetchTransport,
     stackParser: defaultStackParser,
     integrations: integrations,
-    ignoreErrors: ['The browser is shutting down.', 'Extension context invalidated.', 'Could not establish connection. Receiving end does not exist.', 'Non-Error promise rejection captured'],
+    ignoreErrors: [
+      'The browser is shutting down.',
+      'Extension context invalidated.',
+      'Could not establish connection. Receiving end does not exist.',
+      'Non-Error promise rejection captured',
+      '<unlabeled event>',
+    ],
     release: `acf-extension@${RELEASE_VERSION?.replace('v', '')}`,
-    sampleRate: VARIANT === 'PROD' ? 1 : 0,
+    sampleRate: 1,
   });
   scope.setClient(client);
   client.init(); // initializing has to be done after setting the client on the scope
