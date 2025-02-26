@@ -172,5 +172,3 @@ jobs:
           prerelease: ${{ vars.NX_PUBLIC_VARIANT == 'BETA' || vars.NX_PUBLIC_VARIANT == 'DEV'}}
           generate_release_notes: true
           discussion_category_name: 'Release'
-          fail_on_unmatched_files: true
-          files: bundle/*
