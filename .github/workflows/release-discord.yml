@@ -10,19 +10,26 @@ on:
 jobs:
   notify-discord:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Send release notification to Discord
+      - uses: actions/github-script@v6
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          RELEASE_BODY: ${{ github.event.release.body }}
-        run: |
-          ESCAPED_BODY=$(echo "$RELEASE_BODY" | sed ':a;N;$!ba;s/\n/\\n/g')
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"username\": \"Release Bot\",
-              \"avatar_url\": \"https://getautoclicker.com/docs/4.x/assets/brand/bootstrap-social-logo.png\",
-              \"content\": \"${{ github.actor }} published a new release: [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})\\n\\n**Release Notes:**\\n$ESCAPED_BODY\"
-            }" \
-            "$DISCORD_WEBHOOK_URL"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const release = context.payload.release;
+            const message = `New release: ${release.name} \n ${release.body}`;
+            const options = {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                username: 'Release Bot',
+                avatar_url: 'https://getautoclicker.com/docs/4.x/assets/brand/bootstrap-social-logo.png',
+                content: '${{ github.actor }} published a new release: [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})\n\n**Release Notes:**\n${{ ESCAPED_BODY }}',
+              }),
+            };
+
+            const response = await fetch(process.env.DISCORD_WEBHOOK_URL, options);
+            console.log(response.status);
