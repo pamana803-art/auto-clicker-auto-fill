@@ -17,8 +17,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const release = context.payload.release;
-            const message = `New release: ${release.name} \n ${release.body}`;
+            // Function to format links and remove comments
+            const formatContent = (text) => 
+                text
+                  .replace(/(https?:\/\/[^\s)]+)/g, '<$1>') // Wrap URLs in <>
+                  .replace(/<!--.*?-->/gs, '') // Remove all HTML comments
+            const releaseBody = formatContent("${{ github.event.release.body }}")
             const options = {
               method: 'POST',
               headers: {
@@ -27,9 +31,10 @@ jobs:
               body: JSON.stringify({
                 username: 'Release Bot',
                 avatar_url: 'https://getautoclicker.com/docs/4.x/assets/brand/bootstrap-social-logo.png',
-                content: '${{ github.actor }} published a new release: [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})\n\n**Release Notes:**\n${{ github.event.release.body }}',
+                content: '${{ github.actor }} published a new release: [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})\n${{ releaseBody }}',
               }),
             };
 
             const response = await fetch(process.env.DISCORD_WEBHOOK_URL, options);
             console.log(response.status);
+
