@@ -47,7 +47,7 @@ const ConfigProcessor = (() => {
 
   const start = async (config: Configuration) => {
     try {
-       window.__sessionCount = new Session(config.id).getCount();
+      window.__sessionCount = new Session(config.id).getCount();
       if (config.bypass) {
         await MainWorldService.bypass(config.bypass);
       }
