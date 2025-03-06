@@ -15,12 +15,14 @@ jobs:
       - name: Send release notification to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RELEASE_BODY: ${{ github.event.release.body }}
         run: |
+          ESCAPED_BODY=$(echo "$RELEASE_BODY" | sed ':a;N;$!ba;s/\n/\\n/g')
           curl -X POST \
             -H "Content-Type: application/json" \
-            -d '{
-              "username": "Release Bot",
-              "avatar_url": "https://getautoclicker.com/docs/4.x/assets/brand/bootstrap-social-logo.png",
-              "content": `${{ github.actor }} published a new release: [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})\n\n**Release Notes:**\n${{ github.event.release.body }}`
-            }' \
-            $DISCORD_WEBHOOK_URL
+            -d "{
+              \"username\": \"Release Bot\",
+              \"avatar_url\": \"https://getautoclicker.com/docs/4.x/assets/brand/bootstrap-social-logo.png\",
+              \"content\": \"${{ github.actor }} published a new release: [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})\\n\\n**Release Notes:**\\n$ESCAPED_BODY\"
+            }" \
+            "$DISCORD_WEBHOOK_URL"
