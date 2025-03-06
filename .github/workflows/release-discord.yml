@@ -22,7 +22,7 @@ jobs:
                 text
                   .replace(/(https?:\/\/[^\s)]+)/g, '<$1>') // Wrap URLs in <>
                   .replace(/<!--.*?-->/gs, '') // Remove all HTML comments
-            const releaseBody = formatContent("${{ github.event.release.body }}")
+            const releaseBody = formatContent(`${{ github.event.release.body }}`)
             const options = {
               method: 'POST',
               headers: {
