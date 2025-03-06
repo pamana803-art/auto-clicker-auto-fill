@@ -6,6 +6,8 @@
     "start": "nx run-many -t serve -p acf-extension acf-options-page acf-i18n",
     "release:publish": "nx release publish",
     "build": "nx run-many -t build",
+    "format:check": "nx format check",
+    "format:write": "nx format:write",
     "lint": "nx run-many -t lint"
   },
   "private": true,
