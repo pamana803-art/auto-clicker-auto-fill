@@ -43,6 +43,17 @@
           "destination": "/index.html"
         }
       ]
+    },
+    {
+      "site": "auto-clicker-auto-fill-static",
+      "public": "apps/acf-i18n/src",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "apps/acf-i18n/src/*.[mjs|ts]"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/"
+        }
+      ]
     }
   ]
 }
