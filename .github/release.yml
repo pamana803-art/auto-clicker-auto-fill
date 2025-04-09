@@ -5,11 +5,11 @@ changelog:
         - '*'
       exclude:
         labels:
-          - 'type : Bug'
-          - 'type : Dependencies'
+          - 'Bug'
+          - 'Dependencies'
     - title: 🐛 Bug
       labels:
-        - 'type : Bug'
+        - 'Bug'
     - title: 👒 Dependencies
       labels:
-        - 'type : Dependencies'
+        - 'Dependencies'
