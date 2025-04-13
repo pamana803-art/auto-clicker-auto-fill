@@ -3,7 +3,7 @@ import 'instantsearch.css/themes/satellite.css';
 import { Breadcrumb, Configure, Hits, HitsPerPage, InstantSearch, Pagination, PoweredBy, SearchBox, SortBy } from 'react-instantsearch';
 import { Hit } from './hits';
 
-const searchClient = algoliasearch(process.env.NX_PUBLIC_ALGOLIA_APP_ID ?? '', process.env.NX_PUBLIC_ALGOLIA_SEARCH_API_KEY ?? '');
+const searchClient = algoliasearch(import.meta.env.VITE_PUBLIC_ALGOLIA_APP_ID ?? '', import.meta.env.VITE_PUBLIC_ALGOLIA_SEARCH_API_KEY ?? '');
 
 export const Search = () => {
   return (
@@ -21,7 +21,7 @@ export const Search = () => {
                   items={[
                     { label: '10 configurations per page', value: 10, default: true },
                     { label: '20 configurations per page', value: 20 },
-                    { label: '40 configurations per page', value: 40 },
+                    { label: '40 configurations per page', value: 40 }
                   ]}
                 />
                 <SortBy items={[{ label: 'Relevance', value: 'instant_search' }]} />

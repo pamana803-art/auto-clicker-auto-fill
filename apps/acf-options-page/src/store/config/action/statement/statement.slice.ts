@@ -2,7 +2,7 @@ import { ActionCondition, ActionStatement, GOTO, RETRY_OPTIONS } from '@dhruv-te
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../../../../store';
+import { RootState } from '../../../store';
 import { openActionStatementModalAPI } from './statement.api';
 
 type ActionStatementStore = {
@@ -66,7 +66,7 @@ const slice = createSlice({
       state.error = action.payload;
       Sentry.captureException(state.error);
       state.message = undefined;
-    },
+    }
   },
   extraReducers(builder) {
     builder.addCase(openActionStatementModalAPI.fulfilled, (state, action) => {
@@ -77,7 +77,7 @@ const slice = createSlice({
       }
       state.visible = !state.visible;
     });
-  },
+  }
 });
 
 export const {
@@ -88,7 +88,7 @@ export const {
   switchActionStatementModal,
   updateActionStatementCondition,
   updateActionStatementGoto,
-  updateActionStatementThen,
+  updateActionStatementThen
 } = slice.actions;
 
 export const actionStatementSelector = (state: RootState) => state.actionStatement;

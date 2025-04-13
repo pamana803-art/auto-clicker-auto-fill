@@ -2,7 +2,7 @@ import { Configuration } from '@dhruv-techapps/acf-common';
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../../../store';
+import { RootState } from '../../store';
 import { configRemoveUpdateAPI } from './config-remove.api';
 
 export type ConfigurationRemoveType = Configuration & { checked?: boolean };
@@ -45,7 +45,7 @@ const slice = createSlice({
     },
     updateRemoveConfiguration: (state, action) => {
       state.configs = action.payload;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(configRemoveUpdateAPI.rejected, (state, action) => {
@@ -56,7 +56,7 @@ const slice = createSlice({
     builder.addCase(configRemoveUpdateAPI.fulfilled, (state) => {
       state.visible = false;
     });
-  },
+  }
 });
 
 export const { switchConfigRemoveSelection, switchConfigRemoveModal, updateRemoveConfiguration, setConfigRemoveMessage } = slice.actions;

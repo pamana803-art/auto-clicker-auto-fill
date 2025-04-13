@@ -3,9 +3,10 @@ import { StorageService } from '@dhruv-techapps/core-service';
 import { AnyAction, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
 import i18next from 'i18next';
-import { RootState } from '../../store';
+import { RootState } from '../store';
 import { addToast } from '../toast.slice';
 
+import { ScheduleService } from '@dhruv-techapps/acf-service';
 import {
   setActionAddonError,
   setActionAddonMessage,
@@ -14,7 +15,7 @@ import {
   setActionSettingsError,
   setActionSettingsMessage,
   setActionStatementError,
-  setActionStatementMessage,
+  setActionStatementMessage
 } from './action';
 import { setBatchError, setBatchMessage } from './batch';
 import {
@@ -34,25 +35,23 @@ import {
   updateAction,
   updateBatch,
   updateConfig,
-  updateConfigSettings,
+  updateConfigSettings
 } from './config.slice';
-import { setConfigSettingsError, setConfigSettingsMessage } from './settings';
 import { setScheduleError, setScheduleMessage } from './schedule';
-import { ScheduleService } from '@dhruv-techapps/acf-service';
+import { setConfigSettingsError, setConfigSettingsMessage } from './settings';
 
 const configsToastListenerMiddleware = createListenerMiddleware();
 configsToastListenerMiddleware.startListening({
   matcher: isAnyOf(addConfig, removeConfig, duplicateConfig),
   effect: async (action, listenerApi) => {
     const [type, method] = action.type.split('/');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
     const header = i18next.t(`toast.${type}.${method}.header`, { name: type });
     const body = i18next.t(`toast.${type}.${method}.body`, { name: type });
     if (header) {
       listenerApi.dispatch(addToast({ header, body }));
     }
-  },
+  }
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -101,8 +100,6 @@ configsListenerMiddleware.startListening({
     // Run whatever additional side-effect-y logic you want here
     const state = listenerApi.getState() as RootState;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
     StorageService.set({ [LOCAL_STORAGE_KEY.CONFIGS]: state.configuration.configs })
       .then(() => {
         const { success, message } = getMessageFunc(action);
@@ -130,7 +127,7 @@ configsListenerMiddleware.startListening({
           }
         }
       });
-  },
+  }
 });
 
 export { configsListenerMiddleware, configsToastListenerMiddleware };

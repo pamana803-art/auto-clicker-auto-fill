@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { NO_EXTENSION_ERROR } from '../constants';
-import { RootState } from '../store';
+import { NO_EXTENSION_ERROR } from '../util/constants';
 import { getManifest } from './app.api';
+import { RootState } from './store';
 
 type AppStore = {
   manifest?: Partial<chrome.runtime.Manifest>;
@@ -14,7 +14,7 @@ type AppStore = {
 
 const initialState: AppStore = {
   loading: true,
-  extensionNotFound: false,
+  extensionNotFound: false
 };
 
 const slice = createSlice({
@@ -37,7 +37,7 @@ const slice = createSlice({
       if (action.payload) {
         state.error = action.payload;
       }
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getManifest.fulfilled, (state, action) => {
@@ -58,7 +58,7 @@ const slice = createSlice({
         }
       }
     });
-  },
+  }
 });
 
 export const { switchExtensionNotFound, setAppError, setManifest } = slice.actions;

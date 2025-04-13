@@ -1,6 +1,5 @@
-import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
-import { DropdownToggle } from '@apps/acf-options-page/src/components';
-import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
+import { useConfirmationModalContext } from '@acf-options-page/_providers/confirm.provider';
+import { DropdownToggle } from '@acf-options-page/components';
 import {
   addConfig,
   configSelector,
@@ -10,9 +9,10 @@ import {
   setDetailVisibility,
   setSearch,
   switchConfigRemoveModal,
-  switchConfigReorderModal,
-} from '@apps/acf-options-page/src/store/config';
-import { Ban, EyeSlashFill, Plus, ThreeDots, Trash } from '@apps/acf-options-page/src/util';
+  switchConfigReorderModal
+} from '@acf-options-page/store/config';
+import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
+import { Ban, EyeSlashFill, Plus, ThreeDots, Trash } from '@acf-options-page/util';
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { useLayoutEffect, useRef } from 'react';
 import { Button, Dropdown, Form, ListGroup } from 'react-bootstrap';
@@ -32,7 +32,7 @@ export const ConfigSidebar = (props) => {
     const result = await modalContext.showConfirmation({
       title: t('confirm.configuration.remove.title'),
       message: t('confirm.configuration.remove.message', { name }),
-      headerClass: 'text-danger',
+      headerClass: 'text-danger'
     });
     result && dispatch(removeConfig(config.id));
   };

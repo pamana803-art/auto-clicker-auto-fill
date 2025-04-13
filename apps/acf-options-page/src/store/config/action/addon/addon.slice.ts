@@ -1,4 +1,4 @@
-import { RootState } from '@apps/acf-options-page/src/store';
+import { RootState } from '@acf-options-page/store';
 import { Addon, GOTO, defaultAddon } from '@dhruv-techapps/acf-common';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
@@ -36,7 +36,7 @@ const slice = createSlice({
       state.error = action.payload;
       Sentry.captureException(state.error);
       state.message = undefined;
-    },
+    }
   },
   extraReducers(builder) {
     builder.addCase(openActionAddonModalAPI.fulfilled, (state, action) => {
@@ -47,7 +47,7 @@ const slice = createSlice({
       }
       state.visible = !state.visible;
     });
-  },
+  }
 });
 
 export const { setActionAddonError, setActionAddonMessage, switchActionAddonModal, updateActionAddon, updateActionAddonGoto } = slice.actions;

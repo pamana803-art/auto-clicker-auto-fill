@@ -1,14 +1,14 @@
-import { FirebaseFirestoreService, Product, Subscription } from '@dhruv-techapps/firebase-firestore';
+import { FirebaseFirestoreService, Product, Subscription } from '@dhruv-techapps/shared-firebase-firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../../store';
+import { RootState } from '../store';
 
 type SubscribeStore = { visible: boolean; isPortalLinkLoading: boolean; subscriptions?: Subscription[]; error?: string; products?: Product[]; isSubscribing: boolean };
 
 const initialState: SubscribeStore = {
   visible: false,
   isSubscribing: false,
-  isPortalLinkLoading: false,
+  isPortalLinkLoading: false
 };
 
 export const getProducts = createAsyncThunk('firebase/getProducts', async () => {
@@ -43,7 +43,7 @@ const slice = createSlice({
     switchIsPortalLinkLoading: (state) => {
       window.dataLayer.push({ event: 'modal', name: 'manage-subscribe', visibility: !state.visible });
       state.isPortalLinkLoading = !state.isPortalLinkLoading;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getSubscription.fulfilled, (state, action) => {
@@ -68,7 +68,7 @@ const slice = createSlice({
       state.error = action.error.message;
       Sentry.captureException(state.error);
     });
-  },
+  }
 });
 
 export const { switchSubscribeModal, switchIsPortalLinkLoading } = slice.actions;

@@ -2,7 +2,7 @@ import { Action, ACTION_RUNNING, ACTION_STATUS } from '@dhruv-techapps/acf-commo
 import { SettingsStorage } from '@dhruv-techapps/acf-store';
 import { ConfigError, isValidUUID } from '@dhruv-techapps/core-common';
 import { NotificationsService } from '@dhruv-techapps/core-service';
-import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
+import { STATUS_BAR_TYPE } from '@dhruv-techapps/shared-status-bar';
 import ActionProcessor from './action';
 import AddonProcessor from './addon';
 import Common from './common';
@@ -12,7 +12,7 @@ import { statusBar } from './status-bar';
 
 const ACTION_I18N = {
   TITLE: chrome.i18n.getMessage('@ACTION__TITLE'),
-  NO_NAME: chrome.i18n.getMessage('@ACTION__NO_NAME'),
+  NO_NAME: chrome.i18n.getMessage('@ACTION__NO_NAME')
 };
 
 const Actions = (() => {
@@ -28,7 +28,7 @@ const Actions = (() => {
         title: `${ACTION_I18N.TITLE} ${I18N_COMMON.COMPLETED}`,
         message: action.elementFinder,
         silent: !settings.notifications.sound,
-        iconUrl: Common.getNotificationIcon(),
+        iconUrl: Common.getNotificationIcon()
       });
     }
   };

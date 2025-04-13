@@ -1,14 +1,14 @@
 import { Action, Batch } from '@dhruv-techapps/acf-common';
 import { SettingsStorage } from '@dhruv-techapps/acf-store';
 import { NotificationsService } from '@dhruv-techapps/core-service';
-import { STATUS_BAR_TYPE } from '@dhruv-techapps/status-bar';
+import { STATUS_BAR_TYPE } from '@dhruv-techapps/shared-status-bar';
 import Actions from './actions';
 import Common from './common';
 import { I18N_COMMON } from './i18n';
 import { statusBar } from './status-bar';
 
 const BATCH_I18N = {
-  TITLE: chrome.i18n.getMessage('@BATCH__TITLE'),
+  TITLE: chrome.i18n.getMessage('@BATCH__TITLE')
 };
 
 const BatchProcessor = (() => {
@@ -39,14 +39,14 @@ const BatchProcessor = (() => {
               title: `${BATCH_I18N.TITLE} ${I18N_COMMON.COMPLETED}`,
               message: `#${i + 1} ${BATCH_I18N.TITLE}`,
               silent: !notifications.sound,
-              iconUrl: Common.getNotificationIcon(),
+              iconUrl: Common.getNotificationIcon()
             });
           }
           console.groupEnd();
         }
       } else if (batch.repeat < -1) {
         let i = 1;
-        // eslint-disable-next-line no-constant-condition
+
         while (true) {
           if (batch?.repeatInterval) {
             statusBar.batchUpdate('∞');

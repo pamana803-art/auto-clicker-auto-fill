@@ -1,4 +1,4 @@
-import { RootState } from '@apps/acf-options-page/src/store';
+import { RootState } from '@acf-options-page/store';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
 
@@ -26,8 +26,8 @@ const slice = createSlice({
       state.error = action.payload;
       Sentry.captureException(state.error);
       state.message = undefined;
-    },
-  },
+    }
+  }
 });
 
 export const { switchBatchModal, setBatchMessage, setBatchError } = slice.actions;

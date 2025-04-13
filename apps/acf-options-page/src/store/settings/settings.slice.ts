@@ -1,8 +1,8 @@
 import { Discord, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
-import { AUTO_BACKUP } from '@dhruv-techapps/google-drive';
+import { AUTO_BACKUP } from '@dhruv-techapps/shared-google-drive';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../../store';
+import { RootState } from '../store';
 import { discordDeleteAPI, discordGetAPI, discordLoginAPI, settingsGetAPI } from './settings.api';
 
 type SettingsStore = {
@@ -57,7 +57,7 @@ const slice = createSlice({
       Sentry.captureException(state.error);
       state.message = undefined;
       state.loading = false;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(settingsGetAPI.fulfilled, (state, action) => {
@@ -98,7 +98,7 @@ const slice = createSlice({
       state.error = action.error.message;
       Sentry.captureException(state.error);
     });
-  },
+  }
 });
 
 export const { switchSettingsModal, setSettingsError, updateSettings, setSettingsMessage, updateSettingsNotification, updateSettingsBackup } = slice.actions;

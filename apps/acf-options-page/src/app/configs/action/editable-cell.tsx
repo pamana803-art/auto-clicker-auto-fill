@@ -1,11 +1,11 @@
-import { getFieldNameValue } from '@apps/acf-options-page/src/util/element';
+import { getFieldNameValue } from '@acf-options-page/util/element';
 import { Action } from '@dhruv-techapps/acf-common';
 import { ColumnDef } from '@tanstack/react-table';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export const defaultColumn: Partial<ColumnDef<Action>> = {
-  cell: Cell,
+  cell: Cell
 };
 
 function Cell({ getValue, row: { original }, column: { id, columnDef }, table }) {

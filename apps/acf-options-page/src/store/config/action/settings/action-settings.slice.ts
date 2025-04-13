@@ -1,7 +1,7 @@
 import { ActionSettings, defaultActionSettings, GOTO } from '@dhruv-techapps/acf-common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../../../../store';
+import { RootState } from '../../../store';
 import { openActionSettingsModalAPI } from './action-settings.api';
 
 type ActionSettingsStore = {
@@ -38,7 +38,7 @@ const slice = createSlice({
     },
     updateActionSettingsGoto: (state, action: PayloadAction<GOTO>) => {
       state.settings.retryGoto = action.payload;
-    },
+    }
   },
   extraReducers(builder) {
     builder.addCase(openActionSettingsModalAPI.fulfilled, (state, action) => {
@@ -49,7 +49,7 @@ const slice = createSlice({
       }
       state.visible = !state.visible;
     });
-  },
+  }
 });
 
 export const { updateActionSettings, switchActionSettingsModal, updateActionSettingsGoto, setActionSettingsMessage, setActionSettingsError } = slice.actions;

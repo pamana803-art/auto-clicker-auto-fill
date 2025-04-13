@@ -1,7 +1,7 @@
 import { LOAD_TYPES, RUNTIME_MESSAGE_ACF } from '@dhruv-techapps/acf-common';
 import { ConfigStorage, GetConfigResult, SettingsStorage } from '@dhruv-techapps/acf-store';
 import { Logger, LoggerColor } from '@dhruv-techapps/core-common';
-import { Sheets } from '@dhruv-techapps/google-sheets';
+import { Sheets } from '@dhruv-techapps/shared-google-sheets';
 import { scope } from '../common/instrument';
 import ConfigProcessor from './config';
 import { statusBar } from './status-bar';
@@ -33,9 +33,9 @@ async function loadConfig(loadType: LOAD_TYPES) {
       if (autoConfig) {
         if (autoConfig.loadType === loadType) {
           const { host } = document.location;
-          Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, host, loadType);
+          Logger.color(chrome.runtime.getManifest().name, LoggerColor.PRIMARY, 'debug', host, loadType);
           await ConfigProcessor.checkStartType(manualConfigs, autoConfig);
-          Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, host, 'END');
+          Logger.color(chrome.runtime.getManifest().name, LoggerColor.PRIMARY, 'debug', host, 'END');
         }
       } else if (manualConfigs.length > 0 && loadType === LOAD_TYPES.DOCUMENT) {
         await ConfigProcessor.checkStartType(manualConfigs);
@@ -74,9 +74,9 @@ chrome.runtime.onMessage.addListener(async (message) => {
   if (action === RUNTIME_MESSAGE_ACF.RUN_CONFIG) {
     try {
       new ConfigStorage().getConfigById(configId).then(async (config) => {
-        Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, config?.url, 'START');
+        Logger.color(chrome.runtime.getManifest().name, LoggerColor.PRIMARY, 'debug', config?.url, 'START');
         await ConfigProcessor.checkStartType([], config);
-        Logger.color(chrome.runtime.getManifest().name, undefined, LoggerColor.PRIMARY, config?.url, 'END');
+        Logger.color(chrome.runtime.getManifest().name, LoggerColor.PRIMARY, 'debug', config?.url, 'END');
       });
     } catch (e) {
       if (e instanceof Error) {

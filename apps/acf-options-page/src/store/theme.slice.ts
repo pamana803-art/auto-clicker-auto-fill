@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../store';
+import { RootState } from './store';
 
 const getInitialState = () => {
   const theme = localStorage.getItem('theme') || 'light';
@@ -19,8 +19,8 @@ const slice = createSlice({
       localStorage.setItem('theme', theme);
       Sentry.setTag('theme', theme);
       return theme;
-    },
-  },
+    }
+  }
 });
 export const { switchTheme } = slice.actions;
 export const themeSelector = (state: RootState) => state.theme;

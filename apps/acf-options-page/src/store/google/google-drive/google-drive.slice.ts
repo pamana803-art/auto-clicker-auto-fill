@@ -1,7 +1,7 @@
-import { DriveFile } from '@dhruv-techapps/google-drive';
+import { DriveFile } from '@dhruv-techapps/shared-google-drive';
 import { createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../../../store';
+import { RootState } from '../../store';
 import { googleDriveDeleteAPI, googleDriveListWithContentAPI } from './google-drive.api';
 
 type GoogleDriveStore = {
@@ -33,7 +33,7 @@ const slice = createSlice({
     builder.addCase(googleDriveDeleteAPI.fulfilled, (state, action) => {
       state.files = state.files.filter((file) => file.id !== action.payload.id);
     });
-  },
+  }
 });
 
 export const googleDriveSelector = (state: RootState) => state.googleDrive;

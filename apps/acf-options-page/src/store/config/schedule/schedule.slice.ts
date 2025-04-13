@@ -1,4 +1,4 @@
-import { RootState } from '@apps/acf-options-page/src/store';
+import { RootState } from '@acf-options-page/store';
 import { ISchedule, defaultSchedule } from '@dhruv-techapps/acf-common';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
@@ -33,7 +33,7 @@ const slice = createSlice({
       state.error = action.payload;
       Sentry.captureException(state.error);
       state.message = undefined;
-    },
+    }
   },
   extraReducers(builder) {
     builder.addCase(openScheduleModalAPI.fulfilled, (state, action) => {
@@ -44,7 +44,7 @@ const slice = createSlice({
       }
       state.visible = !state.visible;
     });
-  },
+  }
 });
 
 export const { setScheduleError, setScheduleMessage, switchScheduleModal, updateSchedule } = slice.actions;

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../../store';
+import { RootState } from '../store';
 import { blogCheckAPI } from './blog.api';
 
 type GitHubRelease = {
@@ -80,7 +80,7 @@ type GitHubRelease = {
 type AddonStore = { visible: boolean; release?: GitHubRelease };
 
 const initialState: AddonStore = {
-  visible: false,
+  visible: false
 };
 
 const slice = createSlice({
@@ -90,7 +90,7 @@ const slice = createSlice({
     hideBlog: () => {
       window.dataLayer.push({ event: 'modal', name: 'blog', visibility: false });
       return initialState;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(blogCheckAPI.fulfilled, (state, action) => {
@@ -98,7 +98,7 @@ const slice = createSlice({
       window.dataLayer.push({ event: 'modal', name: 'blog', visibility: true });
       state.visible = true;
     });
-  },
+  }
 });
 
 export const { hideBlog } = slice.actions;

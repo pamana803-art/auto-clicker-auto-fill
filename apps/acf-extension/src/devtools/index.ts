@@ -10,5 +10,4 @@ export class RecorderPlugin {
   }
 }
 
-/* eslint-disable no-undef */
 chrome.devtools.recorder.registerRecorderExtensionPlugin(new RecorderPlugin(), 'Auto Clicker Auto Fill', 'application/json');

@@ -1,10 +1,10 @@
-import { AUTO_BACKUP } from '@dhruv-techapps/google-drive';
-import { GOOGLE_SCOPES } from '@dhruv-techapps/google-oauth';
+import { AUTO_BACKUP } from '@dhruv-techapps/shared-google-drive';
+import { GOOGLE_SCOPES } from '@dhruv-techapps/shared-google-oauth';
 import { useEffect } from 'react';
 import { Accordion, Button, Card, ListGroup, NavDropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useConfirmationModalContext } from '../../_providers/confirm.provider';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 import { ErrorAlert } from '../../components';
 import { firebaseSelector, switchFirebaseLoginModal } from '../../store/firebase';
@@ -17,7 +17,7 @@ export function SettingsGoogleBackup() {
   const { t } = useTranslation();
   const modalContext = useConfirmationModalContext();
   const {
-    settings: { backup },
+    settings: { backup }
   } = useAppSelector(settingsSelector);
   const { user } = useAppSelector(firebaseSelector);
   const { grantedScopes, googleLoading } = useAppSelector(googleSelector);
@@ -52,7 +52,7 @@ export function SettingsGoogleBackup() {
     const result = await modalContext.showConfirmation({
       title: t('confirm.backup.restore.title'),
       message: t('confirm.backup.restore.message'),
-      headerClass: 'text-danger',
+      headerClass: 'text-danger'
     });
     result && dispatch(googleDriveRestoreAPI({ id, name }));
   };

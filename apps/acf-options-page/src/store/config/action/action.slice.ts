@@ -1,5 +1,5 @@
-import { LocalStorage } from '@apps/acf-options-page/src/_helpers';
-import { RootState } from '@apps/acf-options-page/src/store';
+import { LocalStorage } from '@acf-options-page/_helpers';
+import { RootState } from '@acf-options-page/store';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
 
@@ -13,7 +13,7 @@ type ActionStore = {
 };
 
 const initialState: ActionStore = {
-  columnVisibility: LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultColumnVisibility),
+  columnVisibility: LocalStorage.getItem(HIDDEN_COLUMN_KEY, defaultColumnVisibility)
 };
 
 const slice = createSlice({
@@ -32,8 +32,8 @@ const slice = createSlice({
       state.error = action.payload;
       Sentry.captureException(state.error);
       state.message = undefined;
-    },
-  },
+    }
+  }
 });
 
 export const { setActionMessage, setActionError, setColumnVisibility } = slice.actions;

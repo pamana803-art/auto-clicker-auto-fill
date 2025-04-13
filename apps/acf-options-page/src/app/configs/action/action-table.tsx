@@ -1,5 +1,4 @@
-import { useConfirmationModalContext } from '@apps/acf-options-page/src/_providers/confirm.provider';
-import { useAppDispatch, useAppSelector } from '@apps/acf-options-page/src/hooks';
+import { useConfirmationModalContext } from '@acf-options-page/_providers/confirm.provider';
 import {
   actionSelector,
   addAction,
@@ -8,8 +7,9 @@ import {
   openActionStatementModalAPI,
   removeAction,
   setColumnVisibility,
-  updateAction,
-} from '@apps/acf-options-page/src/store/config';
+  updateAction
+} from '@acf-options-page/store/config';
+import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
 import { Action } from '@dhruv-techapps/acf-common';
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
 import { ColumnDef, Row, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
@@ -54,7 +54,7 @@ const ActionTable = ({ actions }: ActionProps) => {
     const result = await modalContext.showConfirmation({
       title: t('confirm.action.remove.title'),
       message: t('confirm.action.remove.message', { name }),
-      headerClass: 'text-danger',
+      headerClass: 'text-danger'
     });
     result && dispatch(removeAction(actionId));
   };
@@ -70,15 +70,15 @@ const ActionTable = ({ actions }: ActionProps) => {
           width: '100px',
           dataType: 'number',
           list: 'interval',
-          pattern: REGEX.INTERVAL,
-        },
+          pattern: REGEX.INTERVAL
+        }
       },
       {
         header: t('action.name'),
         minSize: 100,
         size: 150,
         maxSize: 200,
-        accessorKey: 'name',
+        accessorKey: 'name'
       },
       {
         header: () => (
@@ -91,8 +91,8 @@ const ActionTable = ({ actions }: ActionProps) => {
         accessorKey: 'elementFinder',
         meta: {
           list: 'elementFinder',
-          required: true,
-        },
+          required: true
+        }
       },
       {
         header: () => (
@@ -104,8 +104,8 @@ const ActionTable = ({ actions }: ActionProps) => {
         maxSize: 1000,
         accessorKey: 'value',
         meta: {
-          list: 'value',
-        },
+          list: 'value'
+        }
       },
       {
         header: t('action.repeat'),
@@ -115,8 +115,8 @@ const ActionTable = ({ actions }: ActionProps) => {
           dataType: 'number',
           list: 'repeat',
           type: 'number',
-          pattern: REGEX.NUMBER,
-        },
+          pattern: REGEX.NUMBER
+        }
       },
       {
         header: t('action.repeatInterval'),
@@ -125,9 +125,9 @@ const ActionTable = ({ actions }: ActionProps) => {
         meta: {
           dataType: 'number',
           list: 'interval',
-          pattern: REGEX.INTERVAL,
-        },
-      },
+          pattern: REGEX.INTERVAL
+        }
+      }
     ],
     [t]
   );
@@ -147,8 +147,8 @@ const ActionTable = ({ actions }: ActionProps) => {
       },
       updateValueFieldTypes: (selectedActionId: RANDOM_UUID, valueFieldType: 'input' | 'textarea') => {
         dispatch(updateAction({ selectedActionId, name: 'valueFieldType', value: valueFieldType }));
-      },
-    },
+      }
+    }
   });
 
   const showAddon = (row: Row<Action>) => {

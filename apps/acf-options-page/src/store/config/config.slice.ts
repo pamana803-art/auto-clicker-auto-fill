@@ -1,10 +1,10 @@
+import { CONFIGURATIONS } from '@acf-options-page/data/configurations';
 import { CONFIG_SOURCE, Configuration, START_TYPES, getDefaultConfig } from '@dhruv-techapps/acf-common';
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
 import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
 import { LocalStorage } from '../../_helpers';
-import { CONFIGURATIONS } from '../../data';
-import { RootState } from '../../store';
+import { RootState } from '../store';
 import { actionActions, openActionAddonModalAPI, openActionSettingsModalAPI, openActionStatementModalAPI } from './action';
 import { batchActions } from './batch';
 import { configGetAllAPI } from './config.api';
@@ -33,7 +33,7 @@ const initialState: ConfigStore = {
   configs: CONFIGURATIONS,
   selectedConfigId: CONFIGURATIONS[0].id,
   selectedActionId: CONFIGURATIONS[0].actions[0].id,
-  detailVisibility: LocalStorage.getItem(HIDDEN_DETAIL_KEY, defaultDetailVisibility),
+  detailVisibility: LocalStorage.getItem(HIDDEN_DETAIL_KEY, defaultDetailVisibility)
 };
 
 const slice = createSlice({
@@ -60,7 +60,7 @@ const slice = createSlice({
       prepare: () => {
         const config = getDefaultConfig(CONFIG_SOURCE.WEB);
         return { payload: config };
-      },
+      }
     },
     updateConfig: (state, action: PayloadAction<ConfigAction>) => {
       const { name, value } = action.payload;
@@ -145,7 +145,7 @@ const slice = createSlice({
     },
     ...actionActions,
     ...batchActions,
-    ...scheduleActions,
+    ...scheduleActions
   },
   extraReducers: (builder) => {
     builder.addCase(configGetAllAPI.fulfilled, (state, action) => {
@@ -184,7 +184,7 @@ const slice = createSlice({
       state.error = action.error.message;
       Sentry.captureException(state.error);
     });
-  },
+  }
 });
 
 export const {
@@ -209,7 +209,7 @@ export const {
   syncActionStatement,
   syncSchedule,
   setSearch,
-  setDetailVisibility,
+  setDetailVisibility
 } = slice.actions;
 
 //Config Selectors

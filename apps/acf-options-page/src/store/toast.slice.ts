@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import { ToastProps } from 'react-bootstrap';
 import { ReactNode } from 'react';
+import { ToastProps } from 'react-bootstrap';
+import { RootState } from './store';
 
 export type ToastHandlerProps = Omit<ToastProps, 'defaultValue'> & {
   header: string | ReactNode;
@@ -19,8 +19,8 @@ const slice = createSlice({
     },
     hideToast: (state, action: PayloadAction<number>) => {
       state[action.payload].show = false;
-    },
-  },
+    }
+  }
 });
 export const { addToast, hideToast } = slice.actions;
 export const toastSelector = (state: RootState) => state.toast;

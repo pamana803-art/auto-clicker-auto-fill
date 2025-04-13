@@ -1,7 +1,7 @@
 import { NavDropdown } from 'react-bootstrap';
 import { useConfirmationModalContext } from '../_providers/confirm.provider';
-import { useAppDispatch, useAppSelector } from '../hooks';
 import { firebaseFirestoreSelector, profileSetAPI } from '../store/firebase';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { LockFill, UnLockFill } from '../util';
 
 export const HeaderProfile = () => {
@@ -30,7 +30,7 @@ export const HeaderProfile = () => {
           )}
         </div>
       ),
-      headerClass: 'text-danger',
+      headerClass: 'text-danger'
     });
     result && dispatch(profileSetAPI(!profile));
   };
