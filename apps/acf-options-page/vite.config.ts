@@ -56,17 +56,9 @@ export default defineConfig(() => ({
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
-            if (id.includes('react')) return 'react';
-            if (id.includes('redux')) return 'redux';
-            if (id.includes('micromark')) return 'micromark';
-            if (id.includes('i18next')) return 'i18next';
-            if (id.includes('@firebase')) return '@firebase';
-            if (id.includes('@tanstack')) return '@tanstack';
-            if (id.includes('@dnd-kit')) return '@dnd-kit';
-            if (id.includes('bootstrap') || id.includes('@restart')) return '@bootstrap';
-            if (id.includes('popperjs')) return 'popperjs';
             return 'vendor';
           }
+          return 'main';
         }
       }
     }
@@ -81,6 +73,7 @@ export default defineConfig(() => ({
     include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     includeSource: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
+    passWithNoTests: true,
     coverage: {
       reportsDirectory: './test-output/vitest/coverage',
       provider: 'v8' as const
