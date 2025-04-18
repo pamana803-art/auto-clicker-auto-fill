@@ -1,4 +1,4 @@
-import { SystemError } from '@dhruv-techapps/core-common';
+import { sanitizeUrl, SystemError } from '@dhruv-techapps/core-common';
 import { ACTION_I18N_TITLE } from '.';
 import CommonEvents from './common.events';
 
@@ -11,11 +11,12 @@ export const LocationCommandEvents = (() => {
         case 'reload':
           window.location.reload();
           break;
-        case 'href':
-          window.location.href = value.split('::')[2];
+        case 'href': {
+          window.location.href = sanitizeUrl(value.split('::')[2]);
           break;
+        }
         case 'replace':
-          window.location.replace(value.split('::')[2]);
+          window.location.replace(sanitizeUrl(value.split('::')[2]));
           break;
         case 'focus':
           window.focus();
