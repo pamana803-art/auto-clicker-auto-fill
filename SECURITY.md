@@ -12,6 +12,6 @@ We currently support 3.4.x
 
 ## Reporting a Vulnerability
 
-If you find any vulnerability in project please drop a [Mail](mailto:dhruv.techapps@gmail.com?subject=[Vulnerability%20Found])
+If you find any vulnerability in project please drop a [Mail](mailto:support.getautoclicker@gmail.com?subject=[Vulnerability%20Found])
 
 If Vulnerability is accepted we will create a issue for same and try to fix within 10-15 days of report.
