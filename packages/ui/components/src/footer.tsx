@@ -1,3 +1,4 @@
+import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ChatFill, Facebook, ShieldCheck, Star, Twitter, Whatsapp } from './assets/svg';
@@ -9,7 +10,7 @@ export function Footer() {
   const imageURL = 'https://getautoclicker.com/favicons/favicon48.png';
 
   return (
-    <footer className='pt-3 mt-3 mt-md-3 pt-md-3 border-top'>
+    <footer className='pt-3 mt-3 mt-md-3 pt-md-3 border-top' data-version={React.version}>
       <Container>
         <Row>
           <Col md xs={12} className='mb-3'>
@@ -17,12 +18,12 @@ export function Footer() {
             <div className='d-inline-flex flex-column'>
               <h6 className='text-secondary mb-0'>
                 {t('common.appName')}
-                <span className={`${process.env.VITE_PUBLIC_VARIANT} ms-2`}>[{process.env.VITE_PUBLIC_VARIANT}]</span>
+                <span className={`${import.meta.env.VITE_PUBLIC_VARIANT} ms-2`}>[{import.meta.env.VITE_PUBLIC_VARIANT}]</span>
               </h6>
               <div className='text-muted'>
-                <small>© 2017 - 2024</small>
+                <small>© 2017 - 2025</small>
                 <br />
-                <small id='web-version'>☯ {process.env.VITE_PUBLIC_RELEASE_VERSION}</small>
+                <small id='web-version'>☯ {import.meta.env.VITE_PUBLIC_RELEASE_VERSION}</small>
               </div>
             </div>
           </Col>

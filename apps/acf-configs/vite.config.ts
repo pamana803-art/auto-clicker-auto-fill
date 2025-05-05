@@ -14,7 +14,14 @@ export default defineConfig(() => ({
   cacheDir: '../../node_modules/.vite/apps/acf-configs',
   server: {
     port: 4200,
-    host: 'localhost'
+    host: 'localhost',
+    proxy: {
+      '/locales': {
+        target: 'http://localhost:3333',
+        secure: false,
+        changeOrigin: true
+      }
+    }
   },
   preview: {
     port: 4300,
@@ -32,6 +39,13 @@ export default defineConfig(() => ({
       include: '**/*.svg'
     })
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler'
+      }
+    }
+  },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
@@ -42,6 +56,16 @@ export default defineConfig(() => ({
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+          return 'main';
+        }
+      }
     }
   },
   define: {
