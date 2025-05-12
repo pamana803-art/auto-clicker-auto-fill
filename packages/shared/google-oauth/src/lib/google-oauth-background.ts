@@ -24,7 +24,11 @@ export class GoogleOauth2Background {
     }
   }
 
-  async logout(scopes?: Array<GOOGLE_SCOPES>) {
+  async logout(scopes?: Array<string>) {
+    scopes = scopes || chrome.runtime.getManifest().oauth2?.scopes;
+    if (!scopes || scopes.length === 0) {
+      throw new Error('No scopes found');
+    }
     const { token } = await this._getAuthToken({ scopes, interactive: false });
     if (token) {
       await chrome.identity.removeCachedAuthToken({ token });

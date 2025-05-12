@@ -3,8 +3,8 @@ import { Card, Form, FormControl, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { settingsSelector, updateSettings } from '../../store/settings/settings.slice';
-import { REGEX } from '../../util';
-import { getFieldNameValue } from '../../util/element';
+import { REGEX } from '../../utils';
+import { getFieldNameValue } from '../../utils/element';
 
 function SettingRetry() {
   const { t } = useTranslation();

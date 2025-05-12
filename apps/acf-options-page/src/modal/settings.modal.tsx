@@ -1,14 +1,14 @@
 import { STATUS_BAR_LOCATION_ENUM } from '@dhruv-techapps/shared-status-bar';
-import { useEffect, useState } from 'react';
+import { ThemeContext } from '@dhruv-techapps/ui-context';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ErrorAlert, Loading } from '../components';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { settingsGetAPI } from '../store/settings/settings.api';
 import { settingsSelector, switchSettingsModal, updateSettings } from '../store/settings/settings.slice';
-import { themeSelector } from '../store/theme.slice';
-import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill, FileSpreadsheetFill } from '../util';
-import { getFieldNameValue } from '../util/element';
+import { ArrowRepeat, BellFill, ChevronLeft, ChevronRight, CloudArrowUpFill, FileSpreadsheetFill } from '../utils';
+import { getFieldNameValue } from '../utils/element';
 import { SettingsGoogleBackup } from './settings/google-backup';
 import { SettingGoogleSheets } from './settings/google-sheets';
 import { SettingMessage } from './settings/message';
@@ -23,7 +23,7 @@ enum SETTINGS_PAGE {
 
 export const SettingsModal = () => {
   const { t } = useTranslation();
-  const theme = useAppSelector(themeSelector);
+  const { theme } = useContext(ThemeContext);
   const [page, setPage] = useState<SETTINGS_PAGE>();
   const { error, settings, visible, loading } = useAppSelector(settingsSelector);
   const dispatch = useAppDispatch();

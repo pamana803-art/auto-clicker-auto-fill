@@ -13,8 +13,8 @@ import {
 } from '@acf-options-page/store/config';
 import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
 import { addToast } from '@acf-options-page/store/toast.slice';
-import { Copy, Download, Gear, StockWatch, Upload } from '@acf-options-page/util';
-import { getFieldNameValue } from '@acf-options-page/util/element';
+import { Copy, Download, Gear, StockWatch, Upload } from '@acf-options-page/utils';
+import { getFieldNameValue } from '@acf-options-page/utils/element';
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { createRef } from 'react';
 import { Alert, Badge, Button, ButtonGroup, Card, Col, Form, Row } from 'react-bootstrap';

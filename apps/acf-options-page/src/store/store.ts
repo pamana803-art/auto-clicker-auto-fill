@@ -6,13 +6,11 @@ import { firebaseReducer } from './firebase';
 import { googleDriveReducer, googleReducer } from './google';
 import { settingsListenerMiddleware, settingsReducer } from './settings';
 import { subscribeReducer } from './subscribe';
-import themeReducer from './theme.slice';
 import toastReducer from './toast.slice';
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
-    theme: themeReducer,
     settings: settingsReducer,
     toast: toastReducer,
     blog: blogReducer,

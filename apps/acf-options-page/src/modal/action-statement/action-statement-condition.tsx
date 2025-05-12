@@ -3,8 +3,8 @@ import { ChangeEvent } from 'react';
 import { Button, ButtonGroup, Form } from 'react-bootstrap';
 import { removeActionStatementCondition, selectedConfigSelector, updateActionStatementCondition } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { X } from '../../util';
-import { getFieldNameValue } from '../../util/element';
+import { X } from '../../utils';
+import { getFieldNameValue } from '../../utils/element';
 
 type ActionStatementConditionProps = {
   condition: ActionCondition;

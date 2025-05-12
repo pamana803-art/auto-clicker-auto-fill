@@ -7,8 +7,8 @@ import { useTimeout } from '../_hooks/message.hooks';
 import { HotkeyPopover } from '../popover';
 import { configSettingsSelector, selectedConfigSelector, setConfigSettingsMessage, switchConfigSettingsModal, updateConfigSettings } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { REGEX } from '../util';
-import { getFieldNameValue } from '../util/element';
+import { REGEX } from '../utils';
+import { getFieldNameValue } from '../utils/element';
 
 const FORM_ID = 'config-settings';
 

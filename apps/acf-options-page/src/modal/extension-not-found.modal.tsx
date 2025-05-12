@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 import { appSelector, switchExtensionNotFound } from '../store/app.slice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { CHROME_WEB_STORE } from '../util/constants';
+import { CHROME_WEB_STORE } from '../utils/constants';
 
 const ExtensionNotFoundModal = () => {
   const { t } = useTranslation();

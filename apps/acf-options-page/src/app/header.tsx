@@ -1,24 +1,24 @@
+import { ThemeContext } from '@dhruv-techapps/ui-context';
 import * as Sentry from '@sentry/react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Badge, Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { SettingsModal } from '../modal';
 import { firebaseSelector } from '../store/firebase';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { switchSettingsModal } from '../store/settings/settings.slice';
-import { switchTheme, themeSelector } from '../store/theme.slice';
-import { GearFill, Moon, Sun, ThreeDots } from '../util';
-import { APP_LANGUAGES, APP_LINK } from '../util/constants';
+import { GearFill, Moon, Sun, ThreeDots } from '../utils';
+import { APP_LANGUAGES, APP_LINK } from '../utils/constants';
 import { HeaderGoogle } from './header_google';
 
 function Header() {
   const [show, setShow] = useState<boolean>(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const theme = useAppSelector(themeSelector);
   const { role } = useAppSelector(firebaseSelector);
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (/(DEV|BETA|LOCAL)/.test(import.meta.env.VITE_PUBLIC_VARIANT || '')) {
@@ -45,10 +45,6 @@ function Header() {
     document.documentElement.lang = lng;
     localStorage.setItem('language', lng);
     Sentry.setTag('page_locale', lng);
-  };
-
-  const toggleTheme = () => {
-    dispatch(switchTheme());
   };
 
   let appName = t('common.appName');

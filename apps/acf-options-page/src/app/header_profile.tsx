@@ -2,7 +2,7 @@ import { NavDropdown } from 'react-bootstrap';
 import { useConfirmationModalContext } from '../_providers/confirm.provider';
 import { firebaseFirestoreSelector, profileSetAPI } from '../store/firebase';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { LockFill, UnLockFill } from '../util';
+import { LockFill, UnLockFill } from '../utils';
 
 export const HeaderProfile = () => {
   const dispatch = useAppDispatch();

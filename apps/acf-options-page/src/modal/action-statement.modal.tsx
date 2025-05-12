@@ -16,7 +16,7 @@ import {
   updateActionStatementCondition
 } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { Plus } from '../util/svg';
+import { Plus } from '../utils/svg';
 import { ActionStatementCondition } from './action-statement/action-statement-condition';
 import { ActionStatementRetry } from './action-statement/action-statement-retry';
 

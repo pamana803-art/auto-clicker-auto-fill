@@ -6,6 +6,8 @@ export { ReactComponent as AwardFill } from 'bootstrap-icons/icons/award-fill.sv
 export { ReactComponent as Ban } from 'bootstrap-icons/icons/ban.svg';
 export { ReactComponent as BellFill } from 'bootstrap-icons/icons/bell-fill.svg';
 export { ReactComponent as BoxArrowUpRight } from 'bootstrap-icons/icons/box-arrow-up-right.svg';
+export { ReactComponent as BoxSeam } from 'bootstrap-icons/icons/box-seam.svg';
+export { ReactComponent as Braces } from 'bootstrap-icons/icons/braces.svg';
 export { ReactComponent as CaretDown } from 'bootstrap-icons/icons/caret-down.svg';
 export { ReactComponent as CaretUp } from 'bootstrap-icons/icons/caret-up.svg';
 export { ReactComponent as ChatFill } from 'bootstrap-icons/icons/chat-fill.svg';
@@ -38,6 +40,7 @@ export { ReactComponent as PlusSquare } from 'bootstrap-icons/icons/plus-square.
 export { ReactComponent as Repeat } from 'bootstrap-icons/icons/repeat.svg';
 export { ReactComponent as ShieldCheck } from 'bootstrap-icons/icons/shield-fill-check.svg';
 export { ReactComponent as Star } from 'bootstrap-icons/icons/star-fill.svg';
+export { ReactComponent as StockWatch } from 'bootstrap-icons/icons/stopwatch.svg';
 export { ReactComponent as Sun } from 'bootstrap-icons/icons/sun-fill.svg';
 export { ReactComponent as ThreeDotsVertical } from 'bootstrap-icons/icons/three-dots-vertical.svg';
 export { ReactComponent as ThreeDots } from 'bootstrap-icons/icons/three-dots.svg';
@@ -51,4 +54,3 @@ export { ReactComponent as VolumeUp } from 'bootstrap-icons/icons/volume-up.svg'
 export { ReactComponent as Whatsapp } from 'bootstrap-icons/icons/whatsapp.svg';
 export { ReactComponent as X } from 'bootstrap-icons/icons/x-lg.svg';
 export { ReactComponent as Youtube } from 'bootstrap-icons/icons/youtube.svg';
-export { ReactComponent as StockWatch } from 'bootstrap-icons/icons/stopwatch.svg';

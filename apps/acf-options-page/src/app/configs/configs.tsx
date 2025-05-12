@@ -4,7 +4,7 @@ import { importAll, importConfig } from '@acf-options-page/store/config';
 import { configGetAllAPI } from '@acf-options-page/store/config/config.api';
 import { useAppDispatch } from '@acf-options-page/store/hooks';
 import { addToast } from '@acf-options-page/store/toast.slice';
-import { CHROME_WEB_STORE } from '@acf-options-page/util/constants';
+import { CHROME_WEB_STORE } from '@acf-options-page/utils/constants';
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { createRef, useEffect } from 'react';
 import { Alert, Col, Container, Row } from 'react-bootstrap';
@@ -27,7 +27,7 @@ function Configs(props) {
     }
   }, [dispatch]);
 
-  const onExportAll = (configs) => {
+  const onExportAll = (configs: Array<Configuration>) => {
     download('All Configurations', configs);
   };
 

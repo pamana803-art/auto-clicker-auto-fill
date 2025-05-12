@@ -5,8 +5,8 @@ import { Card, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { actionAddonSelector, selectedConfigSelector, updateActionAddon, updateActionAddonGoto } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { REGEX } from '../../util';
-import { getFieldNameValue } from '../../util/element';
+import { REGEX } from '../../utils';
+import { getFieldNameValue } from '../../utils/element';
 
 function AddonRecheck() {
   const { t } = useTranslation();

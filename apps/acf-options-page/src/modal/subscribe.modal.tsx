@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { subscribeSelector, switchSubscribeModal } from '../store/subscribe';
 
 import * as React from 'react';
-import { AwardFill, Discord, Star } from '../util';
+import { AwardFill, Discord, Star } from '../utils';
 
 declare global {
   namespace JSX {

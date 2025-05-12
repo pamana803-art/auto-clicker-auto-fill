@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ActionSettingsModal, ActionStatementModal, AddonModal } from '../../../modal';
-import { Plus, Repeat } from '../../../util';
+import { Plus, Repeat } from '../../../utils';
 import ActionTable from './action-table';
 
 function Action() {

@@ -22,4 +22,7 @@ if (process.env.CONNECT_EMULATOR === 'true') {
     signInWithEmailAndPassword(auth, process.env.LOCAL_USER_EMAIL, process.env.LOCAL_USER_PASSWORD).then(console.log).catch(console.error);
   }
 }
+auth.onAuthStateChanged(() => {
+  console.log('onAuthStateChanged', auth.currentUser);
+});
 export { auth };

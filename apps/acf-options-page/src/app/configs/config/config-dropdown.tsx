@@ -1,6 +1,6 @@
 import { addConfig, configSelector, selectConfig, switchConfigRemoveModal, switchConfigReorderModal } from '@acf-options-page/store/config';
 import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
-import { ThreeDots } from '@acf-options-page/util';
+import { ThreeDots } from '@acf-options-page/utils';
 import { useEffect, useState } from 'react';
 import { Button, Col, Dropdown, DropdownToggle, Form, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';

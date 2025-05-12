@@ -6,8 +6,8 @@ import { useTimeout } from '../_hooks/message.hooks';
 import { syncSchedule } from '../store/config';
 import { scheduleSelector, setScheduleMessage, switchScheduleModal, updateSchedule } from '../store/config/schedule';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { REGEX } from '../util';
-import { getFieldNameValue, updateForm } from '../util/element';
+import { REGEX } from '../utils';
+import { getFieldNameValue, updateForm } from '../utils/element';
 
 const FORM_ID = 'schedule';
 

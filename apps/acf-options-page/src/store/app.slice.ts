@@ -1,13 +1,12 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { NO_EXTENSION_ERROR } from '../util/constants';
+import { NO_EXTENSION_ERROR } from '../utils/constants';
 import { getManifest } from './app.api';
 import { RootState } from './store';
 
 type AppStore = {
   manifest?: Partial<chrome.runtime.Manifest>;
   error?: string;
-  errorButton?: boolean;
   loading: boolean;
   extensionNotFound: boolean;
 };
@@ -29,14 +28,6 @@ const slice = createSlice({
       state.error = action.payload;
       Sentry.captureException(state.error);
       state.loading = false;
-    },
-    switchExtensionNotFound: (state, action: PayloadAction<string | undefined>) => {
-      state.loading = false;
-      window.dataLayer.push({ event: 'modal', name: 'extension_not_found', visibility: !state.extensionNotFound });
-      state.extensionNotFound = !state.extensionNotFound;
-      if (action.payload) {
-        state.error = action.payload;
-      }
     }
   },
   extraReducers: (builder) => {
@@ -52,16 +43,15 @@ const slice = createSlice({
         Sentry.captureException(state.error);
         if (NO_EXTENSION_ERROR.includes(error)) {
           state.error = "Kindly download the extension first. If it's already installed, please refresh the page to proceed.";
-          state.errorButton = true;
-          window.dataLayer.push({ event: 'modal', name: 'extension_not_found', visibility: !state.extensionNotFound });
-          // state.extensionNotFound = !state.extensionNotFound; // Temporarily disable this line
+          state.extensionNotFound = true;
+          window.dataLayer.push({ event: 'extension_not_found', name: 'extension_not_found' });
         }
       }
     });
   }
 });
 
-export const { switchExtensionNotFound, setAppError, setManifest } = slice.actions;
+export const { setAppError, setManifest } = slice.actions;
 
 export const appSelector = (state: RootState) => state.app;
 

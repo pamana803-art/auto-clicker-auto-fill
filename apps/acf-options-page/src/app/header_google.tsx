@@ -1,4 +1,5 @@
 import { Nav, NavDropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 import { firebaseLogoutAPI, firebaseSelector, switchFirebaseLoginModal } from '../store/firebase';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { switchSubscribeModal } from '../store/subscribe';
@@ -6,6 +7,7 @@ import { switchSubscribeModal } from '../store/subscribe';
 export const HeaderGoogle = () => {
   const dispatch = useAppDispatch();
   const { user, role } = useAppSelector(firebaseSelector);
+  const navigate = useNavigate();
 
   /*
   const onPortalLink = async () => {
@@ -32,6 +34,11 @@ export const HeaderGoogle = () => {
   };
   */
 
+  const logout = () => {
+    dispatch(firebaseLogoutAPI());
+    navigate('/login');
+  };
+
   return (
     <div>
       {user ? (
@@ -44,7 +51,7 @@ export const HeaderGoogle = () => {
               <NavDropdown.Divider />
             </>
           )}
-          <NavDropdown.Item title='logout' onClick={() => dispatch(firebaseLogoutAPI())}>
+          <NavDropdown.Item title='logout' onClick={logout}>
             Logout
           </NavDropdown.Item>
         </NavDropdown>

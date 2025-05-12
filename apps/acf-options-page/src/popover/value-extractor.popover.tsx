@@ -1,5 +1,5 @@
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import { InfoCircle } from '../util';
+import { InfoCircle } from '../utils';
 
 export function ValueExtractorPopover() {
   return (

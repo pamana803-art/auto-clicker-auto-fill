@@ -11,7 +11,7 @@ import { firebaseSelector, switchFirebaseLoginModal } from '../../store/firebase
 import { googleDriveSelector, googleHasAccessAPI, googleLoginAPI, googleSelector } from '../../store/google';
 import { googleDriveAutoBackupAPI, googleDriveBackupAPI, googleDriveDeleteAPI, googleDriveListWithContentAPI, googleDriveRestoreAPI } from '../../store/google/google-drive/google-drive.api';
 import { settingsSelector } from '../../store/settings/settings.slice';
-import { CloudArrowDownFill, CloudArrowUpFill, Trash } from '../../util';
+import { CloudArrowDownFill, CloudArrowUpFill, Trash } from '../../utils';
 
 export function SettingsGoogleBackup() {
   const { t } = useTranslation();

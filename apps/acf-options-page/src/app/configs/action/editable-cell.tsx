@@ -1,4 +1,4 @@
-import { getFieldNameValue } from '@acf-options-page/util/element';
+import { getFieldNameValue } from '@acf-options-page/utils/element';
 import { Action } from '@dhruv-techapps/acf-common';
 import { ColumnDef } from '@tanstack/react-table';
 import { useEffect, useRef, useState } from 'react';

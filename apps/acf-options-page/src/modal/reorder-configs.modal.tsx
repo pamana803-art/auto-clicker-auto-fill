@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { ErrorAlert } from '../components';
 import { configReorderSelector, configReorderUpdateAPI, switchConfigReorderModal, updateConfigReorder } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { ArrowDown, ArrowUp } from '../util';
+import { ArrowDown, ArrowUp } from '../utils';
 
 const ReorderConfigsModal = () => {
   const { visible, configs, error } = useAppSelector(configReorderSelector);

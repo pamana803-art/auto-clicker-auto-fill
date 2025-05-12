@@ -2,8 +2,8 @@ import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { settingsSelector, updateSettingsNotification } from '../../store/settings/settings.slice';
-import { VolumeMute, VolumeUp } from '../../util';
-import { getFieldNameValue } from '../../util/element';
+import { VolumeMute, VolumeUp } from '../../utils';
+import { getFieldNameValue } from '../../utils/element';
 import { SettingDiscord } from './discord';
 
 function SettingNotifications() {

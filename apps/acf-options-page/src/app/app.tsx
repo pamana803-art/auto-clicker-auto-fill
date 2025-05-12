@@ -1,15 +1,12 @@
 import ConfirmationModalContextProvider from '@acf-options-page/_providers/confirm.provider';
-import * as Sentry from '@sentry/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { DataList, Loading, ToastHandler } from '../components';
-import { BlogModal, ExtensionNotFoundModal } from '../modal';
-import { LoginModal } from '../modal/login.modal';
+import { BlogModal } from '../modal';
 import { SubscribeModal } from '../modal/subscribe.modal';
-import { getManifest } from '../store/app.api';
 import { appSelector } from '../store/app.slice';
-import { firebaseIsLoginAPI, firebaseSelector } from '../store/firebase';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { firebaseSelector } from '../store/firebase';
+import { useAppSelector } from '../store/hooks';
 import Configs from './configs/configs';
 import Header from './header';
 
@@ -17,17 +14,6 @@ function App() {
   const { loading, error, errorButton } = useAppSelector(appSelector);
   const [show, setShow] = useState(localStorage.getItem('login') !== 'true');
   const { user } = useAppSelector(firebaseSelector);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getManifest());
-    dispatch(firebaseIsLoginAPI());
-    Sentry.setContext('screen_resolution', {
-      innerWidth: window.innerWidth,
-      innerHeight: window.innerHeight,
-      outerWidth: window.outerWidth,
-      outerHeight: window.outerHeight
-    });
-  }, [dispatch]);
 
   const onCloseAlert = () => {
     setShow(false);
@@ -48,8 +34,6 @@ function App() {
         <ToastHandler />
         <BlogModal />
         <SubscribeModal />
-        <LoginModal />
-        <ExtensionNotFoundModal />
       </ConfirmationModalContextProvider>
       <DataList />
     </>

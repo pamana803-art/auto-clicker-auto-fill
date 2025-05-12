@@ -1,8 +1,8 @@
 import { selectedConfigSelector, updateConfig } from '@acf-options-page/store/config';
 import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
-import { REGEX } from '@acf-options-page/util';
-import { APP_LINK } from '@acf-options-page/util/constants';
-import { getFieldNameValue, updateForm } from '@acf-options-page/util/element';
+import { REGEX } from '@acf-options-page/utils';
+import { APP_LINK } from '@acf-options-page/utils/constants';
+import { getFieldNameValue, updateForm } from '@acf-options-page/utils/element';
 import { useEffect, useState } from 'react';
 import { Card, Col, Form, FormControl, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';

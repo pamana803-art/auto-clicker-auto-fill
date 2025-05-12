@@ -2,8 +2,8 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { appSelector } from '../store/app.slice';
 import { useAppSelector } from '../store/hooks';
-import { ChatFill, Facebook, Github, ShieldCheck, Star, Twitter, Whatsapp, Youtube } from '../util';
-import { SOCIAL_LINKS } from '../util/constants';
+import { ChatFill, Facebook, Github, ShieldCheck, Star, Twitter, Whatsapp, Youtube } from '../utils';
+import { SOCIAL_LINKS } from '../utils/constants';
 
 function Footer() {
   const { manifest } = useAppSelector(appSelector);

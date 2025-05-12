@@ -18,7 +18,7 @@ import { Button, Dropdown, Form, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { DropdownToggle } from '../../../components';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
-import { Ban, EyeSlashFill, Plus, REGEX, ThreeDots, Trash } from '../../../util';
+import { Ban, EyeSlashFill, Plus, REGEX, ThreeDots, Trash } from '../../../utils';
 import { defaultColumn } from './editable-cell';
 
 type ActionMeta = { dataType: string; list: string; pattern: string; required: boolean; width?: string };
