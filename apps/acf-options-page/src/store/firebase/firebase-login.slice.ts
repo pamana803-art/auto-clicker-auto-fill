@@ -1,7 +1,7 @@
 import { FirebaseRole, User } from '@dhruv-techapps/shared-firebase-oauth';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../store';
+import { RootState } from '..';
 import { firebaseIsLoginAPI, firebaseLoginAPI, firebaseLogoutAPI } from './firebase-login.api';
 
 type FirebaseStore = {

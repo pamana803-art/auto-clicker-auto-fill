@@ -1,7 +1,7 @@
 import { GoogleBackupService } from '@dhruv-techapps/acf-service';
 import { AUTO_BACKUP, GoogleDriveService } from '@dhruv-techapps/shared-google-drive';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { updateSettingsBackup } from '../../settings';
+import { setSettingsError, updateSettingsBackup } from '../../settings';
 
 export const googleDriveBackupAPI = createAsyncThunk('googleDrive/backup', async (_, thunkAPI) => {
   await GoogleBackupService.backup();
@@ -17,9 +17,14 @@ export const googleDriveAutoBackupAPI = createAsyncThunk('googleDrive/autoBackup
   thunkAPI.dispatch(updateSettingsBackup(autoBackup));
 });
 
-export const googleDriveListWithContentAPI = createAsyncThunk('googleDrive/listWithContent', async () => {
-  const response = await GoogleDriveService.listWithContent();
-  return response;
+export const googleDriveListWithContentAPI = createAsyncThunk('googleDrive/listWithContent', async (_, thunkAPI) => {
+  try {
+    const response = await GoogleDriveService.listWithContent();
+    return response;
+  } catch (error) {
+    thunkAPI.dispatch(setSettingsError(error));
+    throw error;
+  }
 });
 
 export const googleDriveDeleteAPI = createAsyncThunk('googleDrive/delete', async (req: { id: string; name: string }) => {

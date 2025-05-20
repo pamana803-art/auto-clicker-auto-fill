@@ -1,22 +1,13 @@
-import { useConfirmationModalContext } from '@acf-options-page/_providers/confirm.provider';
 import { DropdownToggle } from '@acf-options-page/components';
-import {
-  addConfig,
-  configSelector,
-  filteredConfigsSelector,
-  removeConfig,
-  selectConfig,
-  setDetailVisibility,
-  setSearch,
-  switchConfigRemoveModal,
-  switchConfigReorderModal
-} from '@acf-options-page/store/config';
+import { useConfirmationModalContext } from '@acf-options-page/providers';
+import { addConfig, configSelector, filteredConfigsSelector, removeConfig, selectConfig, setDetailVisibility, setSearch } from '@acf-options-page/store/config';
 import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
 import { Ban, EyeSlashFill, Plus, ThreeDots, Trash } from '@acf-options-page/utils';
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { useLayoutEffect, useRef } from 'react';
 import { Button, Dropdown, Form, ListGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 export const ConfigSidebar = (props) => {
   const { t } = useTranslation();
@@ -25,6 +16,7 @@ export const ConfigSidebar = (props) => {
   const configs = useAppSelector(filteredConfigsSelector);
   const modalContext = useConfirmationModalContext();
   const searchRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const onRemoveConfig = async (e: React.MouseEvent<HTMLButtonElement>, config: Configuration) => {
     e.stopPropagation();
@@ -93,16 +85,11 @@ export const ConfigSidebar = (props) => {
               {t('configuration.importAll')}
             </Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item
-              className={configs.length === 1 ? '' : 'text-danger'}
-              disabled={configs.length === 1}
-              data-testid='configurations-remove-config'
-              onClick={() => dispatch(switchConfigRemoveModal(configs))}
-            >
+            <Dropdown.Item className={configs.length === 1 ? '' : 'text-danger'} disabled={configs.length === 1} data-testid='configurations-remove-config' onClick={() => navigate('/remove')}>
               {t('configuration.removeConfigs')}
             </Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={() => dispatch(switchConfigReorderModal(configs))} data-testid='configurations-reorder-config'>
+            <Dropdown.Item onClick={() => navigate('/reorder')} data-testid='configurations-reorder-config'>
               {t('configuration.reorder')}
             </Dropdown.Item>
           </Dropdown.Menu>

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 // The forwardRef is important!!
 // Dropdown needs access to the DOM node in order to position the Menu
 

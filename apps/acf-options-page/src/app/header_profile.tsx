@@ -1,5 +1,5 @@
 import { NavDropdown } from 'react-bootstrap';
-import { useConfirmationModalContext } from '../_providers/confirm.provider';
+import { useConfirmationModalContext } from '../providers';
 import { firebaseFirestoreSelector, profileSetAPI } from '../store/firebase';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { LockFill, UnLockFill } from '../utils';

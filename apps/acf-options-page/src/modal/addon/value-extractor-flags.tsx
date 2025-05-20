@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { actionAddonSelector, updateActionAddon } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';

@@ -1,7 +1,5 @@
-import { useTimeout } from '@acf-options-page/_hooks/message.hooks';
-import { addAction, selectedConfigSelector, switchBatchModal } from '@acf-options-page/store/config';
-import { actionSelector, setActionMessage } from '@acf-options-page/store/config/action/action.slice';
-import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
+import { useTimeout } from '@acf-options-page/hooks';
+import { actionSelector, addAction, selectedConfigSelector, setActionMessage, switchBatchModal, useAppDispatch, useAppSelector } from '@acf-options-page/store';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ActionSettingsModal, ActionStatementModal, AddonModal } from '../../../modal';

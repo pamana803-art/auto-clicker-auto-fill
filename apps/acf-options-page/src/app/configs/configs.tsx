@@ -1,15 +1,15 @@
-import { download } from '@acf-options-page/_helpers';
 import { Ads } from '@acf-options-page/components';
 import { importAll, importConfig } from '@acf-options-page/store/config';
 import { configGetAllAPI } from '@acf-options-page/store/config/config.api';
 import { useAppDispatch } from '@acf-options-page/store/hooks';
 import { addToast } from '@acf-options-page/store/toast.slice';
+import { download } from '@acf-options-page/utils';
 import { CHROME_WEB_STORE } from '@acf-options-page/utils/constants';
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { createRef, useEffect } from 'react';
 import { Alert, Col, Container, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { BatchModal, ConfigSettingsModal, RemoveConfigsModal, ReorderConfigsModal, ScheduleModal } from '../../modal';
+import { BatchModal, ConfigSettingsModal, ScheduleModal } from '../../modal';
 import Footer from '../footer';
 import Action from './action';
 import Config from './config';
@@ -91,8 +91,6 @@ function Configs(props) {
               <Footer />
               <ConfigSettingsModal />
               <BatchModal />
-              <ReorderConfigsModal />
-              <RemoveConfigsModal />
               <ScheduleModal />
             </main>
           </div>

@@ -31,6 +31,7 @@ export class GoogleOauth2Background {
     }
     const { token } = await this._getAuthToken({ scopes, interactive: false });
     if (token) {
+      await chrome.identity.launchWebAuthFlow({ url: 'https://accounts.google.com/logout', interactive: false });
       await chrome.identity.removeCachedAuthToken({ token });
     }
     return true;

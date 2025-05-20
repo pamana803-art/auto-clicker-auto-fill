@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Button, Card, CardBody, Col, Form, Modal, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-
 import { subscribeSelector, switchSubscribeModal } from '../store/subscribe';
-
-import * as React from 'react';
 import { AwardFill, Discord, Star } from '../utils';
 
 declare global {

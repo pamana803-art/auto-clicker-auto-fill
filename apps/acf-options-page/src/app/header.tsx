@@ -1,13 +1,12 @@
-import { ThemeContext } from '@dhruv-techapps/ui-context';
+import { ThemeNavDropdown } from '@dhruv-techapps/ui-components';
 import * as Sentry from '@sentry/react';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Badge, Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { SettingsModal } from '../modal';
+import { NavLink } from 'react-router';
 import { firebaseSelector } from '../store/firebase';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { switchSettingsModal } from '../store/settings/settings.slice';
-import { GearFill, Moon, Sun, ThreeDots } from '../utils';
+import { useAppSelector } from '../store/hooks';
+import { ThreeDots } from '../utils';
 import { APP_LANGUAGES, APP_LINK } from '../utils/constants';
 import { HeaderGoogle } from './header_google';
 
@@ -16,20 +15,10 @@ function Header() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { role } = useAppSelector(firebaseSelector);
-  const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
-  const { theme, toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
-    if (/(DEV|BETA|LOCAL)/.test(import.meta.env.VITE_PUBLIC_VARIANT || '')) {
-      window.document.title = `${t('common.appName')} [${import.meta.env.VITE_PUBLIC_VARIANT}]`;
-    } else {
-      window.document.title = t('common.appName');
-    }
-  }, [t]);
-
-  useEffect(() => {
-    if (/(DEV|BETA|LOCAL)/.test(import.meta.env.VITE_PUBLIC_VARIANT || '')) {
+    if (/(DEV|BETA|LOCAL)/.test(import.meta.env.VITE_PUBLIC_VARIANT ?? '')) {
       window.document.title = `${t('common.appName')} [${import.meta.env.VITE_PUBLIC_VARIANT}]`;
     } else {
       window.document.title = t('common.appName');
@@ -57,14 +46,14 @@ function Header() {
     <Navbar expand='lg' as='header' className='bd-navbar' sticky='top'>
       <Container fluid className='bd-gutter flex-wrap flex-lg-nowrap' as='nav'>
         <div className='d-lg-none' style={{ width: '4.25rem' }}></div>
-        <Navbar.Brand href='/' className='p-0 me-0 me-lg-2'>
+        <NavLink to='/' className='p-0 me-0 me-lg-2 navbar-brand'>
           {appName}
           {role && (
             <Badge bg='danger' text='light' className='ms-2'>
               {role.toUpperCase()}
             </Badge>
           )}
-        </Navbar.Brand>
+        </NavLink>
         <div className='d-flex'>
           <Navbar.Toggle aria-controls='basic-navbar-nav' onClick={handleShow}>
             <ThreeDots />
@@ -110,17 +99,7 @@ function Header() {
               </Nav.Item>
 
               <Nav.Item as='li' className='col-6 col-lg-auto'>
-                <Nav.Link onClick={() => dispatch(switchSettingsModal())} data-testid='open-global-settings'>
-                  <GearFill title={t('header.settings')} />
-                  <small className='d-lg-none ms-2'>{t('header.settings')}</small>
-                </Nav.Link>
-              </Nav.Item>
-
-              <Nav.Item as='li' className='col-6 col-lg-auto'>
-                <Nav.Link onClick={toggleTheme} data-testid='switch-theme'>
-                  {theme !== 'light' ? <Sun title={t('header.theme.dark')} /> : <Moon title={t('header.theme.light')} />}
-                  <small className='d-lg-none ms-2'>Toggle Theme</small>
-                </Nav.Link>
+                <ThemeNavDropdown />
               </Nav.Item>
 
               <Nav.Item as='li' className='col-6 col-lg-auto'>
@@ -146,7 +125,6 @@ function Header() {
           </Offcanvas.Body>
         </Offcanvas>
       </Container>
-      <SettingsModal />
     </Navbar>
   );
 }

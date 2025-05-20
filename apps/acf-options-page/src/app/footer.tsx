@@ -21,15 +21,16 @@ function Footer() {
           <Col md xs={12} className='mb-3'>
             <img src={imageURL} width='48' height='48' className='d-inline-block align-top me-2' alt='Auto click Auto Fill logo' title='Auto click Auto Fill logo' />
             <div className='d-inline-flex flex-column'>
-              <h6 className='text-secondary mb-0'>
-                {t('common.appName')}
-                <span className={`${import.meta.env.VITE_PUBLIC_VARIANT} ms-2`}>[{import.meta.env.VITE_PUBLIC_VARIANT}]</span>
-              </h6>
+              <h6 className='text-secondary mb-0'>{t('common.appName')}</h6>
               <div className='text-muted'>
                 <small>© 2017 - 2025</small>
                 <br />
-                <small id='extension-version'>☘ v{manifest?.version}</small>
-                <br />
+                {manifest?.version && (
+                  <>
+                    <small id='extension-version'>☘ v{manifest?.version}</small>
+                    <br />
+                  </>
+                )}
                 <small id='web-version'>☯ {import.meta.env.VITE_PUBLIC_RELEASE_VERSION}</small>
               </div>
             </div>

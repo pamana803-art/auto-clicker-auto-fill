@@ -1,13 +1,14 @@
-import { addConfig, configSelector, selectConfig, switchConfigRemoveModal, switchConfigReorderModal } from '@acf-options-page/store/config';
+import { addConfig, configSelector, selectConfig } from '@acf-options-page/store/config';
 import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
 import { ThreeDots } from '@acf-options-page/utils';
 import { useEffect, useState } from 'react';
 import { Button, Col, Dropdown, DropdownToggle, Form, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 export const ConfigDropdown = (props) => {
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [scroll, setScroll] = useState(false);
 
@@ -67,16 +68,11 @@ export const ConfigDropdown = (props) => {
                 {t('configuration.importAll')}
               </Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item
-                className={configs.length === 1 ? '' : 'text-danger'}
-                disabled={configs.length === 1}
-                data-testid='configurations-remove-config'
-                onClick={() => dispatch(switchConfigRemoveModal(configs))}
-              >
+              <Dropdown.Item className={configs.length === 1 ? '' : 'text-danger'} disabled={configs.length === 1} data-testid='configurations-remove-config' onClick={() => navigate('/remove')}>
                 {t('configuration.removeConfigs')}
               </Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={() => dispatch(switchConfigReorderModal(configs))} data-testid='configurations-reorder-config'>
+              <Dropdown.Item onClick={() => navigate('/reorder')} data-testid='configurations-reorder-config'>
                 {t('configuration.reorder')}
               </Dropdown.Item>
             </Dropdown.Menu>

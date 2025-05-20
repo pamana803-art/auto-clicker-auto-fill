@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import { useContext, useMemo, useRef, useState } from 'react';
 import { ConfirmModal } from '../modal';
 
 type ModalRequestType = { title: string; message: React.JSX.Element | string; headerClass: string };
@@ -22,7 +22,7 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
     setContent({
       title,
       message,
-      headerClass,
+      headerClass
     });
     setShow(true);
     return new Promise(function (resolve) {
@@ -30,9 +30,12 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
     });
   };
 
-  const modalContext: ModalContextType = {
-    showConfirmation: handleShow,
-  };
+  const modalContext: ModalContextType = useMemo(
+    () => ({
+      showConfirmation: handleShow
+    }),
+    []
+  );
 
   const handleOk = () => {
     resolver.current && resolver.current(true);
@@ -54,6 +57,4 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
 
 const useConfirmationModalContext = (): ModalContextType => useContext(ConfirmationModalContext);
 
-export { useConfirmationModalContext };
-
-export default ConfirmationModalContextProvider;
+export { ConfirmationModalContextProvider, useConfirmationModalContext };

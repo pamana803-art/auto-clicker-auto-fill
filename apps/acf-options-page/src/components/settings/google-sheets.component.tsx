@@ -1,8 +1,8 @@
 import { GOOGLE_SCOPES } from '@dhruv-techapps/shared-google-oauth';
 import { useEffect } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Badge, Button } from 'react-bootstrap';
 import { firebaseSelector, switchFirebaseLoginModal } from '../../store/firebase';
-import { googleHasAccessAPI, googleLoginAPI, googleSelector } from '../../store/google';
+import { googleHasAccessAPI, googleLoginAPI, googleLogoutAPI, googleSelector } from '../../store/google';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 function SettingGoogleSheets() {
@@ -15,6 +15,10 @@ function SettingGoogleSheets() {
     dispatch(googleLoginAPI([scope]));
   };
 
+  const disconnect = async () => {
+    dispatch(googleLogoutAPI([scope]));
+  };
+
   useEffect(() => {
     if (user) {
       if (!grantedScopes.includes(scope)) {
@@ -23,7 +27,7 @@ function SettingGoogleSheets() {
     }
   }, [user, grantedScopes, scope, dispatch]);
 
-  if (['DEV', 'BETA'].includes(import.meta.env.VITE_PUBLIC_VARIANT || '')) {
+  if (['DEV', 'BETA'].includes(import.meta.env.VITE_PUBLIC_VARIANT ?? '')) {
     return (
       <div className='d-flex flex-column align-items-start'>
         <Alert>
@@ -56,7 +60,16 @@ function SettingGoogleSheets() {
     );
   }
 
-  return <b className='text-muted d-block mb-2'>Connected with Google Sheets</b>;
+  return (
+    <>
+      <Badge bg='success' pill className='p-2 px-3'>
+        Connected
+      </Badge>
+      <Button variant='link' onClick={disconnect} data-testid='google-sheets-connect'>
+        Disconnect with Google Sheets
+      </Button>
+    </>
+  );
 }
 
 SettingGoogleSheets.displayName = 'SettingGoogleSheets';

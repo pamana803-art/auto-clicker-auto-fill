@@ -3,14 +3,23 @@ import { GOOGLE_SCOPES } from '@dhruv-techapps/shared-google-oauth';
 import { useEffect } from 'react';
 import { Accordion, Button, Card, ListGroup, NavDropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useConfirmationModalContext } from '../../_providers/confirm.provider';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-
-import { ErrorAlert } from '../../components';
-import { firebaseSelector, switchFirebaseLoginModal } from '../../store/firebase';
-import { googleDriveSelector, googleHasAccessAPI, googleLoginAPI, googleSelector } from '../../store/google';
-import { googleDriveAutoBackupAPI, googleDriveBackupAPI, googleDriveDeleteAPI, googleDriveListWithContentAPI, googleDriveRestoreAPI } from '../../store/google/google-drive/google-drive.api';
-import { settingsSelector } from '../../store/settings/settings.slice';
+import { useConfirmationModalContext } from '../../providers';
+import {
+  firebaseSelector,
+  googleDriveAutoBackupAPI,
+  googleDriveBackupAPI,
+  googleDriveDeleteAPI,
+  googleDriveListWithContentAPI,
+  googleDriveRestoreAPI,
+  googleDriveSelector,
+  googleHasAccessAPI,
+  googleLoginAPI,
+  googleSelector,
+  settingsSelector,
+  switchFirebaseLoginModal,
+  useAppDispatch,
+  useAppSelector
+} from '../../store';
 import { CloudArrowDownFill, CloudArrowUpFill, Trash } from '../../utils';
 
 export function SettingsGoogleBackup() {
@@ -21,7 +30,7 @@ export function SettingsGoogleBackup() {
   } = useAppSelector(settingsSelector);
   const { user } = useAppSelector(firebaseSelector);
   const { grantedScopes, googleLoading } = useAppSelector(googleSelector);
-  const { files, filesLoading, error } = useAppSelector(googleDriveSelector);
+  const { files, filesLoading } = useAppSelector(googleDriveSelector);
 
   const scope = GOOGLE_SCOPES.DRIVE;
   const dispatch = useAppDispatch();
@@ -94,11 +103,6 @@ export function SettingsGoogleBackup() {
 
   return (
     <>
-      <div>
-        {error && <ErrorAlert error={error} />}
-        <b className='text-muted d-block mb-2'>Google Drive {t('modal.settings.backup.title')}</b>
-      </div>
-      <hr />
       <ol className='list-group'>
         <ListGroup.Item as='li'>
           <NavDropdown.Item href='#backup-now' title={t('modal.settings.backup.now')} onClick={() => onBackup()}>

@@ -1,8 +1,8 @@
-import { Discord, Settings, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
+import { Discord, Settings, SettingsNotifications, defaultSettings, defaultSettingsNotifications } from '@dhruv-techapps/acf-common';
 import { AUTO_BACKUP } from '@dhruv-techapps/shared-google-drive';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../store';
+import { RootState } from '..';
 import { discordDeleteAPI, discordGetAPI, discordLoginAPI, settingsGetAPI } from './settings.api';
 
 type SettingsStore = {
@@ -14,9 +14,14 @@ type SettingsStore = {
   message?: string;
 };
 
-type SettingsAction = {
-  name: string;
-  value: boolean;
+type SettingsAction<K extends keyof Settings = keyof Settings> = {
+  name: K;
+  value: Settings[K];
+};
+
+type SettingsNotificationAction<K extends keyof SettingsNotifications = keyof SettingsNotifications> = {
+  name: K;
+  value: SettingsNotifications[K];
 };
 
 const initialState: SettingsStore = { visible: false, loading: true, settings: defaultSettings };
@@ -35,9 +40,9 @@ const slice = createSlice({
     },
     updateSettings: (state, action: PayloadAction<SettingsAction>) => {
       const { name, value } = action.payload;
-      state.settings[name] = value;
+      (state.settings[name] as Settings[typeof name]) = value;
     },
-    updateSettingsNotification: (state, action: PayloadAction<SettingsAction>) => {
+    updateSettingsNotification: (state, action: PayloadAction<SettingsNotificationAction>) => {
       const { name, value } = action.payload;
       if (state.settings.notifications) {
         state.settings.notifications[name] = value;
@@ -52,8 +57,15 @@ const slice = createSlice({
         state.settings.backup = { autoBackup: action.payload };
       }
     },
-    setSettingsError: (state, action) => {
-      state.error = action.payload;
+    setSettingsError: (state, action: PayloadAction<unknown>) => {
+      const error = action.payload;
+      if (error instanceof Error) {
+        state.error = error.message;
+      } else if (typeof error === 'string') {
+        state.error = error;
+      } else {
+        state.error = JSON.stringify(error);
+      }
       Sentry.captureException(state.error);
       state.message = undefined;
       state.loading = false;

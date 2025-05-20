@@ -1,10 +1,12 @@
+import { SettingsNotifications } from '@dhruv-techapps/acf-common';
+import { ChangeEvent } from 'react';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { settingsSelector, updateSettingsNotification } from '../../store/settings/settings.slice';
 import { VolumeMute, VolumeUp } from '../../utils';
 import { getFieldNameValue } from '../../utils/element';
-import { SettingDiscord } from './discord';
+import { SettingDiscord } from './discord.component';
 
 function SettingNotifications() {
   const { t } = useTranslation();
@@ -12,8 +14,8 @@ function SettingNotifications() {
   const { notifications } = useAppSelector(settingsSelector).settings;
 
   const dispatch = useAppDispatch();
-  const onUpdate = (e) => {
-    const update = getFieldNameValue<boolean>(e, notifications);
+  const onUpdate = (e: ChangeEvent<HTMLInputElement>) => {
+    const update = getFieldNameValue<SettingsNotifications>(e, notifications);
     if (update) {
       dispatch(updateSettingsNotification(update));
     }
@@ -21,7 +23,6 @@ function SettingNotifications() {
 
   return (
     <>
-      <h5>{t('modal.settings.notification.title')}</h5>
       <ol className='list-group' data-testid='settings-notifications'>
         <li className='list-group-item d-flex justify-content-between align-items-center'>
           <Form.Label className='ms-2 mt-2 me-auto' htmlFor='notifications.onError'>

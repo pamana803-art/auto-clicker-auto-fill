@@ -1,17 +1,17 @@
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
-import { RootState } from '../../store';
-import { configReorderUpdateAPI } from './config-reorder.api';
+import { RootState } from '../..';
+import { configReorderGetAPI, configReorderUpdateAPI } from './config-reorder.api';
 
 type ConfigReorderStore = {
-  visible: boolean;
   error?: string;
   message?: string;
-  configs?: Array<Configuration>;
+  loading: boolean;
+  configs: Array<Configuration>;
 };
 
-const initialState: ConfigReorderStore = { visible: false };
+const initialState: ConfigReorderStore = { loading: true, configs: [] };
 
 const slice = createSlice({
   name: 'configReorder',
@@ -19,13 +19,6 @@ const slice = createSlice({
   reducers: {
     updateConfigReorder: (state, action: PayloadAction<Array<Configuration>>) => {
       state.configs = action.payload;
-    },
-    switchConfigReorderModal: (state, action: PayloadAction<Array<Configuration> | undefined>) => {
-      if (action.payload) {
-        state.configs = action.payload;
-      }
-      window.dataLayer.push({ event: 'modal', name: 'config_reorder', visibility: !state.visible });
-      state.visible = !state.visible;
     },
     setConfigReorderMessage: (state, action: PayloadAction<string | undefined>) => {
       state.error = undefined;
@@ -39,12 +32,22 @@ const slice = createSlice({
       state.message = undefined;
     });
     builder.addCase(configReorderUpdateAPI.fulfilled, (state) => {
-      state.visible = false;
+      state.message = 'Configurations reordered successfully!';
+    });
+    builder.addCase(configReorderGetAPI.fulfilled, (state, action) => {
+      state.configs = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(configReorderGetAPI.rejected, (state, action) => {
+      state.error = action.error.message;
+      Sentry.captureException(state.error);
+      state.message = undefined;
+      state.loading = false;
     });
   }
 });
 
-export const { switchConfigReorderModal, updateConfigReorder, setConfigReorderMessage } = slice.actions;
+export const { updateConfigReorder, setConfigReorderMessage } = slice.actions;
 
 export const configReorderSelector = (state: RootState) => state.configReorder;
 export const configReorderReducer = slice.reducer;

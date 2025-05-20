@@ -1,4 +1,4 @@
-import { useConfirmationModalContext } from '@acf-options-page/_providers/confirm.provider';
+import { useConfirmationModalContext } from '@acf-options-page/providers';
 import {
   actionSelector,
   addAction,

@@ -1,10 +1,10 @@
-export function Loading({ message = 'Loading...', className = '' }) {
+import { CoverLayout } from '@acf-options-page/app/cover-layout';
+
+export function Loading({ message = 'Loading...' }) {
   return (
-    <div className={`d-flex justify-content-center align-items-center ${className}`}>
-      <strong role='status' className='me-5'>
-        {message}
-      </strong>
-      <div className='spinner-border' role='status' aria-hidden='true'></div>
-    </div>
+    <CoverLayout>
+      <strong className='me-5'>{message}</strong>
+      <div className='spinner-border' aria-hidden='true'></div>
+    </CoverLayout>
   );
 }

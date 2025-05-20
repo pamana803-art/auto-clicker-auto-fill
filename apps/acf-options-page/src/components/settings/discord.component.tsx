@@ -1,26 +1,23 @@
 import { useEffect } from 'react';
 import { Button, Form, Image } from 'react-bootstrap';
-import { firebaseSelector, switchFirebaseLoginModal } from '../../store/firebase';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { settingsSelector } from '../../store/settings';
-import { discordDeleteAPI, discordGetAPI, discordLoginAPI } from '../../store/settings/settings.api';
+import { discordDeleteAPI, discordGetAPI, discordLoginAPI, settingsSelector, useAppDispatch, useAppSelector } from '../../store';
 
 type SettingDiscordProps = {
-  checked: boolean;
-  label: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  readonly checked: boolean;
+  readonly label: string;
+  readonly onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
 
 function SettingDiscord({ onChange, label, checked }: SettingDiscordProps) {
   const { discord } = useAppSelector(settingsSelector);
-  const { user } = useAppSelector(firebaseSelector);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (user && !discord) {
+    if (!discord) {
       dispatch(discordGetAPI());
     }
-  }, [user, discord, dispatch]);
+  }, [discord, dispatch]);
 
   const connect = () => {
     dispatch(discordLoginAPI());
@@ -29,18 +26,6 @@ function SettingDiscord({ onChange, label, checked }: SettingDiscordProps) {
   const remove = () => {
     dispatch(discordDeleteAPI());
   };
-
-  if (!user) {
-    return (
-      <p>
-        Please
-        <Button variant='link' title='login' onClick={() => dispatch(switchFirebaseLoginModal())}>
-          Login
-        </Button>
-        to your account before connecting with Discord.
-      </p>
-    );
-  }
 
   if (discord) {
     return (

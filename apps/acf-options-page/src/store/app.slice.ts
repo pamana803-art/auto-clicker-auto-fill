@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react';
+import { RootState } from '.';
 import { NO_EXTENSION_ERROR } from '../utils/constants';
 import { getManifest } from './app.api';
-import { RootState } from './store';
 
 type AppStore = {
   manifest?: Partial<chrome.runtime.Manifest>;

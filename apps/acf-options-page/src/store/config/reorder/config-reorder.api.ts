@@ -1,16 +1,14 @@
 import { RootState } from '@acf-options-page/store';
-import { LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
+import { Configuration, LOCAL_STORAGE_KEY } from '@dhruv-techapps/acf-common';
 import { StorageService } from '@dhruv-techapps/core-service';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { addToast } from '../../toast.slice';
-import { setConfigs } from '../config.slice';
 
-export const configReorderUpdateAPI = createAsyncThunk<boolean, void, { state: RootState }>('configReorder/update', async (_, thunkAPI) => {
-  const configReorder = thunkAPI.getState().configReorder.configs;
-  if (configReorder) {
-    await StorageService.set({ [LOCAL_STORAGE_KEY.CONFIGS]: configReorder });
-    thunkAPI.dispatch(setConfigs(configReorder));
-    thunkAPI.dispatch(addToast({ header: 'Configurations reordered successfully!' }));
-  }
-  return true;
+export const configReorderGetAPI = createAsyncThunk('configReorder/getAll', async () => {
+  const result = await StorageService.get<LOCAL_STORAGE_KEY.CONFIGS, Array<Configuration>>(LOCAL_STORAGE_KEY.CONFIGS);
+  const configurations = result.configs ?? [];
+  return configurations;
+});
+
+export const configReorderUpdateAPI = createAsyncThunk<void, Array<Configuration>, { state: RootState }>('configReorder/update', async (configs) => {
+  await StorageService.set({ [LOCAL_STORAGE_KEY.CONFIGS]: configs });
 });

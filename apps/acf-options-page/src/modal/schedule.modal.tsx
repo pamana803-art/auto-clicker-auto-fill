@@ -1,8 +1,8 @@
 import { Alert, Button, Card, Col, Form, FormControl, InputGroup, Modal, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
+import { useTimeout } from '@acf-options-page/hooks';
 import { FormEvent, useEffect } from 'react';
-import { useTimeout } from '../_hooks/message.hooks';
 import { syncSchedule } from '../store/config';
 import { scheduleSelector, setScheduleMessage, switchScheduleModal, updateSchedule } from '../store/config/schedule';
 import { useAppDispatch, useAppSelector } from '../store/hooks';

@@ -4,8 +4,8 @@ import { RETRY_OPTIONS } from '@dhruv-techapps/acf-common';
 import { Alert, Button, Card, Col, Form, FormControl, InputGroup, Modal, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
+import { useTimeout } from '@acf-options-page/hooks';
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
-import { useTimeout } from '../_hooks/message.hooks';
 import {
   actionSettingsSelector,
   selectedConfigSelector,

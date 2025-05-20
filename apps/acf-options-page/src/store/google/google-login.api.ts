@@ -1,7 +1,7 @@
 import { GOOGLE_SCOPES, GoogleOauthService } from '@dhruv-techapps/shared-google-oauth';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const googleLoginAPI = createAsyncThunk('google/login', async (scopes: GOOGLE_SCOPES[]) => {
+export const googleLoginAPI = createAsyncThunk('google/login', async (scopes: GOOGLE_SCOPES[], { dispatch, rejectWithValue }) => {
   const response = await GoogleOauthService.login(scopes);
   return response;
 });

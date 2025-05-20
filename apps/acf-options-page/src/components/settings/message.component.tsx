@@ -1,5 +1,5 @@
+import { useTimeout } from '@acf-options-page/hooks';
 import { Modal } from 'react-bootstrap';
-import { useTimeout } from '../../_hooks/message.hooks';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setSettingsMessage, settingsSelector } from '../../store/settings/settings.slice';
 
