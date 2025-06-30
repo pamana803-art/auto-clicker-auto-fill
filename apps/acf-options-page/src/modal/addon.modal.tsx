@@ -72,7 +72,7 @@ const AddonModal = () => {
                     <Form.Control type='text' placeholder='Element Finder' defaultValue={addon.elementFinder} onBlur={onUpdate} list='elementFinder' name='elementFinder' required />
                     <div class="invalid-feedback">{t('error.elementFinder')} </div>
                   </Form.Group>
-                </Col>
+                </div>
                 <Col md={6} sm={12}>
                   <Form.Group controlId='addon-condition'>
                     <Form.Label>
@@ -87,8 +87,8 @@ const AddonModal = () => {
                     </Form.Select>
                     <div class="invalid-feedback">{t('error.condition')} </div>
                   </Form.Group>
-                </Col>
-              </Row>
+                </div>
+              </div>
               <div className="row">
                 <Col md sm={12}>
                   <Form.Group controlId='addon-value'>
@@ -98,7 +98,7 @@ const AddonModal = () => {
                     <Form.Control type='text' placeholder='Value' defaultValue={addon.value} onBlur={onUpdate} name='value' required list='value' />
                     <div class="invalid-feedback">{t('error.value')} </div>
                   </Form.Group>
-                </Col>
+                </div>
                 <Col md sm={12}>
                   <Form.Group controlId='addon-value-extractor' className='addon-value-extractor'>
                     <Form.Label>{t('modal.addon.valueExtractor')}</Form.Label>
@@ -114,8 +114,8 @@ const AddonModal = () => {
                     </div>
                     <div class="invalid-feedback">{t('error.valueExtractor')} </div>
                   </Form.Group>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
           <div hidden={!(addon.elementFinder && addon.condition && addon.value)} data-testid='addon-recheck'>

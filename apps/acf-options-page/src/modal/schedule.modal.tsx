@@ -69,15 +69,15 @@ export const ScheduleModal = () => {
                     <input className="form-control" name='date' pattern={REGEX.SCHEDULE_DATE} autoComplete='off' defaultValue={schedule.date} onBlur={onUpdate} placeholder='YYYY-MM-DD' list='schedule-date' required />
                     <div class="invalid-feedback">{t('error.scheduleDate')} </div>
                   </div>
-                </Col>
+                </div>
                 <Col md='6' sm='12'>
                   <div className="input-group">
                     <span className="input-group-text">{t('modal.schedule.time')}</span>
                     <input className="form-control" name='time' pattern={REGEX.SCHEDULE_TIME} autoComplete='off' defaultValue={schedule.time} onBlur={onUpdate} placeholder='HH:mm:ss.sss' list='schedule-time' required />
                     <div class="invalid-feedback">{t('error.scheduleTime')} </div>
                   </div>
-                </Col>
-              </Row>
+                </div>
+              </div>
               <Row className='mt-3'>
                 <Col md='12' sm='12'>
                   <div className="input-group">
@@ -86,8 +86,8 @@ export const ScheduleModal = () => {
                     <span className="input-group-text">{t('common.min')}</span>
                     <div class="invalid-feedback">{t('error.scheduleRepeat')} </div>
                   </div>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
           {error && (

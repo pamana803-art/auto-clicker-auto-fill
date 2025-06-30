@@ -34,7 +34,7 @@ function Footer() {
                 <small id='web-version'>☯ {import.meta.env.VITE_PUBLIC_RELEASE_VERSION}</small>
               </div>
             </div>
-          </Col>
+          </div>
           <Col md xs={4}>
             <h5 className='text-secondary'>{t('footer.connect')}</h5>
             <ul className='list-unstyled text-small'>
@@ -57,7 +57,7 @@ function Footer() {
                 </a>
               </li>
             </ul>
-          </Col>
+          </div>
           <Col md xs={4}>
             <h5 className='text-secondary'>{t('footer.about')}</h5>
             <ul className='list-unstyled text-small'>
@@ -74,7 +74,7 @@ function Footer() {
                 </a>
               </li>
             </ul>
-          </Col>
+          </div>
           <Col md xs={4}>
             <h5 className='text-secondary'>{t('footer.social')}</h5>
             <ul className='list-unstyled text-small'>
@@ -97,8 +97,8 @@ function Footer() {
                 </a>
               </li>
             </ul>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </div>
     </footer>
   );

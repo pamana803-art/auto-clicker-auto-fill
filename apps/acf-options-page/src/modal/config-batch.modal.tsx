@@ -1,5 +1,5 @@
 import { useTimeout } from '@acf-options-page/hooks';
-import { Col, Form, Modal, Row } from 'react-bootstrap';
+import { Col, Form, Modal } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 import { batchSelector, selectedConfigSelector, setBatchMessage, switchBatchModal, updateBatch } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
@@ -49,13 +49,13 @@ const BatchModal = () => {
         <Modal.Body>
           <div class='card border-warning'>
             <div className='card-body'>
-              <div className="row">
+              <div className='row'>
                 <Col md='12' sm='12'>
                   <FormCheck type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch?.refresh || false} onChange={onUpdate} />
                   <Form.Text>
                     <Trans i18nKey='batch.refreshHint' components={{ b: <b /> }} />
                   </Form.Text>
-                </Col>
+                </div>
                 {!batch?.refresh && (
                   <>
                     <hr className='my-3' />
@@ -75,7 +75,7 @@ const BatchModal = () => {
                         />
                         <div className='invalid-feedback'>{t('error.number')} </div>
                       </Form.Group>
-                    </Col>
+                    </div>
                     <Col md='6' sm='12'>
                       <Form.Group controlId='batch-repeat-interval'>
                         <Form.Label>
@@ -93,13 +93,13 @@ const BatchModal = () => {
                         />
                         <div className='invalid-feedback'>{t('error.number')} </div>
                       </Form.Group>
-                    </Col>
+                    </div>
                     <Form.Text>
                       <Trans i18nKey='batch.repeatHint' components={{ b: <b /> }} />
                     </Form.Text>
                   </>
                 )}
-              </Row>
+              </div>
             </div>
           </div>
         </Modal.Body>

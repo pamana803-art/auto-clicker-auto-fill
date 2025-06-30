@@ -48,7 +48,7 @@ function AddonRecheck() {
                 <input className="form-control" placeholder='0' onBlur={onUpdate} defaultValue={addon.recheck} type='number' pattern={REGEX.NUMBER} list='recheck' name='recheck' />
                 <div class="invalid-feedback">{t('error.number')} </div>
               </div>
-            </Col>
+            </div>
             <Col md={6} sm={12}>
               <div className="input-group">
                 <span className="input-group-text">
@@ -57,8 +57,8 @@ function AddonRecheck() {
                 <input className="form-control" placeholder='0' onBlur={onUpdate} defaultValue={addon.recheckInterval} list='interval' pattern={REGEX.INTERVAL} name='recheckInterval' />
                 <div class="invalid-feedback">{t('error.number')} </div>
               </div>
-            </Col>
-          </Row>
+            </div>
+          </div>
         </div>
       </div>
       <Card bg='danger-subtle' text='danger-emphasis' className='mt-3'>
@@ -66,7 +66,7 @@ function AddonRecheck() {
           <div className="row">
             <Col xs={12} className='mb-2'>
               {t('modal.addon.recheck.hint')}
-            </Col>
+            </div>
             <div className="col">
               <input className="form-check-input"
                 type='radio'
@@ -76,7 +76,7 @@ function AddonRecheck() {
                 name='recheckOption'
                 label={t('modal.addon.recheck.stop')}
               />
-            </Col>
+            </div>
             <div className="col">
               <input className="form-check-input"
                 type='radio'
@@ -86,7 +86,7 @@ function AddonRecheck() {
                 name='recheckOption'
                 label={t('modal.addon.recheck.skip')}
               />
-            </Col>
+            </div>
             <div className="col">
               <input className="form-check-input"
                 type='radio'
@@ -96,7 +96,7 @@ function AddonRecheck() {
                 name='recheckOption'
                 label={t('modal.addon.recheck.refresh')}
               />{' '}
-            </Col>
+            </div>
             <div className="col">
               <input className="form-check-input"
                 type='radio'
@@ -106,7 +106,7 @@ function AddonRecheck() {
                 name='recheckOption'
                 label={t('modal.addon.recheck.goto')}
               />
-            </Col>
+            </div>
             {addon.recheckOption === RECHECK_OPTIONS.GOTO && (
               <Col xs={{ span: 3, offset: 9 }}>
                 <Form.Select value={addon.recheckGoto} onChange={onUpdateGoto} name='goto' required>
@@ -116,9 +116,9 @@ function AddonRecheck() {
                     </option>
                   ))}
                 </Form.Select>
-              </Col>
+              </div>
             )}
-          </Row>
+          </div>
         </div>
       </div>
     </>

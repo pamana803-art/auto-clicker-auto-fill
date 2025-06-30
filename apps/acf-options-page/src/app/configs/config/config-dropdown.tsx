@@ -51,7 +51,7 @@ export const ConfigDropdown = (props) => {
               </Form.Select>
             </Form.Group>
           </form>
-        </Col>
+        </div>
         <Col xs='auto' className='d-flex align-items-center'>
           <button className='btn' type='button' variant='outline-primary' onClick={onAddConfig} id='add-configuration' className='border-top-0 border-bottom-0 border'>
             {t('configuration.add')}
@@ -77,8 +77,8 @@ export const ConfigDropdown = (props) => {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </div>
   );
 };

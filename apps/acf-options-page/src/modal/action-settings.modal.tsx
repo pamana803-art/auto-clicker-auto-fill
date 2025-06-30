@@ -91,8 +91,8 @@ const ActionSettingsModal = () => {
                 <Col md={12} sm={12}>
                   <input className="form-check-input" type='switch' name='iframeFirst' checked={settings.iframeFirst || false} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
                   <small className='text-muted'>{t('modal.actionSettings.iframeFirstHint')}</small>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
           <Card bg='warning-subtle' text='warning-emphasis' className='mt-3'>
@@ -104,7 +104,7 @@ const ActionSettingsModal = () => {
                     <input className="form-control" placeholder={t('modal.actionSettings.retry.title')} name='retry' type='number' onBlur={onUpdate} defaultValue={settings.retry} pattern={REGEX.NUMBER} list='retry' />
                     <div class="invalid-feedback">{t('error.number')} </div>
                   </div>
-                </Col>
+                </div>
                 <Col md={6} sm={12}>
                   <div className="input-group">
                     <span className="input-group-text">
@@ -120,8 +120,8 @@ const ActionSettingsModal = () => {
                     />
                     <div class="invalid-feedback">{t('error.number')} </div>
                   </div>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
           <Card bg='danger-subtle' text='danger-subtle' className='mt-3'>
@@ -129,7 +129,7 @@ const ActionSettingsModal = () => {
               <div className="row">
                 <Col xs={12} className='mb-2'>
                   {t('modal.actionSettings.retry.hint')}
-                </Col>
+                </div>
                 <div className="col">
                   <input className="form-check-input"
                     type='radio'
@@ -139,7 +139,7 @@ const ActionSettingsModal = () => {
                     name='retryOption'
                     label={t('modal.actionSettings.retry.stop')}
                   />
-                </Col>
+                </div>
                 <div className="col">
                   <input className="form-check-input"
                     type='radio'
@@ -149,7 +149,7 @@ const ActionSettingsModal = () => {
                     name='retryOption'
                     label={t('modal.actionSettings.retry.skip')}
                   />
-                </Col>
+                </div>
                 <div className="col">
                   <input className="form-check-input"
                     type='radio'
@@ -159,7 +159,7 @@ const ActionSettingsModal = () => {
                     name='retryOption'
                     label={t('modal.actionSettings.retry.refresh')}
                   />
-                </Col>
+                </div>
                 <div className="col">
                   <input className="form-check-input"
                     type='radio'
@@ -169,7 +169,7 @@ const ActionSettingsModal = () => {
                     name='retryOption'
                     label={t('modal.actionSettings.retry.goto')}
                   />
-                </Col>
+                </div>
                 {settings.retryOption === RETRY_OPTIONS.GOTO && (
                   <Col xs={{ span: 3, offset: 9 }}>
                     <Form.Select value={settings.retryGoto} onChange={onUpdateGoto} name='goto' required>
@@ -179,9 +179,9 @@ const ActionSettingsModal = () => {
                         </option>
                       ))}
                     </Form.Select>
-                  </Col>
+                  </div>
                 )}
-              </Row>
+              </div>
             </div>
           </div>
           {error && (

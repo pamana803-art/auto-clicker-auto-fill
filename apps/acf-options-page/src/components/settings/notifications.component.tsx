@@ -1,6 +1,5 @@
 import { SettingsNotifications } from '@dhruv-techapps/acf-common';
 import { ChangeEvent } from 'react';
-import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { settingsSelector, updateSettingsNotification } from '../../store/settings/settings.slice';

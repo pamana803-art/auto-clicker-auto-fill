@@ -113,8 +113,8 @@ const ConfigSettingsModal = () => {
                       </li>
                     </ul>
                   </small>
-                </Col>
-              </Row>
+                </div>
+              </div>
               <hr />
               <div className="row">
                 <Col md={12} sm={12} hidden={config.startType === START_TYPES.AUTO}>
@@ -125,7 +125,7 @@ const ConfigSettingsModal = () => {
                       <HotkeyPopover />
                     </span>
                   </div>
-                </Col>
+                </div>
                 <Col md={12} sm={12} hidden={config.startType === START_TYPES.MANUAL}>
                   {t('modal.configSettings.extensionLoad')}&nbsp;
                   <input className="form-check-input"
@@ -158,8 +158,8 @@ const ConfigSettingsModal = () => {
                       </li>
                     </ul>
                   </small>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
           <Card className='mb-2'>
@@ -173,8 +173,8 @@ const ConfigSettingsModal = () => {
                   <small className='text-muted'>
                     https://docs.google.com/spreadsheets/d/<code>1J2OcSNJsnYQCcQmA4K9Fhtv8yqvg0NouB--H4B0jsZA</code>/
                   </small>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
           <Card className='mb-2'>
@@ -186,8 +186,8 @@ const ConfigSettingsModal = () => {
                     <input className="form-control" name='startTime' pattern={REGEX.START_TIME} autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
                     <div class="invalid-feedback">{t('error.startTime')} </div>
                   </div>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
           <Card className='mb-2'>
@@ -204,8 +204,8 @@ const ConfigSettingsModal = () => {
                       ))}
                     </Form.Select>
                   </div>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
           <Card className='mb-2'>
@@ -218,8 +218,8 @@ const ConfigSettingsModal = () => {
                     <input className="form-check-input" inline type='switch' id='bypass.confirm' value='confirm' onChange={onBypassUpdate} checked={config.bypass?.confirm || false} name='confirm' label='confirm' />
                     <input className="form-check-input" inline type='switch' id='bypass.prompt' value='prompt' onChange={onBypassUpdate} checked={config.bypass?.prompt || false} name='prompt' label='prompt' />
                   </div>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
         </Modal.Body>

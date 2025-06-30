@@ -110,7 +110,7 @@ function Config() {
             </div>
             <small className='text-danger ms-3'>{error}</small>
             <small className='text-success ms-3'>{message}</small>
-          </Col>
+          </div>
           <Col xs='auto' className='d-flex align-items-center'>
             <form className='me-3'>
               <input className="form-check-input" type='switch' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onUpdate} />
@@ -135,8 +135,8 @@ function Config() {
                 <input type='file' className='custom-file-input' ref={importFiled} accept='.json' id='import-configuration' onChange={onImportConfig} />
               </label>
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Card.Header>
       <ConfigBody />
     </div>

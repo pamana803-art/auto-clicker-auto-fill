@@ -40,7 +40,7 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
         <div className="row">
           <Col xs={12} className='mb-2'>
             {t('modal.actionCondition.hint')}
-          </Col>
+          </div>
           <div className="col">
             <input className="form-check-input"
               type='radio'
@@ -51,7 +51,7 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
               name='then'
               label={t('modal.actionSettings.retry.stop')}
             />
-          </Col>
+          </div>
           <div className="col">
             <input className="form-check-input"
               type='radio'
@@ -62,7 +62,7 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
               name='then'
               label={t('modal.actionSettings.retry.skip')}
             />
-          </Col>
+          </div>
           <div className="col">
             <input className="form-check-input"
               type='radio'
@@ -73,7 +73,7 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
               name='then'
               label={t('modal.actionSettings.retry.refresh')}
             />
-          </Col>
+          </div>
           <div className="col">
             <input className="form-check-input"
               type='radio'
@@ -84,8 +84,8 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
               name='then'
               label={t('modal.actionSettings.retry.goto')}
             />
-          </Col>
-        </Row>
+          </div>
+        </div>
         {then === RETRY_OPTIONS.GOTO && (
           <div className="row">
             <Col xs={{ span: 4, offset: 8 }}>
@@ -96,8 +96,8 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
                   </option>
                 ))}
               </Form.Select>
-            </Col>
-          </Row>
+            </div>
+          </div>
         )}
       </div>
     </div>

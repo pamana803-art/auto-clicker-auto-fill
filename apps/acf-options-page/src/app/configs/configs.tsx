@@ -7,7 +7,7 @@ import { download } from '@acf-options-page/utils';
 import { CHROME_WEB_STORE } from '@acf-options-page/utils/constants';
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { createRef, useEffect } from 'react';
-import { Alert, Col, Row } from 'react-bootstrap';
+import { Alert, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { BatchModal, ConfigSettingsModal, ScheduleModal } from '../../modal';
 import Footer from '../footer';
@@ -77,10 +77,10 @@ function Configs(props) {
           </p>
         </Alert>
       )}
-      <div className="row">
+      <div className='row'>
         <Col lg='3' className='pt-3 d-none d-lg-block'>
           <ConfigSidebar importFiled={importFiled} onExportAll={onExportAll} />
-        </Col>
+        </div>
         <Col sm='auto' lg='9' className='pt-3'>
           <div>
             <ConfigDropdown importFiled={importFiled} onExportAll={onExportAll} />
@@ -94,8 +94,8 @@ function Configs(props) {
               <ScheduleModal />
             </main>
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
       <div className='custom-file d-none'>
         <label className='custom-file-label' htmlFor='import-configurations' style={{ fontSize: `${1}rem`, fontWeight: 400 }}>
           {t('configuration.importAll')}
