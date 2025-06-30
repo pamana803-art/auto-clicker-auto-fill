@@ -54,42 +54,42 @@ export const ScheduleModal = () => {
 
   return (
     <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='addon-modal'>
-      <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
+      <form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.schedule.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p className='text-muted'>{t('modal.schedule.info')}</p>
           <Card className='mb-2'>
-            <Card.Body>
-              <Row>
+            <div className='card-body'>
+              <div className="row">
                 <Col md='6' sm='12'>
-                  <InputGroup>
-                    <InputGroup.Text>{t('modal.schedule.date')}</InputGroup.Text>
-                    <FormControl name='date' pattern={REGEX.SCHEDULE_DATE} autoComplete='off' defaultValue={schedule.date} onBlur={onUpdate} placeholder='YYYY-MM-DD' list='schedule-date' required />
-                    <Form.Control.Feedback type='invalid'>{t('error.scheduleDate')}</Form.Control.Feedback>
-                  </InputGroup>
+                  <div className="input-group">
+                    <span className="input-group-text">{t('modal.schedule.date')}</span>
+                    <input className="form-control" name='date' pattern={REGEX.SCHEDULE_DATE} autoComplete='off' defaultValue={schedule.date} onBlur={onUpdate} placeholder='YYYY-MM-DD' list='schedule-date' required />
+                    <div class="invalid-feedback">{t('error.scheduleDate')} </div>
+                  </div>
                 </Col>
                 <Col md='6' sm='12'>
-                  <InputGroup>
-                    <InputGroup.Text>{t('modal.schedule.time')}</InputGroup.Text>
-                    <FormControl name='time' pattern={REGEX.SCHEDULE_TIME} autoComplete='off' defaultValue={schedule.time} onBlur={onUpdate} placeholder='HH:mm:ss.sss' list='schedule-time' required />
-                    <Form.Control.Feedback type='invalid'>{t('error.scheduleTime')}</Form.Control.Feedback>
-                  </InputGroup>
+                  <div className="input-group">
+                    <span className="input-group-text">{t('modal.schedule.time')}</span>
+                    <input className="form-control" name='time' pattern={REGEX.SCHEDULE_TIME} autoComplete='off' defaultValue={schedule.time} onBlur={onUpdate} placeholder='HH:mm:ss.sss' list='schedule-time' required />
+                    <div class="invalid-feedback">{t('error.scheduleTime')} </div>
+                  </div>
                 </Col>
               </Row>
               <Row className='mt-3'>
                 <Col md='12' sm='12'>
-                  <InputGroup>
-                    <InputGroup.Text>{t('modal.schedule.repeat')}</InputGroup.Text>
-                    <FormControl name='repeat' pattern={REGEX.SCHEDULE_REPEAT} autoComplete='off' defaultValue={schedule.repeat} onBlur={onUpdate} placeholder='60' list='schedule-repeat' required />
-                    <InputGroup.Text>{t('common.min')}</InputGroup.Text>
-                    <Form.Control.Feedback type='invalid'>{t('error.scheduleRepeat')}</Form.Control.Feedback>
-                  </InputGroup>
+                  <div className="input-group">
+                    <span className="input-group-text">{t('modal.schedule.repeat')}</span>
+                    <input className="form-control" name='repeat' pattern={REGEX.SCHEDULE_REPEAT} autoComplete='off' defaultValue={schedule.repeat} onBlur={onUpdate} placeholder='60' list='schedule-repeat' required />
+                    <span className="input-group-text">{t('common.min')}</span>
+                    <div class="invalid-feedback">{t('error.scheduleRepeat')} </div>
+                  </div>
                 </Col>
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
           {error && (
             <Alert className='mt-3' variant='danger'>
               {error}
@@ -102,14 +102,14 @@ export const ScheduleModal = () => {
           )}
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='reset' variant='outline-primary' className='px-5' data-testid='config-schedule-reset'>
+          <button className="btn" type='reset' variant='outline-primary' className='px-5' data-testid='config-schedule-reset'>
             {t('common.clear')}
-          </Button>
-          <Button type='submit' variant='primary' className='px-5' data-testid='config-schedule-save'>
+          </button>
+          <button className="btn" type='submit' variant='primary' className='px-5' data-testid='config-schedule-save'>
             {t('common.save')}
-          </Button>
+          </button>
         </Modal.Footer>
-      </Form>
+      </form>
     </Modal>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Button, Form, Image } from 'react-bootstrap';
+import { Form, Image } from 'react-bootstrap';
 import { discordDeleteAPI, discordGetAPI, discordLoginAPI, settingsSelector, useAppDispatch, useAppSelector } from '../../store';
 
 type SettingDiscordProps = {
@@ -43,20 +43,20 @@ function SettingDiscord({ onChange, label, checked }: SettingDiscordProps) {
               height='30'
             />
             {discord.username}
-            <Button variant='link' onClick={remove}>
+            <button className='btn' variant='link' onClick={remove}>
               (disconnect)
-            </Button>
+            </button>
           </Form.Label>
-          <Form.Check type='switch' id='discord' onChange={onChange} checked={checked || false} name='discord' data-testid='discord-switch' />
+          <FormCheck type='switch' id='discord' onChange={onChange} checked={checked || false} name='discord' data-testid='discord-switch' />
         </div>
       </div>
     );
   }
 
   return (
-    <Button variant='link' onClick={connect} data-testid='discord-connect'>
+    <button className='btn' variant='link' onClick={connect} data-testid='discord-connect'>
       Connect with discord
-    </Button>
+    </button>
   );
 }
 

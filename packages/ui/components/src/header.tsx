@@ -1,6 +1,6 @@
 import { ThemeContext } from '@dhruv-techapps/ui-context';
 import React, { FC, PropsWithChildren, useContext, useState } from 'react';
-import { Container, Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
+import { Nav, NavDropdown, Navbar, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Github, Moon, Sun, ThreeDots, Youtube } from './assets/svg';
 import { APP_LANGUAGES, APP_LINK, SOCIAL_LINKS } from './constants';
@@ -24,7 +24,7 @@ export const Header: FC<HeaderProps> = ({ children, onHomeClick }) => {
 
   return (
     <Navbar expand='lg' as='header' className='bd-navbar' sticky='top'>
-      <Container fluid className='bd-gutter flex-wrap flex-lg-nowrap' as='nav'>
+      <div class='container-fluid' className='bd-gutter flex-wrap flex-lg-nowrap' as='nav'>
         <div className='d-lg-none' style={{ width: '4.25rem' }}></div>
         <Navbar.Brand onClick={onHomeClick} href='/' className='p-0 me-0 me-lg-2'>
           {t('common.appName')}
@@ -106,7 +106,7 @@ export const Header: FC<HeaderProps> = ({ children, onHomeClick }) => {
             </Nav>
           </Offcanvas.Body>
         </Offcanvas>
-      </Container>
+      </div>
     </Navbar>
   );
 };

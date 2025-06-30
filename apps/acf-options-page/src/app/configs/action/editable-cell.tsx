@@ -2,7 +2,7 @@ import { getFieldNameValue } from '@acf-options-page/utils/element';
 import { Action } from '@dhruv-techapps/acf-common';
 import { ColumnDef } from '@tanstack/react-table';
 import { useEffect, useRef, useState } from 'react';
-import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export const defaultColumn: Partial<ColumnDef<Action>> = {
   cell: Cell
@@ -61,14 +61,14 @@ function Cell({ getValue, row: { original }, column: { id, columnDef }, table })
 
   if (id === 'value') {
     return (
-      <InputGroup>
+      <div className='input-group'>
         <OverlayTrigger overlay={<Tooltip id={id}>{valueFieldType === 'input' ? `Switch to Textarea` : 'Switch to Input'}</Tooltip>}>
-          <Button type='button' variant='outline-secondary' id='action-field-type' onClick={onValueFieldTypeChange}>
+          <button className='btn' type='button' variant='outline-secondary' id='action-field-type' onClick={onValueFieldTypeChange}>
             {valueFieldType === 'input' ? 'I' : 'T'}
-          </Button>
+          </button>
         </OverlayTrigger>
         {getInput(valueFieldType)}
-      </InputGroup>
+      </div>
     );
   }
   return <>{getInput(meta?.as)}</>;

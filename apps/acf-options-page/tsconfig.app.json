@@ -41,6 +41,9 @@
       "path": "../../packages/core/service/tsconfig.lib.json"
     },
     {
+      "path": "../../packages/ui/context/tsconfig.lib.json"
+    },
+    {
       "path": "../../packages/shared/google-oauth/tsconfig.lib.json"
     },
     {
@@ -50,7 +53,7 @@
       "path": "../../packages/shared/status-bar/tsconfig.lib.json"
     },
     {
-      "path": "../../packages/ui/context/tsconfig.lib.json"
+      "path": "../../packages/ui/components/tsconfig.lib.json"
     },
     {
       "path": "../../packages/core/common/tsconfig.lib.json"

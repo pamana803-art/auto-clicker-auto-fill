@@ -74,9 +74,9 @@ export function SettingsGoogleBackup() {
     return (
       <p>
         Please
-        <Button variant='link' title='login' onClick={() => dispatch(switchFirebaseLoginModal())}>
+        <button className="btn" variant='link' title='login' onClick={() => dispatch(switchFirebaseLoginModal())}>
           Login
-        </Button>
+        </button>
         to your account before connecting with Google Drive.
       </p>
     );
@@ -94,9 +94,9 @@ export function SettingsGoogleBackup() {
   if (!grantedScopes?.includes(scope)) {
     return (
       <div className='d-flex flex-column align-items-start'>
-        <Button variant='link' onClick={connect} data-testid='google-backup-connect'>
+        <button className="btn" variant='link' onClick={connect} data-testid='google-backup-connect'>
           Connect with Google Drive
-        </Button>
+        </button>
       </div>
     );
   }
@@ -104,35 +104,35 @@ export function SettingsGoogleBackup() {
   return (
     <>
       <ol className='list-group'>
-        <ListGroup.Item as='li'>
+        <li className="list-group-item" as='li'>
           <NavDropdown.Item href='#backup-now' title={t('modal.settings.backup.now')} onClick={() => onBackup()}>
             <CloudArrowUpFill className='me-2' />
             {t('modal.settings.backup.now')}
           </NavDropdown.Item>
-        </ListGroup.Item>
+        </li>
       </ol>
       <h6 className='mt-4'>{t('modal.settings.backup.auto-backup')}</h6>
       <ol className='list-group'>
-        <ListGroup.Item as='li' active={backup?.autoBackup === AUTO_BACKUP.DAILY}>
+        <li className="list-group-item" as='li' active={backup?.autoBackup === AUTO_BACKUP.DAILY}>
           <NavDropdown.Item href='#backup-daily' title={t('modal.settings.backup.daily')} onClick={() => onBackup(AUTO_BACKUP.DAILY)}>
             {t('modal.settings.backup.daily')}
           </NavDropdown.Item>
-        </ListGroup.Item>
-        <ListGroup.Item as='li' active={backup?.autoBackup === AUTO_BACKUP.WEEKLY}>
+        </li>
+        <li className="list-group-item" as='li' active={backup?.autoBackup === AUTO_BACKUP.WEEKLY}>
           <NavDropdown.Item href='#backup-weekly' title={t('modal.settings.backup.weekly')} onClick={() => onBackup(AUTO_BACKUP.WEEKLY)}>
             {t('modal.settings.backup.weekly')}
           </NavDropdown.Item>
-        </ListGroup.Item>
-        <ListGroup.Item as='li' active={backup?.autoBackup === AUTO_BACKUP.MONTHLY}>
+        </li>
+        <li className="list-group-item" as='li' active={backup?.autoBackup === AUTO_BACKUP.MONTHLY}>
           <NavDropdown.Item href='#backup-monthly' title={t('modal.settings.backup.monthly')} onClick={() => onBackup(AUTO_BACKUP.MONTHLY)}>
             {t('modal.settings.backup.monthly')}
           </NavDropdown.Item>
-        </ListGroup.Item>
-        <ListGroup.Item as='li' active={!backup?.autoBackup || backup?.autoBackup === AUTO_BACKUP.OFF}>
+        </li>
+        <li className="list-group-item" as='li' active={!backup?.autoBackup || backup?.autoBackup === AUTO_BACKUP.OFF}>
           <NavDropdown.Item href='#backup-off' title={t('modal.settings.backup.off')} onClick={() => onBackup(AUTO_BACKUP.OFF)}>
             {t('modal.settings.backup.off')}
           </NavDropdown.Item>
-        </ListGroup.Item>
+        </li>
       </ol>
       <hr />
       <h6 className='mt-4'>{t('modal.settings.backup.restore')}</h6>
@@ -151,17 +151,17 @@ export function SettingsGoogleBackup() {
                     {file.name} <small className='ms-2'>{new Date(file.modifiedTime).toLocaleString()}</small>
                   </Accordion.Header>
                   <Accordion.Body>
-                    <Button onClick={() => restore(file.id, file.name)} variant='link' type='button' size='sm' className='text-danger'>
+                    <button className="btn" onClick={() => restore(file.id, file.name)} variant='link' type='button' size='sm' className='text-danger'>
                       <CloudArrowDownFill className='me-2' />
                       Restore
-                    </Button>
-                    <Button onClick={() => deleteFile(file.id, file.name)} variant='link' type='button' size='sm' className='text-danger'>
+                    </button>
+                    <button className="btn" onClick={() => deleteFile(file.id, file.name)} variant='link' type='button' size='sm' className='text-danger'>
                       <Trash className='me-2' />
                       Delete
-                    </Button>
+                    </button>
                     <Card>
                       <pre>{JSON.stringify(file.content, null, 2)}</pre>
-                    </Card>
+                    </div>
                   </Accordion.Body>
                 </Accordion.Item>
               ))}

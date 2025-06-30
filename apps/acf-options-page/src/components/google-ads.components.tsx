@@ -33,7 +33,7 @@ const GoogleAds = memo(function GoogleAds({ client = import.meta.env.VITE_PUBLIC
   }, []);
 
   return (
-    <Row>
+    <div className="row">
       <Col xs={12} className='text-center'>
         <ins className={`${className} adsbygoogle`} style={{ display: 'block' }} data-ad-client={client} data-ad-slot={slot} data-ad-format='auto' data-full-width-responsive='true' />
       </Col>

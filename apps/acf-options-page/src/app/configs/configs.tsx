@@ -7,7 +7,7 @@ import { download } from '@acf-options-page/utils';
 import { CHROME_WEB_STORE } from '@acf-options-page/utils/constants';
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { createRef, useEffect } from 'react';
-import { Alert, Col, Container, Row } from 'react-bootstrap';
+import { Alert, Col, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { BatchModal, ConfigSettingsModal, ScheduleModal } from '../../modal';
 import Footer from '../footer';
@@ -64,7 +64,7 @@ function Configs(props) {
   };
 
   return (
-    <Container fluid id='main'>
+    <div class='container-fluid' id='main'>
       {props.error && (
         <Alert variant='danger'>
           <p className='m-0'>
@@ -77,7 +77,7 @@ function Configs(props) {
           </p>
         </Alert>
       )}
-      <Row>
+      <div className="row">
         <Col lg='3' className='pt-3 d-none d-lg-block'>
           <ConfigSidebar importFiled={importFiled} onExportAll={onExportAll} />
         </Col>
@@ -102,7 +102,7 @@ function Configs(props) {
           <input type='file' className='custom-file-input' ref={importFiled} accept='.json' id='import-configurations' onChange={onImportAll} />
         </label>
       </div>
-    </Container>
+    </div>
   );
 }
 export default Configs;

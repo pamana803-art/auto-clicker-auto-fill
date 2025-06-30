@@ -30,26 +30,26 @@ function Action() {
     <>
       <Card className='mb-3 shadow-sm'>
         <Card.Header as='h6'>
-          <Row>
+          <div className="row">
             <Col className='d-flex align-items-center'>
               {t('action.title')}
               <small className='text-success ms-3'>{message}</small>
               <small className='text-danger ms-3'>{error}</small>
             </Col>
             <Col xs='auto' className='d-flex align-items-center'>
-              <Button size='sm' variant='outline-primary px-3' onClick={() => dispatch(switchBatchModal())} id='batch-model'>
+              <button className="btn" size='sm' variant='outline-primary px-3' onClick={() => dispatch(switchBatchModal())} id='batch-model'>
                 <Repeat className='me-2' /> {t('batch.title')}
-              </Button>
-              <Button size='sm' variant='outline-primary px-3 mx-3' onClick={onAddAction} id='add-action'>
+              </button>
+              <button className="btn" size='sm' variant='outline-primary px-3 mx-3' onClick={onAddAction} id='add-action'>
                 <Plus className='me-2' /> {t('action.add')}
-              </Button>
+              </button>
             </Col>
           </Row>
         </Card.Header>
-        <Card.Body className='p-0'>
+        <div className='card-body' className='p-0'>
           <ActionTable actions={actions} />
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
       <AddonModal />
       <ActionSettingsModal />
       <ActionStatementModal />

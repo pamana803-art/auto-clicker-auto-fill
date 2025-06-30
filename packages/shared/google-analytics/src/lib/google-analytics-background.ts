@@ -58,12 +58,8 @@ export class GoogleAnalyticsBackground {
     if (!this.MEASUREMENT_ID || !this.API_SECRET) {
       return;
     }
-    if (!params.session_id) {
-      params.session_id = await this.getOrCreateSessionId();
-    }
-    if (!params.engagement_time_msec) {
-      params.engagement_time_msec = DEFAULT_ENGAGEMENT_TIME_MSEC;
-    }
+    params.session_id ??= await this.getOrCreateSessionId();
+    params.engagement_time_msec ??= DEFAULT_ENGAGEMENT_TIME_MSEC;
     params.version = chrome.runtime.getManifest().version;
     try {
       await fetch(`${this.debug ? GA_DEBUG_ENDPOINT : GA_ENDPOINT}?measurement_id=${this.MEASUREMENT_ID}&api_secret=${this.API_SECRET}`, {

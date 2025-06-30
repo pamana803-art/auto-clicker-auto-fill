@@ -1,10 +1,9 @@
 import { useTimeout } from '@acf-options-page/hooks';
 import { setSettingsMessage, settingsGetAPI, settingsSelector, useAppDispatch, useAppSelector } from '@acf-options-page/store';
-import { ArrowRepeat, BellFill, CloudArrowUpFill, FileSpreadsheetFill } from '@acf-options-page/utils';
 import { useEffect } from 'react';
-import { Alert, Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router';
+import { ErrorAlert, SuccessAlert } from './alert';
 
 const SettingsLayout = () => {
   const { t } = useTranslation();
@@ -22,7 +21,7 @@ const SettingsLayout = () => {
   }, [dispatch]);
 
   return (
-    <Container className='mt-3'>
+    <div className='container mt-3'>
       <nav className='navbar navbar-expand-lg bg-body-tertiary rounded'>
         <div className='container-fluid'>
           <ul className='nav nav-pills'>
@@ -33,37 +32,35 @@ const SettingsLayout = () => {
             </li>
             <li className='nav-item'>
               <NavLink to='notifications' className='nav-link'>
-                <BellFill className='me-2' />
+                <i className='bi bi-bell-fill me-2'></i>
                 {t('modal.settings.notification.title')}
               </NavLink>
             </li>
             <li className='nav-item'>
               <NavLink to='retry' className='nav-link'>
-                <ArrowRepeat className='me-2' />
+                <i className='bi bi-arrow-repeat me-2'></i>
                 {t('modal.settings.retry.title')}
               </NavLink>
             </li>
             <li className='nav-item'>
               <NavLink to='google-backup' className='nav-link'>
-                <CloudArrowUpFill className='me-2' />
-                Backup
+                <i className='bi bi-cloud-arrow-up-fill me-2'></i>Backup
               </NavLink>
             </li>
             <li className='nav-item'>
               <NavLink to='google-sheets' className='nav-link'>
-                <FileSpreadsheetFill className='me-2' />
-                Google Sheets
+                <i className='bi bi-file-spreadsheet-fill me-2'></i>Google Sheets
               </NavLink>
             </li>
           </ul>
         </div>
       </nav>
       <div className='pt-3'>
-        {error && <Alert variant='danger'>{error}</Alert>}
-        {message && <Alert variant='success'>{message}</Alert>}
+        <ErrorAlert error={error} />
+        <SuccessAlert message={message} />
         <Outlet />
       </div>
-    </Container>
+    </div>
   );
 };
 

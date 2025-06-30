@@ -1,4 +1,4 @@
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const ConfirmModal = ({ visible, message, title, headerClass, noClick, yesClick }) => {
@@ -16,12 +16,12 @@ const ConfirmModal = ({ visible, message, title, headerClass, noClick, yesClick 
         {message}
       </Modal.Body>
       <Modal.Footer className='flex-nowrap p-0'>
-        <Button variant='link' className='fs-6 text-decoration-none col-6 m-0 rounded-0 border-end' size='lg' onClick={noClick} data-testid='confirm-modal-no'>
+        <button className='btn' variant='link' className='fs-6 text-decoration-none col-6 m-0 rounded-0 border-end' size='lg' onClick={noClick} data-testid='confirm-modal-no'>
           {t('common.no')}
-        </Button>
-        <Button variant='link' className={`fs-6 text-decoration-none col-6 m-0 rounded-0 ${headerClass}`} size='lg' onClick={yesClick} data-testid='confirm-modal-yes'>
+        </button>
+        <button className='btn' variant='link' className={`fs-6 text-decoration-none col-6 m-0 rounded-0 ${headerClass}`} size='lg' onClick={yesClick} data-testid='confirm-modal-yes'>
           {t('common.yes')}
-        </Button>
+        </button>
       </Modal.Footer>
     </Modal>
   );

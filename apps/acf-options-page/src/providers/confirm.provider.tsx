@@ -1,4 +1,4 @@
-import { useContext, useMemo, useRef, useState } from 'react';
+import { createContext, useContext, useMemo, useRef, useState } from 'react';
 import { ConfirmModal } from '../modal';
 
 type ModalRequestType = { title: string; message: React.JSX.Element | string; headerClass: string };
@@ -11,7 +11,7 @@ type ConfirmationModalContextProviderProps = {
   children: React.ReactNode;
 };
 
-const ConfirmationModalContext = React.createContext<ModalContextType>({} as ModalContextType);
+const ConfirmationModalContext = createContext<ModalContextType>({} as ModalContextType);
 
 const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProviderProps> = (props) => {
   const [show, setShow] = useState<boolean>();

@@ -14,7 +14,7 @@ import { Action } from '@dhruv-techapps/acf-common';
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
 import { ColumnDef, Row, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { Button, Dropdown, Form, Table } from 'react-bootstrap';
+import { Dropdown, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { DropdownToggle } from '../../../components';
 import { ElementFinderPopover, ValuePopover } from '../../../popover';
@@ -172,7 +172,7 @@ const ActionTable = ({ actions }: ActionProps) => {
   };
 
   return (
-    <Form>
+    <form>
       <Table id='actions' hover className='mb-0'>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -217,7 +217,8 @@ const ActionTable = ({ actions }: ActionProps) => {
               ))}
               <td align='center'>
                 {actions[row.id].disabled && <Ban className='me-2' title='Disabled' />}
-                <Button
+                <button
+                  className='btn'
                   variant='link'
                   data-testid='action-remove'
                   onClick={() => {
@@ -226,7 +227,7 @@ const ActionTable = ({ actions }: ActionProps) => {
                   disabled={actions.length === 1}
                 >
                   <Trash className={actions.length === 1 ? '' : 'text-danger'} title='Delete' />
-                </Button>
+                </button>
                 {actions[row.id].elementFinder && (
                   <Dropdown id='acton-dropdown-wrapper' className='d-inline-block'>
                     <Dropdown.Toggle as={DropdownToggle} id='action-dropdown' aria-label='Action more option'>
@@ -263,7 +264,7 @@ const ActionTable = ({ actions }: ActionProps) => {
           ))}
         </tbody>
       </Table>
-    </Form>
+    </form>
   );
 };
 

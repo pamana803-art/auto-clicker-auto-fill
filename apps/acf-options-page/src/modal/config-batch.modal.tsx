@@ -1,5 +1,5 @@
 import { useTimeout } from '@acf-options-page/hooks';
-import { Card, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
+import { Col, Form, Modal, Row } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 import { batchSelector, selectedConfigSelector, setBatchMessage, switchBatchModal, updateBatch } from '../store/config';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
@@ -42,16 +42,16 @@ const BatchModal = () => {
 
   return (
     <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow} data-testid='config-batch-modal'>
-      <Form id={FORM_ID}>
+      <form id={FORM_ID}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('batch.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Card bg='warning-subtle' text='warning-emphasis'>
-            <Card.Body>
-              <Row>
+          <div class='card border-warning'>
+            <div className='card-body'>
+              <div className="row">
                 <Col md='12' sm='12'>
-                  <Form.Check type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch?.refresh || false} onChange={onUpdate} />
+                  <FormCheck type='switch' id='batch-refresh' label={t('batch.refresh')} name='refresh' checked={batch?.refresh || false} onChange={onUpdate} />
                   <Form.Text>
                     <Trans i18nKey='batch.refreshHint' components={{ b: <b /> }} />
                   </Form.Text>
@@ -62,8 +62,18 @@ const BatchModal = () => {
                     <Col md='6' sm='12'>
                       <Form.Group controlId='batch-repeat'>
                         <Form.Label>{t('batch.repeat')}</Form.Label>
-                        <FormControl type='number' name='repeat' pattern={REGEX.NUMBER} defaultValue={batch?.repeat} onBlur={onUpdate} autoComplete='off' placeholder='0' list='repeat' />
-                        <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
+                        <input
+                          class='form-control'
+                          type='number'
+                          name='repeat'
+                          pattern={REGEX.NUMBER}
+                          defaultValue={batch?.repeat}
+                          onBlur={onUpdate}
+                          autoComplete='off'
+                          placeholder='0'
+                          list='repeat'
+                        />
+                        <div className='invalid-feedback'>{t('error.number')} </div>
                       </Form.Group>
                     </Col>
                     <Col md='6' sm='12'>
@@ -71,8 +81,17 @@ const BatchModal = () => {
                         <Form.Label>
                           {t('batch.repeatInterval')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
                         </Form.Label>
-                        <FormControl name='repeatInterval' pattern={REGEX.INTERVAL} autoComplete='off' defaultValue={batch?.repeatInterval} onBlur={onUpdate} placeholder='0' list='interval' />
-                        <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
+                        <input
+                          class='form-control'
+                          name='repeatInterval'
+                          pattern={REGEX.INTERVAL}
+                          autoComplete='off'
+                          defaultValue={batch?.repeatInterval}
+                          onBlur={onUpdate}
+                          placeholder='0'
+                          list='interval'
+                        />
+                        <div className='invalid-feedback'>{t('error.number')} </div>
                       </Form.Group>
                     </Col>
                     <Form.Text>
@@ -81,15 +100,15 @@ const BatchModal = () => {
                   </>
                 )}
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
         </Modal.Body>
         {message && (
           <Modal.Footer>
             <span className='text-success'>{message}</span>
           </Modal.Footer>
         )}
-      </Form>
+      </form>
     </Modal>
   );
 };

@@ -94,14 +94,14 @@ function Config() {
   return (
     <Card className='mb-3 shadow-sm'>
       <Card.Header as='h6'>
-        <Row>
+        <div className="row">
           <Col className='d-flex align-items-center'>
             {t('configuration.title')}
             <div className='d-flex align-items-center'>
               {config.enable ? (
-                <Button className='fs-5' variant='link' onClick={showSchedule}>
+                <button className="btn" className='fs-5' variant='link' onClick={showSchedule}>
                   <StockWatch />
-                </Button>
+                </button>
               ) : (
                 <Badge pill bg='secondary' className='ms-2 d-none d-md-block'>
                   {t('common.disabled')}
@@ -112,22 +112,22 @@ function Config() {
             <small className='text-success ms-3'>{message}</small>
           </Col>
           <Col xs='auto' className='d-flex align-items-center'>
-            <Form className='me-3'>
-              <Form.Check type='switch' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onUpdate} />
-            </Form>
+            <form className='me-3'>
+              <input className="form-check-input" type='switch' name='enable' id='config-enable' label={t('configuration.enable')} checked={config.enable} onChange={onUpdate} />
+            </form>
             <ButtonGroup>
-              <Button variant='link' title={t('configuration.export')} onClick={onExportConfig} data-testid='export-configuration' className='fs-5'>
+              <button className="btn" variant='link' title={t('configuration.export')} onClick={onExportConfig} data-testid='export-configuration' className='fs-5'>
                 <Upload />
-              </Button>
-              <Button variant='link' title={t('configuration.import')} onClick={() => importFiled.current?.click()} data-testid='import-configuration' className='fs-5'>
+              </button>
+              <button className="btn" variant='link' title={t('configuration.import')} onClick={() => importFiled.current?.click()} data-testid='import-configuration' className='fs-5'>
                 <Download />
-              </Button>
-              <Button variant='link' title={t('configuration.duplicate')} onClick={onDuplicateConfig} data-testid='duplicate-configuration' className='fs-5'>
+              </button>
+              <button className="btn" variant='link' title={t('configuration.duplicate')} onClick={onDuplicateConfig} data-testid='duplicate-configuration' className='fs-5'>
                 <Copy />
-              </Button>
-              <Button variant='link' title={t('configuration.settings')} onClick={showSettings} data-testid='configuration-settings' className='fs-5'>
+              </button>
+              <button className="btn" variant='link' title={t('configuration.settings')} onClick={showSettings} data-testid='configuration-settings' className='fs-5'>
                 <Gear />
-              </Button>
+              </button>
             </ButtonGroup>
             <div className='custom-file d-none'>
               <label className='custom-file-label' htmlFor='import-configuration' style={{ fontSize: `${1}rem`, fontWeight: 400 }}>
@@ -139,7 +139,7 @@ function Config() {
         </Row>
       </Card.Header>
       <ConfigBody />
-    </Card>
+    </div>
   );
 }
 export default Config;

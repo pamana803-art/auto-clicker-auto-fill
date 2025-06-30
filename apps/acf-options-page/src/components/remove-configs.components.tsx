@@ -1,7 +1,7 @@
 import { useTimeout } from '@acf-options-page/hooks';
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
+import { FormCheck } from '@dhruv-techapps/ui-components';
 import { ChangeEvent, FormEvent, useEffect } from 'react';
-import { Badge, Button, Container, Form, ListGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ErrorAlert, Loading } from '../components';
 import { configRemoveGetAPI, configRemoveSelector, configRemoveUpdateAPI, setConfigRemoveMessage, switchConfigRemoveSelection, useAppDispatch, useAppSelector } from '../store';
@@ -42,16 +42,16 @@ const RemoveConfigs = () => {
   }
 
   return (
-    <Container className='mt-3'>
-      <Form onSubmit={onSubmit} id='remove-configs'>
+    <div className='container mt-3'>
+      <form onSubmit={onSubmit} id='remove-configs'>
         <h2>{t('configuration.removeConfigs')}</h2>
         <InfoAlert message={message} />
         <ErrorAlert error={error} />
         <p className='text-muted'>This action cant be reverted.</p>
-        <ListGroup>
+        <ul className='list-group'>
           {configs?.map((config) => (
-            <ListGroup.Item key={config.id}>
-              <Form.Check
+            <li className='list-group-item' key={config.id}>
+              <FormCheck
                 type='checkbox'
                 checked={config.checked || false}
                 onChange={remove}
@@ -62,25 +62,21 @@ const RemoveConfigs = () => {
                 id={`configuration-checkbox-${config.id}`}
                 label={
                   <>
-                    {config.name || 'configuration - ' + config.id}
-                    {!config.enable && (
-                      <Badge pill bg='secondary' className='ms-2'>
-                        {t('common.disabled')}
-                      </Badge>
-                    )}
+                    {config.name ?? 'configuration - ' + config.id}
+                    {!config.enable && <span className='badge rounded-pill text-bg-secondary ms-2'>{t('common.disabled')}</span>}
                   </>
                 }
               />
-            </ListGroup.Item>
+            </li>
           ))}
-        </ListGroup>
+        </ul>
         <div className='d-flex justify-content-end mt-3'>
-          <Button type='submit' variant='danger px-5' id='remove-configs-button' data-testid='configurations-remove-save'>
+          <button type='submit' className='btn btn-danger px-5' id='remove-configs-button' data-testid='configurations-remove-save'>
             {t('configuration.removeConfigs')}
-          </Button>
+          </button>
         </div>
-      </Form>
-    </Container>
+      </form>
+    </div>
   );
 };
 

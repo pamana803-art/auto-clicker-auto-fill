@@ -2,7 +2,7 @@ import { addConfig, configSelector, selectConfig } from '@acf-options-page/store
 import { useAppDispatch, useAppSelector } from '@acf-options-page/store/hooks';
 import { ThreeDots } from '@acf-options-page/utils';
 import { useEffect, useState } from 'react';
-import { Button, Col, Dropdown, DropdownToggle, Form, Row } from 'react-bootstrap';
+import { Col, Dropdown, DropdownToggle, Form, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
@@ -39,8 +39,8 @@ export const ConfigDropdown = (props) => {
   return (
     <div id='configs' className={`${scroll ? 'shadow bg-body-tertiary' : ' mb-4 mt-3'} d-lg-none sticky-top`}>
       <Row className={`rounded-pill ${!scroll && 'border'}`}>
-        <Col>
-          <Form>
+        <div className="col">
+          <form>
             <Form.Group controlId='selected' className='mb-0'>
               <Form.Select onChange={onChange} value={selectedConfigId} id='configuration-list' className='ps-4 border-0' data-type='number'>
                 {configs.map((config) => (
@@ -50,12 +50,12 @@ export const ConfigDropdown = (props) => {
                 ))}
               </Form.Select>
             </Form.Group>
-          </Form>
+          </form>
         </Col>
         <Col xs='auto' className='d-flex align-items-center'>
-          <Button type='button' variant='outline-primary' onClick={onAddConfig} id='add-configuration' className='border-top-0 border-bottom-0 border'>
+          <button className='btn' type='button' variant='outline-primary' onClick={onAddConfig} id='add-configuration' className='border-top-0 border-bottom-0 border'>
             {t('configuration.add')}
-          </Button>
+          </button>
           <Dropdown id='configurations-dropdown-wrapper'>
             <Dropdown.Toggle as={DropdownToggle} id='configs-dropdown' aria-label='Configurations more option' data-testid='configurations-more-option' className='rounded-end-circle'>
               <ThreeDots />

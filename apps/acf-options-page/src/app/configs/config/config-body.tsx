@@ -4,7 +4,7 @@ import { REGEX } from '@acf-options-page/utils';
 import { APP_LINK } from '@acf-options-page/utils/constants';
 import { getFieldNameValue, updateForm } from '@acf-options-page/utils/element';
 import { useEffect, useState } from 'react';
-import { Card, Col, Form, FormControl, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const FORM_ID = 'config-body';
@@ -38,13 +38,13 @@ function ConfigBody() {
   }
 
   return (
-    <Form id={FORM_ID}>
-      <Card.Body>
-        <Row>
+    <form id={FORM_ID}>
+      <div className='card-body'>
+        <div className="row">
           <Col md='2' sm='12'>
             <Form.Group controlId='config-name'>
               <Form.Label>{t('configuration.name')}</Form.Label>
-              <FormControl name='name' autoComplete='off' defaultValue={config.name} onBlur={onUpdate} placeholder='getautoclicker.com' />
+              <input class='form-control' name='name' autoComplete='off' defaultValue={config.name} onBlur={onUpdate} placeholder='getautoclicker.com' />
             </Form.Group>
           </Col>
           <Col md='8' xxl='9' sm='12'>
@@ -52,8 +52,8 @@ function ConfigBody() {
               <Form.Label>
                 {t('configuration.url')}&nbsp;<small className='text-danger'>*</small>
               </Form.Label>
-              <FormControl name='url' required isInvalid={isInvalid} onKeyDown={onKeyDown} defaultValue={config.url} autoComplete='off' onBlur={onUpdate} placeholder={APP_LINK.TEST} />
-              <Form.Control.Feedback type='invalid'>{t('error.url')}</Form.Control.Feedback>
+              <input class='form-control' name='url' required isInvalid={isInvalid} onKeyDown={onKeyDown} defaultValue={config.url} autoComplete='off' onBlur={onUpdate} placeholder={APP_LINK.TEST} />
+              <div className='invalid-feedback'>{t('error.url')} </div>
             </Form.Group>
           </Col>
           <Col md='2' xxl='1' sm='12'>
@@ -61,13 +61,13 @@ function ConfigBody() {
               <Form.Label>
                 {t('configuration.initWait')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
               </Form.Label>
-              <FormControl name='initWait' pattern={REGEX.INTERVAL} defaultValue={config.initWait} onBlur={onUpdate} autoComplete='off' list='interval' placeholder='0' />
-              <Form.Control.Feedback type='invalid'>{t('error.initWait')}</Form.Control.Feedback>
+              <input class='form-control' name='initWait' pattern={REGEX.INTERVAL} defaultValue={config.initWait} onBlur={onUpdate} autoComplete='off' list='interval' placeholder='0' />
+              <div className='invalid-feedback'>{t('error.initWait')} </div>
             </Form.Group>
           </Col>
         </Row>
-      </Card.Body>
-    </Form>
+      </div>
+    </form>
   );
 }
 

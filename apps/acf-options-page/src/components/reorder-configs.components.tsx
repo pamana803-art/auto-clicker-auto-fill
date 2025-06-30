@@ -4,7 +4,6 @@ import { closestCenter, DndContext, DragEndEvent, KeyboardSensor, PointerSensor,
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { FormEvent, useEffect, useState } from 'react';
-import { Badge, Button, Container, Form, ListGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ErrorAlert, Loading } from '../components';
 import { configReorderGetAPI, configReorderSelector, configReorderUpdateAPI, setConfigReorderMessage, updateConfigReorder, useAppDispatch, useAppSelector } from '../store';
@@ -66,15 +65,15 @@ const ReorderConfigs = () => {
   }
 
   return (
-    <Container className='mt-3'>
-      <Form onSubmit={onSubmit} id='reorder-configs'>
+    <div className='container mt-3'>
+      <form onSubmit={onSubmit} id='reorder-configs'>
         <h2>{t('modal.reorder.title')}</h2>
         <InfoAlert message={message} />
         <ErrorAlert error={error} />
         <p className='text-muted'>{t('modal.reorder.hint')}</p>
-        <Button onClick={sortActions} className='mb-3' variant='outline-primary'>
+        <button type='button' onClick={sortActions} className='mb-3 btn btn-outline-primary'>
           Reorder {sort !== undefined && <span>{sort ? <ArrowUp /> : <ArrowDown />}</span>}
-        </Button>
+        </button>
         <div className='list-group'>
           <DndContext onDragEnd={handleDragEnd} sensors={sensors} collisionDetection={closestCenter}>
             <SortableContext items={configs} strategy={verticalListSortingStrategy}>
@@ -85,12 +84,12 @@ const ReorderConfigs = () => {
           </DndContext>
         </div>
         <div className='d-flex justify-content-end mt-3'>
-          <Button type='submit' variant='primary px-5' id='reorder-configs-button' data-testid='configurations-reorder-save'>
+          <button type='submit' className='btn btn-primary px-5' id='reorder-configs-button' data-testid='configurations-reorder-save'>
             {t('common.save')}
-          </Button>
+          </button>
         </div>
-      </Form>
-    </Container>
+      </form>
+    </div>
   );
 };
 
@@ -102,14 +101,10 @@ export function SortableItem(props: Readonly<Configuration>) {
     transition
   };
   return (
-    <ListGroup.Item key={props.id} ref={setNodeRef} {...attributes} {...listeners} style={style}>
+    <li className='list-group-item' key={props.id} ref={setNodeRef} {...attributes} {...listeners} style={style}>
       {props.name ?? 'configuration - ' + props.id}
-      {!props.enable && (
-        <Badge pill bg='secondary' className='ms-2'>
-          {t('common.disabled')}
-        </Badge>
-      )}
-    </ListGroup.Item>
+      {!props.enable && <span className='badge rounded-pill text-bg-secondary ms-2'>{t('common.disabled')}</span>}
+    </li>
   );
 }
 

@@ -79,38 +79,38 @@ const ActionSettingsModal = () => {
 
   return (
     <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='action-settings-modal'>
-      <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
+      <form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.actionSettings.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p className='text-muted'>{t('modal.actionSettings.info')}</p>
           <Card>
-            <Card.Body>
-              <Row>
+            <div className='card-body'>
+              <div className="row">
                 <Col md={12} sm={12}>
-                  <Form.Check type='switch' name='iframeFirst' checked={settings.iframeFirst || false} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
+                  <input className="form-check-input" type='switch' name='iframeFirst' checked={settings.iframeFirst || false} onChange={onUpdate} label={t('modal.actionSettings.iframeFirst')} />
                   <small className='text-muted'>{t('modal.actionSettings.iframeFirstHint')}</small>
                 </Col>
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
           <Card bg='warning-subtle' text='warning-emphasis' className='mt-3'>
-            <Card.Body>
+            <div className='card-body'>
               <Row className='mb-2 mb-md-0'>
                 <Col md={6} sm={12}>
-                  <InputGroup>
-                    <InputGroup.Text>{t('modal.actionSettings.retry.title')}</InputGroup.Text>
-                    <FormControl placeholder={t('modal.actionSettings.retry.title')} name='retry' type='number' onBlur={onUpdate} defaultValue={settings.retry} pattern={REGEX.NUMBER} list='retry' />
-                    <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
-                  </InputGroup>
+                  <div className="input-group">
+                    <span className="input-group-text">{t('modal.actionSettings.retry.title')}</span>
+                    <input className="form-control" placeholder={t('modal.actionSettings.retry.title')} name='retry' type='number' onBlur={onUpdate} defaultValue={settings.retry} pattern={REGEX.NUMBER} list='retry' />
+                    <div class="invalid-feedback">{t('error.number')} </div>
+                  </div>
                 </Col>
                 <Col md={6} sm={12}>
-                  <InputGroup>
-                    <InputGroup.Text>
+                  <div className="input-group">
+                    <span className="input-group-text">
                       {t('modal.actionSettings.retry.interval')}&nbsp;<small className='text-muted'>({t('common.sec')})</small>
-                    </InputGroup.Text>
-                    <FormControl
+                    </span>
+                    <input className="form-control"
                       placeholder={`${t('modal.actionSettings.retry.interval')} (${t('common.sec')})`}
                       list='interval'
                       onBlur={onUpdate}
@@ -118,20 +118,20 @@ const ActionSettingsModal = () => {
                       defaultValue={settings.retryInterval}
                       pattern={REGEX.INTERVAL}
                     />
-                    <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
-                  </InputGroup>
+                    <div class="invalid-feedback">{t('error.number')} </div>
+                  </div>
                 </Col>
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
           <Card bg='danger-subtle' text='danger-subtle' className='mt-3'>
-            <Card.Body>
-              <Row>
+            <div className='card-body'>
+              <div className="row">
                 <Col xs={12} className='mb-2'>
                   {t('modal.actionSettings.retry.hint')}
                 </Col>
-                <Col>
-                  <Form.Check
+                <div className="col">
+                  <input className="form-check-input"
                     type='radio'
                     value={RETRY_OPTIONS.STOP}
                     checked={settings.retryOption === RETRY_OPTIONS.STOP}
@@ -140,8 +140,8 @@ const ActionSettingsModal = () => {
                     label={t('modal.actionSettings.retry.stop')}
                   />
                 </Col>
-                <Col>
-                  <Form.Check
+                <div className="col">
+                  <input className="form-check-input"
                     type='radio'
                     value={RETRY_OPTIONS.SKIP}
                     checked={settings.retryOption === RETRY_OPTIONS.SKIP}
@@ -150,8 +150,8 @@ const ActionSettingsModal = () => {
                     label={t('modal.actionSettings.retry.skip')}
                   />
                 </Col>
-                <Col>
-                  <Form.Check
+                <div className="col">
+                  <input className="form-check-input"
                     type='radio'
                     value={RETRY_OPTIONS.RELOAD}
                     checked={settings.retryOption === RETRY_OPTIONS.RELOAD}
@@ -160,8 +160,8 @@ const ActionSettingsModal = () => {
                     label={t('modal.actionSettings.retry.refresh')}
                   />
                 </Col>
-                <Col>
-                  <Form.Check
+                <div className="col">
+                  <input className="form-check-input"
                     type='radio'
                     value={RETRY_OPTIONS.GOTO}
                     checked={settings.retryOption === RETRY_OPTIONS.GOTO}
@@ -182,8 +182,8 @@ const ActionSettingsModal = () => {
                   </Col>
                 )}
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
           {error && (
             <Alert className='mt-3' variant='danger'>
               {error}
@@ -196,14 +196,14 @@ const ActionSettingsModal = () => {
           )}
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='reset' variant='outline-primary' className='px-5' data-testid='action-settings-reset'>
+          <button className="btn" type='reset' variant='outline-primary' className='px-5' data-testid='action-settings-reset'>
             {t('common.clear')}
-          </Button>{' '}
-          <Button type='submit' variant='primary' className='px-5' data-testid='action-settings-save'>
+          </button>{' '}
+          <button className="btn" type='submit' variant='primary' className='px-5' data-testid='action-settings-save'>
             {t('common.save')}
-          </Button>
+          </button>
         </Modal.Footer>
-      </Form>
+      </form>
     </Modal>
   );
 };

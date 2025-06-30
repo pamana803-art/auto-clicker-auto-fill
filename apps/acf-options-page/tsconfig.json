@@ -18,6 +18,9 @@
       "path": "../../packages/core/service"
     },
     {
+      "path": "../../packages/ui/context"
+    },
+    {
       "path": "../../packages/shared/google-oauth"
     },
     {
@@ -27,7 +30,7 @@
       "path": "../../packages/shared/status-bar"
     },
     {
-      "path": "../../packages/ui/context"
+      "path": "../../packages/ui/components"
     },
     {
       "path": "../../packages/core/common"

@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { Alert } from 'react-bootstrap';
 
 type InfoAlertProps = {
   message?: string;
@@ -10,5 +9,9 @@ export const InfoAlert: FC<InfoAlertProps> = ({ message }) => {
     return null;
   }
 
-  return <Alert variant='info'>{message}</Alert>;
+  return (
+    <div className='alert alert-info' role='alert'>
+      {message}
+    </div>
+  );
 };

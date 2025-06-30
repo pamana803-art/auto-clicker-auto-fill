@@ -73,17 +73,17 @@ const ConfigSettingsModal = () => {
 
   return (
     <Modal show={visible} size='lg' onHide={handleClose} onShow={onShow} data-testid='config-settings-modal'>
-      <Form id={FORM_ID}>
+      <form id={FORM_ID}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.configSettings.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Card className='mb-2'>
-            <Card.Body>
-              <Row>
+            <div className='card-body'>
+              <div className="row">
                 <Col md={12} sm={12}>
                   {t('modal.configSettings.start')}&nbsp;
-                  <Form.Check
+                  <input className="form-check-input"
                     inline
                     type='radio'
                     id='startAuto'
@@ -93,7 +93,7 @@ const ConfigSettingsModal = () => {
                     checked={config.startType === START_TYPES.AUTO}
                     label={t('modal.configSettings.auto')}
                   />
-                  <Form.Check
+                  <input className="form-check-input"
                     inline
                     type='radio'
                     id='startManual'
@@ -116,19 +116,19 @@ const ConfigSettingsModal = () => {
                 </Col>
               </Row>
               <hr />
-              <Row>
+              <div className="row">
                 <Col md={12} sm={12} hidden={config.startType === START_TYPES.AUTO}>
-                  <InputGroup>
-                    <InputGroup.Text>{t('modal.configSettings.hotkey')}</InputGroup.Text>
-                    <FormControl placeholder={defaultHotkey} onKeyDown={onKeyDown} defaultValue={config.hotkey || defaultHotkey} name='hotkey' onBlur={onUpdate} pattern={REGEX.HOTKEY} />
-                    <InputGroup.Text>
+                  <div className="input-group">
+                    <span className="input-group-text">{t('modal.configSettings.hotkey')}</span>
+                    <input className="form-control" placeholder={defaultHotkey} onKeyDown={onKeyDown} defaultValue={config.hotkey || defaultHotkey} name='hotkey' onBlur={onUpdate} pattern={REGEX.HOTKEY} />
+                    <span className="input-group-text">
                       <HotkeyPopover />
-                    </InputGroup.Text>
-                  </InputGroup>
+                    </span>
+                  </div>
                 </Col>
                 <Col md={12} sm={12} hidden={config.startType === START_TYPES.MANUAL}>
                   {t('modal.configSettings.extensionLoad')}&nbsp;
-                  <Form.Check
+                  <input className="form-check-input"
                     inline
                     type='radio'
                     id='loadTypeWindow'
@@ -138,7 +138,7 @@ const ConfigSettingsModal = () => {
                     name='loadType'
                     label={t('modal.configSettings.window')}
                   />
-                  <Form.Check
+                  <input className="form-check-input"
                     inline
                     type='radio'
                     id='loadTypeDocument'
@@ -160,42 +160,42 @@ const ConfigSettingsModal = () => {
                   </small>
                 </Col>
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
           <Card className='mb-2'>
-            <Card.Body>
-              <Row>
+            <div className='card-body'>
+              <div className="row">
                 <Col md='12' sm='12'>
-                  <InputGroup>
-                    <InputGroup.Text>Google Sheets ID</InputGroup.Text>
-                    <FormControl name='spreadsheetId' defaultValue={config.spreadsheetId} autoComplete='off' onBlur={onUpdate} placeholder='Google Sheets ID' />
-                  </InputGroup>
+                  <div className="input-group">
+                    <span className="input-group-text">Google Sheets ID</span>
+                    <input className="form-control" name='spreadsheetId' defaultValue={config.spreadsheetId} autoComplete='off' onBlur={onUpdate} placeholder='Google Sheets ID' />
+                  </div>
                   <small className='text-muted'>
                     https://docs.google.com/spreadsheets/d/<code>1J2OcSNJsnYQCcQmA4K9Fhtv8yqvg0NouB--H4B0jsZA</code>/
                   </small>
                 </Col>
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
           <Card className='mb-2'>
-            <Card.Body>
-              <Row>
+            <div className='card-body'>
+              <div className="row">
                 <Col md='12' sm='12'>
-                  <InputGroup>
-                    <InputGroup.Text>{t('configuration.startTime')}</InputGroup.Text>
-                    <FormControl name='startTime' pattern={REGEX.START_TIME} autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
-                    <Form.Control.Feedback type='invalid'>{t('error.startTime')}</Form.Control.Feedback>
-                  </InputGroup>
+                  <div className="input-group">
+                    <span className="input-group-text">{t('configuration.startTime')}</span>
+                    <input className="form-control" name='startTime' pattern={REGEX.START_TIME} autoComplete='off' defaultValue={config.startTime} onBlur={onUpdate} placeholder='HH:mm:ss:fff' list='start-time' />
+                    <div class="invalid-feedback">{t('error.startTime')} </div>
+                  </div>
                 </Col>
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
           <Card className='mb-2'>
-            <Card.Body>
-              <Row>
+            <div className='card-body'>
+              <div className="row">
                 <Col md='12' sm='12'>
-                  <InputGroup>
-                    <InputGroup.Text>{t('modal.configSettings.urlMatch')}</InputGroup.Text>
+                  <div className="input-group">
+                    <span className="input-group-text">{t('modal.configSettings.urlMatch')}</span>
                     <Form.Select value={config.url_match} onChange={onUpdate} name='url_match' required>
                       {Object.entries(URL_MATCH).map((condition) => (
                         <option key={condition[1]} value={condition[1]}>
@@ -203,32 +203,32 @@ const ConfigSettingsModal = () => {
                         </option>
                       ))}
                     </Form.Select>
-                  </InputGroup>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-          <Card className='mb-2'>
-            <Card.Body>
-              <Row>
-                <Col md='12' sm='12'>
-                  <Form.Label>Bypass browser default</Form.Label>
-                  <div className='d-flex'>
-                    <Form.Check inline type='switch' id='bypass.alert' value='alert' onChange={onBypassUpdate} checked={config.bypass?.alert || false} name='alert' label=' alert' />
-                    <Form.Check inline type='switch' id='bypass.confirm' value='confirm' onChange={onBypassUpdate} checked={config.bypass?.confirm || false} name='confirm' label='confirm' />
-                    <Form.Check inline type='switch' id='bypass.prompt' value='prompt' onChange={onBypassUpdate} checked={config.bypass?.prompt || false} name='prompt' label='prompt' />
                   </div>
                 </Col>
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
+          <Card className='mb-2'>
+            <div className='card-body'>
+              <div className="row">
+                <Col md='12' sm='12'>
+                  <Form.Label>Bypass browser default</Form.Label>
+                  <div className='d-flex'>
+                    <input className="form-check-input" inline type='switch' id='bypass.alert' value='alert' onChange={onBypassUpdate} checked={config.bypass?.alert || false} name='alert' label=' alert' />
+                    <input className="form-check-input" inline type='switch' id='bypass.confirm' value='confirm' onChange={onBypassUpdate} checked={config.bypass?.confirm || false} name='confirm' label='confirm' />
+                    <input className="form-check-input" inline type='switch' id='bypass.prompt' value='prompt' onChange={onBypassUpdate} checked={config.bypass?.prompt || false} name='prompt' label='prompt' />
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </div>
         </Modal.Body>
         {message && (
           <Modal.Footer>
             <span className='text-success'>{message}</span>
           </Modal.Footer>
         )}
-      </Form>
+      </form>
     </Modal>
   );
 };

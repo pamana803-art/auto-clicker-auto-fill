@@ -23,7 +23,7 @@ export const CommonSettings = () => {
           <div className='fw-bold'>{t('modal.settings.checkIFrames')}</div>
           {t('modal.settings.checkIFramesHint')}
         </Form.Label>
-        <Form.Check type='switch' name='checkiFrames' onChange={onUpdate} id='settings-checkiFrames' checked={settings.checkiFrames || false} />
+        <FormCheck type='switch' name='checkiFrames' onChange={onUpdate} id='settings-checkiFrames' checked={settings.checkiFrames || false} />
       </li>
       <li className='list-group-item d-flex justify-content-between align-items-center'>
         <Form.Label className='ms-2 me-auto' htmlFor='settings-reload-onerror'>
@@ -31,7 +31,7 @@ export const CommonSettings = () => {
           {t('modal.settings.reloadOnErrorHint')} <br />
           <small className='text-danger'>Extension context invalidated.</small>
         </Form.Label>
-        <Form.Check type='switch' name='reloadOnError' onChange={onUpdate} id='settings-reloadOnError' checked={settings.reloadOnError || false} />
+        <FormCheck type='switch' name='reloadOnError' onChange={onUpdate} id='settings-reloadOnError' checked={settings.reloadOnError || false} />
       </li>
       <li className='list-group-item d-flex justify-content-between align-items-center'>
         <Form.Label className='ms-2' htmlFor='settings-statusBar'>
@@ -39,7 +39,8 @@ export const CommonSettings = () => {
           {t('modal.settings.statusBar.hint')}
         </Form.Label>
         {Object.values(STATUS_BAR_LOCATION_ENUM).map((location) => (
-          <Form.Check
+          <input
+            className='form-check-input'
             key={location}
             type='radio'
             value={location}

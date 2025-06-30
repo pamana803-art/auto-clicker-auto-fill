@@ -1,4 +1,4 @@
-import { Alert, Button, Modal } from 'react-bootstrap';
+import { Alert, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
 import { blogSelector, hideBlog } from '../store/blog/blog.slice';
@@ -44,12 +44,12 @@ const BlogModal = () => {
         <Alert>Blog content not found</Alert>
       )}
       <Modal.Footer className='justify-content-between'>
-        <Button type='button' variant='outline-secondary px-5' onClick={handleClose}>
+        <button className='btn' type='button' variant='outline-secondary px-5' onClick={handleClose}>
           {t('common.close')}
-        </Button>
-        <Button variant='outline-primary' href={release?.discussion_url} target='_blank' rel='noreferrer'>
+        </button>
+        <button className='btn' variant='outline-primary' href={release?.discussion_url} target='_blank' rel='noreferrer'>
           Join Discussion
-        </Button>
+        </button>
       </Modal.Footer>
     </Modal>
   );

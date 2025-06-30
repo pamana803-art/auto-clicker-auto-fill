@@ -1,17 +1,7 @@
 import { getStoredTheme, ThemeContext, TTheme } from '@dhruv-techapps/ui-context';
-import { ReactComponent as CircleHalf } from 'bootstrap-icons/icons/circle-half.svg';
-import { ReactComponent as Moon } from 'bootstrap-icons/icons/moon-stars-fill.svg';
-import { ReactComponent as Sun } from 'bootstrap-icons/icons/sun-fill.svg';
 import { useContext, useState } from 'react';
-import { NavDropdown } from 'react-bootstrap';
-import { DropDirection } from 'react-bootstrap/esm/DropdownContext';
 
-type TThemeDropdownProps = {
-  drop?: DropDirection;
-};
-
-export const ThemeNavDropdown = (props: TThemeDropdownProps) => {
-  const { drop } = props;
+export const ThemeNavDropdown = () => {
   const [theme, setTheme] = useState(getStoredTheme());
   const { updateTheme } = useContext(ThemeContext);
 
@@ -22,25 +12,39 @@ export const ThemeNavDropdown = (props: TThemeDropdownProps) => {
 
   const getIcon = () => {
     if (theme === 'light') {
-      return <Sun />;
+      return <i className='bi bi-sun-fill'></i>;
     }
     if (theme === 'dark') {
-      return <Moon />;
+      return <i className='bi bi-moon-stars-fill'></i>;
     }
-    return <CircleHalf />;
+    return <i className='bi bi-circle-half'></i>;
   };
 
   return (
-    <NavDropdown title={getIcon()} drop={drop}>
-      <NavDropdown.Item active={theme === 'light'} className='d-flex align-items-center gap-2' onClick={() => onClickTheme('light')}>
-        <Sun /> Light
-      </NavDropdown.Item>
-      <NavDropdown.Item active={theme === 'dark'} className='d-flex align-items-center gap-2' onClick={() => onClickTheme('dark')}>
-        <Moon /> Dark
-      </NavDropdown.Item>
-      <NavDropdown.Item active={theme === null} className='d-flex align-items-center gap-2' onClick={() => onClickTheme(null)}>
-        <CircleHalf /> Auto
-      </NavDropdown.Item>
-    </NavDropdown>
+    <li className='nav-item dropdown'>
+      <button className='btn btn-link nav-link dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
+        {getIcon()}
+      </button>
+      <ul className='dropdown-menu dropdown-menu-end'>
+        <li>
+          <button type='button' className={`dropdown-item d-flex align-items-center ${theme === 'light' ? 'active' : ''}`} onClick={() => onClickTheme('light')}>
+            <i className='bi bi-sun-fill me-2 opacity-50 theme-icon'></i> Light
+          </button>
+        </li>
+        <li>
+          <button type='button' className={`dropdown-item d-flex align-items-center ${theme === 'dark' ? 'active' : ''}`} onClick={() => onClickTheme('dark')}>
+            <i className='bi bi-moon-stars-fill me-2 opacity-50 theme-icon'></i> Dark
+          </button>
+        </li>
+        <li>
+          <hr className='dropdown-divider' />
+        </li>
+        <li>
+          <button type='button' className={`dropdown-item d-flex align-items-center ${theme === null ? 'active' : ''}`} onClick={() => onClickTheme(null)}>
+            <i className='bi bi-circle-half me-2 opacity-50 theme-icon'></i> Auto
+          </button>
+        </li>
+      </ul>
+    </li>
   );
 };

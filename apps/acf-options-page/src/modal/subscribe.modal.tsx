@@ -21,13 +21,13 @@ const SubscribeModal = () => {
 
   return (
     <Modal show={visible} size='lg' onHide={handleClose} data-testid='subscription-modal' id='subscription-modal'>
-      <Form>
+      <form>
         <Modal.Header closeButton>
           <Modal.Title>Subscribe to Advance Features</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Row>
-            <Col>
+          <div className="row">
+            <div className="col">
               <Card style={{ height: '100%' }}>
                 <CardBody className='d-flex row-gap-3 flex-column '>
                   <h5>Pro subscription</h5>
@@ -40,10 +40,10 @@ const SubscribeModal = () => {
                         month
                       </small>
                     </div>
-                    <Button variant='primary' target='_blank' href='https://github.com/sponsors/Dhruv-Techapps' disabled={isSubscribing} className='px-5 py-2 mt-3 w-100'>
+                    <button className="btn" variant='primary' target='_blank' href='https://github.com/sponsors/Dhruv-Techapps' disabled={isSubscribing} className='px-5 py-2 mt-3 w-100'>
                       {isSubscribing && <span className='spinner-border spinner-border-sm me-3' aria-hidden='true'></span>}
                       Upgrade to Pro
-                    </Button>
+                    </button>
                   </div>
                   <div>
                     <p className='p-0 m-0'>This includes:</p>
@@ -64,11 +64,11 @@ const SubscribeModal = () => {
                     </ul>
                   </div>
                 </CardBody>
-              </Card>
+              </div>
             </Col>
           </Row>
         </Modal.Body>
-      </Form>
+      </form>
     </Modal>
   );
 };

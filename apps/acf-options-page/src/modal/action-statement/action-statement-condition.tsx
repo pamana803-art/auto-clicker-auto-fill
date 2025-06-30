@@ -1,6 +1,6 @@
 import { ACTION_CONDITION_OPR, ACTION_STATUS, ActionCondition } from '@dhruv-techapps/acf-common';
 import { ChangeEvent } from 'react';
-import { Button, ButtonGroup, Form } from 'react-bootstrap';
+import { ButtonGroup, Form } from 'react-bootstrap';
 import { removeActionStatementCondition, selectedConfigSelector, updateActionStatementCondition } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { X } from '../../utils';
@@ -43,12 +43,12 @@ function ActionStatementCondition({ condition, index }: ActionStatementCondition
       <td className='fw-bold'>
         {index !== 0 && (
           <ButtonGroup>
-            <Button type='button' variant='outline-primary' className={operator === ACTION_CONDITION_OPR.OR ? 'active' : ''} onClick={() => changeOpr(ACTION_CONDITION_OPR.OR)}>
+            <button className='btn' type='button' variant='outline-primary' className={operator === ACTION_CONDITION_OPR.OR ? 'active' : ''} onClick={() => changeOpr(ACTION_CONDITION_OPR.OR)}>
               OR
-            </Button>
-            <Button type='button' variant='outline-primary' className={operator === ACTION_CONDITION_OPR.AND ? 'active' : ''} onClick={() => changeOpr(ACTION_CONDITION_OPR.AND)}>
+            </button>
+            <button className='btn' type='button' variant='outline-primary' className={operator === ACTION_CONDITION_OPR.AND ? 'active' : ''} onClick={() => changeOpr(ACTION_CONDITION_OPR.AND)}>
               AND
-            </Button>
+            </button>
           </ButtonGroup>
         )}
       </td>
@@ -71,9 +71,9 @@ function ActionStatementCondition({ condition, index }: ActionStatementCondition
         </Form.Select>
       </td>
       <td>
-        <Button type='button' variant='link' className='ms-1 mt-2 p-0 text-danger' aria-label='Close' hidden={index === 0} onClick={removeCondition}>
+        <button className='btn' type='button' variant='link' className='ms-1 mt-2 p-0 text-danger' aria-label='Close' hidden={index === 0} onClick={removeCondition}>
           <X />
-        </Button>
+        </button>
       </td>
     </tr>
   );

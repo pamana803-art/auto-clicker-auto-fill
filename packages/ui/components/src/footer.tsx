@@ -12,7 +12,7 @@ export function Footer() {
   return (
     <footer className='pt-3 mt-3 mt-md-3 pt-md-3 border-top' data-version={React.version}>
       <Container>
-        <Row>
+        <div className="row">
           <Col md xs={12} className='mb-3'>
             <img src={imageURL} width='48' height='48' className='d-inline-block align-top me-2' alt='Auto click Auto Fill logo' title='Auto click Auto Fill logo' />
             <div className='d-inline-flex flex-column'>
@@ -79,7 +79,7 @@ export function Footer() {
             </ul>
           </Col>
         </Row>
-      </Container>
+      </div>
     </footer>
   );
 }

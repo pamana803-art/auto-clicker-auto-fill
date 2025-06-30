@@ -55,14 +55,14 @@ const AddonModal = () => {
 
   return (
     <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='addon-modal'>
-      <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
+      <form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.addon.title')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p className='text-muted'>{t('modal.addon.info')}</p>
           <Card>
-            <Card.Body>
+            <div className='card-body'>
               <Row className='mb-3'>
                 <Col md={6} sm={12}>
                   <Form.Group controlId='addon-element'>
@@ -70,7 +70,7 @@ const AddonModal = () => {
                       {t('modal.addon.elementFinder')} <small className='text-danger'>*</small>
                     </Form.Label>
                     <Form.Control type='text' placeholder='Element Finder' defaultValue={addon.elementFinder} onBlur={onUpdate} list='elementFinder' name='elementFinder' required />
-                    <Form.Control.Feedback type='invalid'>{t('error.elementFinder')}</Form.Control.Feedback>
+                    <div class="invalid-feedback">{t('error.elementFinder')} </div>
                   </Form.Group>
                 </Col>
                 <Col md={6} sm={12}>
@@ -85,39 +85,39 @@ const AddonModal = () => {
                         </option>
                       ))}
                     </Form.Select>
-                    <Form.Control.Feedback type='invalid'>{t('error.condition')}</Form.Control.Feedback>
+                    <div class="invalid-feedback">{t('error.condition')} </div>
                   </Form.Group>
                 </Col>
               </Row>
-              <Row>
+              <div className="row">
                 <Col md sm={12}>
                   <Form.Group controlId='addon-value'>
                     <Form.Label>
                       {t('modal.addon.value')} <small className='text-danger'>*</small>
                     </Form.Label>
                     <Form.Control type='text' placeholder='Value' defaultValue={addon.value} onBlur={onUpdate} name='value' required list='value' />
-                    <Form.Control.Feedback type='invalid'>{t('error.value')}</Form.Control.Feedback>
+                    <div class="invalid-feedback">{t('error.value')} </div>
                   </Form.Group>
                 </Col>
                 <Col md sm={12}>
                   <Form.Group controlId='addon-value-extractor' className='addon-value-extractor'>
                     <Form.Label>{t('modal.addon.valueExtractor')}</Form.Label>
-                    <InputGroup>
+                    <div className="input-group">
                       <Form.Control type='text' placeholder='Value Extractor' defaultValue={addon.valueExtractor} name='valueExtractor' list='valueExtractor' onBlur={onUpdate} />
                       {addon?.valueExtractor ? (
                         <AddonValueExtractorFlags />
                       ) : (
-                        <InputGroup.Text>
+                        <span className="input-group-text">
                           <ValueExtractorPopover />
-                        </InputGroup.Text>
+                        </span>
                       )}
-                    </InputGroup>
-                    <Form.Control.Feedback type='invalid'>{t('error.valueExtractor')}</Form.Control.Feedback>
+                    </div>
+                    <div class="invalid-feedback">{t('error.valueExtractor')} </div>
                   </Form.Group>
                 </Col>
               </Row>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
           <div hidden={!(addon.elementFinder && addon.condition && addon.value)} data-testid='addon-recheck'>
             <AddonRecheck />
           </div>
@@ -133,14 +133,14 @@ const AddonModal = () => {
           )}
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='reset' variant='outline-primary' className='px-5' data-testid='action-addon-reset'>
+          <button className="btn" type='reset' variant='outline-primary' className='px-5' data-testid='action-addon-reset'>
             {t('common.clear')}
-          </Button>
-          <Button type='submit' variant='primary' className='px-5' data-testid='action-addon-save'>
+          </button>
+          <button className="btn" type='submit' variant='primary' className='px-5' data-testid='action-addon-save'>
             {t('common.save')}
-          </Button>
+          </button>
         </Modal.Footer>
-      </Form>
+      </form>
     </Modal>
   );
 };

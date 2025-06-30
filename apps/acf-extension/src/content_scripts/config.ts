@@ -29,7 +29,7 @@ const ConfigProcessor = (() => {
   };
 
   const getEvents = (config: Configuration) => {
-    const events: { [key: string]: string | number | boolean | undefined } = { url: config.url, loadType: config.loadType, actions: config.actions.length };
+    const events: { [key: string]: string | number | boolean | undefined } = { url: config.url, href: document.location.href, loadType: config.loadType, actions: config.actions.length };
     if (config.batch) {
       events['batch'] = config.batch.refresh || config.batch.repeat;
     }

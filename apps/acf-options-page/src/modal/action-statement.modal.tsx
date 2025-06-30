@@ -3,7 +3,7 @@ import { FormEvent } from 'react';
 import { useTimeout } from '@acf-options-page/hooks';
 import { ACTION_CONDITION_OPR, getDefaultActionCondition } from '@dhruv-techapps/acf-common';
 import { RANDOM_UUID } from '@dhruv-techapps/core-common';
-import { Alert, Button, Form, Modal, Table } from 'react-bootstrap';
+import { Alert, Modal, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import {
   actionStatementSelector,
@@ -80,7 +80,7 @@ const ActionStatementModal = () => {
 
   return (
     <Modal show={visible} size='lg' onHide={onHide} onShow={onShow} data-testid='action-statement-modal'>
-      <Form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
+      <form id={FORM_ID} onSubmit={onSubmit} onReset={onReset}>
         <Modal.Header closeButton>
           <Modal.Title as='h6'>{t('modal.actionCondition.title')}</Modal.Title>
         </Modal.Header>
@@ -93,9 +93,9 @@ const ActionStatementModal = () => {
                 <th>Action</th>
                 <th>Status</th>
                 <th>
-                  <Button type='button' variant='link' className='mt-2 p-0' aria-label='Add' onClick={() => addCondition(config.actions[0].id, ACTION_CONDITION_OPR.AND)}>
+                  <button className='btn' type='button' variant='link' className='mt-2 p-0' aria-label='Add' onClick={() => addCondition(config.actions[0].id, ACTION_CONDITION_OPR.AND)}>
                     <Plus />
-                  </Button>
+                  </button>
                 </th>
               </tr>
             </thead>
@@ -109,9 +109,9 @@ const ActionStatementModal = () => {
             <ActionStatementRetry then={statement.then} goto={statement.goto} />
           ) : (
             <div className='p-5 d-flex justify-content-center'>
-              <Button type='button' aria-label='Add' onClick={() => addCondition(config.actions[0].id)}>
+              <button className='btn' type='button' aria-label='Add' onClick={() => addCondition(config.actions[0].id)}>
                 <Plus /> {t('modal.actionSettings.title')}
-              </Button>
+              </button>
             </div>
           )}
           {error && (
@@ -126,14 +126,14 @@ const ActionStatementModal = () => {
           )}
         </Modal.Body>
         <Modal.Footer className='justify-content-between'>
-          <Button type='reset' variant='outline-primary px-5' data-testid='action-statement-reset'>
+          <button className='btn' type='reset' variant='outline-primary px-5' data-testid='action-statement-reset'>
             {t('common.clear')}
-          </Button>{' '}
-          <Button type='submit' variant='primary' className='px-5 ml-3' data-testid='action-statement-save' disabled={statement.conditions === undefined}>
+          </button>{' '}
+          <button className='btn' type='submit' variant='primary' className='px-5 ml-3' data-testid='action-statement-save' disabled={statement.conditions === undefined}>
             {t('common.save')}
-          </Button>
+          </button>
         </Modal.Footer>
-      </Form>
+      </form>
     </Modal>
   );
 };

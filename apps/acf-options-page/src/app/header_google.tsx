@@ -1,8 +1,5 @@
-import { NavDropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
-import { firebaseLogoutAPI, firebaseSelector } from '../store/firebase';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { switchSubscribeModal } from '../store/subscribe';
+import { firebaseLogoutAPI, firebaseSelector, switchSubscribeModal, useAppDispatch, useAppSelector } from '../store';
 
 export const HeaderGoogle = () => {
   const dispatch = useAppDispatch();
@@ -19,23 +16,34 @@ export const HeaderGoogle = () => {
   };
 
   return (
-    <div>
-      <NavDropdown title={user?.displayName} id='subscription-nav-dropdown' align='end'>
+    <li className='nav-item dropdown' id='subscription-nav-dropdown'>
+      <button type='button' className='nav-link dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
+        {user?.displayName}
+      </button>
+      <ul className='dropdown-menu'>
         {!role && (
           <>
-            <NavDropdown.Item title='subscribe' onClick={() => dispatch(switchSubscribeModal())}>
-              Subscribe
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
+            <li>
+              <button type='button' className='dropdown-item' onClick={() => dispatch(switchSubscribeModal())}>
+                Subscribe
+              </button>
+            </li>
+            <li>
+              <hr className='dropdown-divider' />
+            </li>
           </>
         )}
-        <NavDropdown.Item title='settings' onClick={settings}>
-          Settings
-        </NavDropdown.Item>
-        <NavDropdown.Item title='logout' onClick={logout}>
-          Logout
-        </NavDropdown.Item>
-      </NavDropdown>
-    </div>
+        <li>
+          <button type='button' className='dropdown-item' onClick={settings}>
+            Settings
+          </button>
+        </li>
+        <li>
+          <button type='button' className='dropdown-item' onClick={logout}>
+            Logout
+          </button>
+        </li>
+      </ul>
+    </li>
   );
 };

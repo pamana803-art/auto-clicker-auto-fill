@@ -1,6 +1,6 @@
 import { GOOGLE_SCOPES } from '@dhruv-techapps/shared-google-oauth';
 import { useEffect } from 'react';
-import { Alert, Badge, Button } from 'react-bootstrap';
+import { Alert, Badge } from 'react-bootstrap';
 import { firebaseSelector, switchFirebaseLoginModal } from '../../store/firebase';
 import { googleHasAccessAPI, googleLoginAPI, googleLogoutAPI, googleSelector } from '../../store/google';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -44,9 +44,9 @@ function SettingGoogleSheets() {
     return (
       <p>
         Please
-        <Button variant='link' title='login' onClick={() => dispatch(switchFirebaseLoginModal())}>
+        <button className='btn' variant='link' title='login' onClick={() => dispatch(switchFirebaseLoginModal())}>
           Login
-        </Button>
+        </button>
         to your account before connecting with Google Sheets.
       </p>
     );
@@ -54,9 +54,9 @@ function SettingGoogleSheets() {
 
   if (!grantedScopes?.includes(scope)) {
     return (
-      <Button variant='link' onClick={connect} data-testid='google-sheets-connect'>
+      <button className='btn' variant='link' onClick={connect} data-testid='google-sheets-connect'>
         Connect with Google Sheets
-      </Button>
+      </button>
     );
   }
 
@@ -65,9 +65,9 @@ function SettingGoogleSheets() {
       <Badge bg='success' pill className='p-2 px-3'>
         Connected
       </Badge>
-      <Button variant='link' onClick={disconnect} data-testid='google-sheets-connect'>
+      <button className='btn' variant='link' onClick={disconnect} data-testid='google-sheets-connect'>
         Disconnect with Google Sheets
-      </Button>
+      </button>
     </>
   );
 }

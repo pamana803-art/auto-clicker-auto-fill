@@ -1,6 +1,6 @@
 import { Configuration as ConfigurationType } from '@dhruv-techapps/acf-common';
 import React, { useEffect } from 'react';
-import { Alert, Badge, Button } from 'react-bootstrap';
+import { Alert, Badge } from 'react-bootstrap';
 import { useParams, useSearchParams } from 'react-router-dom';
 import JsonView from 'react18-json-view';
 import 'react18-json-view/src/style.css';
@@ -166,13 +166,13 @@ export const Configuration: React.FC<{ configId?: string }> = ({ configId }) => 
               {file && (
                 <>
                   <div className='d-flex justify-content-start my-2'>
-                    <Button variant='success' onClick={onDownloadClick}>
+                    <button className='btn' variant='success' onClick={onDownloadClick}>
                       Download JSON
-                    </Button>
+                    </button>
                     {EXTENSIONS.filter((extension) => extension.version).map(({ id, name }) => (
-                      <Button key={id} variant='primary' className='mx-2' onClick={() => onExtensionClick(id)}>
+                      <button className='btn' key={id} variant='primary' className='mx-2' onClick={() => onExtensionClick(id)}>
                         {name}
-                      </Button>
+                      </button>
                     ))}
                   </div>
                   <div>

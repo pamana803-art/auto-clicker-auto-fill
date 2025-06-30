@@ -40,35 +40,35 @@ function AddonRecheck() {
   return (
     <>
       <Card bg='warning-subtle' text='warning-emphasis' className='mt-3'>
-        <Card.Body>
-          <Row>
+        <div className='card-body'>
+          <div className="row">
             <Col md={6} sm={12}>
-              <InputGroup>
-                <InputGroup.Text>{t('modal.addon.recheck.title')}</InputGroup.Text>
-                <FormControl placeholder='0' onBlur={onUpdate} defaultValue={addon.recheck} type='number' pattern={REGEX.NUMBER} list='recheck' name='recheck' />
-                <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
-              </InputGroup>
+              <div className="input-group">
+                <span className="input-group-text">{t('modal.addon.recheck.title')}</span>
+                <input className="form-control" placeholder='0' onBlur={onUpdate} defaultValue={addon.recheck} type='number' pattern={REGEX.NUMBER} list='recheck' name='recheck' />
+                <div class="invalid-feedback">{t('error.number')} </div>
+              </div>
             </Col>
             <Col md={6} sm={12}>
-              <InputGroup>
-                <InputGroup.Text>
+              <div className="input-group">
+                <span className="input-group-text">
                   {t('modal.addon.recheck.interval')}&nbsp;<small>({t('common.sec')})</small>
-                </InputGroup.Text>
-                <FormControl placeholder='0' onBlur={onUpdate} defaultValue={addon.recheckInterval} list='interval' pattern={REGEX.INTERVAL} name='recheckInterval' />
-                <Form.Control.Feedback type='invalid'>{t('error.number')}</Form.Control.Feedback>
-              </InputGroup>
+                </span>
+                <input className="form-control" placeholder='0' onBlur={onUpdate} defaultValue={addon.recheckInterval} list='interval' pattern={REGEX.INTERVAL} name='recheckInterval' />
+                <div class="invalid-feedback">{t('error.number')} </div>
+              </div>
             </Col>
           </Row>
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
       <Card bg='danger-subtle' text='danger-emphasis' className='mt-3'>
-        <Card.Body>
-          <Row>
+        <div className='card-body'>
+          <div className="row">
             <Col xs={12} className='mb-2'>
               {t('modal.addon.recheck.hint')}
             </Col>
-            <Col>
-              <Form.Check
+            <div className="col">
+              <input className="form-check-input"
                 type='radio'
                 defaultChecked={addon.recheckOption === RECHECK_OPTIONS.STOP}
                 onChange={onUpdate}
@@ -77,8 +77,8 @@ function AddonRecheck() {
                 label={t('modal.addon.recheck.stop')}
               />
             </Col>
-            <Col>
-              <Form.Check
+            <div className="col">
+              <input className="form-check-input"
                 type='radio'
                 defaultChecked={addon.recheckOption === RECHECK_OPTIONS.SKIP}
                 onChange={onUpdate}
@@ -87,8 +87,8 @@ function AddonRecheck() {
                 label={t('modal.addon.recheck.skip')}
               />
             </Col>
-            <Col>
-              <Form.Check
+            <div className="col">
+              <input className="form-check-input"
                 type='radio'
                 defaultChecked={addon.recheckOption === RECHECK_OPTIONS.RELOAD}
                 onChange={onUpdate}
@@ -97,8 +97,8 @@ function AddonRecheck() {
                 label={t('modal.addon.recheck.refresh')}
               />{' '}
             </Col>
-            <Col>
-              <Form.Check
+            <div className="col">
+              <input className="form-check-input"
                 type='radio'
                 defaultChecked={addon.recheckOption === RECHECK_OPTIONS.GOTO}
                 onChange={onUpdate}
@@ -119,8 +119,8 @@ function AddonRecheck() {
               </Col>
             )}
           </Row>
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
     </>
   );
 }

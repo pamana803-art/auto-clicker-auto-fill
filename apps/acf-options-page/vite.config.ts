@@ -39,7 +39,7 @@ export default defineConfig(() => ({
       },
       include: '**/*.svg'
     }),
-    visualizer({ open: true })
+    visualizer({ open: true, filename: 'dist/stats.html' })
   ],
   // Uncomment this if you are using workers.
   // worker: {
@@ -55,8 +55,21 @@ export default defineConfig(() => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            return id.toString().split('node_modules/')[1].split('/')[0].toString().replace('@', '');
+          console.log('id', id);
+          if (id.includes('node_modules/react-dom/')) {
+            return 'react-dom';
+          }
+          if (id.includes('node_modules/@firebase') || id.includes('node_modules/firebase')) {
+            return 'firebase';
+          }
+          if (id.includes('@tanstack')) {
+            return 'tanstack';
+          }
+          if (id.includes('@dnd-kit')) {
+            return 'dnd-kit';
+          }
+          if (id.includes('node_modules/bootstrap-icons')) {
+            return 'bootstrap-icons';
           }
         }
       }

@@ -1,6 +1,6 @@
 import { Configuration } from '@dhruv-techapps/acf-common';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import JsonView from 'react18-json-view';
 import { ConfigType, getConfig } from '../../database';
 import { downloadFile } from '../../storage';
@@ -21,7 +21,7 @@ export const ConfigurationModal = forwardRef<{ show: (configId: string) => void 
         setConfigId(_configId);
       }
       setShow(true);
-    },
+    }
   }));
 
   useEffect(() => {
@@ -57,7 +57,13 @@ export const ConfigurationModal = forwardRef<{ show: (configId: string) => void 
           )
         )}
       </Modal.Body>
-      <Modal.Footer>{file && configId && <Button onClick={console.log}>Download</Button>}</Modal.Footer>
+      <Modal.Footer>
+        {file && configId && (
+          <button className='btn' onClick={console.log}>
+            Download
+          </button>
+        )}
+      </Modal.Footer>
     </Modal>
   );
 });

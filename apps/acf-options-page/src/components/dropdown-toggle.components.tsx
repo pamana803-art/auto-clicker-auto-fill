@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { forwardRef, PropsWithChildren } from 'react';
 // The forwardRef is important!!
 // Dropdown needs access to the DOM node in order to position the Menu
 
@@ -9,7 +9,7 @@ export type DropdownToggleProps = PropsWithChildren<{
 
 export type DropdownToggleRef = HTMLButtonElement;
 
-export const DropdownToggle = React.forwardRef<DropdownToggleRef, DropdownToggleProps>(({ children, onClick, className, ...args }, ref) => {
+export const DropdownToggle = forwardRef<DropdownToggleRef, DropdownToggleProps>(({ children, onClick, className, ...args }, ref) => {
   const DropdownToggleOnclick = (e) => {
     e.preventDefault();
     onClick(e);

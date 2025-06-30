@@ -36,13 +36,13 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
 
   return (
     <Card bg='danger-subtle' text='danger-emphasis' className='mt-3'>
-      <Card.Body>
-        <Row>
+      <div className='card-body'>
+        <div className="row">
           <Col xs={12} className='mb-2'>
             {t('modal.actionCondition.hint')}
           </Col>
-          <Col>
-            <Form.Check
+          <div className="col">
+            <input className="form-check-input"
               type='radio'
               required
               checked={then === RETRY_OPTIONS.STOP}
@@ -52,8 +52,8 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
               label={t('modal.actionSettings.retry.stop')}
             />
           </Col>
-          <Col>
-            <Form.Check
+          <div className="col">
+            <input className="form-check-input"
               type='radio'
               required
               checked={then === RETRY_OPTIONS.SKIP}
@@ -63,8 +63,8 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
               label={t('modal.actionSettings.retry.skip')}
             />
           </Col>
-          <Col>
-            <Form.Check
+          <div className="col">
+            <input className="form-check-input"
               type='radio'
               required
               checked={then === RETRY_OPTIONS.RELOAD}
@@ -74,8 +74,8 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
               label={t('modal.actionSettings.retry.refresh')}
             />
           </Col>
-          <Col>
-            <Form.Check
+          <div className="col">
+            <input className="form-check-input"
               type='radio'
               required
               checked={then === RETRY_OPTIONS.GOTO}
@@ -87,7 +87,7 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
           </Col>
         </Row>
         {then === RETRY_OPTIONS.GOTO && (
-          <Row>
+          <div className="row">
             <Col xs={{ span: 4, offset: 8 }}>
               <Form.Select value={goto} onChange={onUpdateGoto} name='goto' required>
                 {actions.map((_action, index) => (
@@ -99,7 +99,7 @@ export const ActionStatementRetry = (props: ActionStatementRetryProps) => {
             </Col>
           </Row>
         )}
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 };
