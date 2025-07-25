@@ -1,8 +1,8 @@
-type keyCodesType = {
+interface EKeyCodesType {
   [index: string]: number;
-};
+}
 
-const keyCodes: keyCodesType = {
+const keyCodes: EKeyCodesType = {
   '0': 48,
   '1': 49,
   '2': 50,

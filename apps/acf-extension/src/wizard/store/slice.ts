@@ -1,15 +1,15 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { CONFIG_SOURCE, Configuration, getDefaultConfig } from '@dhruv-techapps/acf-common';
+import { EConfigSource, IConfiguration, getDefaultConfig } from '@dhruv-techapps/acf-common';
 import { RootState } from '../store';
 import { WizardAction } from '../type';
 
-type WizardConfiguration = Omit<Configuration, 'actions'> & {
+type WizardConfiguration = Omit<IConfiguration, 'actions'> & {
   actions: Array<WizardAction>;
   timer?: number;
 };
 
-const initialState: WizardConfiguration = getDefaultConfig(CONFIG_SOURCE.WIZARD, []);
+const initialState: WizardConfiguration = getDefaultConfig(EConfigSource.WIZARD, []);
 
 const slice = createSlice({
   name: 'wizard',
@@ -20,7 +20,7 @@ const slice = createSlice({
         return action.payload;
       }
       const { host, pathname, origin } = document.location;
-      const config = getDefaultConfig(CONFIG_SOURCE.WIZARD, []);
+      const config = getDefaultConfig(EConfigSource.WIZARD, []);
       config.url = origin + pathname;
       config.name = document.title || host + pathname;
       return config;
@@ -42,8 +42,7 @@ const slice = createSlice({
       });
 
       if (state.timer) {
-        //const initWait = (new Date().getTime() - state.timer) / 1000;
-        action.payload.initWait = 0; //initWait < 5 ? 0 : 5;
+        action.payload.initWait = 0;
       }
       state.timer = new Date().getTime();
 

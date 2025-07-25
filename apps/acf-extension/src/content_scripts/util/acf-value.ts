@@ -1,4 +1,4 @@
-import { ActionSettings } from '@dhruv-techapps/acf-common';
+import { IActionSettings } from '@dhruv-techapps/acf-common';
 import { Value } from '@dhruv-techapps/acf-util';
 import { GoogleSheetsValue } from '@dhruv-techapps/shared-google-sheets';
 import { OpenAIService } from '@dhruv-techapps/shared-openai';
@@ -15,7 +15,7 @@ export const VALUE_MATCHER = {
 };
 
 export class ACFValue {
-  static async getValue(value: string, settings?: ActionSettings): Promise<string> {
+  static async getValue(value: string, settings?: IActionSettings): Promise<string> {
     value = await Value.getValue(value);
     if (VALUE_MATCHER.GOOGLE_SHEETS.test(value)) {
       return this.getGoogleSheetsValue(value);
@@ -53,7 +53,7 @@ export class ACFValue {
     return value;
   }
 
-  private static async getImageValue(value: string, settings?: ActionSettings): Promise<string> {
+  private static async getImageValue(value: string, settings?: IActionSettings): Promise<string> {
     try {
       const elementFinder = value.replace(/image::/i, '');
       const elements = await Common.start(elementFinder, settings);
