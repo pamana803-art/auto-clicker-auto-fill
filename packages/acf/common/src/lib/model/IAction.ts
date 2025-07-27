@@ -1,8 +1,8 @@
 import { TRandomUUID, generateUUID } from '@dhruv-techapps/core-common';
 
-import { IAddon } from './addon-model';
-import { TGoto } from './common-model';
-import { ERetryOptions } from './setting-model';
+import { IAddon } from './IAddon';
+import { ERetryOptions } from './ISetting';
+import { TGoto } from './TGoto';
 
 // Action Condition
 export enum EActionStatus {
@@ -61,6 +61,7 @@ export interface IActionSettings {
 export const defaultActionSettings = {};
 
 export interface IAction {
+  type?: 'action';
   id: TRandomUUID;
   disabled?: boolean;
   elementFinder: string;
@@ -80,8 +81,8 @@ export interface IAction {
   selectors?: Array<Array<string>>;
 }
 
-export const getDefaultAction = (): IAction => ({
+export const getDefaultAction = (elementFinder = ''): IAction => ({
   id: generateUUID(),
-  elementFinder: '',
-  error: ['elementFinder']
+  elementFinder,
+  error: [elementFinder === '' ? 'elementFinder' : '']
 });

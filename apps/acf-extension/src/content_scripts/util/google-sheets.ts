@@ -1,4 +1,4 @@
-import { BATCH_REPEAT, IConfiguration, SESSION_COUNT } from '@dhruv-techapps/acf-common';
+import { BATCH_REPEAT, IConfiguration, isAction, SESSION_COUNT } from '@dhruv-techapps/acf-common';
 const GOOGLE_SHEETS_REGEX = /^googlesheets::/i;
 
 export default class GoogleSheets {
@@ -6,6 +6,7 @@ export default class GoogleSheets {
     const sheets = new Map<string, Set<string>>();
     const batchHighestRepeat: number = config.batch?.repeat ?? 0;
     config.actions
+      .filter(isAction)
       .map(({ elementFinder, value, addon }) => {
         const result = [];
         if (value && GOOGLE_SHEETS_REGEX.test(value)) {
@@ -33,7 +34,7 @@ export default class GoogleSheets {
             ranges.add(range.replace(BATCH_REPEAT, '1'));
             ranges.add(range.replace(BATCH_REPEAT, String(batchHighestRepeat + 1)));
           } else if (value.includes(SESSION_COUNT)) {
-            ranges.add(range.replace(SESSION_COUNT, String(window.__sessionCount)));
+            ranges.add(range.replace(SESSION_COUNT, String(window.ext.__sessionCount)));
           } else {
             ranges.add(range);
           }
