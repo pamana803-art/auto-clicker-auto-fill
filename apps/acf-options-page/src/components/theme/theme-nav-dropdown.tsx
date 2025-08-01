@@ -1,4 +1,4 @@
-import { getStoredTheme, ThemeContext, tTheme } from '@dhruv-techapps/ui-context';
+import { getStoredTheme, ThemeContext, tTheme } from '@acf-options-page/context';
 import { useContext, useState } from 'react';
 import { NavDropdown } from 'react-bootstrap';
 
@@ -22,7 +22,7 @@ export const ThemeNavDropdown = () => {
   };
 
   return (
-    <NavDropdown id='nav-dropdown-dark-example' title={getIcon()} menuVariant='dark' as={'ul'}>
+    <NavDropdown id='nav-dropdown-dark-example' title={getIcon()} menuVariant='dark'>
       <NavDropdown.Item onClick={() => onClickTheme('light')} active={theme === 'light'} className='d-flex align-items-center'>
         <i className='bi bi-sun-fill me-2 opacity-50'></i> Light
       </NavDropdown.Item>
