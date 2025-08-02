@@ -1,0 +1,19 @@
+# Auto Clicker AutoFill CODEOWNERS
+
+# Main maintainers
+*       @Dhruv-Techapps @dharmeshpatel
+
+# Apps
+/apps/acf-extension/    @Dhruv-Techapps
+/apps/acf-options-page/ @Dhruv-Techapps
+
+# Packages
+/packages/acf/          @Dhruv-Techapps
+/packages/core/         @Dhruv-Techapps
+/packages/shared/       @Dhruv-Techapps
+
+# Docs
+/docs/                  @Dhruv-Techapps
+
+# GitHub workflows and configs
+.github/                @Dhruv-Techapps
