@@ -77,7 +77,7 @@ See the [docs](https://stable.getautoclicker.com/docs/4.x/getting-started/introd
 
 ## Getting Started
 
-Before getting started, create a new `.env` file from the provided `.env.example` under both `acf-extension` and `acf-options-page` directories.
+Before getting started, create a new `.env` file from the provided `.env.example`.
 
 ### Prerequisites
 
