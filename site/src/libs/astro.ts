@@ -145,7 +145,7 @@ function cleanPublicDirectory() {
 function copyBootstrap() {
   const source = path.join(process.cwd(), 'node_modules', 'bootstrap', 'dist')
   const destination = path.join(getDocsPublicFsPath(), 'docs', getConfig().docs_version, 'dist')
-
+  console.log(`Copying Bootstrap from ${source} to ${destination}`)
   fs.mkdirSync(destination, { recursive: true })
   fs.cpSync(source, destination, { recursive: true })
 }
