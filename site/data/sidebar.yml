@@ -1,0 +1,122 @@
+# This file holds all sidebar menu's entries.
+# The logic for the sidebar generation is in "site/layouts/partials/docs-sidebar.html".
+
+- title: Getting started
+  icon: book-half
+  icon_color: indigo
+  pages:
+    - title: Introduction
+    - title: Download
+
+- title: Extension
+  icon: tools
+  icon_color: blue
+  pages:
+    - title: Status Bar
+    - title: Log
+    - title: Theme
+    - title: Language
+
+- title: Record
+  icon: record-circle
+  icon_color: red
+  pages:
+    - title: Overview
+
+- title: Settings
+  icon: gear
+  icon_color: gray
+  pages:
+    - title: Overview
+    - title: Retry
+    - title: Show Notification
+    - title: Backup
+    - title: Google Sheets
+    - title: Status Bar Location
+
+- title: Session
+  icon: hourglass-bottom
+  icon_color: indigo
+  pages:
+    - title: Overview
+
+- title: Config List
+  icon: ui-radios
+  icon_color: blue
+  pages:
+    - title: Overview
+    - title: Bulk Export
+    - title: Bulk Import
+    - title: Bulk Remove
+    - title: Reorder
+
+- title: Configuration
+  icon: menu-button-wide-fill
+  icon_color: cyan
+  pages:
+    - title: Overview
+    - title: URL
+    - title: Config Settings
+    - title: Batch
+
+- title: Action
+  icon: braces-asterisk
+  icon_color: red
+  pages:
+    - title: Overview
+    - title: Element Finder
+    - title: Columns Filter
+    - title: Action Settings
+    - title: Action Condition
+
+- title: Userscript
+  icon: magic
+  icon_color: orange
+  pages:
+    - title: Overview
+
+- title: Action Value
+  icon: palette2
+  icon_color: pink
+  pages:
+    - title: Overview
+    - title: AI
+    - title: Captcha
+    - title: Google Sheets
+    - title: Append
+    - title: Prepend
+    - title: Replace
+    - title: Clipboard
+    - title: Copy
+    - title: Paste
+    - title: Random Value
+    - title: Attribute
+    - title: Class
+    - title: Query Param
+    - title: Select Option
+    - title: Scroll To
+    - title: Mouse Events
+    - title: Form Events
+    - title: Key Events
+    - title: Keyboard Events
+    - title: Location Command
+    - title: Window Command
+    - title: Batch Repeat
+    - title: Function
+
+- title: Addon
+  icon: check-circle
+  icon_color: blue
+  pages:
+    - title: Overview
+    - title: Element Finder
+    - title: Condition
+    - title: Value
+    - title: Recheck
+
+- title: About
+  icon: globe2
+  icon_color: indigo
+  pages:
+    - title: Permissions
+    - title: Subscription
