@@ -52,9 +52,7 @@ test-output
 
 
 #Ignore vscode AI rules
-.github/copilot-instructions.md
 .cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
 /docs
 
 
