@@ -17,7 +17,21 @@ toc: true
   <tbody>
     <tr>
       <th scope="row">Paste::</th>
-      <td>Simply past the content copied using copy command</td>
+      <td>Simply pastes the content copied using copy command.</td>
+    </tr>
+    <tr>
+      <th scope="row">&lt;paste&gt;</th>
+      <td>
+        Replaces with the last copied value using the extension's copy command. You can use <code>&lt;paste&gt;</code>{' '}
+        anywhere within your text, and it will be replaced with the copied value. Supports multiple replacements in the
+        same string.
+        <hr />
+        <ul>
+          <li>
+            <code>Hello &lt;paste&gt; World &lt;paste&gt;!</code> → <code>Hello copiedValue World copiedValue!</code>
+          </li>
+        </ul>
+      </td>
     </tr>
     <tr>
       <th scope="row">Paste::at(5)</th>

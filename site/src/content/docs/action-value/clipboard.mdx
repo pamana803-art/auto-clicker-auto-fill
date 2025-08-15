@@ -78,11 +78,25 @@ To enable the functionality, our extension requires clipboard permission for spe
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Clipboard::Paste::</th>
-      <th scope="col">Description (Paste text into field) from Clipboard</th>
+      <th scope="col">Pattern</th>
+      <th scope="col">Description</th>
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <th scope="row">&lt;clipboardPaste&gt;</th>
+      <td>
+        Replaces with the current clipboard content. You can use <code>&lt;clipboardPaste&gt;</code> anywhere within
+        your text, and it will be replaced with the clipboard value. Supports multiple replacements in the same string.
+        <hr />
+        <ul>
+          <li>
+            <code>Hello &lt;clipboardPaste&gt; World &lt;clipboardPaste&gt;!</code> →{' '}
+            <code>Hello copiedText World copiedText!</code>
+          </li>
+        </ul>
+      </td>
+    </tr>
     <tr>
       <th scope="row">Clipboard::Paste::</th>
       <td>Simply past the content copied using Clipboard::copy:: command or whatever there in clipboard</td>
@@ -316,5 +330,6 @@ To enable the functionality, our extension requires clipboard permission for spe
         </ul>
       </td>
     </tr>
+
   </tbody>
 </table>

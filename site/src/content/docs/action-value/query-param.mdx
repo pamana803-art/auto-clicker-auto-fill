@@ -8,26 +8,41 @@ toc: true
 <img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/query.png" alt="" />
 <img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/query-url.png" alt="" />
 
+## Supported Patterns
+
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Query::</th>
+      <th scope="col">Pattern</th>
       <th scope="col">Description</th>
+      <th scope="col">Example</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th scope="row">?param=value</th>
+      <th scope="row">Query::param</th>
       <td>
-        Query parameters can be defined as the optional key-value pairs that appear after the question mark in the URL.
-        Basically, they are extensions of the URL that are utilized to help determine specific content or action based
-        on the data being delivered. Query parameters are appended to the end of the URL, using a <kbd>?</kbd>. The
-        question mark sign is used to separate path and query parameters.
-        <br />
-        If you want to add multiple query parameters, an <kbd>&</kbd> sign is placed in between them to form what is
-        known as a query string. It can feature various object types with distinct lengths such as arrays, strings, and
-        numbers.
+        Replaces with the value of the query parameter <code>param</code> from the URL. If not found, returns the key.
+      </td>
+      <td>
+        <code>Query::userId</code> → <code>123</code> (if <code>?userId=123</code> in URL)
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">&lt;query::param&gt;</th>
+      <td>
+        Replaces all occurrences of <code>&lt;query::param&gt;</code> with the value of the query parameter{' '}
+        <code>param</code> from the URL. Useful for templates with multiple params.
+      </td>
+      <td>
+        <code>Hello &lt;query::name&gt;!</code> → <code>Hello John!</code> (if <code>?name=John</code> in URL)
       </td>
     </tr>
   </tbody>
 </table>
+
+### Usage
+
+Use <code>Query::param</code> for single value replacement, and <code>&lt;query::param&gt;</code> for replacing within a string or template.
+
+---
