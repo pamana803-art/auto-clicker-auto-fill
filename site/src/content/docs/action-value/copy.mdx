@@ -7,49 +7,15 @@ toc: true
 
 <img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/copy-command.png" alt="" />
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Copy::</th>
-      <th scope="col">Description (Copy text from webpage)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">Copy::[.]{6}</th>
-      <td>
-        <code>[.]</code> - Any Single Character <code>{6}</code> - no of characters 6
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[.]+</th>
-      <td>
-        <code>[.]</code> - Any Single Character <code>+</code> - all characters
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[a-z]{6}</th>
-      <td>
-        <code>[a-z]</code> - A character in the range: a-z
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[A-Z]{6}</th>
-      <td>
-        <code>[A-Z]</code> - A character in the range: A-Z
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[\d]{6}</th>
-      <td>
-        <code>[\d]</code> - A digit
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[\w]{6}</th>
-      <td>
-        <code>[\w]</code> - A word character
-      </td>
-    </tr>
-  </tbody>
-</table>
+<BsTable>
+
+| **Copy::**     | **Description (Copy text from webpage)**                         |
+| -------------- | ---------------------------------------------------------------- |
+| Copy::[.]{6}   | [.] - Any single character; {6} - exactly 6 characters           |
+| Copy::[.]+     | [.] - Any single character; + - all characters                   |
+| Copy::[a-z]{6} | [a-z] - A character in the range a–z; {6} - exactly 6 characters |
+| Copy::[A-Z]{6} | [A-Z] - A character in the range A–Z; {6} - exactly 6 characters |
+| Copy::[\d]{6}  | [\d] - A digit; {6} - exactly 6 characters                       |
+| Copy::[\w]{6}  | [\w] - A word character; {6} - exactly 6 characters              |
+
+</BsTable>

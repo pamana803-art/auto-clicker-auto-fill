@@ -32,38 +32,15 @@ toc: true
   </select>`}
 />
 ### Example
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Element Finder</th>
-      <th scope="col">Selection</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">//select[@id="product-size"]/option[2]</th>
-      <td>
-        It will select second option with text as <b>35</b>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">//select[@id="product-size"]/option[@data-value-size="36"]</th>
-      <td>
-        It will select third option with text as <b>36</b>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">//select[@id="product-size"]/option[contains(@value,"opt-40")]</th>
-      <td>
-        It will select last option with text as <b>40</b>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">//select[@id="product-size"]/option[text()="39"]</th>
-      <td>
-        It will select last second option with text as <b>39</b>
-      </td>
-    </tr>
-  </tbody>
-</table>
+
+<BsTable>
+
+| **Element Finder**                                             | **Selection**                                   |
+| -------------------------------------------------------------- | ----------------------------------------------- |
+| //select[@id="product-size"]/option[2]                         | Selects the second option with text 35.         |
+| //select[@id="product-size"]/option[@data-value-size="36"]     | Selects the option with data-value-size 36.     |
+| //select[@id="product-size"]/option[contains(@value,"opt-40")] | Selects the option whose value contains opt-40. |
+| //select[@id="product-size"]/option[text()="39"]               | Selects the option with text 39.                |
+
+</BsTable>
 <Callout type="info">You must set the value field to `true`</Callout>

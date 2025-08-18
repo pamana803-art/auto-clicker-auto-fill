@@ -40,41 +40,14 @@ Start the extension automatically or manually without refreshing the page.
 
 ## Extension Load
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Event Type</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <a href="https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onload">Window</a>
-      </td>
-      <td>true</td>
-      <td>
-        <ul>
-          <li>Loads when the entire page content is ready (stylesheets, images, subframes)</li>
-          <li>Slower than Document</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event">Document</a>
-      </td>
-      <td>false</td>
-      <td>
-        <ul>
-          <li>Loads without waiting for stylesheets, images, and subframes to finish loading</li>
-          <li>Faster than Window</li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<BsTable>
+
+| Event Type                                                                                 | Default | Description                                                                                              |
+| ------------------------------------------------------------------------------------------ | ------- | -------------------------------------------------------------------------------------------------------- |
+| [Window](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onload)      | true    | Loads when the entire page content is ready (stylesheets, images, subframes).<br />Slower than Document. |
+| [Document](https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event) | false   | Loads without waiting for stylesheets, images, and subframes to finish loading.<br />Faster than Window. |
+
+</BsTable>
 
 ## Hotkey
 

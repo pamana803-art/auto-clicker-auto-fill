@@ -10,36 +10,14 @@ toc: true
 
 ## Supported Patterns
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Pattern</th>
-      <th scope="col">Description</th>
-      <th scope="col">Example</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">Query::param</th>
-      <td>
-        Replaces with the value of the query parameter <code>param</code> from the URL. If not found, returns the key.
-      </td>
-      <td>
-        <code>Query::userId</code> → <code>123</code> (if <code>?userId=123</code> in URL)
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">&lt;query::param&gt;</th>
-      <td>
-        Replaces all occurrences of <code>&lt;query::param&gt;</code> with the value of the query parameter{' '}
-        <code>param</code> from the URL. Useful for templates with multiple params.
-      </td>
-      <td>
-        <code>Hello &lt;query::name&gt;!</code> → <code>Hello John!</code> (if <code>?name=John</code> in URL)
-      </td>
-    </tr>
-  </tbody>
-</table>
+<BsTable>
+
+| **Pattern**          | **Description**                                                                                                             | **Example**                                                     |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Query::param         | Replace with the value of query parameter param from the URL. If not found, returns the key.                                | Query::userId → 123 (if ?userId=123 in URL)                     |
+| &lt;query::param&gt; | Replace all occurrences of &lt;query::param&gt; with the value of query parameter param from the URL. Useful for templates. | Hello &lt;query::name&gt;! → Hello John! (if ?name=John in URL) |
+
+</BsTable>
 
 ### Usage
 
