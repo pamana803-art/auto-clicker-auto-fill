@@ -82,6 +82,17 @@ try {
   registerContextMenus(OPTIONS_PAGE_URL, googleAnalytics);
 
   /**
+   * Listen for URL changes in SPAs/PWAs using webNavigation API
+   */
+  chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
+    // Only handle main frame navigation (not iframes)
+    if (details.frameId === 0) {
+      // Send message to content script to trigger URL change load
+      chrome.tabs.sendMessage(details.tabId, { action: RUNTIME_MESSAGE_ACF.URL_CHANGE });
+    }
+  });
+
+  /**
    * Set Notifications
    */
   registerNotifications(OPTIONS_PAGE_URL);

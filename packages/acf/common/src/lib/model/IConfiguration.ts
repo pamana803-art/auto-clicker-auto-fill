@@ -6,7 +6,8 @@ import { IUserScript } from './IUserscript';
 
 export enum ELoadTypes {
   WINDOW = 'window',
-  DOCUMENT = 'document'
+  DOCUMENT = 'document',
+  URL_CHANGE = 'url_change'
 }
 
 export enum EStartTypes {

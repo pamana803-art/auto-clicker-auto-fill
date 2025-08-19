@@ -52,6 +52,15 @@ window.addEventListener('load', () => {
   loadConfig(ELoadTypes.WINDOW);
 });
 
+// Listen for URL changes in SPAs/PWAs
+window.addEventListener('popstate', () => {
+  loadConfig(ELoadTypes.URL_CHANGE);
+});
+
+window.addEventListener('hashchange', () => {
+  loadConfig(ELoadTypes.URL_CHANGE);
+});
+
 addEventListener('unhandledrejection', (event) => {
   if (reloadOnError && event.reason.message === 'Extension context invalidated.') {
     window.location.reload();
@@ -73,6 +82,15 @@ chrome.runtime.onMessage.addListener(async (message) => {
         await ConfigProcessor.checkStartType([], config);
         Logger.color(chrome.runtime.getManifest().name, LoggerColor.PRIMARY, 'debug', config?.url, 'END');
       });
+    } catch (e) {
+      if (e instanceof Error) {
+        statusBar.error(e.message);
+      }
+      scope.captureException(e);
+    }
+  } else if (action === RUNTIME_MESSAGE_ACF.URL_CHANGE) {
+    try {
+      loadConfig(ELoadTypes.URL_CHANGE);
     } catch (e) {
       if (e instanceof Error) {
         statusBar.error(e.message);
