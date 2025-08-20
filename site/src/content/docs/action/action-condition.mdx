@@ -49,12 +49,13 @@ When you have multiple rows, the OPR controls how they are combined. Truth table
 | **Action 1 status result** | **OPR** | **Action 2 status result** | **Result** |
 | -------------------------- | ------- | -------------------------- | ---------- |
 | true                       | OR      | true                       | true       |
-| OR                         | false   | true                       | false      |
-| false                      | OR      | true                       | true       |
 | true                       | OR      | false                      | true       |
+| false                      | OR      | true                       | true       |
+| false                      | OR      | false                      | false      |
 | true                       | AND     | true                       | true       |
-| AND                        | false   | false                      | false      |
-| AND                        | true    | false                      | false      |
+| false                      | AND     | false                      | false      |
+| true                       | AND     | false                      | false      |
+| false                      | AND     | false                      | false      |
 
 </BsTable>
 
