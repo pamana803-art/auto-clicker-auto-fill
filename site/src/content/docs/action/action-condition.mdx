@@ -50,7 +50,8 @@ When you have multiple rows, the OPR controls how they are combined. Truth table
 | -------------------------- | ------- | -------------------------- | ---------- |
 | true                       | OR      | true                       | true       |
 | OR                         | false   | true                       | false      |
-| OR                         | true    | false                      | false      |
+| false                      | OR      | true                       | true       |
+| true                       | OR      | false                      | true       |
 | true                       | AND     | true                       | true       |
 | AND                        | false   | false                      | false      |
 | AND                        | true    | false                      | false      |
