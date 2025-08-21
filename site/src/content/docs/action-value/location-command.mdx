@@ -1,66 +1,34 @@
 ---
 title: Location Command
 description: Perform location specific commands
+tags: [action, value, location, action-value]
 toc: true
 ---
 
-<img
-  class="d-block mb-4 img-fluid rounded-3"
-  src="/docs/[[config:docs_version]]/assets/img/location-command.png"
-  alt=""
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '//html',
+    value: 'LocationCommand::reload'
+  }}
 />
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">LocationCommand::</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">LocationCommand::reload</th>
-      <td>Force reloading the current page from the server.</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::href::https://getautoclicker.com</th>
-      <td>it will open https://getautoclicker.com in same tab</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::replace::https://getautoclicker.com</th>
-      <td>It will open this page without maintaining history so when you click back you can come to this page again</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::assign::https://getautoclicker.com</th>
-      <td>Its similar to you click on link which open another page</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::focus</th>
-      <td>Its similar to you focus on window/page</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::blur</th>
-      <td>Its similar to you move out on window/page</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::print</th>
-      <td>Its similar to you Print (Ctrl + P) out on window/page</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::stop</th>
-      <td>Its similar to you stop window/page load</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::moveBy::x,y</th>
-      <td>Its similar to move window/page by x and y pixels</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::moveTo::x,y</th>
-      <td>Its similar to move window/page to x and y pixels</td>
-    </tr>
-    <tr>
-      <th scope="row">LocationCommand::open::https://getautoclicker.com</th>
-      <td>Its similar to open https://getautoclicker.com page in new tab</td>
-    </tr>
-  </tbody>
-</table>
+<BsTable>
+
+| **LocationCommand::**                                  | **Description**                                                        |
+| ------------------------------------------------------ | ---------------------------------------------------------------------- |
+| `LocationCommand::reload`                              | Force reload the current page from the server.                         |
+| `LocationCommand::href::https://getautoclicker.com`    | Open https://getautoclicker.com in the same tab.                       |
+| `LocationCommand::replace::https://getautoclicker.com` | Navigate to the page without keeping history (Back won’t return here). |
+| `LocationCommand::assign::https://getautoclicker.com`  | Navigate to the page (like clicking a link).                           |
+| `LocationCommand::focus`                               | Focus the window/page.                                                 |
+| `LocationCommand::blur`                                | Remove focus from the window/page.                                     |
+| `LocationCommand::print`                               | Open the print dialog.                                                 |
+| `LocationCommand::stop`                                | Stop loading the page.                                                 |
+| `LocationCommand::moveBy::x,y`                         | Move the window by x and y pixels.                                     |
+| `LocationCommand::moveTo::x,y`                         | Move the window to x and y coordinates.                                |
+| `LocationCommand::open::https://getautoclicker.com`    | Open https://getautoclicker.com in a new tab.                          |
+
+</BsTable>

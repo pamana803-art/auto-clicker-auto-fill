@@ -1,335 +1,165 @@
 ---
 title: Clipboard
 description: Now you can copy any content from webpage using copy command and paste back any where within clipboard.
-group: action-value
+tags: [action, value, clipboard, action-value]
 toc: true
 ---
 
-<Callout type="info">
-#### Clipboard Permission Required
+import { getDocsRelativePath } from '@libs/path'
 
-To enable the functionality, our extension requires clipboard permission for specific sites. Please grant this permission to ensure seamless operation. Additionally, ensure that the document is open and in focus during the copy command.
+## Copy to Clipboard
 
-</Callout>
-
-### Copy to Clipboard
-
-<img
-  class="d-block mb-4 img-fluid rounded-3"
-  src="/docs/[[config:docs_version]]/assets/img/clipboard-copy-command.png"
-  alt=""
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '//a',
+    value: 'Clipboard::Copy::Text'
+  }}
 />
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Clipboard::Copy::</th>
-      <th scope="col">Description (Copy text from webpage) to clipboard</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">Clipboard::Copy::[.]{6}</th>
-      <td>
-        <code>[.]</code> - Any Single Character <code>{6}</code> - no of characters 6
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Copy::[.]+</th>
-      <td>
-        <code>[.]</code> - Any Single Character <code>+</code> - all characters
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Copy::[a-z]{6}</th>
-      <td>
-        <code>[a-z]</code> - A character in the range: a-z
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Copy::[A-Z]{6}</th>
-      <td>
-        <code>[A-Z]</code> - A character in the range: A-Z
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Copy::[\d]{6}</th>
-      <td>
-        <code>[\d]</code> - A digit
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Copy::[\w]{6}</th>
-      <td>
-        <code>[\w]</code> - A word character
-      </td>
-    </tr>
-  </tbody>
-</table>
+### Clipboard::Copy::[\d]{6}
 
-### Paste from Clipboard
+`Clipboard::Copy::[\\d]{6}`
 
-<img
-  class="d-block mb-4 img-fluid rounded-3"
-  src="/docs/[[config:docs_version]]/assets/img/clipboard-paste-command.png"
-  alt=""
+<Code code={`<div>OTP: 123456</div> → Clipboard: 123456`} lang="html" />
+
+### Clipboard::Copy::[.]{6}
+
+Any six characters (literal dot used inside character class)
+
+<Code code={`<div>dots: ......</div> → Clipboard: ......`} lang="js" />
+
+### Clipboard::Copy::[.]+
+
+One or more literal dots
+
+<Code code={`<div>path: a..b</div> → Clipboard: ..`} lang="js" />
+
+### Clipboard::Copy::[a-z]{6}
+
+Six lowercase letters (a–z)
+
+<Code code={`<div>code: nature</div> → Clipboard: nature`} lang="js" />
+
+### Clipboard::Copy::[A-Z]{6}
+
+Six uppercase letters (A–Z)
+
+<Code code={`<div>code: MONKEY</div> → Clipboard: MONKEY`} lang="js" />
+
+### Clipboard::Copy::[\\w]{6}
+
+Six word characters (letters, digits, or underscore)
+
+<Code code={`<div>id: A1B2C3X</div> → Clipboard: A1B2C3`} lang="js" />
+
+## Paste from Clipboard
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input2.html')}
+  variables={{
+    element_finder: '//input',
+    value: 'Clipboard::Paste::',
+    element_finder2: '//textarea',
+    value2: 'Hello <clipboardPaste>, how are you?'
+  }}
 />
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Pattern</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">&lt;clipboardPaste&gt;</th>
-      <td>
-        Replaces with the current clipboard content. You can use <code>&lt;clipboardPaste&gt;</code> anywhere within
-        your text, and it will be replaced with the clipboard value. Supports multiple replacements in the same string.
-        <hr />
-        <ul>
-          <li>
-            <code>Hello &lt;clipboardPaste&gt; World &lt;clipboardPaste&gt;!</code> →{' '}
-            <code>Hello copiedText World copiedText!</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::</th>
-      <td>Simply past the content copied using Clipboard::copy:: command or whatever there in clipboard</td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::at(5)</th>
-      <td>
-        The <code>at()</code> method takes an integer value and returns a new String consisting of the single UTF-16
-        code unit located at the specified offset. This method allows for positive and negative integers. Negative
-        integers count back from the last string character.
-        <hr />
-        <ul>
-          <li>
-            'The quick brown fox jumps over the lazy dog.'.at(5) -> <code>u</code>
-          </li>
-          <li>
-            'The quick brown fox jumps over the lazy dog.'.at(-4) -> <code>d</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::charAt(4)</th>
-      <td>
-        The <code>charAt()</code> method of a String instance returns a new string consisting of the single UTF-16 code
-        unit located at the specified offset into the string.
-        <hr />
-        <ul>
-          <li>
-            'The quick brown fox jumps over the lazy dog.'.at(4) -> <code>q</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::concat("World")</th>
-      <td>
-        The <code>concat()</code> method concatenates the string arguments to the calling string and returns a new
-        string.
-        <hr />
-        <ul>
-          <li>
-            'Hello'.concat(' ', 'World') -> <code>Hello World</code>
-          </li>
-          <li>
-            'Hello'.concat(', ', 'World') -> <code>Hello, World</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::match(/[A-Z]/g)</th>
-      <td>
-        The <code>match()</code> method retrieves the result of matching a string against a regular expression.
-        <hr />
-        <ul>
-          <li>
-            'The quick brown fox jumps. It barked.'.match(/[A-Z]/g) -> <code>["T", "I"]</code>
-          </li>
-          <li>
-            'The quick brown fox jumps. It barked.'.match(/[A-Z]/g).join("") -> <code>TI</code>
-          </li>
-          <li>
-            'The quick brown fox jumps. It barked.'.match(/[A-Z]/g).join(",") -> <code>T,I</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::replace("dog", "monkey")</th>
-      <td>
-        The <code>replace()</code> method returns a new string with one, some, or all matches of a pattern replaced by a
-        replacement. The pattern can be a string or a RegExp, and the replacement can be a string or a function called
-        for each match. If pattern is a string, only the first occurrence will be replaced. The original string is left
-        unchanged.
-        <hr />
-        <ul>
-          <li>
-            'The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?'.replace("dog",
-            "monkey") ->{' '}
-            <code>The quick brown fox jumps over the lazy monkey. If the dog reacted, was it really lazy?</code>
-          </li>
-          <li>
-            'The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?'.replace(/Dog/i,
-            "ferret") ->{' '}
-            <code>The quick brown fox jumps over the lazy ferret. If the dog reacted, was it really lazy?</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::replaceAll("dog", "monkey")</th>
-      <td>
-        The <code>replaceAll()</code> method returns a new string with all matches of a pattern replaced by a
-        replacement. The pattern can be a string or a RegExp, and the replacement can be a string or a function to be
-        called for each match. The original string is left unchanged.
-        <hr />
-        <ul>
-          <li>
-            'The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?'.replaceAll("dog",
-            "monkey") ->{' '}
-            <code>The quick brown fox jumps over the lazy monkey. If the monkey reacted, was it really lazy?</code>
-          </li>
-          <li>
-            'The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?'.replaceAll(/Dog/i,
-            "ferret") ->{' '}
-            <code>The quick brown fox jumps over the lazy ferret. If the ferret reacted, was it really lazy?</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::slice(31)</th>
-      <td>
-        The <code>slice()</code> method extracts a section of a string and returns it as a new string, without modifying
-        the original string.
-        <hr />
-        <ul>
-          <li>
-            'The quick brown fox jumps over the lazy dog.'.slice(31) -> <code>the lazy dog.</code>
-          </li>
-          <li>
-            'The quick brown fox jumps over the lazy dog.'.slice(4, 19) -> <code>quick brown fox</code>
-          </li>
-          <li>
-            'The quick brown fox jumps over the lazy dog.'.slice(-4) -> <code>dog</code>
-          </li>
-          <li>
-            'The quick brown fox jumps over the lazy dog.'.slice(-9, -5) -> <code>lazy </code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::split(" ")</th>
-      <td>
-        The <code>split()</code> method takes a pattern and divides a String into an ordered list of substrings by
-        searching for the pattern, puts these substrings into an array, and returns the array.
-        <hr />
-        <ul>
-          <li>
-            'The quick brown fox jumps over the lazy dog.'.split(' ')[3] -> <code>fox</code>
-          </li>
-          <li>
-            'The quick brown fox jumps over the lazy dog.'.split('')[8] -> <code>k</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::substring(1, 3)</th>
-      <td>
-        The <code>substring()</code> method returns the part of the string from the start index up to and excluding the
-        end index, or to the end of the string if no end index is supplied.
-        <hr />
-        <ul>
-          <li>
-            'Auto Clicker AutoFill'.substring(1,3) -> <code>to</code>
-          </li>
-          <li>
-            'Auto Clicker AutoFill'.substring(5) -> <code>Clicker AutoFill</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::toLowerCase()</th>
-      <td>
-        The <code>toLowerCase()</code> method returns the calling string value converted to lower case.
-        <hr />
-        <ul>
-          <li>
-            'Auto Clicker AutoFill'.toLowerCase() -> <code>auto clicker autofill</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::toUpperCase()</th>
-      <td>
-        The <code>toUpperCase()</code> method returns the calling string value converted to uppercase (the value will be
-        converted to a string if it isn't one).
-        <hr />
-        <ul>
-          <li>
-            'Auto Clicker AutoFill'.toUpperCase() -> <code>AUTO CLICKER AUTOFILL</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::trim()</th>
-      <td>
-        The <code>trim()</code> method removes whitespace from both ends of a string and returns a new string, without
-        modifying the original string. To return a new string with whitespace trimmed from just one end, use trimStart()
-        or trimEnd().
-        <hr />
-        <ul>
-          <li>
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auto Clicker AutoFill&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.trim() ->{' '}
-            <code>Auto Clicker AutoFill</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::trimStart()</th>
-      <td>
-        The <code>trimStart()</code> method removes whitespace from the beginning of a string and returns a new string,
-        without modifying the original string. trimLeft() is an alias of this method.
-        <hr />
-        <ul>
-          <li>
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auto Clicker AutoFill&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.trimStart() ->{' '}
-            <code>Auto Clicker AutoFill&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Clipboard::Paste::trimEnd()</th>
-      <td>
-        The <code>trimEnd()</code> method removes whitespace from the end of a string and returns a new string, without
-        modifying the original string. trimRight() is an alias of this method.
-        <hr />
-        <ul>
-          <li>
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auto Clicker AutoFill&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.trimEnd() ->{' '}
-            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auto Clicker AutoFill</code>
-          </li>
-        </ul>
-      </td>
-    </tr>
+### &lt;clipboardPaste&gt;
 
-  </tbody>
-</table>
+Replaces with the current clipboard content. You can use `<clipboardPaste>` anywhere within your text, and it will be replaced with the clipboard value. Supports multiple replacements in the same string
+
+<Code code={`Hello <clipboardPaste> World <clipboardPaste>! → Hello copiedText World copiedText!`} lang="html" />
+
+### Clipboard::Paste::
+
+Paste the current clipboard content or the value copied using Clipboard::copy::
+
+<Code code={`Clipboard::Paste:: → copiedText!`} lang="js" />
+
+### Clipboard::Paste::at(5)
+
+Character at position 5
+
+<Code code={`'The quick brown fox jumps over the lazy dog.'.at(5) → u; at(-4) → d`} lang="js" />
+
+### Clipboard::Paste::charAt(4)
+
+Same as at(4)
+
+<Code code={`'The quick brown fox jumps over the lazy dog.'.charAt(4) → q`} lang="js" />
+
+### Clipboard::Paste::concat("World")
+
+Concatenate strings
+
+<Code code={`'Hello'.concat(' ', 'World') → Hello World`} lang="js" />
+
+### Clipboard::Paste::match(/^[A-Z]/g)
+
+Regex match
+
+<Code code={`'The quick brown fox jumps. It barked.'.match(/[A-Z]/g) → ["T","I"]`} lang="js" />
+
+### Clipboard::Paste::replace("dog", "monkey")
+
+Replace first occurrence
+
+<Code
+  code={`'The quick brown fox jumps over the lazy dog.'.replace('dog', 'monkey') → The quick brown fox jumps over the lazy monkey.`}
+  lang="js"
+/>
+
+### Clipboard::Paste::replaceAll("dog", "monkey")
+
+Replace all occurrences
+
+<Code code={`'dog, hotdog, dogma'.replaceAll('dog', 'monkey') → monkey, hotmonkey, monkeyma`} lang="js" />
+
+### Clipboard::Paste::slice(31)
+
+Slice substring by indices
+
+<Code code={`'The quick brown fox jumps over the lazy dog.'.slice(31) → the lazy dog.`} lang="js" />
+
+### Clipboard::Paste::split(" ")
+
+Split by space
+
+<Code code={`'The quick brown fox jumps over the lazy dog.'.split(' ')[3] → fox`} lang="js" />
+
+### Clipboard::Paste::substring(1, 3)
+
+Substring from 1 to 3 (exclusive)
+
+<Code code={`'ABCDE'.substring(1, 3) → BC`} lang="js" />
+
+### Clipboard::Paste::toLowerCase()
+
+Convert to lower case
+
+<Code code={`'Auto Clicker AutoFill'.toLowerCase() → auto clicker autofill`} lang="js" />
+
+### Clipboard::Paste::toUpperCase()
+
+Convert to upper case
+
+<Code code={`'Auto Clicker AutoFill'.toUpperCase() → AUTO CLICKER AUTOFILL`} lang="js" />
+
+### Clipboard::Paste::trim()
+
+Trim both ends
+
+<Code code={`'     Auto Clicker AutoFill     '.trim() → Auto Clicker AutoFill`} lang="js" />
+
+### Clipboard::Paste::trimStart()
+
+Trim start only
+
+<Code code={`'     Auto Clicker AutoFill'.trimStart() → Auto Clicker AutoFill`} lang="js" />
+
+### Clipboard::Paste::trimEnd()
+
+Trim end only
+
+<Code code={`'Auto Clicker AutoFill     '.trimEnd() → Auto Clicker AutoFill`} lang="js" />

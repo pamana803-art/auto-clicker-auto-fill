@@ -2,6 +2,16 @@
 title: Addon
 description: Add an Addon to an Action to validate page state (text, attributes, functions) before the Action runs.
 toc: true
+tags: [addon, action, condition, comparison]
+sections:
+  - title: Element Finder
+    description: Locate the element to validate before the action runs.
+  - title: Condition
+    description: Specify the criteria or logic to check against the element or value.
+  - title: Value
+    description: Define the value to compare or extract for validation.
+  - title: Recheck
+    description: Optionally retry the validation if the initial check fails.
 ---
 
 <img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/addon.png" alt="" />
@@ -9,13 +19,6 @@ toc: true
 Addons let you check the page before an Action executes. You can read text or attributes, evaluate simple browser values (like current time or URL), compare them against your criteria, and then decide whether to proceed.
 
 Tip: Click the three-dot (ellipsis) menu at the end of the row, then select `Addon`.
-
-Core parts of an Addon:
-
-- [Element Finder]([[docsref:/addon/element-finder]])
-- [Condition]([[docsref:/addon/condition]])
-- [Value]([[docsref:/addon/value]])
-- [Recheck]([[docsref:/addon/recheck]])
 
 What you can validate:
 
