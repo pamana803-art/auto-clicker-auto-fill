@@ -5,16 +5,26 @@ tags: [action, value, scroll, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/scroll-to.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input2.html')}
+  variables={{
+    element_finder: '//html',
+    value: 'ScrollTo::Bottom',
+    element_finder2: '//input[@type=email]',
+    value2: 'ScrollTo::XPath'
+  }}
+/>
 
 <BsTable>
 
-| **ScrollTo::**                          | **Description**             |
-| --------------------------------------- | --------------------------- |
-| ScrollTo::XPath                         | Scroll page to the element. |
-| ScrollTo::Top / ScrollTo::TopLeft       | Scroll to Top Left.         |
-| ScrollTo::TopRight                      | Scroll to Top Right.        |
-| ScrollTo::Bottom / ScrollTo::BottomLeft | Scroll to Bottom Left.      |
-| ScrollTo::BottomRight                   | Scroll to Bottom Right.     |
+| **ScrollTo::**                              | **Description**             |
+| ------------------------------------------- | --------------------------- |
+| `ScrollTo::XPath`                           | Scroll page to the element. |
+| `ScrollTo::Top` / `ScrollTo::TopLeft`       | Scroll to Top Left.         |
+| `ScrollTo::TopRight`                        | Scroll to Top Right.        |
+| `ScrollTo::Bottom` / `ScrollTo::BottomLeft` | Scroll to Bottom Left.      |
+| `ScrollTo::BottomRight`                     | Scroll to Bottom Right.     |
 
 </BsTable>

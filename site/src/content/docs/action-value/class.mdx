@@ -5,15 +5,45 @@ tags: [action, value, class, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/action-class.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input4.html')}
+  variables={{
+    element_finder: '//button',
+    value: 'Class::add::btn',
+    element_finder2: '//button',
+    value2: 'Class::remove::btn',
+    element_finder3: '//button',
+    value3: 'Class::replace::primary::secondary',
+    element_finder4: '//button',
+    value4: 'Class::clear'
+  }}
+/>
 
 <BsTable>
 
-| **Class::**                                   | **Description**                                                                                             |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Class::add::className                         | Add a class to the element. Example: `<input class="button">` → `<input class="button btn">`                |
-| Class::remove::className                      | Remove a class from the element. Example: `<input class="button btn">` → `<input class="button">`           |
-| Class::replace::removeClassName::addClassName | Replace one class with another. Example: `<span class="unlike">` → `<span class="like">`                    |
-| Class::clear                                  | Remove all classes from the element. Example: `<input class="btn btn-primary button">` → `<input class="">` |
+| **Class::**                                                                               | **Description**                      |
+| ----------------------------------------------------------------------------------------- | ------------------------------------ |
+| [Class::add::className](#classaddclassname)                                               | Add a class to the element.          |
+| [Class::remove::className](#classremoveclassname)                                         | Remove a class from the element.     |
+| [Class::replace::removeClassName::addClassName](#classreplaceremoveclassnameaddclassname) | Replace one class with another.      |
+| [Class::clear](#classclear)                                                               | Remove all classes from the element. |
 
 </BsTable>
+
+## Class::add::className
+
+<Code code={`<input class="button">  → <input class="button btn">`} lang="html" />
+
+## Class::remove::className
+
+<Code code={`<input class="button btn">  → <input class="button">`} lang="html" />
+
+## Class::replace::removeClassName::addClassName
+
+<Code code={`<input class="button btn">  → <input class="button like">`} lang="html" />
+
+## Class::clear
+
+<Code code={`<input class="button btn">  → <input class="">`} lang="html" />

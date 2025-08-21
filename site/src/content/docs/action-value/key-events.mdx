@@ -5,13 +5,21 @@ tags: [action, value, key-events, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/key-events.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '//input',
+    value: "KeyEvents::{'value':'Example text','delay':3}"
+  }}
+/>
 
 <BsTable>
 
 | **KeyEvents::**                                 | **Description**                                              |
 | ----------------------------------------------- | ------------------------------------------------------------ |
-| KeyEvents::Example Text                         | Simulates typing of “Example Text” like real keyboard input. |
-| KeyEvents::`{"value":"Example text","delay":3}` | Simulates typing with a 3s delay between each character.     |
+| `KeyEvents::Example Text`                       | Simulates typing of “Example Text” like real keyboard input. |
+| `KeyEvents::{"value":"Example text","delay":3}` | Simulates typing with a 3s delay between each character.     |
 
 </BsTable>

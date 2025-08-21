@@ -5,6 +5,8 @@ tags: [action, value, function, action-value]
 toc: true
 ---
 
+import { getDocsRelativePath } from '@libs/path'
+
 <Callout type="info">
   Now run browser default API functions or custom func from extension directly. This feature is still under development
   and we will provide better location to run command from action. Run one or more than one command by separating them
@@ -12,7 +14,13 @@ toc: true
   `Func::console.log("Hello");console.log("World");`
 </Callout>
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/func-command.png" alt="" />
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '//input',
+    value: 'Func::Date.now().getDay()'
+  }}
+/>
 
 <Callout type="danger">
 
@@ -27,22 +35,22 @@ One important warning in advance: Malicious scripts can violate your privacy and
 
 <BsTable>
 
-| **Examples**                                                                                           |
-| ------------------------------------------------------------------------------------------------------ |
-| Func::console.log("Hello")                                                                             |
-| Func::`<batchRepeat>`                                                                                  |
-| Func::`<actionRepeat>`                                                                                 |
-| Func::`<sessionCount>`                                                                                 |
-| Func::`<random>`                                                                                       |
-| Func::`<clipboardPaste>`                                                                               |
-| Func::`<paste>`                                                                                        |
-| Func::`<paste>`.split(",")[0]                                                                          |
-| Func::'Lion,Elephant,Tiger,Giraffe,Zebra,Kangaroo,Penguin,Dolphin,Panda,Leopard'.split(",")[`<paste>`] |
-| Func::new Date()                                                                                       |
-| Func::Date.now()                                                                                       |
-| Func::Date.now().getDate()                                                                             |
-| Func::Date.now().getDay()                                                                              |
-| Func::window.location.href                                                                             |
+| **Examples**                                                                                             |
+| -------------------------------------------------------------------------------------------------------- |
+| `Func::console.log("Hello")`                                                                             |
+| `Func::<batchRepeat>`                                                                                    |
+| `Func::<actionRepeat>`                                                                                   |
+| `Func::<sessionCount>`                                                                                   |
+| `Func::<random>`                                                                                         |
+| `Func::<clipboardPaste>`                                                                                 |
+| `Func::<paste>`                                                                                          |
+| `Func::<paste>`.split(",")[0]                                                                            |
+| `Func::'Lion,Elephant,Tiger,Giraffe,Zebra,Kangaroo,Penguin,Dolphin,Panda,Leopard'.split(",")["<paste>"]` |
+| `Func::new Date()`                                                                                       |
+| `Func::Date.now()`                                                                                       |
+| `Func::Date.now().getDate()`                                                                             |
+| `Func::Date.now().getDay()`                                                                              |
+| `Func::window.location.href`                                                                             |
 
 </BsTable>
 

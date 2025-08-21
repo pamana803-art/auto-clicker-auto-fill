@@ -5,24 +5,34 @@ tags: [action, value, paste, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/paste-command.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input2.html')}
+  variables={{
+    element_finder: '//input',
+    value: 'Paste::',
+    element_finder2: '//textarea',
+    value2: 'Hello <Paste>, how are you ?'
+  }}
+/>
 
 <BsTable>
 
-| **Paste::**                        | **Description**                                    |
-| ---------------------------------- | -------------------------------------------------- |
-| Paste::                            | Paste the content copied using the copy command.   |
-| &lt;paste&gt;                      | Placeholder that expands to the last copied value. |
-| Paste::at(5)                       | Return character at position 5.                    |
-| Paste::charAt(4)                   | Same as at(4).                                     |
-| Paste::concat("World")             | Concatenate strings.                               |
-| Paste::match(/[A-Z]/g)             | Regex match.                                       |
-| Paste::replace("dog", "monkey")    | Replace first occurrence.                          |
-| Paste::replaceAll("dog", "monkey") | Replace all occurrences.                           |
-| Paste::slice(31)                   | Slice from index 31.                               |
-| Paste::split(" ")                  | Split by space.                                    |
-| Paste::substring(1, 3)             | Substring from 1 to 3 (exclusive).                 |
-| Paste::toLowerCase()               | Lowercase.                                         |
-| Paste::toUpperCase()               | Uppercase.                                         |
+| **Paste::**                          | **Description**                                    |
+| ------------------------------------ | -------------------------------------------------- |
+| `Paste::`                            | Paste the content copied using the copy command.   |
+| `<paste>`                            | Placeholder that expands to the last copied value. |
+| `Paste::at(5)`                       | Return character at position 5.                    |
+| `Paste::charAt(4)`                   | Same as at(4).                                     |
+| `Paste::concat("World")`             | Concatenate strings.                               |
+| `Paste::match(/[A-Z]/g)`             | Regex match.                                       |
+| `Paste::replace("dog", "monkey")`    | Replace first occurrence.                          |
+| `Paste::replaceAll("dog", "monkey")` | Replace all occurrences.                           |
+| `Paste::slice(31)`                   | Slice from index 31.                               |
+| `Paste::split(" ")`                  | Split by space.                                    |
+| `Paste::substring(1, 3)`             | Substring from 1 to 3 (exclusive).                 |
+| `Paste::toLowerCase()`               | Lowercase.                                         |
+| `Paste::toUpperCase()`               | Uppercase.                                         |
 
 </BsTable>

@@ -5,16 +5,22 @@ tags: [action, value, prepend, action-value]
 toc: true
 ---
 
-<img
-  class="d-block mb-4 img-fluid rounded-3"
-  src="/docs/[[config:docs_version]]/assets/img/action-prepend.png"
-  alt=""
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input2.html')}
+  variables={{
+    element_finder: '//input',
+    value: 'Patel',
+    element_finder2: '//input',
+    value2: 'Prepend::Dharmesh'
+  }}
 />
 
-<BsTable>
+## Prepend::World
 
-| **Prepend::**  | **Description**                                                                              |
-| -------------- | -------------------------------------------------------------------------------------------- |
-| Prepend::Hello | Prepend value to the existing input field. This adds "Hello" before the current field value. |
+Prepend value to the existing input field. This adds "World" to the current field value.
 
-</BsTable>
+```html
+<input value="Hello" /> → <input value="Hello World" />
+```

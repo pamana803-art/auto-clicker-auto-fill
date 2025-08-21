@@ -5,6 +5,8 @@ tags: [action, value, captcha, action-value]
 toc: true
 ---
 
+import { getDocsRelativePath } from '@libs/path'
+
 ### Captcha Problem
 
 <img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/captcha-image.png" alt="" />
@@ -15,17 +17,19 @@ toc: true
 
 ### Captcha Configuration
 
-<img
-  class="d-block mb-4 img-fluid rounded-3"
-  src="/docs/[[config:docs_version]]/assets/img/captcha-config.png"
-  alt=""
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '#captcha',
+    value: "Image:://img[@class='captcha-img']"
+  }}
 />
 
 <BsTable>
 
-| **Image::**                        | **Element Finder of the image contains captcha**                                                                                      |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Image:://img[@class="captcha-img"] | Captures the image content, sends it to Vision AI to resolve into text, and fills the resolved text into the action’s element finder. |
+| **Image::**                          | **Element Finder of the image contains captcha**                                                                                      |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `Image:://img[@class="captcha-img"]` | Captures the image content, sends it to Vision AI to resolve into text, and fills the resolved text into the action’s element finder. |
 
 </BsTable>
 

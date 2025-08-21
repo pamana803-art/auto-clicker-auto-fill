@@ -5,32 +5,27 @@ tags: [action, value, window, action-value]
 toc: true
 ---
 
-<img
-  class="d-block mb-4 img-fluid rounded-3"
-  src="/docs/[[config:docs_version]]/assets/img/window-command.png"
-  alt=""
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '//html',
+    value: 'WindowCommand::close '
+  }}
 />
 
 <BsTable>
 
-| **WindowCommand::**                             | **Description**                                                     |
-| ----------------------------------------------- | ------------------------------------------------------------------- |
-| WindowCommand::close                            | Close current page (only works if opened via script, not manually). |
-| WindowCommand::focus                            | Focus the window/page.                                              |
-| WindowCommand::blur                             | Remove focus from the window/page.                                  |
-| WindowCommand::print                            | Open the print dialog (Ctrl + P equivalent).                        |
-| WindowCommand::stop                             | Stop loading the page.                                              |
-| WindowCommand::moveBy::x,y                      | Move the window by x and y pixels.                                  |
-| WindowCommand::moveTo::x,y                      | Move the window to x and y coordinates.                             |
-| WindowCommand::open::https://getautoclicker.com | Open https://getautoclicker.com in a new tab.                       |
+| **WindowCommand::**                               | **Description**                                                     |
+| ------------------------------------------------- | ------------------------------------------------------------------- |
+| `WindowCommand::close`                            | Close current page (only works if opened via script, not manually). |
+| `WindowCommand::focus`                            | Focus the window/page.                                              |
+| `WindowCommand::blur`                             | Remove focus from the window/page.                                  |
+| `WindowCommand::print`                            | Open the print dialog (Ctrl + P equivalent).                        |
+| `WindowCommand::stop`                             | Stop loading the page.                                              |
+| `WindowCommand::moveBy::x,y`                      | Move the window by x and y pixels.                                  |
+| `WindowCommand::moveTo::x,y`                      | Move the window to x and y coordinates.                             |
+| `WindowCommand::open::https://getautoclicker.com` | Open https://getautoclicker.com in a new tab.                       |
 
 </BsTable>
-<hr />
-
-<Callout type="info">You can also perform more than one task in series e.g</Callout>
-
-<img
-  class="d-block mb-4 img-fluid rounded-3"
-  src="/docs/[[config:docs_version]]/assets/img/multiple-events.png"
-  alt=""
-/>

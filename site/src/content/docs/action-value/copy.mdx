@@ -5,17 +5,31 @@ tags: [action, value, copy, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/copy-command.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '//a',
+    value: 'Copy::Text'
+  }}
+/>
 
 <BsTable>
 
-| **Copy::**     | **Description (Copy text from webpage)**                         |
-| -------------- | ---------------------------------------------------------------- |
-| Copy::[.]{6}   | [.] - Any single character; {6} - exactly 6 characters           |
-| Copy::[.]+     | [.] - Any single character; + - all characters                   |
-| Copy::[a-z]{6} | [a-z] - A character in the range a–z; {6} - exactly 6 characters |
-| Copy::[A-Z]{6} | [A-Z] - A character in the range A–Z; {6} - exactly 6 characters |
-| Copy::[\d]{6}  | [\d] - A digit; {6} - exactly 6 characters                       |
-| Copy::[\w]{6}  | [\w] - A word character; {6} - exactly 6 characters              |
+| **Copy::**       | **Description (Copy text from webpage)**                             |
+| ---------------- | -------------------------------------------------------------------- |
+| `Copy::[.]{6}`   | `.` - Any single character; `{6}` - exactly 6 characters             |
+| `Copy::[.]+`     | `.` - Any single character; `+` - all characters                     |
+| `Copy::[a-z]{6}` | `[a-z]` - A character in the range a–z; `{6}` - exactly 6 characters |
+| `Copy::[A-Z]{6}` | `[A-Z]` - A character in the range A–Z; `{6}` - exactly 6 characters |
+| `Copy::[\\d]{6}` | `[\\d]` - A digit; `{6}` - exactly 6 characters                      |
+| `Copy::[\\w]{6}` | `[\\w]` - A word character; `{6}` - exactly 6 characters             |
 
 </BsTable>
+
+### Copy::[\d]{6}
+
+`Copy::[\\d]{6}`
+
+<Code code={`<div>OTP: 123456</div> → Copy: 123456`} lang="html" />

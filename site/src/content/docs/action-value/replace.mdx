@@ -5,16 +5,20 @@ tags: [action, value, replace, action-value]
 toc: true
 ---
 
-<img
-  class="d-block mb-4 img-fluid rounded-3"
-  src="/docs/[[config:docs_version]]/assets/img/action-replace.png"
-  alt=""
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '//input[@type=email]',
+    value: 'Replace::Hello::World'
+  }}
 />
 
-<BsTable>
+## Replace::Hello::World
 
-| **Replace::**         | **Description**                                             |
-| --------------------- | ----------------------------------------------------------- |
-| Replace::Hello::World | Replace value in existing input; replaces Hello with World. |
+Replace value in the existing input field. This replaces "Hello" with "World".
 
-</BsTable>
+```html
+<input value="Hello" /> → <input value="World" />
+```

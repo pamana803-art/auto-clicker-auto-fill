@@ -5,13 +5,35 @@ tags: [action, value, attribute, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/action-attr.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input2.html')}
+  variables={{
+    element_finder: '//input',
+    value: 'Attr::set::disable::false',
+    element_finder2: '//a',
+    value2: 'Attr::remove::disabled'
+  }}
+/>
 
 <BsTable>
 
-| **Attr::**             | **Description**                                                                                                                                                                             |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Attr::set::prop::value | Update attribute value. e.g. Attr::set::disabled::false &lt;input disabled="true"&gt; -> &lt;input disabled="false"&gt;; Attr::set::target::\_blank &lt;a&gt; -> &lt;a target="\_blank"&gt; |
-| Attr::remove::prop     | Remove attribute. e.g. Attr::remove::disabled &lt;input disabled="true"&gt; -> &lt;input&gt;                                                                                                |
+| **Attr::**                                  | **Description**         |
+| ------------------------------------------- | ----------------------- |
+| [Attr::set::prop::value](#attrsetpropvalue) | Update attribute value. |
+| [Attr::remove::prop](#attrremoveprop)       | Remove attribute.       |
 
 </BsTable>
+
+## Attr::set::prop::value
+
+`Attr::set::disabled::false`
+
+<Code code={`<input disabled="true">  → <input disabled="false">`} lang="html" />
+
+## Attr::remove::prop
+
+`Attr::remove::disabled`
+
+<Code code={`<input disabled="true">  → <input disabled="false">`} lang="html" />

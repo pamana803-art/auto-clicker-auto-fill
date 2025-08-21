@@ -5,11 +5,12 @@ tags: [action, value, select, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/select-option.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
 
 <Example
   code={`
-  <select id="product-size">
+  <div class="p-3">
+  <select id="product-size" class="form-select">
     <option>size</option>
     <option data-value-class="opt-35item-0" data-value-size="35" value="opt-35item-0">
       35
@@ -29,18 +30,32 @@ toc: true
     <option data-value-class="opt-40item-5" data-value-size="40" value="opt-40item-5">
       40
     </option>
-  </select>`}
+  </select></div>`}
+  showCode={false}
+  showMarkup={true}
 />
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input2.html')}
+  variables={{
+    element_finder: "//select[@id='product-size']/option[2]",
+    value: 'true',
+    element_finder2: "//select[@id='product-size']",
+    value2: '36'
+  }}
+/>
+
 ### Example
 
 <BsTable>
 
-| **Element Finder**                                             | **Selection**                                   |
-| -------------------------------------------------------------- | ----------------------------------------------- |
-| //select[@id="product-size"]/option[2]                         | Selects the second option with text 35.         |
-| //select[@id="product-size"]/option[@data-value-size="36"]     | Selects the option with data-value-size 36.     |
-| //select[@id="product-size"]/option[contains(@value,"opt-40")] | Selects the option whose value contains opt-40. |
-| //select[@id="product-size"]/option[text()="39"]               | Selects the option with text 39.                |
+| **Element Finder**                                               | **Selection**                                   |
+| ---------------------------------------------------------------- | ----------------------------------------------- |
+| `//select[@id="product-size"]/option[2]`                         | Selects the second option with text 35.         |
+| `//select[@id="product-size"]/option[@data-value-size="36"]`     | Selects the option with data-value-size 36.     |
+| `//select[@id="product-size"]/option[contains(@value,"opt-40")]` | Selects the option whose value contains opt-40. |
+| `//select[@id="product-size"]/option[text()="39"]`               | Selects the option with text 39.                |
 
 </BsTable>
+
 <Callout type="info">You must set the value field to `true`</Callout>

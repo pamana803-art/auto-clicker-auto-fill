@@ -5,12 +5,18 @@ tags: [action, value, append, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/action-append.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
 
-<BsTable>
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '//input',
+    value: 'Append::World'
+  }}
+/>
 
-| **Append::**  | **Description**                                                                         |
-| ------------- | --------------------------------------------------------------------------------------- |
-| Append::World | Append value to the existing input field. This adds "World" to the current field value. |
+## Append::World
 
-</BsTable>
+Append value to the existing input field. This adds "World" to the current field value.
+
+<Code code={`<input value="Hello">  → <input value="Hello World">`} lang="html" />
