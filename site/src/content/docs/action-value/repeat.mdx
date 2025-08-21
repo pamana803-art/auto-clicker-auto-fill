@@ -1,0 +1,53 @@
+---
+title: Repeat
+description: Now combine the power of batch into actions using &lt;Repeat&gt;
+tags: [batch-repeat, action-repeat, session-count]
+toc: true
+---
+
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input3.html')}
+  variables={{
+    element_finder: '//input',
+    value: 'example<batchRepeat>',
+    element_finder2: "//input[@name='user']",
+    value2: 'GoogleSheets::SheetName::A<actionRepeat>',
+    element_finder3: '//textarea',
+    value3: 'run<sessionCount>'
+  }}
+/>
+
+e.g. In value field if you enter `example<batchRepeat>`
+e.g. If batch repeat is `5` it will run till `example4`
+
+## Supported Patterns
+
+<BsTable>
+
+| **Pattern**                       | **Description**                                                  |
+| --------------------------------- | ---------------------------------------------------------------- |
+| [`<batchRepeat>`](#batchrepeat)   | Replaces with the current batch repeat index (starting from 0).  |
+| [`<actionRepeat>`](#actionrepeat) | Replaces with the current action repeat index (starting from 0). |
+| [`<sessionCount>`](#sessioncount) | Replaces with the current session count (starting from 0).       |
+
+</BsTable>
+
+### `<batchRepeat>`
+
+`example<batchRepeat>`
+
+<Code code={`example<batchRepeat>  → example0`} lang="html" />
+
+### `<actionRepeat>`
+
+`item<actionRepeat>`
+
+<Code code={`item<actionRepeat>  → item0`} lang="html" />
+
+### `<sessionCount>`
+
+`run<sessionCount>`
+
+<Code code={`run<sessionCount>  → run0`} lang="html" />

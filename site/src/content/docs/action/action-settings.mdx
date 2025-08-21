@@ -1,6 +1,7 @@
 ---
 title: Action Settings
 description: Overview of action settings including retry, retry interval, iframe first, and error handling.
+tags: [action, settings, retry, iframe, error-handling, action-settings]
 toc: true
 ---
 
@@ -9,7 +10,7 @@ These action-level settings override the global settings and apply to both the a
 <img
   class="d-block mb-4 img-fluid rounded-3"
   src="/docs/[[config:docs_version]]/assets/img/action-settings.png"
-  alt=""
+  alt="Action Settings"
 />
 
 ## Iframe First
@@ -54,37 +55,16 @@ Waits the given number of seconds between retries when searching for the element
 
 Choose what should happen if the element/XPath is not found after all retries.
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Stop</td>
-      <td>selected</td>
-      <td>Stop the workflow immediately; no further actions are executed.</td>
-    </tr>
-    <tr>
-      <td>Skip Action</td>
-      <td>not selected</td>
-      <td>Skip only this action and continue with the next one.</td>
-    </tr>
-    <tr>
-      <td>Refresh</td>
-      <td>not selected</td>
-      <td>Reload the current page and then continue according to your configuration.</td>
-    </tr>
-    <tr>
-      <td>Goto Action</td>
-      <td>not selected</td>
-      <td>Jump to a specific action in the list. You’ll be prompted to choose the destination action.</td>
-    </tr>
-  </tbody>
-</table>
+<BsTable>
+
+| **Name**    | **Default**  | **Description**                                                                             |
+| ----------- | ------------ | ------------------------------------------------------------------------------------------- |
+| Stop        | selected     | Stop the workflow immediately; no further actions are executed.                             |
+| Skip Action | not selected | Skip only this action and continue with the next one.                                       |
+| Refresh     | not selected | Reload the current page and then continue according to your configuration.                  |
+| Goto Action | not selected | Jump to a specific action in the list. You’ll be prompted to choose the destination action. |
+
+</BsTable>
 
 <Callout type="info">
   Default selection is Stop. The options displayed in the modal match these labels: Stop, Skip Action, Refresh, and Goto

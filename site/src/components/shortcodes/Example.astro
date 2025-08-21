@@ -1,6 +1,8 @@
 ---
-import { replacePlaceholdersInHtml } from '@libs/placeholder'
 import { Prism } from '@astrojs/prism'
+import { replacePlaceholdersInHtml } from '@libs/placeholder'
+import fs from 'node:fs'
+import path from 'node:path'
 
 interface Props {
   /**
@@ -36,19 +38,56 @@ interface Props {
    * @default true
    */
   showPreview?: boolean
+  /**
+   * If the `filePath` prop is defined, this prop can be used to specify a regex containing a match group to extract
+   * only a part of the file.
+   */
+  fileMatch?: string
+  /**
+   * A path to the file containing the code to highlight relative to the root of the repository.
+   * This takes precedence over the `code` prop.
+   */
+  filePath?: string
+
+  variables?: Record<string, string>
 }
 
 const {
   addStackblitzJs = false,
   code,
-  class: className,
+  class: className = 'p-0',
   id,
   lang = 'html',
-  showMarkup = true,
-  showPreview = true
+  showMarkup = false,
+  showPreview = true,
+  fileMatch,
+  filePath,
+  variables
 } = Astro.props
 
-let markup = Array.isArray(code) ? code.join('\n') : code
+let codeToDisplay = filePath
+  ? fs.readFileSync(path.join(process.cwd(), filePath), 'utf8')
+  : Array.isArray(code)
+    ? code.join('\n')
+    : code
+
+if (filePath && fileMatch && codeToDisplay) {
+  const match = codeToDisplay.match(new RegExp(fileMatch))
+
+  if (!match || !match[0]) {
+    throw new Error(`The file at ${filePath} does not contains a match for the regex '${fileMatch}'.`)
+  }
+
+  codeToDisplay = match[0]
+}
+
+if (filePath && variables && codeToDisplay) {
+  for (const [key, value] of Object.entries(variables)) {
+    codeToDisplay = codeToDisplay.replace(new RegExp(`{{${key}}}`, 'g'), value)
+  }
+}
+
+let markup = codeToDisplay
 markup = replacePlaceholdersInHtml(markup)
 
 const simplifiedMarkup = markup
