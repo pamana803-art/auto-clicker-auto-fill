@@ -15,21 +15,38 @@ import { getDocsRelativePath } from '@libs/path'
   }}
 />
 
-<BsTable>
-
-| **Copy::**       | **Description (Copy text from webpage)**                             |
-| ---------------- | -------------------------------------------------------------------- |
-| `Copy::[.]{6}`   | `.` - Any single character; `{6}` - exactly 6 characters             |
-| `Copy::[.]+`     | `.` - Any single character; `+` - all characters                     |
-| `Copy::[a-z]{6}` | `[a-z]` - A character in the range a–z; `{6}` - exactly 6 characters |
-| `Copy::[A-Z]{6}` | `[A-Z]` - A character in the range A–Z; `{6}` - exactly 6 characters |
-| `Copy::[\\d]{6}` | `[\\d]` - A digit; `{6}` - exactly 6 characters                      |
-| `Copy::[\\w]{6}` | `[\\w]` - A word character; `{6}` - exactly 6 characters             |
-
-</BsTable>
-
 ### Copy::[\d]{6}
 
 `Copy::[\\d]{6}`
 
 <Code code={`<div>OTP: 123456</div> → Copy: 123456`} lang="html" />
+
+### Copy::[.]{6}
+
+`Copy::[.]{6}`
+
+<Code code={`<div>dots: ......</div> → Copy: ......`} lang="html" />
+
+### Copy::[.]+
+
+`Copy::[.]+`
+
+<Code code={`<div>path: a..b</div> → Copy: ..`} lang="html" />
+
+### Copy::[a-z]{6}
+
+`Copy::[a-z]{6}`
+
+<Code code={`<div>code: nature</div> → Copy: nature`} lang="html" />
+
+### Copy::[A-Z]{6}
+
+`Copy::[A-Z]{6}`
+
+<Code code={`<div>code: MONKEY</div> → Copy: MONKEY`} lang="html" />
+
+### Copy::[\\w]{6}
+
+`Copy::[\\w]{6}`
+
+<Code code={`<div>id: A1B2C3X</div> → Copy: A1B2C3`} lang="html" />
