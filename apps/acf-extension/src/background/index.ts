@@ -84,9 +84,14 @@ try {
   /**
    * Listen for URL changes in SPAs/PWAs using webNavigation API
    */
+  let firstNavigation = true;
   chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
     // Only handle main frame navigation (not iframes)
     if (details.frameId === 0) {
+      if (firstNavigation) {
+        firstNavigation = false; // skip the first trigger (initial load)
+        return;
+      }
       // Send message to content script to trigger URL change load
       chrome.tabs.sendMessage(details.tabId, { action: RUNTIME_MESSAGE_ACF.URL_CHANGE });
     }

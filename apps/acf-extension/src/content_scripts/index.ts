@@ -26,7 +26,7 @@ async function loadConfig(loadType: ELoadTypes) {
   try {
     new ConfigStorage().getConfig().then(async ({ autoConfig, manualConfigs }: GetConfigResult) => {
       if (autoConfig) {
-        if (autoConfig.loadType === loadType) {
+        if (autoConfig.loadType === loadType || loadType === ELoadTypes.URL_CHANGE) {
           const { host } = document.location;
           Logger.color(chrome.runtime.getManifest().name, LoggerColor.PRIMARY, 'debug', host, loadType);
           await ConfigProcessor.checkStartType(manualConfigs, autoConfig);
@@ -50,15 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('load', () => {
   loadConfig(ELoadTypes.WINDOW);
-});
-
-// Listen for URL changes in SPAs/PWAs
-window.addEventListener('popstate', () => {
-  loadConfig(ELoadTypes.URL_CHANGE);
-});
-
-window.addEventListener('hashchange', () => {
-  loadConfig(ELoadTypes.URL_CHANGE);
 });
 
 addEventListener('unhandledrejection', (event) => {
@@ -90,7 +81,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
     }
   } else if (action === RUNTIME_MESSAGE_ACF.URL_CHANGE) {
     try {
-      loadConfig(ELoadTypes.URL_CHANGE);
+      await loadConfig(ELoadTypes.URL_CHANGE);
     } catch (e) {
       if (e instanceof Error) {
         statusBar.error(e.message);
