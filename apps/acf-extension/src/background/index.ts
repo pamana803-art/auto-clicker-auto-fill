@@ -84,11 +84,6 @@ try {
   /**
    * Listen for URL changes in SPAs/PWAs using webNavigation API
    */
-  let firstNavigation = true;
-  chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
-    // Only handle main frame navigation (not iframes)
-    if (details.frameId === 0) {
-      if (firstNavigation) {
   const firstNavigationMap = new Map<number, boolean>();
   chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
     // Only handle main frame navigation (not iframes)
