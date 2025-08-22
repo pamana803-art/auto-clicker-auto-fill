@@ -2,8 +2,16 @@
 title: Configuration
 description: The Configuration section is the core of the extension and the starting point for all action-driven tasks. Below is a concise guide to its fields and features.
 toc: true
+tags: [configuration, overview, name, init-wait, enable, export, import, duplicate]
 aliases:
   - '/docs/3.1/configuration/export-import/'
+sections:
+  - title: Batch
+    description: Manage multiple configurations at once for streamlined operations.
+  - title: Config Settings
+    description: Adjust configuration-level settings to control behavior and preferences.
+  - title: URL
+    description: Specify the target URL or pattern for the configuration to match.
 ---
 
 <img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/configuration.png" alt="" />
@@ -21,6 +29,16 @@ aliases:
 - **Details**:
   - Useful for pages with slow loading times or content that loads asynchronously (e.g., single-page applications).
   - Configurable based on factors like device, browser, and network speed.
+
+### Single Page Applications (SPA) & Progressive Web Apps (PWA) Support
+
+- **Purpose**: Automatically detects URL changes in modern web applications that don't trigger full page reloads.
+- **Details**:
+  - Works with navigation events in React, Vue, Angular, and other SPA frameworks.
+  - Detects browser back/forward navigation (`popstate` events).
+  - Detects hash-based navigation (`hashchange` events).
+  - Detects programmatic navigation using History API (`pushState`, `replaceState`).
+  - Configurations will automatically re-run when URLs change, even without page reloads.
 
 ### Enable
 

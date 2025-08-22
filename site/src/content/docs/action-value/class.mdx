@@ -1,74 +1,49 @@
 ---
 title: Class
 description: Update the class attribute of and element selected using element finder
+tags: [action, value, class, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/action-class.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Class::</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">
-        Class::add::className
-        <br />
-        e.g. Class::add::btn
-      </th>
-      <td>
-        Now add new class to element using class syntax.
-        <ul>
-          <li>
-            &lt;input class="button"> -> &lt;input class="button <b>btn</b>">
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">
-        Class::remove::className
-        <br />
-        e.g. Class::remove::btn
-      </th>
-      <td>
-        Now remove new class from element using class syntax.
-        <ul>
-          <li>
-            &lt;input class="button <b>btn</b>"> -> &lt;input class="button">
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">
-        Class::replace::removeClassName::addClassName
-        <br />
-        e.g. Class::replace::unlike::like
-      </th>
-      <td>
-        Now replace one class with another to element using class syntax.
-        <ul>
-          <li>
-            &lt;span class="<b>unlike</b>"> -> &lt;span class="<b>like</b>">
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Class::clear</th>
-      <td>
-        Now remove all class of element using class syntax.
-        <ul>
-          <li>
-            &lt;input class="<b>btn btn-primary button</b>"> -> &lt;input class="">
-          </li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input4.html')}
+  variables={{
+    element_finder: '//button',
+    value: 'Class::add::btn',
+    element_finder2: '//button',
+    value2: 'Class::remove::btn',
+    element_finder3: '//button',
+    value3: 'Class::replace::primary::secondary',
+    element_finder4: '//button',
+    value4: 'Class::clear'
+  }}
+/>
+
+<BsTable>
+
+| **Class::**                                                                               | **Description**                      |
+| ----------------------------------------------------------------------------------------- | ------------------------------------ |
+| [Class::add::className](#classaddclassname)                                               | Add a class to the element.          |
+| [Class::remove::className](#classremoveclassname)                                         | Remove a class from the element.     |
+| [Class::replace::removeClassName::addClassName](#classreplaceremoveclassnameaddclassname) | Replace one class with another.      |
+| [Class::clear](#classclear)                                                               | Remove all classes from the element. |
+
+</BsTable>
+
+## Class::add::className
+
+<Code code={`<input class="button">  → <input class="button btn">`} lang="html" />
+
+## Class::remove::className
+
+<Code code={`<input class="button btn">  → <input class="button">`} lang="html" />
+
+## Class::replace::removeClassName::addClassName
+
+<Code code={`<input class="button btn">  → <input class="button like">`} lang="html" />
+
+## Class::clear
+
+<Code code={`<input class="button btn">  → <input class="">`} lang="html" />

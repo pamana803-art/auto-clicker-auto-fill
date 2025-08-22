@@ -1,45 +1,34 @@
 ---
 title: Query Param
 description: Fetch values passed in url of web page and use same to fill the forms.
-group: action-value
+tags: [action, value, query, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/query.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
+
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input2.html')}
+  variables={{
+    element_finder: '//input[@type=email]',
+    value: 'Query::email',
+    element_finder2: '//input[@type=password]',
+    value2: 'Query::password'
+  }}
+/>
+
 <img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/query-url.png" alt="" />
 
 ## Supported Patterns
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Pattern</th>
-      <th scope="col">Description</th>
-      <th scope="col">Example</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">Query::param</th>
-      <td>
-        Replaces with the value of the query parameter <code>param</code> from the URL. If not found, returns the key.
-      </td>
-      <td>
-        <code>Query::userId</code> → <code>123</code> (if <code>?userId=123</code> in URL)
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">&lt;query::param&gt;</th>
-      <td>
-        Replaces all occurrences of <code>&lt;query::param&gt;</code> with the value of the query parameter{' '}
-        <code>param</code> from the URL. Useful for templates with multiple params.
-      </td>
-      <td>
-        <code>Hello &lt;query::name&gt;!</code> → <code>Hello John!</code> (if <code>?name=John</code> in URL)
-      </td>
-    </tr>
-  </tbody>
-</table>
+<BsTable>
+
+| **Pattern**      | **Description**                                                                                                         | **Example**                                                 |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `Query::param`   | Replace with the value of query parameter param from the URL. If not found, returns the key.                            | Query::userId → 123 (if ?userId=123 in URL)                 |
+| `<query::param>` | Replace all occurrences of `<query::param>` with the value of query parameter param from the URL. Useful for templates. | Hello `<query::name>`! → Hello John! (if ?name=John in URL) |
+
+</BsTable>
 
 ### Usage
 

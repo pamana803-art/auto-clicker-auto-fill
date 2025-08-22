@@ -1,13 +1,14 @@
 ---
 title: Action Condition
 description: Configure conditions that test statuses (DONE/SKIPPED) of previous actions. If conditions match, the current action runs; if not, apply a fallback (Stop, Skip Action, Refresh, or Goto Action).
+tags: [action, condition, status, action-condition]
 toc: true
 ---
 
 <img
   class="d-block mb-4 img-fluid rounded-3"
   src="/docs/[[config:docs_version]]/assets/img/action-condition.png"
-  alt=""
+  alt="Action Condition"
 />
 
 <Callout type="info">
@@ -22,7 +23,7 @@ Use the conditions grid to define how the current action should react to the res
 <img
   class="d-block mb-4 img-fluid rounded-3"
   src="/docs/[[config:docs_version]]/assets/img/action-condition-modal.png"
-  alt=""
+  alt="Action Condition Modal"
 />
 
 #### Conditions
@@ -43,82 +44,20 @@ Status semantics:
 
 When you have multiple rows, the OPR controls how they are combined. Truth table examples:
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Action 1 status result</th>
-      <th scope="col">OPR</th>
-      <th scope="col">Action 2 status result</th>
-      <th scope="col">Result</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="text-success">true</td>
-      <td>OR</td>
-      <td class="text-success">true</td>
-      <th scope="row" class="text-success">
-        true
-      </th>
-    </tr>
-    <tr>
-      <td class="text-success">true</td>
-      <td>OR</td>
-      <td class="text-danger">false</td>
-      <th scope="row" class="text-success">
-        true
-      </th>
-    </tr>
-    <tr>
-      <td class="text-danger">false</td>
-      <td>OR</td>
-      <td class="text-success">true</td>
-      <th scope="row" class="text-success">
-        true
-      </th>
-    </tr>
-    <tr>
-      <td class="text-danger">false</td>
-      <td>OR</td>
-      <td class="text-danger">false</td>
-      <th scope="row" class="text-danger">
-        false
-      </th>
-    </tr>
-    <tr>
-      <td class="text-success">true</td>
-      <td>AND</td>
-      <td class="text-success">true</td>
-      <th scope="row" class="text-success">
-        true
-      </th>
-    </tr>
-    <tr>
-      <td class="text-success">true</td>
-      <td>AND</td>
-      <td class="text-danger">false</td>
-      <th scope="row" class="text-danger">
-        false
-      </th>
-    </tr>
-    <tr>
-      <td class="text-danger">false</td>
-      <td>AND</td>
-      <td class="text-success">true</td>
-      <th scope="row" class="text-danger">
-        false
-      </th>
-    </tr>
-    <tr>
-      <td class="text-danger">false</td>
-      <td>AND</td>
-      <td class="text-danger">false</td>
-      <th scope="row" class="text-danger">
-        false
-      </th>
-    </tr>
-  </tbody>
-</table>
+<BsTable>
+
+| **Action 1 status result** | **OPR** | **Action 2 status result** | **Result** |
+| -------------------------- | ------- | -------------------------- | ---------- |
+| true                       | OR      | true                       | true       |
+| true                       | OR      | false                      | true       |
+| false                      | OR      | true                       | true       |
+| false                      | OR      | false                      | false      |
+| true                       | AND     | true                       | true       |
+| false                      | AND     | false                      | false      |
+| true                       | AND     | false                      | false      |
+| false                      | AND     | false                      | false      |
+
+</BsTable>
 
 #### When conditions are not matched
 
@@ -131,39 +70,14 @@ If the combined condition evaluates to false, select one of the fallback options
 
 Behavior summary:
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Conditions matched?</th>
-      <th scope="col">Selected option</th>
-      <th scope="col">Result</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="text-success">true</td>
-      <td>—</td>
-      <th scope="row">Process Action</th>
-    </tr>
-    <tr>
-      <td class="text-danger">false</td>
-      <td>Stop</td>
-      <th scope="row">Stop Action</th>
-    </tr>
-    <tr>
-      <td class="text-danger">false</td>
-      <td>Skip Action</td>
-      <th scope="row">Skip Action</th>
-    </tr>
-    <tr>
-      <td class="text-danger">false</td>
-      <td>Refresh</td>
-      <th scope="row">Refresh the page</th>
-    </tr>
-    <tr>
-      <td class="text-danger">false</td>
-      <td>Goto Action</td>
-      <th scope="row">Go to specified action</th>
-    </tr>
-  </tbody>
-</table>
+<BsTable>
+
+| **Conditions matched?** | **Selected option** | **Result**             |
+| ----------------------- | ------------------- | ---------------------- |
+| true                    | —                   | Process Action         |
+| false                   | Stop                | Stop Action            |
+| false                   | Skip Action         | Skip Action            |
+| false                   | Refresh             | Refresh the page       |
+| false                   | Goto Action         | Go to specified action |
+
+</BsTable>
