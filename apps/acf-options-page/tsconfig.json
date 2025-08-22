@@ -27,6 +27,9 @@
       "path": "../../packages/shared/status-bar"
     },
     {
+      "path": "../../packages/shared/openai"
+    },
+    {
       "path": "../../packages/core/common"
     },
     {

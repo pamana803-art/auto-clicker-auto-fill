@@ -1,4 +1,5 @@
 import ConfirmationModalContextProvider from '@acf-options-page/_providers/confirm.provider';
+import { OpenAIService } from '@dhruv-techapps/shared-openai';
 import * as Sentry from '@sentry/react';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
@@ -17,7 +18,10 @@ function App() {
   const { loading, error, errorButton } = useAppSelector(appSelector);
   const [show, setShow] = useState(localStorage.getItem('login') !== 'true');
   const { user } = useAppSelector(firebaseSelector);
+  const [input, setInput] = useState<string>('');
+
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(getManifest());
     dispatch(firebaseIsLoginAPI());
@@ -34,6 +38,11 @@ function App() {
     localStorage.setItem('login', 'true');
   };
 
+  const onSubmit = () => {
+    console.log(input);
+    OpenAIService.askQuestion({ content: input }).then(console.log).catch(console.error);
+  };
+
   return (
     <>
       <ConfirmationModalContextProvider>
@@ -44,6 +53,14 @@ function App() {
           </Alert>
         )}
         {loading && <Loading message='Connecting with extension...' className='m-5 p-5' />}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit();
+          }}
+        >
+          <input type='text' onChange={(e) => setInput(e.target.value)} />
+        </form>
         <Configs error={error} errorButton={errorButton} />
         <ToastHandler />
         <BlogModal />

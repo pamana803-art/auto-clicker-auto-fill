@@ -24,6 +24,20 @@ export class FirebaseFunctionsBackground extends FirebaseOauth2Background {
     return response;
   }
 
+  async openAiQnA<Req, Res>(data: Req): Promise<Res> {
+    const headers = await this._getFirebaseHeaders();
+    const url = new URL(this.cloudFunctionUrl + '/openAiQnA');
+    const response = await this.#fetch(url, headers, data);
+    return response;
+  }
+
+  async openAiQnARate<Req, Res>(data: Req): Promise<Res> {
+    const headers = await this._getFirebaseHeaders();
+    const url = new URL(this.cloudFunctionUrl + '/openAiQnARate');
+    const response = await this.#fetch(url, headers, data);
+    return response;
+  }
+
   async getValues<Req, Res>(data: Req): Promise<Res> {
     const headers = await this._getFirebaseHeaders([GOOGLE_SCOPES.SHEETS]);
     const url = new URL(this.cloudFunctionUrl + '/sheetsValuesV2');

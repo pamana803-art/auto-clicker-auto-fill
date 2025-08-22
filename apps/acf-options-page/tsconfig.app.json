@@ -54,6 +54,9 @@
       "path": "../../packages/shared/status-bar/tsconfig.lib.json"
     },
     {
+      "path": "../../packages/shared/openai/tsconfig.lib.json"
+    },
+    {
       "path": "../../packages/core/common/tsconfig.lib.json"
     },
     {
