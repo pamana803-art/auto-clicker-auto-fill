@@ -1,54 +1,52 @@
 ---
 title: Copy
 description: Now you can copy any content from webpage using copy command and paste back any where within same domain.
+tags: [action, value, copy, action-value]
 toc: true
 ---
 
-<img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/copy-command.png" alt="" />
+import { getDocsRelativePath } from '@libs/path'
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Copy::</th>
-      <th scope="col">Description (Copy text from webpage)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">Copy::[.]{6}</th>
-      <td>
-        <code>[.]</code> - Any Single Character <code>{6}</code> - no of characters 6
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[.]+</th>
-      <td>
-        <code>[.]</code> - Any Single Character <code>+</code> - all characters
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[a-z]{6}</th>
-      <td>
-        <code>[a-z]</code> - A character in the range: a-z
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[A-Z]{6}</th>
-      <td>
-        <code>[A-Z]</code> - A character in the range: A-Z
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[\d]{6}</th>
-      <td>
-        <code>[\d]</code> - A digit
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Copy::[\w]{6}</th>
-      <td>
-        <code>[\w]</code> - A word character
-      </td>
-    </tr>
-  </tbody>
-</table>
+<Example
+  filePath={getDocsRelativePath('/static/docs/[version]/assets/html/input.html')}
+  variables={{
+    element_finder: '//a',
+    value: 'Copy::Text'
+  }}
+/>
+
+### Copy::[\d]{6}
+
+`Copy::[\\d]{6}`
+
+<Code code={`<div>OTP: 123456</div> → Copy: 123456`} lang="html" />
+
+### Copy::[.]{6}
+
+`Copy::[.]{6}`
+
+<Code code={`<div>dots: ......</div> → Copy: ......`} lang="html" />
+
+### Copy::[.]+
+
+`Copy::[.]+`
+
+<Code code={`<div>path: a..b</div> → Copy: ..`} lang="html" />
+
+### Copy::[a-z]{6}
+
+`Copy::[a-z]{6}`
+
+<Code code={`<div>code: nature</div> → Copy: nature`} lang="html" />
+
+### Copy::[A-Z]{6}
+
+`Copy::[A-Z]{6}`
+
+<Code code={`<div>code: MONKEY</div> → Copy: MONKEY`} lang="html" />
+
+### Copy::[\\w]{6}
+
+`Copy::[\\w]{6}`
+
+<Code code={`<div>id: A1B2C3X</div> → Copy: A1B2C3`} lang="html" />

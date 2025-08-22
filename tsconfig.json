@@ -22,9 +22,6 @@
       "path": "./packages/acf/util"
     },
     {
-      "path": "./packages/ui/context"
-    },
-    {
       "path": "./packages/core/common"
     },
     {
@@ -82,9 +79,6 @@
       "path": "./packages/shared/vision"
     },
     {
-      "path": "./packages/ui/components"
-    },
-    {
       "path": "./packages/shared/util"
     },
     {
@@ -95,12 +89,6 @@
     },
     {
       "path": "./apps/acf-i18n"
-    },
-    {
-      "path": "./packages/acf/store"
-    },
-    {
-      "path": "./apps/acf-configs"
     }
   ]
 }

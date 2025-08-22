@@ -26,7 +26,7 @@ async function loadConfig(loadType: ELoadTypes) {
   try {
     new ConfigStorage().getConfig().then(async ({ autoConfig, manualConfigs }: GetConfigResult) => {
       if (autoConfig) {
-        if (autoConfig.loadType === loadType) {
+        if (autoConfig.loadType === loadType || loadType === ELoadTypes.URL_CHANGE) {
           const { host } = document.location;
           Logger.color(chrome.runtime.getManifest().name, LoggerColor.PRIMARY, 'debug', host, loadType);
           await ConfigProcessor.checkStartType(manualConfigs, autoConfig);
@@ -73,6 +73,15 @@ chrome.runtime.onMessage.addListener(async (message) => {
         await ConfigProcessor.checkStartType([], config);
         Logger.color(chrome.runtime.getManifest().name, LoggerColor.PRIMARY, 'debug', config?.url, 'END');
       });
+    } catch (e) {
+      if (e instanceof Error) {
+        statusBar.error(e.message);
+      }
+      scope.captureException(e);
+    }
+  } else if (action === RUNTIME_MESSAGE_ACF.URL_CHANGE) {
+    try {
+      await loadConfig(ELoadTypes.URL_CHANGE);
     } catch (e) {
       if (e instanceof Error) {
         statusBar.error(e.message);

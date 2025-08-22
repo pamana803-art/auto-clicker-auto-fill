@@ -1,9 +1,21 @@
 ---
 title: Action
 description: What an action is and how to configure its key properties.
+tags: [action, overview, name, init-wait, repeat, repeat-interval]
 toc: true
 aliases:
   - '/docs/3.1/action/init-wait/'
+sections:
+  - title: Element Finder
+    description: Locate the target element on the page using flexible strategies.
+  - title: Value
+    description: Define what the action does—click, fill, or trigger events.
+  - title: Addon
+    description: Extend actions with additional features or integrations.
+  - title: Action Settings
+    description: Fine-tune advanced options and error handling for actions.
+  - title: Action Condition
+    description: Add logic to run actions only when certain conditions are met.
 ---
 
 <img class="d-block mb-4 img-fluid rounded-3" src="/docs/[[config:docs_version]]/assets/img/action.png" alt="" />
@@ -18,19 +30,6 @@ An action combines an [element finder]([[docsref:/action/element-finder]]) and a
   button next to Add Action. Enable the Userscript switch on the extension’s details page before using it. Userscripts
   can replace the Name, Init Wait, Repeat, and Repeat Interval fields with custom logic and run alongside other actions.
 </Callout>
-
-Key properties that enhance an action:
-
-- [init wait]([[docsref:/action/overview#init-wait]])
-- [name]([[docsref:/action/overview#name]])
-- [element finder]([[docsref:/action/element-finder]])
-- [value]([[docsref:/action-value/overview]])
-- [repeat]([[docsref:/action/overview#repeat]])
-- [repeat interval]([[docsref:/action/overview#repeat-interval]])
-- [disable]([[docsref:/action/overview#disable]])
-- [addon]([[docsref:/addon/overview]])
-- [action settings]([[docsref:/action/action-settings]])
-- [action condition]([[docsref:/action/action-condition]])
 
 <Callout type="warning">
   If the element isn’t found, the extension retries per your configuration (global or action‑level) and then follows

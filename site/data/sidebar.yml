@@ -81,28 +81,28 @@
   pages:
     - title: Overview
     - title: AI
-    - title: Captcha
-    - title: Google Sheets
     - title: Append
-    - title: Prepend
-    - title: Replace
+    - title: Attribute
+    - title: Captcha
+    - title: Class
     - title: Clipboard
     - title: Copy
-    - title: Paste
-    - title: Random Value
-    - title: Attribute
-    - title: Class
-    - title: Query Param
-    - title: Select Option
-    - title: Scroll To
-    - title: Mouse Events
     - title: Form Events
+    - title: Function
+    - title: Google Sheets
     - title: Key Events
     - title: Keyboard Events
     - title: Location Command
+    - title: Mouse Events
+    - title: Paste
+    - title: Prepend
+    - title: Query Param
+    - title: Random Value
+    - title: Repeat
+    - title: Replace
+    - title: Scroll To
+    - title: Select Option
     - title: Window Command
-    - title: Batch Repeat
-    - title: Function
 
 - title: Addon
   icon: check-circle
