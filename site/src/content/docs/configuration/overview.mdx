@@ -30,6 +30,16 @@ sections:
   - Useful for pages with slow loading times or content that loads asynchronously (e.g., single-page applications).
   - Configurable based on factors like device, browser, and network speed.
 
+### Single Page Applications (SPA) & Progressive Web Apps (PWA) Support
+
+- **Purpose**: Automatically detects URL changes in modern web applications that don't trigger full page reloads.
+- **Details**:
+  - Works with navigation events in React, Vue, Angular, and other SPA frameworks.
+  - Detects browser back/forward navigation (`popstate` events).
+  - Detects hash-based navigation (`hashchange` events).
+  - Detects programmatic navigation using History API (`pushState`, `replaceState`).
+  - Configurations will automatically re-run when URLs change, even without page reloads.
+
 ### Enable
 
 - **Purpose**: A toggle to enable or disable the configuration.
