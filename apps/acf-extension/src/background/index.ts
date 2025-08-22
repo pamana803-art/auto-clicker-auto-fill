@@ -89,7 +89,14 @@ try {
     // Only handle main frame navigation (not iframes)
     if (details.frameId === 0) {
       if (firstNavigation) {
-        firstNavigation = false; // skip the first trigger (initial load)
+  const firstNavigationMap = new Map<number, boolean>();
+  chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
+    // Only handle main frame navigation (not iframes)
+    if (details.frameId === 0) {
+      const isFirst = firstNavigationMap.get(details.tabId);
+      if (isFirst === undefined) {
+        // First navigation for this tab, skip and set to false
+        firstNavigationMap.set(details.tabId, false);
         return;
       }
       // Send message to content script to trigger URL change load
